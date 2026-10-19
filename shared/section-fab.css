@@ -1,0 +1,246 @@
+/* Gallery section collapse + floating speed-dial FAB */
+
+.sec {
+  scroll-margin-top: calc(var(--site-header-h, 56px) + var(--nav-h, 52px) + 12px);
+}
+
+.sec-head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  column-gap: 0.75rem;
+  row-gap: 0.35rem;
+  position: relative;
+}
+
+.sec-head > h2 {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+}
+
+.sec-head > p,
+.sec-head > .palette-active-note {
+  grid-column: 1 / -1;
+}
+
+.sec-toggle {
+  grid-column: 2;
+  grid-row: 1;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line, #e4e4ea);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ink, #1c1c22);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sec-toggle:hover {
+  background: color-mix(in srgb, var(--page, #f5f1ee) 40%, #fff);
+}
+
+.sec-toggle:focus-visible {
+  outline: 2px solid var(--accent, #5b5bf0);
+  outline-offset: 2px;
+}
+
+.sec-toggle__icon {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translate(-1px, -1px);
+  transition: transform 0.32s cubic-bezier(0.22, 1.2, 0.36, 1);
+  opacity: 0.75;
+}
+
+.sec.is-collapsed .sec-toggle__icon {
+  transform: rotate(-45deg) translate(-1px, 1px);
+}
+
+.sec-body {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.38s cubic-bezier(0.22, 1.15, 0.36, 1);
+}
+
+.sec-body__inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.sec.is-collapsed .sec-body {
+  grid-template-rows: 0fr;
+}
+
+.sec.is-collapsed .sec-head {
+  margin-bottom: 0;
+}
+
+.sec.sec-flash {
+  animation: sec-flash-pulse 0.9s ease;
+}
+
+@keyframes sec-flash-pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--brand, #1e6851) 35%, transparent); }
+  35% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--brand, #1e6851) 22%, transparent); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+/* —— Floating speed dial —— */
+.sec-fab {
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1.15rem, env(safe-area-inset-bottom));
+  z-index: 45;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  gap: 0.55rem;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.sec-fab__primary {
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--ink, #1c1c22) 12%, transparent);
+  background: color-mix(in srgb, #fff 88%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--ink, #1c1c22);
+  box-shadow:
+    0 8px 24px rgba(28, 28, 34, 0.14),
+    0 1px 0 rgba(255, 255, 255, 0.7) inset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: transform 0.22s cubic-bezier(0.22, 1.2, 0.36, 1), background 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sec-fab__primary:hover {
+  transform: scale(1.04);
+}
+
+.sec-fab__primary:focus-visible {
+  outline: 2px solid var(--brand, #1e6851);
+  outline-offset: 3px;
+}
+
+.sec-fab.is-open .sec-fab__primary {
+  background: var(--brand, #1e6851);
+  color: #fff;
+  border-color: transparent;
+}
+
+.sec-fab__grid {
+  width: 18px;
+  height: 18px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3px;
+}
+
+.sec-fab__grid span {
+  display: block;
+  border-radius: 2px;
+  background: currentColor;
+}
+
+.sec-fab__dial {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+  pointer-events: none;
+}
+
+.sec-fab.is-open .sec-fab__dial {
+  pointer-events: auto;
+}
+
+.sec-fab__item {
+  appearance: none;
+  border: 1px solid color-mix(in srgb, var(--ink, #1c1c22) 10%, transparent);
+  background: color-mix(in srgb, #fff 92%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--ink, #1c1c22);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(28, 28, 34, 0.12);
+  opacity: 0;
+  transform: translateY(10px) scale(0.96);
+  transition:
+    opacity 0.28s cubic-bezier(0.22, 1.2, 0.36, 1),
+    transform 0.28s cubic-bezier(0.22, 1.2, 0.36, 1);
+  white-space: nowrap;
+}
+
+.sec-fab.is-open .sec-fab__item {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.sec-fab.is-open .sec-fab__item:nth-child(1) { transition-delay: 0.02s; }
+.sec-fab.is-open .sec-fab__item:nth-child(2) { transition-delay: 0.06s; }
+.sec-fab.is-open .sec-fab__item:nth-child(3) { transition-delay: 0.1s; }
+.sec-fab.is-open .sec-fab__item:nth-child(4) { transition-delay: 0.14s; }
+
+.sec-fab__item:hover {
+  background: #fff;
+}
+
+.sec-fab__item:focus-visible {
+  outline: 2px solid var(--brand, #1e6851);
+  outline-offset: 2px;
+}
+
+.sec-fab__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 44;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: default;
+  display: none;
+}
+
+.sec-fab-wrap.is-open .sec-fab__backdrop {
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sec-body,
+  .sec-toggle__icon,
+  .sec-fab__primary,
+  .sec-fab__item {
+    transition: none !important;
+  }
+
+  .sec.sec-flash {
+    animation: none;
+  }
+
+  .sec-fab__item {
+    transform: none !important;
+  }
+}

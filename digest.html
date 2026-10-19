@@ -25,7 +25,8 @@
       radial-gradient(ellipse 60% 40% at 90% 10%, rgba(255,255,255,0.5), transparent 50%),
       linear-gradient(160deg, #f3eee6 0%, var(--bg) 45%, var(--bg2) 100%);
     background-attachment: fixed;
-    padding: 40px 20px 80px;
+    /* extra top pad clears sticky site header (~56px) */
+    padding: calc(40px + var(--site-header-h, 56px)) 20px 80px;
   }
   body.modal-open { overflow: hidden; }
   .wrap { max-width: 920px; margin: 0 auto; }
@@ -236,8 +237,9 @@
     text-align: center; color: var(--muted); padding: 36px 12px; font-size: 0.95rem;
   }
 </style>
+<link rel="stylesheet" href="shared/site-header.css" />
 </head>
-<body>
+<body data-page="digest">
   <div class="wrap">
     <header>
       <h1>Repo Scout — Digest Catalog</h1>
@@ -450,5 +452,6 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
 });
 </script>
+<script src="shared/site-header.js" defer></script>
 </body>
 </html>

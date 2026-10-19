@@ -51,7 +51,7 @@
 
     * { box-sizing: border-box; }
 
-    html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 16px); }
+    html { scroll-behavior: smooth; scroll-padding-top: calc(var(--site-header-h, 56px) + var(--nav-h) + 16px); }
 
     body {
       margin: 0;
@@ -62,15 +62,15 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* —— Sticky library nav —— */
+    /* —— Sticky section nav (gallery only; pages live in site-header) —— */
     .lib-nav {
       position: sticky;
-      top: 0;
+      top: var(--site-header-h, 56px);
       z-index: 40;
       height: var(--nav-h);
       display: flex;
       align-items: center;
-      gap: 1.25rem;
+      gap: 0.75rem;
       padding: 0 1.25rem;
       background: color-mix(in srgb, var(--page) 88%, #fff);
       backdrop-filter: blur(10px);
@@ -79,17 +79,15 @@
     }
 
     .lib-brand {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
+      font-size: 11px;
+      font-weight: 650;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
       white-space: nowrap;
     }
 
-    .lib-brand span {
-      color: var(--muted);
-      font-weight: 500;
-      margin-left: 0.35rem;
-    }
+    .lib-brand span { display: none; }
 
     .lib-links {
       display: flex;
@@ -919,16 +917,17 @@
       .billing .pill { transition: none; }
     }
   </style>
+  <link rel="stylesheet" href="shared/site-header.css" />
+  <link rel="stylesheet" href="shared/section-fab.css" />
 </head>
-<body>
+<body data-page="gallery">
   <nav class="lib-nav" aria-label="Library sections">
-    <div class="lib-brand">UI Combo <span>library</span></div>
+    <div class="lib-brand">Sections</div>
     <div class="lib-links">
       <a href="#digits">Digits</a>
       <a href="#buttons">Buttons</a>
       <a href="#cards">Cards</a>
       <a href="#palettes">Palettes</a>
-      <a href="https://danielwongcx.github.io/ui-kit/digest.html">Digest</a>
     </div>
   </nav>
 
@@ -1674,5 +1673,7 @@
 
     })();
   </script>
+  <script src="shared/site-header.js" defer></script>
+  <script src="shared/section-fab.js" defer></script>
 </body>
 </html>
