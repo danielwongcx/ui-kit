@@ -11,10 +11,12 @@ Static component gallery and digest catalog for Daniel Wong — served from GitH
 
 Local mirrors: `index.html` (identical twin: `ui-combo.html`) and `digest.html`.
 
+Gallery sections: Digits, Buttons, Cards, Palettes, and Select (native `appearance: base-select`).
+
 ## Shared chrome
 
 - **Site header** (`shared/site-header.css` + `shared/site-header.js`) — sticky, mobile hamburger, page links (Gallery · Digest). Every page must load it; see `AGENTS.md`.
-- **Section FAB** (`shared/section-fab.*`) — gallery only. Collapsible sections + floating speed-dial to Digits / Buttons / Cards / Palettes.
+- **Section FAB** (`shared/section-fab.*`) — gallery only. Collapsible sections + floating speed-dial to Digits / Buttons / Cards / Palettes / Select.
 
 ## Agents
 

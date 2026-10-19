@@ -9,7 +9,8 @@
     { id: 'digits', label: 'Digits' },
     { id: 'buttons', label: 'Buttons' },
     { id: 'cards', label: 'Cards' },
-    { id: 'palettes', label: 'Palettes' }
+    { id: 'palettes', label: 'Palettes' },
+    { id: 'select', label: 'Select' }
   ];
 
   var reduceMotion = false;

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>UI Library · Digits · Buttons · Cards · Palettes</title>
+  <title>UI Library · Digits · Buttons · Cards · Palettes · Select</title>
   <script>
     /* Apply saved page shell palette before paint (page bg only) */
     (function () {
@@ -911,6 +911,163 @@
       text-transform: capitalize;
     }
 
+
+    /* —— Customizable native select (Chromium 135+) —— */
+    .select-demo {
+      appearance: base-select;
+      -webkit-appearance: base-select;
+      font: inherit;
+      color: var(--ink);
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 0.35rem 0.55rem;
+      min-width: 240px;
+      max-width: 100%;
+      cursor: pointer;
+    }
+
+    .select-demo:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .select-demo:open {
+      border-color: var(--accent);
+    }
+
+    .select-demo > button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      padding: 0.35rem 0.4rem;
+      border: none;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .select-demo selectedcontent {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .select-demo::picker(select) {
+      appearance: base-select;
+      -webkit-appearance: base-select;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 6px;
+      background: #fff;
+      box-shadow: 0 12px 40px rgba(20, 20, 30, 0.18);
+    }
+
+    .select-demo option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--ink);
+    }
+
+    .select-demo option:hover,
+    .select-demo option:checked {
+      background: color-mix(in srgb, var(--accent) 16%, #fff);
+    }
+
+    .select-demo.dark {
+      background: #14141a;
+      color: #f2f2f7;
+      border-color: #2a2a35;
+    }
+
+    .select-demo.dark:open {
+      border-color: #7c7cff;
+    }
+
+    .select-demo.dark::picker(select) {
+      background: #1a1a22;
+      border-color: #333343;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .select-demo.dark option {
+      color: #f2f2f7;
+    }
+
+    .select-demo.dark option:hover,
+    .select-demo.dark option:checked {
+      background: #2a2a35;
+    }
+
+    .select-demo.plan option:checked {
+      background: color-mix(in srgb, var(--accent) 22%, #fff);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent);
+    }
+
+    .select-fallback {
+      display: none;
+      margin: 0.85rem 0 0;
+      font-size: 0.8rem;
+      line-height: 1.45;
+      color: var(--muted);
+      max-width: 40rem;
+    }
+
+    .select-fallback code {
+      font-family: var(--mono);
+      font-size: 0.85em;
+      color: #3a3a44;
+    }
+
+    @supports not (appearance: base-select) {
+      .select-fallback { display: block; }
+    }
+
+    .select-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .select-ico {
+      font-size: 1.15rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .select-text {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      min-width: 0;
+    }
+
+    .select-label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      line-height: 1.25;
+    }
+
+    .select-sub {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+
+    .select-demo.dark .select-sub {
+      color: #9a9aa8;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       .digit-stack { transition: none; }
@@ -928,6 +1085,7 @@
       <a href="#buttons">Buttons</a>
       <a href="#cards">Cards</a>
       <a href="#palettes">Palettes</a>
+      <a href="#select">Select</a>
     </div>
   </nav>
 
@@ -935,10 +1093,12 @@
     <header class="lib-hero">
       <h1>Component gallery</h1>
       <p>
-        Self-contained demos: Digits · Buttons · Cards · Palettes.
+        Self-contained demos: Digits · Buttons · Cards · Palettes · Select.
         Digit scroll with a natural <code>linear()</code> spring (~10%
         overshoot), hard-coded glow CTAs (violet / teal / slate), nested-radius
-        cards, plus ten page-shell colour palettes you can switch.
+        cards, ten page-shell colour palettes you can switch, and a native
+        CSS-customizable <code>&lt;select&gt;</code>
+        (<code>appearance: base-select</code>).
       </p>
     </header>
 
@@ -1540,10 +1700,159 @@
       </div>
     </section>
 
+
+    <!-- ===================== SELECT ===================== -->
+    <section class="sec" id="select">
+      <div class="sec-head">
+        <h2>Select</h2>
+        <p>
+          Native customizable <code>&lt;select&gt;</code> via
+          <code>appearance: base-select</code> (Chromium 135+).
+          Rich HTML inside <code>&lt;option&gt;</code>,
+          <code>&lt;selectedcontent&gt;</code> for the closed preview,
+          and <code>::picker(select)</code> / <code>:open</code> for the popup —
+          no JS dropdown library.
+        </p>
+      </div>
+
+      <div class="sec-grid two">
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Select / status</span>
+            <span class="canvas-tag">base-select</span>
+          </div>
+          <div class="canvas-body">
+            <select class="select-demo" aria-label="Status">
+              <button type="button">
+                <selectedcontent></selectedcontent>
+              </button>
+              <option value="ship">
+                <span class="select-row">
+                  <span class="select-ico" aria-hidden="true">🚀</span>
+                  <span class="select-text">
+                    <span class="select-label">Shipping</span>
+                    <span class="select-sub">In transit</span>
+                  </span>
+                </span>
+              </option>
+              <option value="review" selected>
+                <span class="select-row">
+                  <span class="select-ico" aria-hidden="true">👀</span>
+                  <span class="select-text">
+                    <span class="select-label">In review</span>
+                    <span class="select-sub">Awaiting feedback</span>
+                  </span>
+                </span>
+              </option>
+              <option value="done">
+                <span class="select-row">
+                  <span class="select-ico" aria-hidden="true">✅</span>
+                  <span class="select-text">
+                    <span class="select-label">Done</span>
+                    <span class="select-sub">Shipped</span>
+                  </span>
+                </span>
+              </option>
+            </select>
+            <p class="hint">Open to see rich options + <code>::picker(select)</code></p>
+          </div>
+        </article>
+
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Select / dark picker</span>
+            <span class="canvas-tag">Joy of Code vibe</span>
+          </div>
+          <div class="canvas-body dark">
+            <select class="select-demo dark" aria-label="Featured item">
+              <button type="button">
+                <selectedcontent></selectedcontent>
+              </button>
+              <option value="star" selected>
+                <span class="select-row">
+                  <span class="select-ico" aria-hidden="true">⭐</span>
+                  <span class="select-text">
+                    <span class="select-label">Featured</span>
+                    <span class="select-sub">Pinned item</span>
+                  </span>
+                </span>
+              </option>
+              <option value="heart">
+                <span class="select-row">
+                  <span class="select-ico" aria-hidden="true">❤️</span>
+                  <span class="select-text">
+                    <span class="select-label">Favorite</span>
+                    <span class="select-sub">Saved for later</span>
+                  </span>
+                </span>
+              </option>
+              <option value="fire">
+                <span class="select-row">
+                  <span class="select-ico" aria-hidden="true">🔥</span>
+                  <span class="select-text">
+                    <span class="select-label">Trending</span>
+                    <span class="select-sub">Hot right now</span>
+                  </span>
+                </span>
+              </option>
+            </select>
+            <p class="hint" style="color:#8b919c">Dark field + dark <code>::picker(select)</code></p>
+          </div>
+        </article>
+
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Select / plan</span>
+            <span class="canvas-tag">violet checked</span>
+          </div>
+          <div class="canvas-body">
+            <select class="select-demo plan" aria-label="Plan">
+              <button type="button">
+                <selectedcontent></selectedcontent>
+              </button>
+              <option value="free">
+                <span class="select-row">
+                  <span class="select-ico" aria-hidden="true">🌱</span>
+                  <span class="select-text">
+                    <span class="select-label">Free</span>
+                    <span class="select-sub">$0 · basics</span>
+                  </span>
+                </span>
+              </option>
+              <option value="pro" selected>
+                <span class="select-row">
+                  <span class="select-ico" aria-hidden="true">✨</span>
+                  <span class="select-text">
+                    <span class="select-label">Pro</span>
+                    <span class="select-sub">$12 · most teams</span>
+                  </span>
+                </span>
+              </option>
+              <option value="team">
+                <span class="select-row">
+                  <span class="select-ico" aria-hidden="true">👥</span>
+                  <span class="select-text">
+                    <span class="select-label">Team</span>
+                    <span class="select-sub">$29 · seats + SSO</span>
+                  </span>
+                </span>
+              </option>
+            </select>
+            <p class="hint">Checked option picks up <code>--accent</code></p>
+          </div>
+        </article>
+      </div>
+      <p class="select-fallback">
+        This browser doesn’t support <code>appearance: base-select</code> yet.
+        Try Chrome 135+ to see the styled picker.
+      </p>
+    </section>
+
     <footer class="lib-foot">
-      Digits · Buttons · Cards · Palettes. Digit-scroll <code>lh</code> + natural
+      Digits · Buttons · Cards · Palettes · Select. Digit-scroll <code>lh</code> + natural
       <code>linear()</code> spring (~10% overshoot) · hard-coded glow buttons
-      (violet / teal / slate) · nested radius · page-shell palettes. No CDN.
+      (violet / teal / slate) · nested radius · page-shell palettes · native
+      <code>appearance: base-select</code>. No CDN.
       Prefers-reduced-motion disables the spring.
     </footer>
   </div>

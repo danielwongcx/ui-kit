@@ -33,7 +33,7 @@ When you add a new page:
 
 `shared/section-fab.css` + `shared/section-fab.js` load **only** on the gallery (`index.html` / `ui-combo.html`).
 
-- Sections use `.sec` with a stable `id` (`#digits`, `#buttons`, `#cards`, `#palettes`, …)
+- Sections use `.sec` with a stable `id` (`#digits`, `#buttons`, `#cards`, `#palettes`, `#select`, …)
 - Bodies are wrapped in `.sec-body` (script does this); chevron toggles collapse
 - Floating speed-dial lists sections from `SECTION_LINKS` inside `section-fab.js`
 
