@@ -7,7 +7,7 @@
   <style>
     /*
       UI component gallery — digit scroll, glow buttons, nested-radius cards.
-      Stronger spring ~30% overshoot (peak ~1.32, one clear dip, settle to 1).
+      Natural spring ~10% overshoot (peak ~1.09, soft settle · 0.75s).
     */
     :root {
       --page: #ececf0;
@@ -20,12 +20,12 @@
       --digit-text: #f4f5f7;
       --digit-muted: #8b919c;
       --accent: #5b5bf0;
-      /* stronger spring ~30% overshoot — peak 1.32, dip ~0.97, settle 1 · 0.95s */
+      /* natural spring ~10% overshoot — peak 1.09, soft settle · 0.75s */
       --spring: linear(
-        0, 0.01, 0.04, 0.12, 0.28, 0.52, 0.78, 1.05, 1.22, 1.32,
-        1.28, 1.18, 1.08, 1.02, 0.97, 0.99, 1
+        0, 0.006, 0.025, 0.07, 0.14, 0.25, 0.4, 0.55, 0.7, 0.82,
+        0.92, 0.99, 1.04, 1.08, 1.09, 1.07, 1.04, 1.02, 1.005, 1
       );
-      --spring-dur: 0.95s;
+      --spring-dur: 0.75s;
       --nav-h: 52px;
       --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -740,8 +740,8 @@
     <header class="lib-hero">
       <h1>Component gallery</h1>
       <p>
-        Self-contained demos: digit scroll with a stronger
-        <code>linear()</code> spring (~30% overshoot), glow CTAs, and
+        Self-contained demos: digit scroll with a natural
+        <code>linear()</code> spring (~10% overshoot), glow CTAs, and
         nested-radius cards. Soft gray page · white canvas frames.
       </p>
     </header>
@@ -753,7 +753,7 @@
         <p>
           Each column is 0–9 stacked. <code>--d</code> slides by
           <code>calc(var(--d) * -1lh)</code> with a spring transition
-          (peak ~1.32, dip, settle · 0.95s).
+          (peak ~1.09, soft settle · 0.75s).
         </p>
       </div>
 
@@ -1099,7 +1099,7 @@
 
     <footer class="lib-foot">
       Techniques: digit-scroll <code>lh</code> + stronger <code>linear()</code>
-      spring (~30% overshoot) · glow button inset + coloured outer shadow ·
+      spring (~10% overshoot) · glow button inset + coloured outer shadow ·
       nested radius (outer = inner + padding). No CDN. Prefers-reduced-motion
       disables the spring.
     </footer>
