@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UI Library · Digits · Buttons · Cards</title>
+  <style>
+    /*
+      UI component gallery — digit scroll, glow buttons, nested-radius cards.
+      Stronger spring ~30% overshoot (peak ~1.32, one clear dip, settle to 1).
+    */
+    :root {
+      --page: #ececf0;
+      --canvas: #ffffff;
+      --ink: #1c1c22;
+      --muted: #6b6b76;
+      --line: #e4e4ea;
+      --tile: #1c1f26;
+      --tile-border: #2a2e38;
+      --digit-text: #f4f5f7;
+      --digit-muted: #8b919c;
+      --accent: #5b5bf0;
+      /* stronger spring ~30% overshoot — peak 1.32, dip ~0.97, settle 1 · 0.95s */
+      --spring: linear(
+        0, 0.01, 0.04, 0.12, 0.28, 0.52, 0.78, 1.05, 1.22, 1.32,
+        1.28, 1.18, 1.08, 1.02, 0.97, 0.99, 1
+      );
+      --spring-dur: 0.95s;
+      --nav-h: 52px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 16px); }
+
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      background: var(--page);
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* —— Sticky library nav —— */
+    .lib-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      padding: 0 1.25rem;
+      background: color-mix(in srgb, var(--page) 88%, #fff);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .lib-brand {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+
+    .lib-brand span {
+      color: var(--muted);
+      font-weight: 500;
+      margin-left: 0.35rem;
+    }
+
+    .lib-links {
+      display: flex;
+      gap: 0.15rem;
+      margin-left: auto;
+      overflow-x: auto;
+    }
+
+    .lib-links a {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.4rem 0.7rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .lib-links a:hover {
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .lib-links a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* —— Page shell —— */
+    .lib {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+    }
+
+    .lib-hero {
+      margin: 0 0 2.5rem;
+    }
+
+    .lib-hero h1 {
+      margin: 0 0 0.4rem;
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .lib-hero p {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: var(--muted);
+      max-width: 36rem;
+    }
+
+    .lib-hero code {
+      font-family: var(--mono);
+      font-size: 0.85em;
+      color: #3a3a44;
+    }
+
+    /* —— Section —— */
+    .sec {
+      margin: 0 0 3rem;
+    }
+
+    .sec-head {
+      margin: 0 0 1.15rem;
+    }
+
+    .sec-head h2 {
+      margin: 0 0 0.3rem;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .sec-head p {
+      margin: 0;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: var(--muted);
+      max-width: 40rem;
+    }
+
+    .sec-grid {
+      display: grid;
+      gap: 1.15rem;
+      align-items: start;
+    }
+
+    .sec-grid.two {
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 720px) {
+      .sec-grid.two {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* —— Canvas frame (Storybook-ish) —— */
+    .canvas {
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .canvas-chrome {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid var(--line);
+      background: #fafafa;
+    }
+
+    .canvas-name {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      color: #3a3a44;
+      letter-spacing: 0.01em;
+    }
+
+    .canvas-tag {
+      margin-left: auto;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .canvas-body {
+      padding: 1.75rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      min-height: 160px;
+    }
+
+    .canvas-body.dark {
+      background: #0f1115;
+      color: var(--digit-text);
+    }
+
+    .canvas-body.pad-lg {
+      padding: 2rem 1.5rem;
+    }
+
+    .hint {
+      margin: 0;
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .canvas-body.dark .hint { color: var(--digit-muted); }
+
+    /* —— Digits —— */
+    .price,
+    .odometer,
+    .score,
+    .bounce-row,
+    .display-row {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+      color: var(--digit-text);
+    }
+
+    .currency {
+      font-size: 1.85rem;
+      font-weight: 600;
+      color: var(--digit-muted);
+      margin-right: 0.06rem;
+      line-height: 1;
+      transform: translateY(-0.05em);
+    }
+
+    .currency.lg {
+      font-size: 2.6rem;
+    }
+
+    /*
+      Outer .digit = padded tile (flex-centers the clip window).
+      .digit-clip = exact 1lh viewport.
+      .digit-stack = 0–9 cells; --d drives translate.
+    */
+    .digit {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.35rem;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0;
+      background: var(--tile);
+      border: 1px solid var(--tile-border);
+      border-radius: 0.55rem;
+      padding: 0.28rem 0.42rem;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      color: var(--digit-text);
+    }
+
+    .digit.sm {
+      font-size: 1.85rem;
+      padding: 0.24rem 0.36rem;
+      border-radius: 0.48rem;
+    }
+
+    .digit.lg {
+      font-size: 3.25rem;
+      padding: 0.32rem 0.52rem;
+      border-radius: 0.7rem;
+    }
+
+    .digit-clip {
+      display: block;
+      height: 1lh;
+      overflow: hidden;
+    }
+
+    .digit-stack {
+      display: block;
+      width: 1ch;
+      translate: 0 calc(var(--d, 0) * -1lh);
+      transition: translate var(--spring-dur) var(--spring);
+      will-change: translate;
+    }
+
+    .digit-stack > span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 1lh;
+      width: 100%;
+      line-height: 1;
+      transform: translateY(-0.04em);
+    }
+
+    /* Pricing CSS-only via :has */
+    .pricing {
+      --tens: 4;
+      --ones: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.95rem;
+      width: 100%;
+    }
+
+    .pricing:has(#yearly:checked) {
+      --tens: 3;
+      --ones: 6;
+    }
+
+    .billing {
+      display: inline-flex;
+      position: relative;
+      background: #f2f2f4;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 0.2rem;
+    }
+
+    .canvas-body.dark .billing {
+      background: #0a0c10;
+      border-color: var(--tile-border);
+    }
+
+    .billing input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .billing label {
+      position: relative;
+      z-index: 1;
+      padding: 0.4rem 0.95rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      border-radius: 999px;
+      transition: color 0.2s ease;
+      user-select: none;
+    }
+
+    .canvas-body.dark .billing label { color: var(--digit-muted); }
+
+    .billing:has(#monthly:checked) label[for="monthly"],
+    .billing:has(#yearly:checked) label[for="yearly"] {
+      color: var(--ink);
+    }
+
+    .canvas-body.dark .billing:has(#monthly:checked) label[for="monthly"],
+    .canvas-body.dark .billing:has(#yearly:checked) label[for="yearly"] {
+      color: var(--digit-text);
+    }
+
+    .billing .pill {
+      position: absolute;
+      top: 0.2rem;
+      bottom: 0.2rem;
+      left: 0.2rem;
+      width: calc(50% - 0.2rem);
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      box-shadow: 0 1px 2px #0001;
+      transition: translate 0.35s ease;
+      pointer-events: none;
+    }
+
+    .canvas-body.dark .billing .pill {
+      background: var(--tile);
+      border-color: var(--tile-border);
+      box-shadow: none;
+    }
+
+    .billing:has(#yearly:checked) .pill {
+      translate: 100% 0;
+    }
+
+    /* Action chips (light library style) */
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.45rem;
+    }
+
+    .actions button {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: #f7f7f9;
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-family: var(--mono);
+      padding: 0.42rem 0.75rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .actions button:hover {
+      background: #fff;
+      border-color: #cfcfd8;
+    }
+
+    .actions button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .actions button.primary {
+      background: color-mix(in srgb, var(--accent) 12%, #fff);
+      border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+      color: #3b3bd4;
+    }
+
+    .canvas-body.dark .actions button {
+      background: var(--tile);
+      border-color: var(--tile-border);
+      color: var(--digit-text);
+    }
+
+    .canvas-body.dark .actions button:hover {
+      background: #252933;
+      border-color: #3a4050;
+    }
+
+    .canvas-body.dark .actions button.primary {
+      border-color: color-mix(in srgb, #ff7a3d 45%, var(--tile-border));
+      background: color-mix(in srgb, #ff7a3d 18%, var(--tile));
+      color: #ffd0b8;
+    }
+
+    /* Bounce digit picker */
+    .digit-picker {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.35rem;
+      max-width: 16rem;
+    }
+
+    .digit-picker button {
+      appearance: none;
+      width: 2rem;
+      height: 2rem;
+      border: 1px solid var(--line);
+      background: #f7f7f9;
+      border-radius: 0.4rem;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--ink);
+    }
+
+    .digit-picker button:hover { background: #fff; }
+    .digit-picker button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .digit-picker button.is-on {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* —— Glow buttons —— */
+    .btn {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      display: inline-block;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1;
+      padding: 13px 22px;
+      border-radius: 999px;
+      transition: translate 80ms ease, box-shadow 80ms ease;
+    }
+
+    .btn:active {
+      translate: 0 1px;
+      box-shadow: inset 0 2px 4px #0004 !important;
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .btn-block { display: block; width: 100%; }
+
+    .btn-violet {
+      background: linear-gradient(#7c7cff, #5b5bf0);
+      box-shadow:
+        inset 0 1px 0 #ffffff59,
+        inset 0 -2px 0 #0003,
+        0 1px 2px #0006,
+        0 8px 24px -6px #5b5bf099;
+    }
+
+    .btn-teal {
+      background: linear-gradient(#2dd4bf, #0d9488);
+      box-shadow:
+        inset 0 1px 0 #ffffff59,
+        inset 0 -2px 0 #0003,
+        0 1px 2px #0006,
+        0 8px 24px -6px #0d948899;
+    }
+
+    .btn-slate {
+      background: linear-gradient(#64748b, #334155);
+      box-shadow:
+        inset 0 1px 0 #ffffff40,
+        inset 0 -2px 0 #0004,
+        0 1px 2px #0006,
+        0 8px 24px -6px #33415588;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .chip-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    @media (min-width: 520px) {
+      .chip-grid { grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+    .chip {
+      text-align: center;
+      padding: 0.85rem 0.6rem;
+      border: 1px dashed var(--line);
+      border-radius: 12px;
+    }
+
+    .chip .name {
+      margin: 0 0 2px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .chip .hex {
+      margin: 0 0 0.75rem;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .chip .btn { font-size: 12px; padding: 10px 12px; width: 100%; }
+
+    /* —— Nested radius card —— */
+    .stage {
+      background: #fff;
+      padding: 16px;              /* gap = 16 */
+      border-radius: 40px;       /* outer = 24 + 16 */
+      box-shadow: 0 1px 2px #0001, 0 12px 32px -16px #0003;
+      width: 100%;
+      max-width: 340px;
+    }
+
+    .card {
+      border-radius: 24px;       /* inner */
+      overflow: hidden;
+      background: #d4d0c8;
+      position: relative;
+    }
+
+    .photo {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: linear-gradient(160deg, #c4b8a8 0%, #8a857c 40%, #5c5852 100%);
+      position: relative;
+    }
+
+    .photo::before {
+      content: "";
+      position: absolute;
+      inset: 18% 12% 28% 12%;
+      background: linear-gradient(180deg, #e8e0d4, #b8aea0);
+      border-radius: 4px;
+      box-shadow: inset 0 0 0 1px #0001;
+    }
+
+    .photo::after {
+      content: "";
+      position: absolute;
+      left: 18%;
+      right: 18%;
+      bottom: 12%;
+      height: 10%;
+      background: #3a3632;
+      border-radius: 2px;
+      opacity: 0.85;
+    }
+
+    .cap {
+      background: #fff;
+      padding: 16px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .cap-title {
+      align-self: stretch;
+      margin: 0;
+    }
+
+    .cap-title strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+
+    .cap-title span {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .formula {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 0.5rem 0 0;
+    }
+
+    .fpill {
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .fpill-inner { background: #ec4899; }
+    .fpill-gap { background: #3b82f6; }
+    .fpill-outer { background: #22c55e; }
+
+    .op { font-weight: 700; color: var(--muted); font-size: 16px; }
+
+    .nums {
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0.35rem 0 0;
+    }
+
+    .nums .i { color: #ec4899; font-weight: 700; }
+    .nums .g { color: #3b82f6; font-weight: 700; }
+    .nums .o { color: #16a34a; font-weight: 700; }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .lib-foot {
+      margin-top: 1rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--line);
+      font-size: 0.72rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .lib-foot code { font-family: var(--mono); font-size: 0.95em; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .digit-stack { transition: none; }
+      .billing .pill { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="lib-nav" aria-label="Library sections">
+    <div class="lib-brand">UI Combo <span>library</span></div>
+    <div class="lib-links">
+      <a href="#digits">Digits</a>
+      <a href="#buttons">Buttons</a>
+      <a href="#cards">Cards</a>
+    </div>
+  </nav>
+
+  <div class="lib">
+    <header class="lib-hero">
+      <h1>Component gallery</h1>
+      <p>
+        Self-contained demos: digit scroll with a stronger
+        <code>linear()</code> spring (~30% overshoot), glow CTAs, and
+        nested-radius cards. Soft gray page · white canvas frames.
+      </p>
+    </header>
+
+    <!-- ===================== DIGITS ===================== -->
+    <section class="sec" id="digits">
+      <div class="sec-head">
+        <h2>Digits</h2>
+        <p>
+          Each column is 0–9 stacked. <code>--d</code> slides by
+          <code>calc(var(--d) * -1lh)</code> with a spring transition
+          (peak ~1.32, dip, settle · 0.95s).
+        </p>
+      </div>
+
+      <div class="sec-grid two">
+        <!-- pricing -->
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">DigitScroll / pricing</span>
+            <span class="canvas-tag">css-only · :has</span>
+          </div>
+          <div class="canvas-body dark pad-lg">
+            <div class="pricing">
+              <div class="price" aria-live="polite">
+                <span class="currency" aria-hidden="true">$</span>
+                <span class="digit" style="--d: var(--tens)" aria-hidden="true">
+                  <span class="digit-clip">
+                    <span class="digit-stack">
+                      <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span>
+                      <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+                    </span>
+                  </span>
+                </span>
+                <span class="digit" style="--d: var(--ones)" aria-hidden="true">
+                  <span class="digit-clip">
+                    <span class="digit-stack">
+                      <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span>
+                      <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+                    </span>
+                  </span>
+                </span>
+                <span class="visually-hidden">Price updates with billing period</span>
+              </div>
+              <div class="billing" role="radiogroup" aria-label="Billing period">
+                <span class="pill" aria-hidden="true"></span>
+                <input type="radio" name="period" id="monthly" checked />
+                <label for="monthly">Monthly</label>
+                <input type="radio" name="period" id="yearly" />
+                <label for="yearly">Yearly</label>
+              </div>
+              <p class="hint">Monthly $45 · Yearly $36 — no JS</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- odometer -->
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">DigitScroll / odometer</span>
+            <span class="canvas-tag">4-digit · presets</span>
+          </div>
+          <div class="canvas-body dark pad-lg">
+            <div class="odometer" id="odometer" aria-live="polite"
+              style="--d0: 2; --d1: 0; --d2: 4; --d3: 8">
+              <span class="digit sm" style="--d: var(--d0)" aria-hidden="true">
+                <span class="digit-clip">
+                  <span class="digit-stack">
+                    <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span>
+                    <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+                  </span>
+                </span>
+              </span>
+              <span class="digit sm" style="--d: var(--d1)" aria-hidden="true">
+                <span class="digit-clip">
+                  <span class="digit-stack">
+                    <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span>
+                    <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+                  </span>
+                </span>
+              </span>
+              <span class="digit sm" style="--d: var(--d2)" aria-hidden="true">
+                <span class="digit-clip">
+                  <span class="digit-stack">
+                    <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span>
+                    <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+                  </span>
+                </span>
+              </span>
+              <span class="digit sm" style="--d: var(--d3)" aria-hidden="true">
+                <span class="digit-clip">
+                  <span class="digit-stack">
+                    <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span>
+                    <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+                  </span>
+                </span>
+              </span>
+            </div>
+            <div class="actions" id="odo-actions">
+              <button type="button" id="btn-random" class="primary">Random</button>
+              <button type="button" data-n="0000">0000</button>
+              <button type="button" data-n="1337">1337</button>
+              <button type="button" data-n="2048">2048</button>
+              <button type="button" data-n="9999">9999</button>
+            </div>
+            <p class="hint">Random or jump to a preset</p>
+          </div>
+        </article>
+
+        <!-- bounce 1-digit -->
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">DigitScroll / bounce</span>
+            <span class="canvas-tag">1-digit · 0–9</span>
+          </div>
+          <div class="canvas-body">
+            <div class="bounce-row" id="bounce" aria-live="polite" style="--bounce: 7">
+              <span class="digit lg" style="--d: var(--bounce)" aria-hidden="true">
+                <span class="digit-clip">
+                  <span class="digit-stack">
+                    <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span>
+                    <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+                  </span>
+                </span>
+              </span>
+            </div>
+            <div class="digit-picker" id="bounce-picker" role="group" aria-label="Pick digit">
+              <button type="button" data-d="0">0</button>
+              <button type="button" data-d="1">1</button>
+              <button type="button" data-d="2">2</button>
+              <button type="button" data-d="3">3</button>
+              <button type="button" data-d="4">4</button>
+              <button type="button" data-d="5">5</button>
+              <button type="button" data-d="6">6</button>
+              <button type="button" data-d="7" class="is-on">7</button>
+              <button type="button" data-d="8">8</button>
+              <button type="button" data-d="9">9</button>
+            </div>
+            <div class="actions">
+              <button type="button" id="bounce-prev">← Prev</button>
+              <button type="button" id="bounce-next">Next →</button>
+            </div>
+            <p class="hint">Watch the overshoot on long jumps (0 → 9)</p>
+          </div>
+        </article>
+
+        <!-- score 3-digit -->
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">DigitScroll / score</span>
+            <span class="canvas-tag">3-digit · counter</span>
+          </div>
+          <div class="canvas-body dark">
+            <div class="score" id="score" aria-live="polite"
+              style="--s0: 0; --s1: 4; --s2: 2">
+              <span class="digit" style="--d: var(--s0)" aria-hidden="true">
+                <span class="digit-clip">
+                  <span class="digit-stack">
+                    <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span>
+                    <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+                  </span>
+                </span>
+              </span>
+              <span class="digit" style="--d: var(--s1)" aria-hidden="true">
+                <span class="digit-clip">
+                  <span class="digit-stack">
+                    <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span>
+                    <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+                  </span>
+                </span>
+              </span>
+              <span class="digit" style="--d: var(--s2)" aria-hidden="true">
+                <span class="digit-clip">
+                  <span class="digit-stack">
+                    <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span>
+                    <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+                  </span>
+                </span>
+              </span>
+            </div>
+            <div class="actions" id="score-actions">
+              <button type="button" id="score-minus10">−10</button>
+              <button type="button" id="score-minus1">−1</button>
+              <button type="button" id="score-plus1" class="primary">+1</button>
+              <button type="button" id="score-plus10">+10</button>
+              <button type="button" id="score-reset">Reset</button>
+            </div>
+            <p class="hint">Score / counter · clamps 000–999</p>
+          </div>
+        </article>
+
+        <!-- display spin -->
+        <article class="canvas" style="grid-column: 1 / -1">
+          <div class="canvas-chrome">
+            <span class="canvas-name">DigitScroll / display</span>
+            <span class="canvas-tag">large · Spin</span>
+          </div>
+          <div class="canvas-body dark pad-lg">
+            <div class="display-row" id="display" aria-live="polite"
+              style="--p0: 1; --p1: 2; --p2: 8">
+              <span class="currency lg" aria-hidden="true">$</span>
+              <span class="digit lg" style="--d: var(--p0)" aria-hidden="true">
+                <span class="digit-clip">
+                  <span class="digit-stack">
+                    <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span>
+                    <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+                  </span>
+                </span>
+              </span>
+              <span class="digit lg" style="--d: var(--p1)" aria-hidden="true">
+                <span class="digit-clip">
+                  <span class="digit-stack">
+                    <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span>
+                    <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+                  </span>
+                </span>
+              </span>
+              <span class="digit lg" style="--d: var(--p2)" aria-hidden="true">
+                <span class="digit-clip">
+                  <span class="digit-stack">
+                    <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span>
+                    <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+                  </span>
+                </span>
+              </span>
+            </div>
+            <div class="actions">
+              <button type="button" id="btn-spin" class="primary">Spin</button>
+            </div>
+            <p class="hint">Large display price · Spin to a random $000–$999</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== BUTTONS ===================== -->
+    <section class="sec" id="buttons">
+      <div class="sec-head">
+        <h2>Buttons</h2>
+        <p>
+          Glow CTAs — inset highlight + coloured outer shadow. Press for the
+          inset active state.
+        </p>
+      </div>
+
+      <div class="sec-grid two">
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">GlowButton / primary</span>
+            <span class="canvas-tag">violet CTA</span>
+          </div>
+          <div class="canvas-body">
+            <div style="width: min(100%, 280px)">
+              <button class="btn btn-violet btn-block" type="button">Get started →</button>
+            </div>
+            <p class="hint">Primary block CTA</p>
+          </div>
+        </article>
+
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">GlowButton / colours</span>
+            <span class="canvas-tag">violet · teal · slate</span>
+          </div>
+          <div class="canvas-body">
+            <div class="chip-grid">
+              <div class="chip">
+                <p class="name">Violet</p>
+                <p class="hex">#5b5bf0</p>
+                <button class="btn btn-violet" type="button">Start</button>
+              </div>
+              <div class="chip">
+                <p class="name">Teal</p>
+                <p class="hex">#0d9488</p>
+                <button class="btn btn-teal" type="button">Save</button>
+              </div>
+              <div class="chip">
+                <p class="name">Slate</p>
+                <p class="hex">#334155</p>
+                <button class="btn btn-slate" type="button">Later</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="canvas" style="grid-column: 1 / -1">
+          <div class="canvas-chrome">
+            <span class="canvas-name">GlowButton / row</span>
+            <span class="canvas-tag">inline</span>
+          </div>
+          <div class="canvas-body">
+            <div class="btn-row">
+              <button class="btn btn-violet" type="button">Continue</button>
+              <button class="btn btn-teal" type="button">Confirm</button>
+              <button class="btn btn-slate" type="button">Skip</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== CARDS ===================== -->
+    <section class="sec" id="cards">
+      <div class="sec-head">
+        <h2>Cards</h2>
+        <p>
+          Nested radius: outer = inner + gap. Formula strip shows the math.
+        </p>
+      </div>
+
+      <div class="sec-grid two">
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">NestedRadius / pricing-card</span>
+            <span class="canvas-tag">24 + 16 = 40</span>
+          </div>
+          <div class="canvas-body pad-lg">
+            <div class="stage">
+              <div class="card">
+                <div class="photo" role="img" aria-label="Room placeholder"></div>
+                <div class="cap">
+                  <p class="cap-title">
+                    <strong>Room in Montmartre</strong>
+                    <span>Nested corners · glow CTA</span>
+                  </p>
+                  <button class="btn btn-violet btn-block" type="button">Get started →</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">NestedRadius / formula</span>
+            <span class="canvas-tag">outer = inner + gap</span>
+          </div>
+          <div class="canvas-body">
+            <div class="formula">
+              <span class="fpill fpill-inner">Inner radius</span>
+              <span class="op">+</span>
+              <span class="fpill fpill-gap">Gap</span>
+              <span class="op">=</span>
+              <span class="fpill fpill-outer">Outer radius</span>
+            </div>
+            <p class="nums">
+              <span class="i">24px</span> + <span class="g">16px</span> =
+              <span class="o">40px</span>
+            </p>
+            <p class="hint">Keep the padding gap constant for concentric corners</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="lib-foot">
+      Techniques: digit-scroll <code>lh</code> + stronger <code>linear()</code>
+      spring (~30% overshoot) · glow button inset + coloured outer shadow ·
+      nested radius (outer = inner + padding). No CDN. Prefers-reduced-motion
+      disables the spring.
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      /* —— Odometer —— */
+      var odo = document.getElementById("odometer");
+      function setOdo(n) {
+        if (!odo) return;
+        var s = String(n).padStart(4, "0").slice(-4);
+        odo.style.setProperty("--d0", s[0]);
+        odo.style.setProperty("--d1", s[1]);
+        odo.style.setProperty("--d2", s[2]);
+        odo.style.setProperty("--d3", s[3]);
+      }
+      var randomBtn = document.getElementById("btn-random");
+      if (randomBtn) {
+        randomBtn.addEventListener("click", function () {
+          setOdo(Math.floor(Math.random() * 10000));
+        });
+      }
+      document.querySelectorAll("#odo-actions [data-n]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          setOdo(btn.getAttribute("data-n"));
+        });
+      });
+
+      /* —— Bounce 1-digit —— */
+      var bounce = document.getElementById("bounce");
+      var bounceVal = 7;
+      function setBounce(d) {
+        bounceVal = ((d % 10) + 10) % 10;
+        if (bounce) bounce.style.setProperty("--bounce", String(bounceVal));
+        document.querySelectorAll("#bounce-picker [data-d]").forEach(function (b) {
+          b.classList.toggle("is-on", Number(b.getAttribute("data-d")) === bounceVal);
+        });
+      }
+      document.querySelectorAll("#bounce-picker [data-d]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          setBounce(Number(btn.getAttribute("data-d")));
+        });
+      });
+      var prevBtn = document.getElementById("bounce-prev");
+      var nextBtn = document.getElementById("bounce-next");
+      if (prevBtn) prevBtn.addEventListener("click", function () { setBounce(bounceVal - 1); });
+      if (nextBtn) nextBtn.addEventListener("click", function () { setBounce(bounceVal + 1); });
+
+      /* —— Score 3-digit —— */
+      var scoreEl = document.getElementById("score");
+      var scoreVal = 42;
+      function setScore(n) {
+        scoreVal = Math.max(0, Math.min(999, n | 0));
+        if (!scoreEl) return;
+        var s = String(scoreVal).padStart(3, "0");
+        scoreEl.style.setProperty("--s0", s[0]);
+        scoreEl.style.setProperty("--s1", s[1]);
+        scoreEl.style.setProperty("--s2", s[2]);
+      }
+      var plus1 = document.getElementById("score-plus1");
+      var minus1 = document.getElementById("score-minus1");
+      var plus10 = document.getElementById("score-plus10");
+      var minus10 = document.getElementById("score-minus10");
+      var reset = document.getElementById("score-reset");
+      if (plus1) plus1.addEventListener("click", function () { setScore(scoreVal + 1); });
+      if (minus1) minus1.addEventListener("click", function () { setScore(scoreVal - 1); });
+      if (plus10) plus10.addEventListener("click", function () { setScore(scoreVal + 10); });
+      if (minus10) minus10.addEventListener("click", function () { setScore(scoreVal - 10); });
+      if (reset) reset.addEventListener("click", function () { setScore(0); });
+
+      /* —— Display Spin —— */
+      var display = document.getElementById("display");
+      function setDisplay(n) {
+        if (!display) return;
+        var s = String(n).padStart(3, "0").slice(-3);
+        display.style.setProperty("--p0", s[0]);
+        display.style.setProperty("--p1", s[1]);
+        display.style.setProperty("--p2", s[2]);
+      }
+      var spinBtn = document.getElementById("btn-spin");
+      if (spinBtn) {
+        spinBtn.addEventListener("click", function () {
+          setDisplay(Math.floor(Math.random() * 1000));
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
