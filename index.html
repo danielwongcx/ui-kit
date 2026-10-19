@@ -980,7 +980,7 @@
     }
 
 
-    /* —— Profile cards (NestedRadius shell) —— */
+    /* —— Profile cards (NestedRadius shell: outer 40 = inner 24 + gap 16) —— */
     .profile-card {
       --pc-radius: 24px;
       width: 100%;
@@ -1000,12 +1000,18 @@
       background: #d8d4ce;
     }
 
+    /* Inset: photo recessed inside the 24px card (not flush — flush + same radius
+       made the top corners read square / double-border against the 40px stage). */
+    .profile-card--inset {
+      padding: 12px 12px 14px;
+    }
+
     .profile-card--inset .profile-card__photo {
-      border-radius: var(--pc-radius);
+      border-radius: 12px; /* nest inside card pad: ~24 − 12 */
     }
 
     .profile-card--inset .profile-card__body {
-      padding: 1rem 0.35rem 0.25rem;
+      padding: 0.85rem 0.15rem 0.1rem;
     }
 
     .profile-card__name {
@@ -1114,7 +1120,8 @@
       height: 100%;
       aspect-ratio: auto;
       z-index: 0;
-      border-radius: var(--pc-radius);
+      /* clip to card’s 24px via overflow:hidden — own radius fought the stage nest */
+      border-radius: 0;
     }
 
     .profile-card--fade::after {
@@ -1157,6 +1164,7 @@
     .profile-demo .stage {
       max-width: 300px;
       width: 100%;
+      overflow: hidden; /* keep NestedRadius outer curve; clip any square child paint */
       box-shadow: 0 1px 2px #0001, 0 10px 28px -14px #0002;
     }
 
