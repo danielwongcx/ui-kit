@@ -8,7 +8,8 @@
   var PAGE_LINKS = [
     { id: 'gallery', label: 'Gallery', href: 'index.html' },
     { id: 'digest', label: 'Digest', href: 'digest.html' },
-    { id: 'taste', label: 'Taste', href: 'taste.html' }
+    { id: 'taste', label: 'Taste', href: 'taste.html' },
+    { id: 'learn-piano-101', label: 'Piano', href: 'learn-piano-101.html' }
   ];
 
   function activePageId() {
