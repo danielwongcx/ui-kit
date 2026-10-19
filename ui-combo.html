@@ -979,6 +979,187 @@
       align-items: center;
     }
 
+
+    /* —— Profile cards (NestedRadius shell) —— */
+    .profile-card {
+      --pc-radius: 24px;
+      width: 100%;
+      background: #fff;
+      border-radius: var(--pc-radius);
+      overflow: hidden;
+      text-align: left;
+      font-family: var(--sans);
+      color: #141418;
+    }
+
+    .profile-card__photo {
+      display: block;
+      width: 100%;
+      aspect-ratio: 5 / 4;
+      object-fit: cover;
+      background: #d8d4ce;
+    }
+
+    .profile-card--inset .profile-card__photo {
+      border-radius: var(--pc-radius);
+    }
+
+    .profile-card--inset .profile-card__body {
+      padding: 1rem 0.35rem 0.25rem;
+    }
+
+    .profile-card__name {
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 1.15rem;
+      font-weight: 750;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+
+    .profile-card__badge {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: #22c55e;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .profile-card__badge svg {
+      width: 11px;
+      height: 11px;
+      display: block;
+    }
+
+    .profile-card__bio {
+      margin: 0.4rem 0 0;
+      font-size: 13px;
+      line-height: 1.45;
+      color: #8b8b96;
+      font-weight: 500;
+      max-width: 28ch;
+    }
+
+    .profile-card__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-top: 1.1rem;
+    }
+
+    .profile-card__stats {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      font-size: 13px;
+      font-weight: 600;
+      color: #6b6b76;
+    }
+
+    .profile-card__stats span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .profile-card__stats svg {
+      width: 15px;
+      height: 15px;
+      opacity: 0.7;
+    }
+
+    .profile-card__follow {
+      appearance: none;
+      -webkit-appearance: none;
+      border: 0;
+      border-radius: 999px;
+      background: #ececef;
+      color: #1c1c22;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 650;
+      letter-spacing: -0.01em;
+      padding: 0.55rem 0.95rem;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .profile-card__follow:active {
+      transform: scale(0.98);
+    }
+
+    /* Fade / overlay variant */
+    .profile-card--fade {
+      position: relative;
+      isolation: isolate;
+      min-height: 420px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .profile-card--fade .profile-card__photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      aspect-ratio: auto;
+      z-index: 0;
+      border-radius: var(--pc-radius);
+    }
+
+    .profile-card--fade::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 58%;
+      z-index: 1;
+      pointer-events: none;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.72) 38%,
+        #fff 72%
+      );
+    }
+
+    .profile-card--fade .profile-card__body {
+      position: relative;
+      z-index: 2;
+      padding: 1.15rem 1rem 1rem;
+    }
+
+    .canvas-body.profile-stage {
+      background: #e8e8ec;
+      padding: 1.5rem 1.15rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .profile-demo {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .profile-demo .stage {
+      max-width: 300px;
+      width: 100%;
+      box-shadow: 0 1px 2px #0001, 0 10px 28px -14px #0002;
+    }
+
     /* —— Palettes section (page-shell theme only; demos untouched) —— */
     .sec-grid.palette-grid {
       grid-template-columns: 1fr;
@@ -1751,7 +1932,7 @@
       <div class="sec-head">
         <h2>Cards</h2>
         <p>
-          Nested radius: outer = inner + gap. Flight cards use the same 24 + 16 = 40 shell.
+          Nested radius: outer = inner + gap (24 + 16 = 40). Flight + profile cards share the same shell.
         </p>
       </div>
 
@@ -1871,6 +2052,84 @@
                           <path d="M12 20s-7-4.35-7-9.2A3.8 3.8 0 0 1 12 7.5a3.8 3.8 0 0 1 7 3.3C19 15.65 12 20 12 20Z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
                         </svg>
                       </button>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </article>
+
+
+
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">ProfileCard / inset</span>
+            <span class="canvas-tag">24 + 16 = 40</span>
+          </div>
+          <div class="canvas-body profile-stage">
+            <div class="profile-demo">
+              <div class="stage">
+                <article class="profile-card profile-card--inset">
+                  <img class="profile-card__photo" src="assets/sophie-bennett.jpg" alt="Sophie Bennett" width="448" height="422" loading="lazy" />
+                  <div class="profile-card__body">
+                    <h3 class="profile-card__name">
+                      Sophie Bennett
+                      <span class="profile-card__badge" title="Verified" aria-label="Verified">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5 10 17.5 19 7.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </span>
+                    </h3>
+                    <p class="profile-card__bio">Product Designer who focuses on simplicity &amp; usability.</p>
+                    <div class="profile-card__footer">
+                      <div class="profile-card__stats">
+                        <span>
+                          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M16 19v-1.2A3.8 3.8 0 0 0 12.2 14H7.8A3.8 3.8 0 0 0 4 17.8V19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="8" r="3.2" stroke="currentColor" stroke-width="1.6"/><path d="M17 8a2.6 2.6 0 1 1 0 5.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M20 19v-1a3.2 3.2 0 0 0-2.2-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                          312
+                        </span>
+                        <span>
+                          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 4.5h7.2L17 7.3V19.5H7V4.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 4.5V8h3.2" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9.5 12h5M9.5 15.2h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                          48
+                        </span>
+                      </div>
+                      <button class="profile-card__follow" type="button">Follow +</button>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">ProfileCard / fade</span>
+            <span class="canvas-tag">24 + 16 = 40</span>
+          </div>
+          <div class="canvas-body profile-stage">
+            <div class="profile-demo">
+              <div class="stage">
+                <article class="profile-card profile-card--fade">
+                  <img class="profile-card__photo" src="assets/sophie-bennett-wide.jpg" alt="" width="485" height="565" loading="lazy" aria-hidden="true" />
+                  <div class="profile-card__body">
+                    <h3 class="profile-card__name">
+                      Sophie Bennett
+                      <span class="profile-card__badge" title="Verified" aria-label="Verified">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5 10 17.5 19 7.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </span>
+                    </h3>
+                    <p class="profile-card__bio">Product Designer who focuses on simplicity &amp; usability.</p>
+                    <div class="profile-card__footer">
+                      <div class="profile-card__stats">
+                        <span>
+                          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M16 19v-1.2A3.8 3.8 0 0 0 12.2 14H7.8A3.8 3.8 0 0 0 4 17.8V19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="8" r="3.2" stroke="currentColor" stroke-width="1.6"/><path d="M17 8a2.6 2.6 0 1 1 0 5.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M20 19v-1a3.2 3.2 0 0 0-2.2-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                          312
+                        </span>
+                        <span>
+                          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 4.5h7.2L17 7.3V19.5H7V4.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 4.5V8h3.2" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9.5 12h5M9.5 15.2h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                          48
+                        </span>
+                      </div>
+                      <button class="profile-card__follow" type="button">Follow +</button>
                     </div>
                   </div>
                 </article>
