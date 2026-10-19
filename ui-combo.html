@@ -3,7 +3,24 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>UI Library · Digits · Buttons · Cards</title>
+  <title>UI Library · Digits · Buttons · Cards · Palettes</title>
+  <script>
+    /* Apply saved page shell palette before paint (page bg only) */
+    (function () {
+      try {
+        var id = localStorage.getItem('ui-kit-palette') || 'forest';
+        var pages = {
+          forest: '#f5f1ee', navy: '#eef2f6', terracotta: '#faf3ef',
+          plum: '#f6f1f8', ocean: '#eef6f6', amber: '#faf6ee',
+          slate: '#f0f1f3', rosewood: '#f8f1f3', olive: '#f4f3ea',
+          ink: '#ececf0'
+        };
+        var page = pages[id] || pages.forest;
+        document.documentElement.setAttribute('data-theme', id);
+        document.documentElement.style.setProperty('--page', page);
+      } catch (e) {}
+    })();
+  </script>
   <style>
     /*
       UI component gallery — digit scroll, glow buttons, nested-radius cards.
@@ -20,6 +37,7 @@
       --digit-text: #f4f5f7;
       --digit-muted: #8b919c;
       --accent: #5b5bf0;
+      --brand: #1e6851; /* palette UI only — demos keep hard-coded colours */
       /* natural spring ~10% overshoot — peak 1.09, soft settle · 0.75s */
       --spring: linear(
         0, 0.006, 0.025, 0.07, 0.14, 0.25, 0.4, 0.55, 0.7, 0.82,
@@ -719,6 +737,182 @@
 
     .lib-foot code { font-family: var(--mono); font-size: 0.95em; }
 
+
+    /* —— Palettes section (page-shell theme only; demos untouched) —— */
+    .sec-grid.palette-grid {
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 560px) {
+      .sec-grid.palette-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    @media (min-width: 860px) {
+      .sec-grid.palette-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+    }
+
+    .palette-card {
+      cursor: pointer;
+      transition: border-color 120ms ease, box-shadow 120ms ease;
+      text-align: left;
+      padding: 0;
+      font: inherit;
+      color: inherit;
+      width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .palette-card:hover {
+      border-color: color-mix(in srgb, var(--brand) 35%, var(--line));
+    }
+    .palette-card:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .palette-card.is-active {
+      border-color: color-mix(in srgb, var(--brand) 55%, var(--line));
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand) 28%, transparent);
+    }
+    .palette-card .canvas-chrome {
+      pointer-events: none;
+    }
+    .palette-card .canvas-tag.active-tag {
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    .palette-body {
+      padding: 1rem 1rem 1.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      align-items: stretch;
+    }
+
+    .swatch-row {
+      display: flex;
+      gap: 0.55rem;
+      justify-content: space-between;
+    }
+    .swatch {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+      min-width: 0;
+    }
+    .swatch-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      border: 1px solid #00000018;
+      box-shadow: inset 0 0 0 1px #ffffff40;
+    }
+    .swatch-hex {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: -0.02em;
+      text-align: center;
+      word-break: break-all;
+      line-height: 1.2;
+    }
+
+    .palette-mini {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: var(--p-surface);
+    }
+    .palette-mini-head {
+      height: 28px;
+      background: var(--p-brand);
+      display: flex;
+      align-items: center;
+      padding: 0 0.65rem;
+      gap: 0.35rem;
+    }
+    .palette-mini-head span {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: color-mix(in srgb, #fff 55%, transparent);
+    }
+    .palette-mini-body {
+      padding: 0.75rem 0.65rem 0.85rem;
+      background: var(--p-surface);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .palette-mini-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 0.28rem;
+      flex: 1;
+      min-width: 0;
+    }
+    .palette-mini-lines i {
+      display: block;
+      height: 5px;
+      border-radius: 3px;
+      background: var(--p-soft);
+      opacity: 0.85;
+    }
+    .palette-mini-lines i:nth-child(2) { width: 72%; background: var(--p-mid); opacity: 0.55; }
+    .palette-mini-lines i:nth-child(3) { width: 48%; background: var(--p-muted); opacity: 0.45; }
+    .palette-mini-btn {
+      flex-shrink: 0;
+      border: 0;
+      border-radius: 999px;
+      padding: 0.35rem 0.7rem;
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+      background: var(--p-brand);
+      box-shadow: 0 4px 10px -4px color-mix(in srgb, var(--p-brand) 70%, #000);
+      pointer-events: none;
+    }
+
+    .palette-use {
+      align-self: flex-start;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      cursor: pointer;
+      font-family: var(--sans);
+    }
+    .palette-card.is-active .palette-use {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #fff;
+    }
+    .palette-active-note {
+      margin: 0.35rem 0 0;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .palette-active-note strong {
+      color: var(--brand);
+      font-weight: 700;
+      text-transform: capitalize;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       .digit-stack { transition: none; }
@@ -733,6 +927,7 @@
       <a href="#digits">Digits</a>
       <a href="#buttons">Buttons</a>
       <a href="#cards">Cards</a>
+      <a href="#palettes">Palettes</a>
     </div>
   </nav>
 
@@ -740,9 +935,10 @@
     <header class="lib-hero">
       <h1>Component gallery</h1>
       <p>
-        Self-contained demos: digit scroll with a natural
-        <code>linear()</code> spring (~10% overshoot), glow CTAs, and
-        nested-radius cards. Soft gray page · white canvas frames.
+        Self-contained demos: Digits · Buttons · Cards · Palettes.
+        Digit scroll with a natural <code>linear()</code> spring (~10%
+        overshoot), hard-coded glow CTAs (violet / teal / slate), nested-radius
+        cards, plus ten page-shell colour palettes you can switch.
       </p>
     </header>
 
@@ -1097,11 +1293,258 @@
       </div>
     </section>
 
+
+    <!-- ===================== PALETTES ===================== -->
+    <section class="sec" id="palettes">
+      <div class="sec-head">
+        <h2>Palettes</h2>
+        <p>
+          Forest is sampled from a fintech reference (deep green · soft cream).
+          Click a card to switch the <strong>page shell</strong> background among
+          ten palettes. Digit, button, and card demos keep their original colours.
+        </p>
+        <p class="palette-active-note">Active page palette: <strong id="palette-active-label">forest</strong></p>
+      </div>
+
+      <div class="sec-grid palette-grid">
+        <button type="button" class="palette-card" data-palette="forest" data-page="#f5f1ee" data-brand="#1e6851" aria-pressed="false" style="--p-brand:#1e6851;--p-mid:#287259;--p-soft:#6db29d;--p-surface:#e5d5c5;--p-muted:#948679">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Palette / forest</span>
+            <span class="canvas-tag active-tag" hidden>active</span>
+          </div>
+          <div class="palette-body">
+            <div class="swatch-row" aria-hidden="true">
+              <div class="swatch"><span class="swatch-dot" style="background:#1e6851"></span><span class="swatch-hex">#1e6851</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#287259"></span><span class="swatch-hex">#287259</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#6db29d"></span><span class="swatch-hex">#6db29d</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#e5d5c5"></span><span class="swatch-hex">#e5d5c5</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#948679"></span><span class="swatch-hex">#948679</span></div>
+            </div>
+            <div class="palette-mini" aria-hidden="true">
+              <div class="palette-mini-head"><span></span><span></span><span></span></div>
+              <div class="palette-mini-body">
+                <div class="palette-mini-lines"><i></i><i></i><i></i></div>
+                <span class="palette-mini-btn">Use</span>
+              </div>
+            </div>
+            <span class="palette-use">Use palette</span>
+          </div>
+        </button>
+        <button type="button" class="palette-card" data-palette="navy" data-page="#eef2f6" data-brand="#1a2f4a" aria-pressed="false" style="--p-brand:#1a2f4a;--p-mid:#2c5282;--p-soft:#7ba3c9;--p-surface:#d9e2ec;--p-muted:#7a8694">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Palette / navy</span>
+            <span class="canvas-tag active-tag" hidden>active</span>
+          </div>
+          <div class="palette-body">
+            <div class="swatch-row" aria-hidden="true">
+              <div class="swatch"><span class="swatch-dot" style="background:#1a2f4a"></span><span class="swatch-hex">#1a2f4a</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#2c5282"></span><span class="swatch-hex">#2c5282</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#7ba3c9"></span><span class="swatch-hex">#7ba3c9</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#d9e2ec"></span><span class="swatch-hex">#d9e2ec</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#7a8694"></span><span class="swatch-hex">#7a8694</span></div>
+            </div>
+            <div class="palette-mini" aria-hidden="true">
+              <div class="palette-mini-head"><span></span><span></span><span></span></div>
+              <div class="palette-mini-body">
+                <div class="palette-mini-lines"><i></i><i></i><i></i></div>
+                <span class="palette-mini-btn">Use</span>
+              </div>
+            </div>
+            <span class="palette-use">Use palette</span>
+          </div>
+        </button>
+        <button type="button" class="palette-card" data-palette="terracotta" data-page="#faf3ef" data-brand="#8b3a2a" aria-pressed="false" style="--p-brand:#8b3a2a;--p-mid:#c45c3a;--p-soft:#e8a090;--p-surface:#f0d9ce;--p-muted:#9a7b6f">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Palette / terracotta</span>
+            <span class="canvas-tag active-tag" hidden>active</span>
+          </div>
+          <div class="palette-body">
+            <div class="swatch-row" aria-hidden="true">
+              <div class="swatch"><span class="swatch-dot" style="background:#8b3a2a"></span><span class="swatch-hex">#8b3a2a</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#c45c3a"></span><span class="swatch-hex">#c45c3a</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#e8a090"></span><span class="swatch-hex">#e8a090</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#f0d9ce"></span><span class="swatch-hex">#f0d9ce</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#9a7b6f"></span><span class="swatch-hex">#9a7b6f</span></div>
+            </div>
+            <div class="palette-mini" aria-hidden="true">
+              <div class="palette-mini-head"><span></span><span></span><span></span></div>
+              <div class="palette-mini-body">
+                <div class="palette-mini-lines"><i></i><i></i><i></i></div>
+                <span class="palette-mini-btn">Use</span>
+              </div>
+            </div>
+            <span class="palette-use">Use palette</span>
+          </div>
+        </button>
+        <button type="button" class="palette-card" data-palette="plum" data-page="#f6f1f8" data-brand="#4a2c5a" aria-pressed="false" style="--p-brand:#4a2c5a;--p-mid:#7b4d9a;--p-soft:#c4a0d4;--p-surface:#e6d8ee;--p-muted:#8a7a92">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Palette / plum</span>
+            <span class="canvas-tag active-tag" hidden>active</span>
+          </div>
+          <div class="palette-body">
+            <div class="swatch-row" aria-hidden="true">
+              <div class="swatch"><span class="swatch-dot" style="background:#4a2c5a"></span><span class="swatch-hex">#4a2c5a</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#7b4d9a"></span><span class="swatch-hex">#7b4d9a</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#c4a0d4"></span><span class="swatch-hex">#c4a0d4</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#e6d8ee"></span><span class="swatch-hex">#e6d8ee</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#8a7a92"></span><span class="swatch-hex">#8a7a92</span></div>
+            </div>
+            <div class="palette-mini" aria-hidden="true">
+              <div class="palette-mini-head"><span></span><span></span><span></span></div>
+              <div class="palette-mini-body">
+                <div class="palette-mini-lines"><i></i><i></i><i></i></div>
+                <span class="palette-mini-btn">Use</span>
+              </div>
+            </div>
+            <span class="palette-use">Use palette</span>
+          </div>
+        </button>
+        <button type="button" class="palette-card" data-palette="ocean" data-page="#eef6f6" data-brand="#0f4c5c" aria-pressed="false" style="--p-brand:#0f4c5c;--p-mid:#1a7a8c;--p-soft:#7ec8c8;--p-surface:#d4ebeb;--p-muted:#6f8a8a">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Palette / ocean</span>
+            <span class="canvas-tag active-tag" hidden>active</span>
+          </div>
+          <div class="palette-body">
+            <div class="swatch-row" aria-hidden="true">
+              <div class="swatch"><span class="swatch-dot" style="background:#0f4c5c"></span><span class="swatch-hex">#0f4c5c</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#1a7a8c"></span><span class="swatch-hex">#1a7a8c</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#7ec8c8"></span><span class="swatch-hex">#7ec8c8</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#d4ebeb"></span><span class="swatch-hex">#d4ebeb</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#6f8a8a"></span><span class="swatch-hex">#6f8a8a</span></div>
+            </div>
+            <div class="palette-mini" aria-hidden="true">
+              <div class="palette-mini-head"><span></span><span></span><span></span></div>
+              <div class="palette-mini-body">
+                <div class="palette-mini-lines"><i></i><i></i><i></i></div>
+                <span class="palette-mini-btn">Use</span>
+              </div>
+            </div>
+            <span class="palette-use">Use palette</span>
+          </div>
+        </button>
+        <button type="button" class="palette-card" data-palette="amber" data-page="#faf6ee" data-brand="#7a4a12" aria-pressed="false" style="--p-brand:#7a4a12;--p-mid:#c47a1a;--p-soft:#e8c070;--p-surface:#f0e4c8;--p-muted:#9a8868">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Palette / amber</span>
+            <span class="canvas-tag active-tag" hidden>active</span>
+          </div>
+          <div class="palette-body">
+            <div class="swatch-row" aria-hidden="true">
+              <div class="swatch"><span class="swatch-dot" style="background:#7a4a12"></span><span class="swatch-hex">#7a4a12</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#c47a1a"></span><span class="swatch-hex">#c47a1a</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#e8c070"></span><span class="swatch-hex">#e8c070</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#f0e4c8"></span><span class="swatch-hex">#f0e4c8</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#9a8868"></span><span class="swatch-hex">#9a8868</span></div>
+            </div>
+            <div class="palette-mini" aria-hidden="true">
+              <div class="palette-mini-head"><span></span><span></span><span></span></div>
+              <div class="palette-mini-body">
+                <div class="palette-mini-lines"><i></i><i></i><i></i></div>
+                <span class="palette-mini-btn">Use</span>
+              </div>
+            </div>
+            <span class="palette-use">Use palette</span>
+          </div>
+        </button>
+        <button type="button" class="palette-card" data-palette="slate" data-page="#f0f1f3" data-brand="#2a2e35" aria-pressed="false" style="--p-brand:#2a2e35;--p-mid:#4a5560;--p-soft:#a0aab4;--p-surface:#dde0e4;--p-muted:#7a8088">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Palette / slate</span>
+            <span class="canvas-tag active-tag" hidden>active</span>
+          </div>
+          <div class="palette-body">
+            <div class="swatch-row" aria-hidden="true">
+              <div class="swatch"><span class="swatch-dot" style="background:#2a2e35"></span><span class="swatch-hex">#2a2e35</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#4a5560"></span><span class="swatch-hex">#4a5560</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#a0aab4"></span><span class="swatch-hex">#a0aab4</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#dde0e4"></span><span class="swatch-hex">#dde0e4</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#7a8088"></span><span class="swatch-hex">#7a8088</span></div>
+            </div>
+            <div class="palette-mini" aria-hidden="true">
+              <div class="palette-mini-head"><span></span><span></span><span></span></div>
+              <div class="palette-mini-body">
+                <div class="palette-mini-lines"><i></i><i></i><i></i></div>
+                <span class="palette-mini-btn">Use</span>
+              </div>
+            </div>
+            <span class="palette-use">Use palette</span>
+          </div>
+        </button>
+        <button type="button" class="palette-card" data-palette="rosewood" data-page="#f8f1f3" data-brand="#5c2438" aria-pressed="false" style="--p-brand:#5c2438;--p-mid:#9a3d5c;--p-soft:#d4a0b4;--p-surface:#edd8e0;--p-muted:#8a7280">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Palette / rosewood</span>
+            <span class="canvas-tag active-tag" hidden>active</span>
+          </div>
+          <div class="palette-body">
+            <div class="swatch-row" aria-hidden="true">
+              <div class="swatch"><span class="swatch-dot" style="background:#5c2438"></span><span class="swatch-hex">#5c2438</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#9a3d5c"></span><span class="swatch-hex">#9a3d5c</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#d4a0b4"></span><span class="swatch-hex">#d4a0b4</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#edd8e0"></span><span class="swatch-hex">#edd8e0</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#8a7280"></span><span class="swatch-hex">#8a7280</span></div>
+            </div>
+            <div class="palette-mini" aria-hidden="true">
+              <div class="palette-mini-head"><span></span><span></span><span></span></div>
+              <div class="palette-mini-body">
+                <div class="palette-mini-lines"><i></i><i></i><i></i></div>
+                <span class="palette-mini-btn">Use</span>
+              </div>
+            </div>
+            <span class="palette-use">Use palette</span>
+          </div>
+        </button>
+        <button type="button" class="palette-card" data-palette="olive" data-page="#f4f3ea" data-brand="#3d4a28" aria-pressed="false" style="--p-brand:#3d4a28;--p-mid:#6a7a40;--p-soft:#b4c480;--p-surface:#e4e4d0;--p-muted:#8a8870">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Palette / olive</span>
+            <span class="canvas-tag active-tag" hidden>active</span>
+          </div>
+          <div class="palette-body">
+            <div class="swatch-row" aria-hidden="true">
+              <div class="swatch"><span class="swatch-dot" style="background:#3d4a28"></span><span class="swatch-hex">#3d4a28</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#6a7a40"></span><span class="swatch-hex">#6a7a40</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#b4c480"></span><span class="swatch-hex">#b4c480</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#e4e4d0"></span><span class="swatch-hex">#e4e4d0</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#8a8870"></span><span class="swatch-hex">#8a8870</span></div>
+            </div>
+            <div class="palette-mini" aria-hidden="true">
+              <div class="palette-mini-head"><span></span><span></span><span></span></div>
+              <div class="palette-mini-body">
+                <div class="palette-mini-lines"><i></i><i></i><i></i></div>
+                <span class="palette-mini-btn">Use</span>
+              </div>
+            </div>
+            <span class="palette-use">Use palette</span>
+          </div>
+        </button>
+        <button type="button" class="palette-card" data-palette="ink" data-page="#ececf0" data-brand="#12141a" aria-pressed="false" style="--p-brand:#12141a;--p-mid:#3a3f55;--p-soft:#8b93b0;--p-surface:#d8d8e0;--p-muted:#6b6b76">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Palette / ink</span>
+            <span class="canvas-tag active-tag" hidden>active</span>
+          </div>
+          <div class="palette-body">
+            <div class="swatch-row" aria-hidden="true">
+              <div class="swatch"><span class="swatch-dot" style="background:#12141a"></span><span class="swatch-hex">#12141a</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#3a3f55"></span><span class="swatch-hex">#3a3f55</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#8b93b0"></span><span class="swatch-hex">#8b93b0</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#d8d8e0"></span><span class="swatch-hex">#d8d8e0</span></div>
+              <div class="swatch"><span class="swatch-dot" style="background:#6b6b76"></span><span class="swatch-hex">#6b6b76</span></div>
+            </div>
+            <div class="palette-mini" aria-hidden="true">
+              <div class="palette-mini-head"><span></span><span></span><span></span></div>
+              <div class="palette-mini-body">
+                <div class="palette-mini-lines"><i></i><i></i><i></i></div>
+                <span class="palette-mini-btn">Use</span>
+              </div>
+            </div>
+            <span class="palette-use">Use palette</span>
+          </div>
+        </button>
+      </div>
+    </section>
+
     <footer class="lib-foot">
-      Techniques: digit-scroll <code>lh</code> + stronger <code>linear()</code>
-      spring (~10% overshoot) · glow button inset + coloured outer shadow ·
-      nested radius (outer = inner + padding). No CDN. Prefers-reduced-motion
-      disables the spring.
+      Digits · Buttons · Cards · Palettes. Digit-scroll <code>lh</code> + natural
+      <code>linear()</code> spring (~10% overshoot) · hard-coded glow buttons
+      (violet / teal / slate) · nested radius · page-shell palettes. No CDN.
+      Prefers-reduced-motion disables the spring.
     </footer>
   </div>
 
@@ -1186,6 +1629,48 @@
           setDisplay(Math.floor(Math.random() * 1000));
         });
       }
+
+      /* —— Page-shell palettes (does not retheme GlowButton / digits) —— */
+      var PALETTE_KEY = 'ui-kit-palette';
+      var cards = Array.prototype.slice.call(document.querySelectorAll('.palette-card'));
+      var label = document.getElementById('palette-active-label');
+
+      function applyPalette(card, persist) {
+        if (!card) return;
+        var id = card.getAttribute('data-palette');
+        var page = card.getAttribute('data-page');
+        var brand = card.getAttribute('data-brand');
+        document.documentElement.setAttribute('data-theme', id);
+        document.documentElement.style.setProperty('--page', page);
+        document.documentElement.style.setProperty('--brand', brand);
+        cards.forEach(function (c) {
+          var on = c === card;
+          c.classList.toggle('is-active', on);
+          c.setAttribute('aria-pressed', on ? 'true' : 'false');
+          var tag = c.querySelector('.active-tag');
+          if (tag) tag.hidden = !on;
+          var use = c.querySelector('.palette-use');
+          if (use) use.textContent = on ? 'Active' : 'Use palette';
+        });
+        if (label) label.textContent = id;
+        if (persist) {
+          try { localStorage.setItem(PALETTE_KEY, id); } catch (e) {}
+        }
+      }
+
+      var saved = 'forest';
+      try { saved = localStorage.getItem(PALETTE_KEY) || 'forest'; } catch (e) {}
+      var initial = cards.filter(function (c) {
+        return c.getAttribute('data-palette') === saved;
+      })[0] || cards[0];
+      applyPalette(initial, false);
+
+      cards.forEach(function (card) {
+        card.addEventListener('click', function () {
+          applyPalette(card, true);
+        });
+      });
+
     })();
   </script>
 </body>
