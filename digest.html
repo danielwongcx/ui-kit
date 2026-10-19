@@ -1,706 +1,410 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Repo Scout — Digest Catalog</title>
 <style>
-:root {
-  --bg: #0e1116;
-  --panel: #161b22;
-  --panel2: #1c2330;
-  --border: #2a3344;
-  --text: #e6edf3;
-  --muted: #8b949e;
-  --accent: #7ee787;
-  --accent2: #79c0ff;
-  --chip: #21262d;
-  --chip-on: #238636;
-  --shadow: 0 1px 0 rgba(255,255,255,.04) inset;
-  --radius: 12px;
-  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-}
-* { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: var(--font); }
-body { min-height: 100vh; }
-a { color: var(--accent2); text-decoration: none; }
-a:hover { text-decoration: underline; }
-.wrap { max-width: 1100px; margin: 0 auto; padding: 24px 20px 64px; }
-header.sticky {
-  position: sticky; top: 0; z-index: 20;
-  background: color-mix(in srgb, var(--bg) 92%, transparent);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border);
-  margin: -24px -20px 24px; padding: 16px 20px 14px;
-}
-h1 { margin: 0 0 4px; font-size: 1.35rem; letter-spacing: -0.02em; font-weight: 650; }
-.sub { margin: 0 0 14px; color: var(--muted); font-size: .9rem; }
-.controls { display: flex; flex-direction: column; gap: 10px; }
-#q {
-  width: 100%; padding: 10px 14px; border-radius: 10px;
-  border: 1px solid var(--border); background: var(--panel); color: var(--text);
-  font: inherit; outline: none;
-}
-#q:focus { border-color: var(--accent2); box-shadow: 0 0 0 3px rgba(121,192,255,.15); }
-.chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.chip {
-  border: 1px solid var(--border); background: var(--chip); color: var(--text);
-  border-radius: 999px; padding: 6px 12px; font: inherit; font-size: .82rem;
-  cursor: pointer; box-shadow: var(--shadow);
-}
-.chip em { font-style: normal; color: var(--muted); margin-left: 4px; }
-.chip.active { background: var(--chip-on); border-color: #2ea043; }
-.chip.active em { color: #aff5b4; }
-.stats { margin: 8px 0 0; color: var(--muted); font-size: .8rem; }
-section { margin-top: 28px; }
-section h2 {
-  margin: 0 0 4px; font-size: 1.05rem; display: flex; align-items: baseline; gap: 8px;
-}
-section h2 span { color: var(--muted); font-weight: 500; font-size: .8rem; }
-.sec-sub { margin: 0 0 12px; color: var(--muted); font-size: .82rem; }
-.grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px;
-}
-.card {
-  background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 14px 14px 12px; display: flex; flex-direction: column; gap: 8px;
-  transition: border-color .15s, transform .15s;
-}
-.card:hover { border-color: #3d4a63; transform: translateY(-1px); }
-.card.hidden { display: none; }
-.repo { font-family: var(--mono); font-size: .86rem; font-weight: 600; word-break: break-all; color: var(--accent); }
-.why { margin: 0; font-size: .88rem; line-height: 1.4; color: #c9d1d9; flex: 1; }
-.meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: .75rem; color: var(--muted); }
-.stars { color: #e3b341; font-weight: 600; }
-.badge, .cat-pill {
-  border: 1px solid var(--border); border-radius: 6px; padding: 1px 6px;
-  background: var(--panel2); color: var(--muted);
-}
-.cat-pill { color: var(--accent2); }
-.empty { display: none; text-align: center; color: var(--muted); padding: 40px 12px; }
-.empty.show { display: block; }
-footer { margin-top: 40px; color: var(--muted); font-size: .78rem; border-top: 1px solid var(--border); padding-top: 16px; }
-@media print {
-  header.sticky { position: static; backdrop-filter: none; }
-  .chip, #q { display: none; }
-  .card { break-inside: avoid; }
-  body { background: #fff; color: #111; }
-  .card { background: #f6f8fa; border-color: #d0d7de; }
-  .repo { color: #0550ae; }
-  .why { color: #24292f; }
-}
+  :root {
+    --bg: #efe9df;
+    --bg2: #e8e1d5;
+    --tile: #f7f3ec;
+    --ink: #2a2a2a;
+    --muted: #6b6560;
+    --shadow-dark: rgba(160, 140, 110, 0.45);
+    --shadow-light: rgba(255, 255, 255, 0.9);
+    --radius: 28px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(ellipse 80% 50% at 10% 90%, rgba(90,120,70,0.08), transparent 55%),
+      radial-gradient(ellipse 60% 40% at 90% 10%, rgba(255,255,255,0.5), transparent 50%),
+      linear-gradient(160deg, #f3eee6 0%, var(--bg) 45%, var(--bg2) 100%);
+    background-attachment: fixed;
+    padding: 40px 20px 80px;
+  }
+  .wrap {
+    max-width: 920px;
+    margin: 0 auto;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+  header h1 {
+    font-size: 1.55rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+  }
+  header p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px 22px;
+    margin: 0 auto 8px;
+    max-width: 640px;
+  }
+  @media (max-width: 640px) {
+    .grid { grid-template-columns: repeat(2, 1fr); gap: 22px 16px; }
+  }
+  .cat {
+    appearance: none;
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    font: inherit;
+    color: inherit;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tile {
+    width: 112px;
+    height: 112px;
+    border-radius: var(--radius);
+    background: linear-gradient(145deg, #fffefb, var(--tile));
+    box-shadow:
+      10px 12px 24px var(--shadow-dark),
+      -8px -8px 20px var(--shadow-light),
+      inset 0 1px 0 rgba(255,255,255,0.95);
+    display: grid;
+    place-items: center;
+    transition:
+      transform 0.28s cubic-bezier(0.34, 1.4, 0.64, 1),
+      box-shadow 0.28s ease,
+      background 0.28s ease;
+    position: relative;
+  }
+  .cat:hover .tile {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow:
+      12px 16px 28px var(--shadow-dark),
+      -10px -10px 22px var(--shadow-light),
+      inset 0 1px 0 rgba(255,255,255,0.95);
+  }
+  .cat:active .tile,
+  .cat.is-active .tile {
+    transform: translateY(2px) scale(0.97);
+    background: linear-gradient(145deg, #ebe4d8, #f4efe6);
+    box-shadow:
+      inset 6px 6px 14px var(--shadow-dark),
+      inset -5px -5px 12px var(--shadow-light),
+      0 1px 2px rgba(255,255,255,0.5);
+  }
+  .cat.is-active .tile::after {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: calc(var(--radius) + 3px);
+    border: 2px solid color-mix(in srgb, var(--hue) 55%, transparent);
+    pointer-events: none;
+    animation: ringIn 0.35s ease;
+  }
+  @keyframes ringIn {
+    from { opacity: 0; transform: scale(0.92); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .icon {
+    width: 56px;
+    height: 56px;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.12));
+    transition: transform 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+  .cat:hover .icon { transform: scale(1.08) rotate(-3deg); }
+  .cat.is-active .icon { transform: scale(0.95); }
+  .cat-label {
+    font-size: 0.92rem;
+    font-weight: 560;
+    text-align: center;
+    line-height: 1.2;
+  }
+  .cat-meta {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: -8px;
+  }
+  .panel {
+    margin-top: 40px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: translateY(12px);
+    transition:
+      max-height 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.4s ease,
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .panel.open {
+    max-height: 20000px;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .panel-inner {
+    background: linear-gradient(160deg, #fffefb, #f5f0e8);
+    border-radius: 24px;
+    padding: 22px 20px 12px;
+    box-shadow:
+      12px 16px 36px var(--shadow-dark),
+      -8px -8px 22px var(--shadow-light),
+      inset 0 1px 0 rgba(255,255,255,0.9);
+  }
+  .panel-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 0 4px;
+  }
+  .panel-head h2 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 650;
+  }
+  .panel-head .hint {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  .search {
+    width: 100%;
+    margin-bottom: 14px;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 14px;
+    background: #efe9df;
+    box-shadow:
+      inset 4px 4px 10px rgba(160,140,110,0.35),
+      inset -3px -3px 8px rgba(255,255,255,0.8);
+    font: inherit;
+    font-size: 0.95rem;
+    color: var(--ink);
+    outline: none;
+  }
+  .search::placeholder { color: #9a9288; }
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .card {
+    display: block;
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: #faf7f2;
+    box-shadow:
+      4px 5px 12px rgba(160,140,110,0.22),
+      -3px -3px 8px rgba(255,255,255,0.85);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.25s ease;
+    animation: cardIn 0.4s ease both;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      6px 8px 16px rgba(160,140,110,0.28),
+      -4px -4px 10px rgba(255,255,255,0.9);
+  }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .card .name {
+    font-weight: 600;
+    font-size: 0.98rem;
+    color: #1a5fb4;
+    word-break: break-all;
+  }
+  .card .why {
+    margin: 6px 0 8px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: #3a3632;
+  }
+  .card .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+  .empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 28px 12px;
+    font-size: 0.95rem;
+  }
+  .back-hint {
+    text-align: center;
+    margin-top: 18px;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header class="sticky">
-    <h1>Repo Scout — Digest Catalog</h1>
-    <p class="sub">Weekday digests · Sep 14 – Oct 19, 2026 · UX/UI · design systems · skills · MCP · motion</p>
-    <div class="controls">
-      <input id="q" type="search" placeholder="Search repo or description…" autocomplete="off"/>
-      <div class="chips"><button type="button" class="chip active" data-filter="all">All <em>131</em></button><button type="button" class="chip" data-filter="skills">Agent skills <em>36</em></button><button type="button" class="chip" data-filter="kits">Design systems &amp; UI kits <em>41</em></button><button type="button" class="chip" data-filter="mcp">MCP &amp; agent tooling <em>24</em></button><button type="button" class="chip" data-filter="motion">Motion &amp; media <em>15</em></button><button type="button" class="chip" data-filter="lint">Lint / QA / anti-slop <em>7</em></button><button type="button" class="chip" data-filter="brand">Brand &amp; illustration <em>8</em></button></div>
-      <p class="stats" id="stats">131 unique repos · stars as first proposed</p>
+  <div class="wrap">
+    <header>
+      <h1>Repo Scout — Digest Catalog</h1>
+      <p>131 unique picks · Sep 14 – Oct 19 2026 · tap a category</p>
+    </header>
+
+    <div class="grid" id="grid" role="listbox" aria-label="Categories"></div>
+
+    <div class="panel" id="panel" aria-live="polite">
+      <div class="panel-inner">
+        <div class="panel-head">
+          <h2 id="panel-title">Category</h2>
+          <span class="hint" id="panel-count"></span>
+        </div>
+        <input class="search" id="search" type="search" placeholder="Filter repos…" autocomplete="off" />
+        <ul class="list" id="list"></ul>
+        <p class="empty" id="empty" hidden>No matches.</p>
+        <p class="back-hint">tap another tile to switch · tap the active tile to close</p>
+      </div>
     </div>
-  </header>
+  </div>
 
-  <section data-section="skills">
-    <h2>Agent skills <span>36</span></h2>
-    <p class="sec-sub">SKILL.md packs · Cursor / Claude / Codex</p>
-    <div class="grid"><article class="card" data-cat="skills" data-search="qingyuna/answer-me-with-html agent skill that answers hard questions with a readable one-page html">
-  <a class="repo" href="https://github.com/QingYunA/answer-me-with-html" target="_blank" rel="noopener">QingYunA/answer-me-with-html</a>
-  <p class="why">Agent skill that answers hard questions with a readable one-page HTML</p>
-  <div class="meta"><span class="stars">1,478★</span><span class="date">2026-10-06</span></div>
-</article><article class="card" data-cat="skills" data-search="oil-oil/oil-ui agent skill tries several ui directions, compares side by side vs screenshots">
-  <a class="repo" href="https://github.com/oil-oil/oil-ui" target="_blank" rel="noopener">oil-oil/oil-ui</a>
-  <p class="why">Agent skill tries several UI directions, compares side by side vs screenshots</p>
-  <div class="meta"><span class="stars">1,015★</span><span class="date">2026-10-08</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="skills" data-search="bitjaru/styleseed design-method engine: 23 agent skills for judgment, grammars, palettes">
-  <a class="repo" href="https://github.com/bitjaru/styleseed" target="_blank" rel="noopener">bitjaru/styleseed</a>
-  <p class="why">Design-method engine: 23 agent skills for judgment, grammars, palettes</p>
-  <div class="meta"><span class="stars">967★</span><span class="date">2026-09-28</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="skills" data-search="anxforever/stylekit visual style library for ai ui (148 styles, tokens, prompts, mcp)">
-  <a class="repo" href="https://github.com/AnxForever/stylekit" target="_blank" rel="noopener">AnxForever/stylekit</a>
-  <p class="why">Visual style library for AI UI (148 styles, tokens, prompts, MCP)</p>
-  <div class="meta"><span class="stars">541★</span><span class="date">2026-09-25</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="skills" data-search="kwakseongjae/oh-my-design installer for 500+ graded company design.md refs + skills">
-  <a class="repo" href="https://github.com/kwakseongjae/oh-my-design" target="_blank" rel="noopener">kwakseongjae/oh-my-design</a>
-  <p class="why">Installer for 500+ graded company DESIGN.md refs + skills</p>
-  <div class="meta"><span class="stars">523★</span><span class="date">2026-09-28</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="skills" data-search="jakeschincariol/replica-skill eleven claude skills that reverse-engineer and rebuild features/flows">
-  <a class="repo" href="https://github.com/Jakeschincariol/replica-skill" target="_blank" rel="noopener">Jakeschincariol/replica-skill</a>
-  <p class="why">Eleven Claude skills that reverse-engineer and rebuild features/flows</p>
-  <div class="meta"><span class="stars">384★</span><span class="date">2026-10-05</span></div>
-</article><article class="card" data-cat="skills" data-search="vojtaholik/good-css modern css techniques as an agent skill, each with a live specimen">
-  <a class="repo" href="https://github.com/vojtaholik/good-css" target="_blank" rel="noopener">vojtaholik/good-css</a>
-  <p class="why">Modern CSS techniques as an agent skill, each with a live specimen</p>
-  <div class="meta"><span class="stars">340★</span><span class="date">2026-10-12</span></div>
-</article><article class="card" data-cat="skills" data-search="juliobsz/skills agent skill for awwwards-class sites from one line">
-  <a class="repo" href="https://github.com/juliobsz/skills" target="_blank" rel="noopener">juliobsz/skills</a>
-  <p class="why">Agent skill for Awwwards-class sites from one line</p>
-  <div class="meta"><span class="stars">309★</span><span class="date">2026-10-14</span></div>
-</article><article class="card" data-cat="skills" data-search="referodesign/refero_skill research-first design skill; 150k+ real app screens via refero mcp">
-  <a class="repo" href="https://github.com/referodesign/refero_skill" target="_blank" rel="noopener">referodesign/refero_skill</a>
-  <p class="why">Research-first design skill; 150K+ real app screens via Refero MCP</p>
-  <div class="meta"><span class="stars">284★</span><span class="date">2026-09-28</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="skills" data-search="southleft/story-ui ai storybook story generator for any framework/design system">
-  <a class="repo" href="https://github.com/southleft/story-ui" target="_blank" rel="noopener">southleft/story-ui</a>
-  <p class="why">AI Storybook story generator for any framework/design system</p>
-  <div class="meta"><span class="stars">205★</span><span class="date">2026-09-25</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="skills" data-search="mirzaaghazadeh/iphone-duo-skills agent skills for foldable iphone duo adaptive layout">
-  <a class="repo" href="https://github.com/mirzaaghazadeh/iphone-duo-skills" target="_blank" rel="noopener">mirzaaghazadeh/iphone-duo-skills</a>
-  <p class="why">Agent skills for foldable iPhone Duo adaptive layout</p>
-  <div class="meta"><span class="stars">119★</span><span class="date">2026-10-01</span></div>
-</article><article class="card" data-cat="skills" data-search="artouc/stop-describing-ui agent skill that strips hand-holding ui copy">
-  <a class="repo" href="https://github.com/artouc/stop-describing-ui" target="_blank" rel="noopener">artouc/stop-describing-ui</a>
-  <p class="why">Agent skill that strips hand-holding UI copy</p>
-  <div class="meta"><span class="stars">70★</span><span class="date">2026-10-13</span></div>
-</article><article class="card" data-cat="skills" data-search="szilu/ux-designer-skill claude code skill: ux/ui best-practice guidance">
-  <a class="repo" href="https://github.com/szilu/ux-designer-skill" target="_blank" rel="noopener">szilu/ux-designer-skill</a>
-  <p class="why">Claude Code skill: UX/UI best-practice guidance</p>
-  <div class="meta"><span class="stars">68★</span><span class="date">2026-09-25</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="skills" data-search="mk27mk/uxed agent skills aimed at ux/design flow">
-  <a class="repo" href="https://github.com/MK27MK/uxed" target="_blank" rel="noopener">MK27MK/uxed</a>
-  <p class="why">Agent skills aimed at UX/design flow</p>
-  <div class="meta"><span class="stars">67★</span><span class="date">2026-10-19</span></div>
-</article><article class="card" data-cat="skills" data-search="dembrandt/dembrandt-skills senior ux/ds knowledge as auto-applied agent skills">
-  <a class="repo" href="https://github.com/dembrandt/dembrandt-skills" target="_blank" rel="noopener">dembrandt/dembrandt-skills</a>
-  <p class="why">Senior UX/DS knowledge as auto-applied agent skills</p>
-  <div class="meta"><span class="stars">63★</span><span class="date">2026-09-28</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="skills" data-search="diip3sh/exploded claude skill that explodes a live ui into paint layers, states, tokens">
-  <a class="repo" href="https://github.com/diip3sh/exploded" target="_blank" rel="noopener">diip3sh/exploded</a>
-  <p class="why">Claude skill that explodes a live UI into paint layers, states, tokens</p>
-  <div class="meta"><span class="stars">36★</span><span class="date">2026-10-14</span></div>
-</article><article class="card" data-cat="skills" data-search="pymodel/react-frontend-skills react 19/next/ts ui architecture agent skills">
-  <a class="repo" href="https://github.com/PyModel/react-frontend-skills" target="_blank" rel="noopener">PyModel/react-frontend-skills</a>
-  <p class="why">React 19/Next/TS UI architecture agent skills</p>
-  <div class="meta"><span class="stars">27★</span><span class="date">2026-09-25</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="skills" data-search="karminski/karminski-design-skills personal ui design skill pack (norms + workflows)">
-  <a class="repo" href="https://github.com/karminski/karminski-design-skills" target="_blank" rel="noopener">karminski/karminski-design-skills</a>
-  <p class="why">Personal UI design skill pack (norms + workflows)</p>
-  <div class="meta"><span class="stars">24★</span><span class="date">2026-10-16</span><span class="badge">CC BY-NC-SA 4.0</span></div>
-</article><article class="card" data-cat="skills" data-search="ciao1019/ui-sift agent skill for clean ui / refined interactions">
-  <a class="repo" href="https://github.com/Ciao1019/ui-sift" target="_blank" rel="noopener">Ciao1019/ui-sift</a>
-  <p class="why">Agent skill for clean UI / refined interactions</p>
-  <div class="meta"><span class="stars">19★</span><span class="date">2026-10-01</span></div>
-</article><article class="card" data-cat="skills" data-search="lemonteaau/smartisan-ui-skill agent skill for smartisan os–style ui">
-  <a class="repo" href="https://github.com/lemonteaau/smartisan-ui-skill" target="_blank" rel="noopener">lemonteaau/smartisan-ui-skill</a>
-  <p class="why">Agent skill for Smartisan OS–style UI</p>
-  <div class="meta"><span class="stars">19★</span><span class="date">2026-10-19</span></div>
-</article><article class="card" data-cat="skills" data-search="nickture/skills checkable interface rules for clarity, consistency, scalability">
-  <a class="repo" href="https://github.com/nickture/skills" target="_blank" rel="noopener">nickture/skills</a>
-  <p class="why">Checkable interface rules for clarity, consistency, scalability</p>
-  <div class="meta"><span class="stars">15★</span><span class="date">2026-10-05</span></div>
-</article><article class="card" data-cat="skills" data-search="dobzha/dobzha-storybook-ds-skill storybook-first design-system skill: tokens, states, figma mcp sync">
-  <a class="repo" href="https://github.com/dobzha/dobzha-storybook-ds-skill" target="_blank" rel="noopener">dobzha/dobzha-storybook-ds-skill</a>
-  <p class="why">Storybook-first design-system skill: tokens, states, Figma MCP sync</p>
-  <div class="meta"><span class="stars">14★</span><span class="date">2026-09-24</span></div>
-</article><article class="card" data-cat="skills" data-search="barrey/fullstack-web-ui-skills visual design guardrails for saas screens and dashboards">
-  <a class="repo" href="https://github.com/Barrey/fullstack-web-ui-skills" target="_blank" rel="noopener">Barrey/fullstack-web-ui-skills</a>
-  <p class="why">Visual design guardrails for SaaS screens and dashboards</p>
-  <div class="meta"><span class="stars">13★</span><span class="date">2026-10-05</span></div>
-</article><article class="card" data-cat="skills" data-search="diegomarino/tui-design agent skill for designing/building/auditing terminal uis">
-  <a class="repo" href="https://github.com/diegomarino/tui-design" target="_blank" rel="noopener">diegomarino/tui-design</a>
-  <p class="why">Agent skill for designing/building/auditing terminal UIs</p>
-  <div class="meta"><span class="stars">13★</span><span class="date">2026-10-05</span></div>
-</article><article class="card" data-cat="skills" data-search="arla6ka/skills reverse-engineer a ds from an existing app (tokens, migrate, review)">
-  <a class="repo" href="https://github.com/arla6ka/skills" target="_blank" rel="noopener">arla6ka/skills</a>
-  <p class="why">Reverse-engineer a DS from an existing app (tokens, migrate, review)</p>
-  <div class="meta"><span class="stars">10★</span><span class="date">2026-09-30</span></div>
-</article><article class="card" data-cat="skills" data-search="xenitv1/liquid-glass-skill apple liquid glass skill across web tokens / swiftui / compose / flutter">
-  <a class="repo" href="https://github.com/xenitV1/liquid-glass-skill" target="_blank" rel="noopener">xenitV1/liquid-glass-skill</a>
-  <p class="why">Apple Liquid Glass skill across web tokens / SwiftUI / Compose / Flutter</p>
-  <div class="meta"><span class="stars">10★</span><span class="date">2026-10-14</span></div>
-</article><article class="card" data-cat="skills" data-search="achref23illi/ui-craft mobile ui agent skill with screenshot review from ~2600 ios screens">
-  <a class="repo" href="https://github.com/Achref23illi/ui-craft" target="_blank" rel="noopener">Achref23illi/ui-craft</a>
-  <p class="why">Mobile UI agent skill with screenshot review from ~2600 iOS screens</p>
-  <div class="meta"><span class="stars">7★</span><span class="date">2026-10-01</span></div>
-</article><article class="card" data-cat="skills" data-search="boburxd/broom-design combines ~25 popular design skills + no-dep slop checker">
-  <a class="repo" href="https://github.com/boburxd/broom-design" target="_blank" rel="noopener">boburxd/broom-design</a>
-  <p class="why">Combines ~25 popular design skills + no-dep slop checker</p>
-  <div class="meta"><span class="stars">6★</span><span class="date">2026-10-07</span></div>
-</article><article class="card" data-cat="skills" data-search="yckonnnnn/zack-design-skills 8 design skills + 60 judgment rules against obvious ai web look">
-  <a class="repo" href="https://github.com/yckonnnnn/zack-design-skills" target="_blank" rel="noopener">yckonnnnn/zack-design-skills</a>
-  <p class="why">8 design skills + 60 judgment rules against obvious AI web look</p>
-  <div class="meta"><span class="stars">6★</span><span class="date">2026-10-16</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="skills" data-search="thiagoxikota/figma-maxxing figma agent skills with preflight, slop-check, handoff gates">
-  <a class="repo" href="https://github.com/thiagoxikota/figma-maxxing" target="_blank" rel="noopener">thiagoxikota/figma-maxxing</a>
-  <p class="why">Figma agent skills with preflight, slop-check, handoff gates</p>
-  <div class="meta"><span class="stars">4★</span><span class="date">2026-10-02</span></div>
-</article><article class="card" data-cat="skills" data-search="jbelly-tech/jbelly-ui ui design skill: tokens + recipes + anti-ai-default preflight">
-  <a class="repo" href="https://github.com/JBelly-tech/jbelly-ui" target="_blank" rel="noopener">JBelly-tech/jbelly-ui</a>
-  <p class="why">UI design skill: tokens + recipes + anti-AI-default preflight</p>
-  <div class="meta"><span class="stars">3★</span><span class="date">2026-09-24</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="skills" data-search="noemuch/skills design-engineer skills: systems, interfaces, motion, agent workflows">
-  <a class="repo" href="https://github.com/noemuch/skills" target="_blank" rel="noopener">noemuch/skills</a>
-  <p class="why">Design-engineer skills: systems, interfaces, motion, agent workflows</p>
-  <div class="meta"><span class="stars">2★</span><span class="date">2026-10-06</span></div>
-</article><article class="card" data-cat="skills" data-search="feimacode/open-design-agent-kit packages open design skills/brand systems into cursor/claude/codex">
-  <a class="repo" href="https://github.com/feimacode/open-design-agent-kit" target="_blank" rel="noopener">feimacode/open-design-agent-kit</a>
-  <p class="why">Packages Open Design skills/brand systems into Cursor/Claude/Codex</p>
-  <div class="meta"><span class="stars">1★</span><span class="date">2026-09-30</span></div>
-</article><article class="card" data-cat="skills" data-search="flash-hero/goated-ui-skill awwwards-grade frontend/motion skill with playwright motion audit">
-  <a class="repo" href="https://github.com/flash-hero/GOATED-UI-SKILL" target="_blank" rel="noopener">flash-hero/GOATED-UI-SKILL</a>
-  <p class="why">Awwwards-grade frontend/motion skill with Playwright motion audit</p>
-  <div class="meta"><span class="stars">1★</span><span class="date">2026-09-30</span></div>
-</article><article class="card" data-cat="skills" data-search="middlesugar7000/premium-saas-web-skill cursor/claude skill for premium saas landing ui">
-  <a class="repo" href="https://github.com/MiddleSugar7000/premium-saas-web-skill" target="_blank" rel="noopener">MiddleSugar7000/premium-saas-web-skill</a>
-  <p class="why">Cursor/Claude skill for premium SaaS landing UI</p>
-  <div class="meta"><span class="stars">1★</span><span class="date">2026-10-02</span></div>
-</article><article class="card" data-cat="skills" data-search="svaranova/skills drop-in skill.md packs for frontend ui, web motion, data viz">
-  <a class="repo" href="https://github.com/SvaraNova/skills" target="_blank" rel="noopener">SvaraNova/skills</a>
-  <p class="why">Drop-in SKILL.md packs for frontend UI, web motion, data viz</p>
-  <div class="meta"><span class="stars">1★</span><span class="date">2026-10-02</span></div>
-</article></div>
-  </section>
-
-  <section data-section="kits">
-    <h2>Design systems &amp; UI kits <span>41</span></h2>
-    <p class="sec-sub">Components · tokens · registries</p>
-    <div class="grid"><article class="card" data-cat="kits" data-search="facebook/astryx meta open-source design system, customizable and agent-ready">
-  <a class="repo" href="https://github.com/facebook/astryx" target="_blank" rel="noopener">facebook/astryx</a>
-  <p class="why">Meta open-source design system, customizable and agent-ready</p>
-  <div class="meta"><span class="stars">13,483★</span><span class="date">2026-09-29</span></div>
-</article><article class="card" data-cat="kits" data-search="storytold/designcraft open-source page/layout design editor in rust">
-  <a class="repo" href="https://github.com/storytold/designcraft" target="_blank" rel="noopener">storytold/designcraft</a>
-  <p class="why">Open-source page/layout design editor in Rust</p>
-  <div class="meta"><span class="stars">3,014★</span><span class="date">2026-10-12</span></div>
-</article><article class="card" data-cat="kits" data-search="anishfn/shapeshift morphing text-input→ui pattern">
-  <a class="repo" href="https://github.com/anishfn/shapeshift" target="_blank" rel="noopener">anishfn/shapeshift</a>
-  <p class="why">Morphing text-input→UI pattern</p>
-  <div class="meta"><span class="stars">953★</span><span class="date">2026-10-16</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="kits" data-search="starwind-ui/starwind-ui 55 framework-portable tailwind ui components (astro/react/vue)">
-  <a class="repo" href="https://github.com/starwind-ui/starwind-ui" target="_blank" rel="noopener">starwind-ui/starwind-ui</a>
-  <p class="why">55 framework-portable Tailwind UI components (Astro/React/Vue)</p>
-  <div class="meta"><span class="stars">738★</span><span class="date">2026-09-28</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="kits" data-search="keshav-exe/mdxcn docs-oriented ui kit via shadcn cli">
-  <a class="repo" href="https://github.com/keshav-exe/mdxcn" target="_blank" rel="noopener">keshav-exe/mdxcn</a>
-  <p class="why">Docs-oriented UI kit via shadcn CLI</p>
-  <div class="meta"><span class="stars">369★</span><span class="date">2026-09-29</span></div>
-</article><article class="card" data-cat="kits" data-search="thesysdev/open-intelligent-ui open generative/intelligent ui on openui with primitives + tokens">
-  <a class="repo" href="https://github.com/thesysdev/open-intelligent-ui" target="_blank" rel="noopener">thesysdev/open-intelligent-ui</a>
-  <p class="why">Open Generative/Intelligent UI on OpenUI with primitives + tokens</p>
-  <div class="meta"><span class="stars">359★</span><span class="date">2026-10-14</span></div>
-</article><article class="card" data-cat="kits" data-search="audiocn/ui audio ui components for react, built the shadcn way">
-  <a class="repo" href="https://github.com/audiocn/ui" target="_blank" rel="noopener">audiocn/ui</a>
-  <p class="why">Audio UI components for React, built the shadcn way</p>
-  <div class="meta"><span class="stars">257★</span><span class="date">2026-10-15</span></div>
-</article><article class="card" data-cat="kits" data-search="zacharyzhang-ny/ely-gpui-components gpui/rust ui kit with light/dark + live browser demos">
-  <a class="repo" href="https://github.com/ZacharyZhang-NY/Ely-GPUI-Components" target="_blank" rel="noopener">ZacharyZhang-NY/Ely-GPUI-Components</a>
-  <p class="why">GPUI/Rust UI kit with light/dark + live browser demos</p>
-  <div class="meta"><span class="stars">238★</span><span class="date">2026-10-01</span></div>
-</article><article class="card" data-cat="kits" data-search="deeplethe/solid-glass shadcn/tailwind ds for ai apps with solid/smoky glass">
-  <a class="repo" href="https://github.com/deeplethe/solid-glass" target="_blank" rel="noopener">deeplethe/solid-glass</a>
-  <p class="why">shadcn/Tailwind DS for AI apps with solid/smoky glass</p>
-  <div class="meta"><span class="stars">230★</span><span class="date">2026-10-13</span></div>
-</article><article class="card" data-cat="kits" data-search="kostja94/bricks component contracts so agents build parts that fit the project">
-  <a class="repo" href="https://github.com/kostja94/bricks" target="_blank" rel="noopener">kostja94/bricks</a>
-  <p class="why">Component contracts so agents build parts that fit the project</p>
-  <div class="meta"><span class="stars">199★</span><span class="date">2026-10-08</span></div>
-</article><article class="card" data-cat="kits" data-search="caho1/open-claude-ui high-fidelity claude desktop ui recreation (~30 react components)">
-  <a class="repo" href="https://github.com/Caho1/open-claude-ui" target="_blank" rel="noopener">Caho1/open-claude-ui</a>
-  <p class="why">High-fidelity Claude desktop UI recreation (~30 React components)</p>
-  <div class="meta"><span class="stars">175★</span><span class="date">2026-10-15</span></div>
-</article><article class="card" data-cat="kits" data-search="kuratlielia/arc-library open react/shadcn cli component library with calm motion">
-  <a class="repo" href="https://github.com/kuratlielia/arc-library" target="_blank" rel="noopener">kuratlielia/arc-library</a>
-  <p class="why">Open React/shadcn CLI component library with calm motion</p>
-  <div class="meta"><span class="stars">135★</span><span class="date">2026-10-01</span></div>
-</article><article class="card" data-cat="kits" data-search="sugarcube-sh/sugarcube design-tokens-in → css/components-out cli">
-  <a class="repo" href="https://github.com/sugarcube-sh/sugarcube" target="_blank" rel="noopener">sugarcube-sh/sugarcube</a>
-  <p class="why">Design-tokens-in → CSS/components-out CLI</p>
-  <div class="meta"><span class="stars">127★</span><span class="date">2026-09-25</span></div>
-</article><article class="card" data-cat="kits" data-search="nvidia/elements nvidia design system + ui agent harness; tokens, mcp">
-  <a class="repo" href="https://github.com/NVIDIA/elements" target="_blank" rel="noopener">NVIDIA/elements</a>
-  <p class="why">NVIDIA design system + UI Agent Harness; tokens, MCP</p>
-  <div class="meta"><span class="stars">89★</span><span class="date">2026-09-29</span></div>
-</article><article class="card" data-cat="kits" data-search="southleft/ds-contracts-poc machine-readable component contracts → react + figma">
-  <a class="repo" href="https://github.com/southleft/ds-contracts-poc" target="_blank" rel="noopener">southleft/ds-contracts-poc</a>
-  <p class="why">Machine-readable component contracts → React + Figma</p>
-  <div class="meta"><span class="stars">61★</span><span class="date">2026-09-29</span></div>
-</article><article class="card" data-cat="kits" data-search="alwkala/qahera-ui-kit ai-native contract-driven multi-target ui kit (rtl/a11y)">
-  <a class="repo" href="https://github.com/alwkala/Qahera-UI-Kit" target="_blank" rel="noopener">alwkala/Qahera-UI-Kit</a>
-  <p class="why">AI-native contract-driven multi-target UI kit (RTL/a11y)</p>
-  <div class="meta"><span class="stars">44★</span><span class="date">2026-09-30</span></div>
-</article><article class="card" data-cat="kits" data-search="kirito14it/prompt-spider-ui canvas 2d mechanical-spider ui; optional mcp for live agent task viz">
-  <a class="repo" href="https://github.com/Kirito14IT/prompt-spider-ui" target="_blank" rel="noopener">Kirito14IT/prompt-spider-ui</a>
-  <p class="why">Canvas 2d mechanical-spider UI; optional MCP for live agent task viz</p>
-  <div class="meta"><span class="stars">44★</span><span class="date">2026-10-19</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="kits" data-search="halaska-studio/ui single-file react kit for ai-product patterns (thinking/streaming)">
-  <a class="repo" href="https://github.com/Halaska-Studio/ui" target="_blank" rel="noopener">Halaska-Studio/ui</a>
-  <p class="why">Single-file React kit for AI-product patterns (thinking/streaming)</p>
-  <div class="meta"><span class="stars">40★</span><span class="date">2026-10-13</span></div>
-</article><article class="card" data-cat="kits" data-search="qingyuna/agent-html zero-dep shadcn-inspired single-file html design system + skill">
-  <a class="repo" href="https://github.com/QingYunA/agent-html" target="_blank" rel="noopener">QingYunA/agent-html</a>
-  <p class="why">Zero-dep shadcn-inspired single-file HTML design system + skill</p>
-  <div class="meta"><span class="stars">39★</span><span class="date">2026-09-30</span></div>
-</article><article class="card" data-cat="kits" data-search="crysta1221/shadcn-m3e shadcn/ui rebuilt to material 3 expressive (react 19, tailwind v4)">
-  <a class="repo" href="https://github.com/Crysta1221/shadcn-m3e" target="_blank" rel="noopener">Crysta1221/shadcn-m3e</a>
-  <p class="why">shadcn/ui rebuilt to Material 3 Expressive (React 19, Tailwind v4)</p>
-  <div class="meta"><span class="stars">38★</span><span class="date">2026-10-07</span></div>
-</article><article class="card" data-cat="kits" data-search="flohoeller/affectui calm one-file react/shadcn + motion for ai-product uis">
-  <a class="repo" href="https://github.com/flohoeller/affectui" target="_blank" rel="noopener">flohoeller/affectui</a>
-  <p class="why">Calm one-file React/shadcn + motion for AI-product UIs</p>
-  <div class="meta"><span class="stars">36★</span><span class="date">2026-10-16</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="kits" data-search="mohammadshehadeh/hirael shadcn-style components/blocks/templates (radix/base ui, rtl)">
-  <a class="repo" href="https://github.com/MohammadShehadeh/hirael" target="_blank" rel="noopener">MohammadShehadeh/hirael</a>
-  <p class="why">shadcn-style components/blocks/templates (Radix/Base UI, RTL)</p>
-  <div class="meta"><span class="stars">29★</span><span class="date">2026-09-25</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="kits" data-search="seokwoooo/lucian-uxui-prompt 200 interactive ui elements with live gallery + copy-as-prompt">
-  <a class="repo" href="https://github.com/Seokwoooo/lucian-uxui-prompt" target="_blank" rel="noopener">Seokwoooo/lucian-uxui-prompt</a>
-  <p class="why">200 interactive UI elements with live gallery + copy-as-prompt</p>
-  <div class="meta"><span class="stars">26★</span><span class="date">2026-10-13</span></div>
-</article><article class="card" data-cat="kits" data-search="felipemenezes098/swiftui-flx copy-paste shadcn-style component kit for swiftui">
-  <a class="repo" href="https://github.com/felipemenezes098/swiftui-flx" target="_blank" rel="noopener">felipemenezes098/swiftui-flx</a>
-  <p class="why">Copy-paste shadcn-style component kit for SwiftUI</p>
-  <div class="meta"><span class="stars">24★</span><span class="date">2026-10-16</span><span class="badge">AGPL-3.0</span></div>
-</article><article class="card" data-cat="kits" data-search="fujidevv/calamansi-ui animated react kit (ts, tailwind v4, motion, gsap)">
-  <a class="repo" href="https://github.com/fujiDevv/calamansi-ui" target="_blank" rel="noopener">fujiDevv/calamansi-ui</a>
-  <p class="why">Animated React kit (TS, Tailwind v4, Motion, GSAP)</p>
-  <div class="meta"><span class="stars">22★</span><span class="date">2026-10-01</span></div>
-</article><article class="card" data-cat="kits" data-search="cabralorenzo/bencho 41 copy-paste react blocks + 24 ui sounds from bencho.dev">
-  <a class="repo" href="https://github.com/cabralorenzo/bencho" target="_blank" rel="noopener">cabralorenzo/bencho</a>
-  <p class="why">41 copy-paste react blocks + 24 UI sounds from bencho.dev</p>
-  <div class="meta"><span class="stars">20★</span><span class="date">2026-10-19</span></div>
-</article><article class="card" data-cat="kits" data-search="zacharyzhang-ny/mujicaui gothic-styled native ui kit in go">
-  <a class="repo" href="https://github.com/ZacharyZhang-NY/MujicaUI" target="_blank" rel="noopener">ZacharyZhang-NY/MujicaUI</a>
-  <p class="why">Gothic-styled native UI kit in Go</p>
-  <div class="meta"><span class="stars">20★</span><span class="date">2026-10-07</span></div>
-</article><article class="card" data-cat="kits" data-search="flohoeller/affectui-components handcrafted react components with calm motion, shadcn cli install">
-  <a class="repo" href="https://github.com/flohoeller/affectui-components" target="_blank" rel="noopener">flohoeller/affectui-components</a>
-  <p class="why">Handcrafted React components with calm motion, shadcn CLI install</p>
-  <div class="meta"><span class="stars">8★</span><span class="date">2026-10-05</span></div>
-</article><article class="card" data-cat="kits" data-search="ham7a311/vitrine ui component library that installs as agent skills">
-  <a class="repo" href="https://github.com/ham7a311/Vitrine" target="_blank" rel="noopener">ham7a311/Vitrine</a>
-  <p class="why">UI component library that installs as agent skills</p>
-  <div class="meta"><span class="stars">5★</span><span class="date">2026-10-07</span></div>
-</article><article class="card" data-cat="kits" data-search="michaelvereb/ai-ui astro components for agent uis (reasoning traces, streaming)">
-  <a class="repo" href="https://github.com/michaelvereb/ai-ui" target="_blank" rel="noopener">michaelvereb/ai-ui</a>
-  <p class="why">Astro components for agent UIs (reasoning traces, streaming)</p>
-  <div class="meta"><span class="stars">5★</span><span class="date">2026-09-24</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="kits" data-search="uday-a/uipkge-registry dual vue/react shadcn-compatible registry (200+ components)">
-  <a class="repo" href="https://github.com/uday-a/uipkge-registry" target="_blank" rel="noopener">uday-a/uipkge-registry</a>
-  <p class="why">Dual Vue/React shadcn-compatible registry (200+ components)</p>
-  <div class="meta"><span class="stars">5★</span><span class="date">2026-09-24</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="kits" data-search="knapsack-oss/design-system-contract json design-system contract so agents read real props/variants">
-  <a class="repo" href="https://github.com/knapsack-oss/design-system-contract" target="_blank" rel="noopener">knapsack-oss/design-system-contract</a>
-  <p class="why">JSON design-system contract so agents read real props/variants</p>
-  <div class="meta"><span class="stars">4★</span><span class="date">2026-09-30</span></div>
-</article><article class="card" data-cat="kits" data-search="arpitbbhayani/array-ui no-custom-css design system for personal sites and html explainers">
-  <a class="repo" href="https://github.com/arpitbbhayani/array-ui" target="_blank" rel="noopener">arpitbbhayani/array-ui</a>
-  <p class="why">No-custom-CSS design system for personal sites and HTML explainers</p>
-  <div class="meta"><span class="stars">3★</span><span class="date">2026-10-08</span></div>
-</article><article class="card" data-cat="kits" data-search="ragipdiler/rampkit oklch palette extract/generate + token export with wcag checks">
-  <a class="repo" href="https://github.com/ragipdiler/rampkit" target="_blank" rel="noopener">ragipdiler/rampkit</a>
-  <p class="why">OKLCH palette extract/generate + token export with WCAG checks</p>
-  <div class="meta"><span class="stars">3★</span><span class="date">2026-10-08</span></div>
-</article><article class="card" data-cat="kits" data-search="viandwi24/edmi-ui editorial shadcn ds for react/vue/svelte 5 with ai chat components">
-  <a class="repo" href="https://github.com/viandwi24/edmi-ui" target="_blank" rel="noopener">viandwi24/edmi-ui</a>
-  <p class="why">Editorial shadcn DS for React/Vue/Svelte 5 with AI chat components</p>
-  <div class="meta"><span class="stars">2★</span><span class="date">2026-10-06</span></div>
-</article><article class="card" data-cat="kits" data-search="abhijeet34/halderworks-design measurement-driven ds: one token set, two themes, dtcg/css/tailwind">
-  <a class="repo" href="https://github.com/Abhijeet34/halderworks-design" target="_blank" rel="noopener">Abhijeet34/halderworks-design</a>
-  <p class="why">Measurement-driven DS: one token set, two themes, DTCG/CSS/Tailwind</p>
-  <div class="meta"><span class="stars">—</span><span class="date">2026-10-02</span></div>
-</article><article class="card" data-cat="kits" data-search="botharness/botui copy-and-own react ui kit aimed at agent products">
-  <a class="repo" href="https://github.com/BotHarness/BotUI" target="_blank" rel="noopener">BotHarness/BotUI</a>
-  <p class="why">Copy-and-own React UI kit aimed at agent products</p>
-  <div class="meta"><span class="stars">—</span><span class="date">2026-10-02</span></div>
-</article><article class="card" data-cat="kits" data-search="carbon-design-system/carbon-components-svelte ibm carbon components for svelte">
-  <a class="repo" href="https://github.com/carbon-design-system/carbon-components-svelte" target="_blank" rel="noopener">carbon-design-system/carbon-components-svelte</a>
-  <p class="why">IBM Carbon components for Svelte</p>
-  <div class="meta"><span class="stars">—</span><span class="date">2026-09-14</span></div>
-</article><article class="card" data-cat="kits" data-search="eugenioenko/yarcl react library where the config file is the design system">
-  <a class="repo" href="https://github.com/eugenioenko/yarcl" target="_blank" rel="noopener">eugenioenko/yarcl</a>
-  <p class="why">React library where the config file is the design system</p>
-  <div class="meta"><span class="stars">—</span><span class="date">2026-10-02</span></div>
-</article><article class="card" data-cat="kits" data-search="mui/base-ui unstyled accessible react primitives from mui">
-  <a class="repo" href="https://github.com/mui/base-ui" target="_blank" rel="noopener">mui/base-ui</a>
-  <p class="why">Unstyled accessible React primitives from MUI</p>
-  <div class="meta"><span class="stars">—</span><span class="date">2026-09-14</span></div>
-</article><article class="card" data-cat="kits" data-search="vercel-labs/json-render json→ui rendering for agents">
-  <a class="repo" href="https://github.com/vercel-labs/json-render" target="_blank" rel="noopener">vercel-labs/json-render</a>
-  <p class="why">JSON→UI rendering for agents</p>
-  <div class="meta"><span class="stars">—</span><span class="date">2026-09-14</span></div>
-</article></div>
-  </section>
-
-  <section data-section="mcp">
-    <h2>MCP &amp; agent tooling <span>24</span></h2>
-    <p class="sec-sub">MCP servers · Figma bridges · agent loops</p>
-    <div class="grid"><article class="card" data-cat="mcp" data-search="manavarya09/design-extract site→dtcg tokens + mcp + emitters (tailwind/figma/shadcn/ios/android)">
-  <a class="repo" href="https://github.com/Manavarya09/design-extract" target="_blank" rel="noopener">Manavarya09/design-extract</a>
-  <p class="why">Site→DTCG tokens + MCP + emitters (Tailwind/Figma/shadcn/iOS/Android)</p>
-  <div class="meta"><span class="stars">4,142★</span><span class="date">2026-09-28</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="mcp" data-search="openai/mcp-extensions build chatgpt plugins that feel native via mcp">
-  <a class="repo" href="https://github.com/openai/mcp-extensions" target="_blank" rel="noopener">openai/mcp-extensions</a>
-  <p class="why">Build ChatGPT plugins that feel native via MCP</p>
-  <div class="meta"><span class="stars">1,025★</span><span class="date">2026-10-12</span></div>
-</article><article class="card" data-cat="mcp" data-search="with-pebbly/aseprite-ai-artist mcp + skills so agents paint pixel art in a live aseprite window">
-  <a class="repo" href="https://github.com/with-pebbly/aseprite-ai-artist" target="_blank" rel="noopener">with-pebbly/aseprite-ai-artist</a>
-  <p class="why">MCP + skills so agents paint pixel art in a live Aseprite window</p>
-  <div class="meta"><span class="stars">324★</span><span class="date">2026-10-15</span></div>
-</article><article class="card" data-cat="mcp" data-search="tranhoaihung/figma-ui-mcp mcp: ai draws ui on figma canvas + reads designs back">
-  <a class="repo" href="https://github.com/TranHoaiHung/figma-ui-mcp" target="_blank" rel="noopener">TranHoaiHung/figma-ui-mcp</a>
-  <p class="why">MCP: AI draws UI on Figma canvas + reads designs back</p>
-  <div class="meta"><span class="stars">255★</span><span class="date">2026-09-28</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="mcp" data-search="voltagent/official-mcp-servers curated list of 280+ official mcp servers">
-  <a class="repo" href="https://github.com/VoltAgent/official-mcp-servers" target="_blank" rel="noopener">VoltAgent/official-mcp-servers</a>
-  <p class="why">Curated list of 280+ official MCP servers</p>
-  <div class="meta"><span class="stars">93★</span><span class="date">2026-10-06</span></div>
-</article><article class="card" data-cat="mcp" data-search="pymodel/niblet-skill-mcp mcp + design skill grounding agent ui in real product screens">
-  <a class="repo" href="https://github.com/PyModel/niblet-skill-mcp" target="_blank" rel="noopener">PyModel/niblet-skill-mcp</a>
-  <p class="why">MCP + design skill grounding agent UI in real product screens</p>
-  <div class="meta"><span class="stars">76★</span><span class="date">2026-10-01</span></div>
-</article><article class="card" data-cat="mcp" data-search="alvinindra/figma-mcp-rust figma mcp via plugin (~73 tools), avoids rest rate limits">
-  <a class="repo" href="https://github.com/alvinindra/figma-mcp-rust" target="_blank" rel="noopener">alvinindra/figma-mcp-rust</a>
-  <p class="why">Figma MCP via plugin (~73 tools), avoids REST rate limits</p>
-  <div class="meta"><span class="stars">56★</span><span class="date">2026-09-29</span></div>
-</article><article class="card" data-cat="mcp" data-search="insane0777/awwwards-mcp mcp feeds awwwards-style design refs to agents">
-  <a class="repo" href="https://github.com/INSANE0777/Awwwards-mcp" target="_blank" rel="noopener">INSANE0777/Awwwards-mcp</a>
-  <p class="why">MCP feeds Awwwards-style design refs to agents</p>
-  <div class="meta"><span class="stars">49★</span><span class="date">2026-09-24</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="mcp" data-search="lcandy2/sim-agentation mark up a running ios simulator; hand notes to agent over mcp">
-  <a class="repo" href="https://github.com/lcandy2/sim-agentation" target="_blank" rel="noopener">lcandy2/sim-agentation</a>
-  <p class="why">Mark up a running iOS simulator; hand notes to agent over MCP</p>
-  <div class="meta"><span class="stars">41★</span><span class="date">2026-10-08</span></div>
-</article><article class="card" data-cat="mcp" data-search="zseven-w/codex-openpencil codex plugin for openpencil (rust/wasm canvas for ai ui design)">
-  <a class="repo" href="https://github.com/ZSeven-W/codex-openpencil" target="_blank" rel="noopener">ZSeven-W/codex-openpencil</a>
-  <p class="why">Codex plugin for OpenPencil (rust/wasm canvas for AI UI design)</p>
-  <div class="meta"><span class="stars">38★</span><span class="date">2026-10-19</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="mcp" data-search="carbon-design-system/carbon-mcp official ibm carbon mcp: components, tokens, icons, docs q&amp;a">
-  <a class="repo" href="https://github.com/carbon-design-system/carbon-mcp" target="_blank" rel="noopener">carbon-design-system/carbon-mcp</a>
-  <p class="why">Official IBM Carbon MCP: components, tokens, icons, docs Q&amp;A</p>
-  <div class="meta"><span class="stars">35★</span><span class="date">2026-09-29</span></div>
-</article><article class="card" data-cat="mcp" data-search="jangtrinh/design-os-figma-plugin figma plugin + cli so shell agents edit the open file over websocket">
-  <a class="repo" href="https://github.com/jangtrinh/design-os-figma-plugin" target="_blank" rel="noopener">jangtrinh/design-os-figma-plugin</a>
-  <p class="why">Figma plugin + CLI so shell agents edit the open file over WebSocket</p>
-  <div class="meta"><span class="stars">11★</span><span class="date">2026-09-25</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="mcp" data-search="jalal591/compose-bridge jetpack compose live visual editor + mcp for agents">
-  <a class="repo" href="https://github.com/JALAL591/compose-bridge" target="_blank" rel="noopener">JALAL591/compose-bridge</a>
-  <p class="why">Jetpack Compose live visual editor + MCP for agents</p>
-  <div class="meta"><span class="stars">10★</span><span class="date">2026-10-01</span></div>
-</article><article class="card" data-cat="mcp" data-search="velloo-design/velloo local-first design canvas for ai coding agents">
-  <a class="repo" href="https://github.com/velloo-design/velloo" target="_blank" rel="noopener">velloo-design/velloo</a>
-  <p class="why">Local-first design canvas for AI coding agents</p>
-  <div class="meta"><span class="stars">8★</span><span class="date">2026-09-24</span><span class="badge">Apache-2.0</span></div>
-</article><article class="card" data-cat="mcp" data-search="idantas/ilse point at a problem in the running app; coding agent changes the code">
-  <a class="repo" href="https://github.com/idantas/ilse" target="_blank" rel="noopener">idantas/ilse</a>
-  <p class="why">Point at a problem in the running app; coding agent changes the code</p>
-  <div class="meta"><span class="stars">3★</span><span class="date">2026-10-05</span></div>
-</article><article class="card" data-cat="mcp" data-search="clovis500c/figma-bridge local mcp + figma plugin for layouts, dtcg/tailwind tokens">
-  <a class="repo" href="https://github.com/Clovis500c/figma-bridge" target="_blank" rel="noopener">Clovis500c/figma-bridge</a>
-  <p class="why">Local MCP + Figma plugin for layouts, DTCG/Tailwind tokens</p>
-  <div class="meta"><span class="stars">2★</span><span class="date">2026-10-02</span></div>
-</article><article class="card" data-cat="mcp" data-search="andrewmason7/stitch-plugin google stitch ui/ux plugin: 15 mcp tools, 17 design-to-code skills">
-  <a class="repo" href="https://github.com/AndrewMason7/stitch-plugin" target="_blank" rel="noopener">AndrewMason7/stitch-plugin</a>
-  <p class="why">Google Stitch UI/UX plugin: 15 MCP tools, 17 design-to-code skills</p>
-  <div class="meta"><span class="stars">1★</span><span class="date">2026-10-02</span></div>
-</article><article class="card" data-cat="mcp" data-search="djig/ui-loop mcp shows agent crops of ui it just changed + a11y/overflow checks">
-  <a class="repo" href="https://github.com/djig/ui-loop" target="_blank" rel="noopener">djig/ui-loop</a>
-  <p class="why">MCP shows agent crops of UI it just changed + a11y/overflow checks</p>
-  <div class="meta"><span class="stars">1★</span><span class="date">2026-10-06</span></div>
-</article><article class="card" data-cat="mcp" data-search="ledutu-studio/pickfix-mcp browser-extension ui feedback → agent fixes via local mcp">
-  <a class="repo" href="https://github.com/ledutu-studio/pickfix-mcp" target="_blank" rel="noopener">ledutu-studio/pickfix-mcp</a>
-  <p class="why">Browser-extension UI feedback → agent fixes via local MCP</p>
-  <div class="meta"><span class="stars">1★</span><span class="date">2026-10-06</span></div>
-</article><article class="card" data-cat="mcp" data-search="mal4i6ka/allcrew-figma-plugin local-first figma plugin + mcp bridge for tokens and codegen">
-  <a class="repo" href="https://github.com/mal4i6ka/allcrew-figma-plugin" target="_blank" rel="noopener">mal4i6ka/allcrew-figma-plugin</a>
-  <p class="why">Local-first Figma plugin + MCP bridge for tokens and codegen</p>
-  <div class="meta"><span class="stars">1★</span><span class="date">2026-09-30</span></div>
-</article><article class="card" data-cat="mcp" data-search="uxkin/agent mcp with 50k+ ios screens, journeys, site design systems">
-  <a class="repo" href="https://github.com/uxkin/agent" target="_blank" rel="noopener">uxkin/agent</a>
-  <p class="why">MCP with 50K+ iOS screens, journeys, site design systems</p>
-  <div class="meta"><span class="stars">1★</span><span class="date">2026-10-08</span></div>
-</article><article class="card" data-cat="mcp" data-search="mcp-ui-org/mcp-ui mcp ui primitives for agent interfaces">
-  <a class="repo" href="https://github.com/MCP-UI-Org/mcp-ui" target="_blank" rel="noopener">MCP-UI-Org/mcp-ui</a>
-  <p class="why">MCP UI primitives for agent interfaces</p>
-  <div class="meta"><span class="stars">—</span><span class="date">2026-09-14</span></div>
-</article><article class="card" data-cat="mcp" data-search="nathandona/truecanvas figma-style canvas from real react components; agent edits → pr">
-  <a class="repo" href="https://github.com/Nathandona/truecanvas" target="_blank" rel="noopener">Nathandona/truecanvas</a>
-  <p class="why">Figma-style canvas from real React components; agent edits → PR</p>
-  <div class="meta"><span class="stars">—</span><span class="date">2026-10-08</span></div>
-</article><article class="card" data-cat="mcp" data-search="radityama/tessera cli + mcp to search/inspect/reuse real components from ui libraries">
-  <a class="repo" href="https://github.com/radityama/tessera" target="_blank" rel="noopener">radityama/tessera</a>
-  <p class="why">CLI + MCP to search/inspect/reuse real components from UI libraries</p>
-  <div class="meta"><span class="stars">—</span><span class="date">2026-10-08</span></div>
-</article></div>
-  </section>
-
-  <section data-section="motion">
-    <h2>Motion &amp; media <span>15</span></h2>
-    <p class="sec-sub">Film · motion graphics · shaders · Remotion</p>
-    <div class="grid"><article class="card" data-cat="motion" data-search="storytold/effectcraft open-source motion graphics + compositing in pure rust">
-  <a class="repo" href="https://github.com/storytold/effectcraft" target="_blank" rel="noopener">storytold/effectcraft</a>
-  <p class="why">Open-source motion graphics + compositing in pure Rust</p>
-  <div class="meta"><span class="stars">5,195★</span><span class="date">2026-10-12</span></div>
-</article><article class="card" data-cat="motion" data-search="shader-effects-inc/shaders webgpu ui components for react, vue, svelte, solid, js &amp; framer">
-  <a class="repo" href="https://github.com/shader-effects-inc/shaders" target="_blank" rel="noopener">shader-effects-inc/shaders</a>
-  <p class="why">WebGPU UI components for React, Vue, Svelte, Solid, JS &amp; Framer</p>
-  <div class="meta"><span class="stars">4,437★</span><span class="date">2026-10-12</span></div>
-</article><article class="card" data-cat="motion" data-search="feitangyuan/onetake continuous-camera motion-film skill (no cut-to-next-slide)">
-  <a class="repo" href="https://github.com/feitangyuan/onetake" target="_blank" rel="noopener">feitangyuan/onetake</a>
-  <p class="why">Continuous-camera motion-film skill (no cut-to-next-slide)</p>
-  <div class="meta"><span class="stars">2,144★</span><span class="date">2026-10-12</span></div>
-</article><article class="card" data-cat="motion" data-search="echris6/motion-video-kit business-video skill kit with independent critic loop">
-  <a class="repo" href="https://github.com/echris6/motion-video-kit" target="_blank" rel="noopener">echris6/motion-video-kit</a>
-  <p class="why">Business-video skill kit with independent critic loop</p>
-  <div class="meta"><span class="stars">1,087★</span><span class="date">2026-10-12</span></div>
-</article><article class="card" data-cat="motion" data-search="lucasmarkes/hairline six isometric line figures that react to the pointer">
-  <a class="repo" href="https://github.com/lucasmarkes/hairline" target="_blank" rel="noopener">lucasmarkes/hairline</a>
-  <p class="why">Six isometric line figures that react to the pointer</p>
-  <div class="meta"><span class="stars">806★</span><span class="date">2026-10-07</span></div>
-</article><article class="card" data-cat="motion" data-search="alchaincyf/huashu-art-motion agent skill that animates art in code (35 styles, 9 narration patterns)">
-  <a class="repo" href="https://github.com/alchaincyf/huashu-art-motion" target="_blank" rel="noopener">alchaincyf/huashu-art-motion</a>
-  <p class="why">Agent skill that animates art in code (35 styles, 9 narration patterns)</p>
-  <div class="meta"><span class="stars">663★</span><span class="date">2026-10-07</span></div>
-</article><article class="card" data-cat="motion" data-search="ythx-101/live-panel-skill one json → animated architecture diagram or light-theme infographic">
-  <a class="repo" href="https://github.com/ythx-101/live-panel-skill" target="_blank" rel="noopener">ythx-101/live-panel-skill</a>
-  <p class="why">One JSON → animated architecture diagram or light-theme infographic</p>
-  <div class="meta"><span class="stars">625★</span><span class="date">2026-10-07</span></div>
-</article><article class="card" data-cat="motion" data-search="dozentwelve/papermorph ai skill that turns books into animated narrated interactive pages">
-  <a class="repo" href="https://github.com/DozenTwelve/Papermorph" target="_blank" rel="noopener">DozenTwelve/Papermorph</a>
-  <p class="why">AI skill that turns books into animated narrated interactive pages</p>
-  <div class="meta"><span class="stars">448★</span><span class="date">2026-10-07</span></div>
-</article><article class="card" data-cat="motion" data-search="moguzbulbul/blueprint-animation animated before→after ux redesign as a blueprint draw-through">
-  <a class="repo" href="https://github.com/moguzbulbul/blueprint-animation" target="_blank" rel="noopener">moguzbulbul/blueprint-animation</a>
-  <p class="why">Animated before→after UX redesign as a blueprint draw-through</p>
-  <div class="meta"><span class="stars">418★</span><span class="date">2026-10-15</span></div>
-</article><article class="card" data-cat="motion" data-search="atoll92/agent-standup live animated team-call ux for claude code/codex sessions">
-  <a class="repo" href="https://github.com/Atoll92/agent-standup" target="_blank" rel="noopener">Atoll92/agent-standup</a>
-  <p class="why">Live animated team-call UX for Claude Code/Codex sessions</p>
-  <div class="meta"><span class="stars">177★</span><span class="date">2026-10-14</span></div>
-</article><article class="card" data-cat="motion" data-search="1weiho/cinematic-shot agent skill for directing cinematic product-launch films">
-  <a class="repo" href="https://github.com/1weiho/cinematic-shot" target="_blank" rel="noopener">1weiho/cinematic-shot</a>
-  <p class="why">Agent skill for directing cinematic product-launch films</p>
-  <div class="meta"><span class="stars">165★</span><span class="date">2026-10-19</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="motion" data-search="miftahul-islam-efaz/motion-graphics-skill motion-graphics skill for claude/codex/cursor (local render)">
-  <a class="repo" href="https://github.com/Miftahul-Islam-Efaz/Motion-graphics-skill" target="_blank" rel="noopener">Miftahul-Islam-Efaz/Motion-graphics-skill</a>
-  <p class="why">Motion-graphics skill for Claude/Codex/Cursor (local render)</p>
-  <div class="meta"><span class="stars">95★</span><span class="date">2026-10-14</span></div>
-</article><article class="card" data-cat="motion" data-search="0xs4n4tg/papercut-explainer cut-paper explainer reels via agent skills + remotion">
-  <a class="repo" href="https://github.com/0xS4N4TG/papercut-explainer" target="_blank" rel="noopener">0xS4N4TG/papercut-explainer</a>
-  <p class="why">Cut-paper explainer reels via agent skills + Remotion</p>
-  <div class="meta"><span class="stars">79★</span><span class="date">2026-10-19</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="motion" data-search="mathruffian-dot/claude-motion-explainer one-liner → narrated explainer anim (hyperframes + voice/subs)">
-  <a class="repo" href="https://github.com/mathruffian-dot/claude-motion-explainer" target="_blank" rel="noopener">mathruffian-dot/claude-motion-explainer</a>
-  <p class="why">One-liner → narrated explainer anim (HyperFrames + voice/subs)</p>
-  <div class="meta"><span class="stars">23★</span><span class="date">2026-10-19</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="motion" data-search="bizarro/skills animated interactive sites: webgl vs three.js, motion, frame budgets">
-  <a class="repo" href="https://github.com/bizarro/skills" target="_blank" rel="noopener">bizarro/skills</a>
-  <p class="why">Animated interactive sites: WebGL vs Three.js, motion, frame budgets</p>
-  <div class="meta"><span class="stars">21★</span><span class="date">2026-10-06</span></div>
-</article></div>
-  </section>
-
-  <section data-section="lint">
-    <h2>Lint / QA / anti-slop <span>7</span></h2>
-    <p class="sec-sub">Linters · screenshot QA · design review</p>
-    <div class="grid"><article class="card" data-cat="lint" data-search="shadcn-ui/lint agent-first tailwind design-system linter (eslint/oxlint)">
-  <a class="repo" href="https://github.com/shadcn-ui/lint" target="_blank" rel="noopener">shadcn-ui/lint</a>
-  <p class="why">Agent-first Tailwind design-system linter (ESLint/Oxlint)</p>
-  <div class="meta"><span class="stars">2,918★</span><span class="date">2026-09-29</span></div>
-</article><article class="card" data-cat="lint" data-search="gholtzap/lintapple runtime ui policy linter (fonts, contrast, spacing, playwright)">
-  <a class="repo" href="https://github.com/gholtzap/lintapple" target="_blank" rel="noopener">gholtzap/lintapple</a>
-  <p class="why">Runtime UI policy linter (fonts, contrast, spacing, Playwright)</p>
-  <div class="meta"><span class="stars">482★</span><span class="date">2026-10-14</span></div>
-</article><article class="card" data-cat="lint" data-search="laith0003/ux-skill offline anti-ai-slop design linter (152 rules) + mcp">
-  <a class="repo" href="https://github.com/Laith0003/ux-skill" target="_blank" rel="noopener">Laith0003/ux-skill</a>
-  <p class="why">Offline anti-AI-slop design linter (152 rules) + MCP</p>
-  <div class="meta"><span class="stars">76★</span><span class="date">2026-09-28</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="lint" data-search="r0ine/creative-web-intelligence 400+ rule pack to stop agents shipping generic-looking sites">
-  <a class="repo" href="https://github.com/r0ine/creative-web-intelligence" target="_blank" rel="noopener">r0ine/creative-web-intelligence</a>
-  <p class="why">400+ rule pack to stop agents shipping generic-looking sites</p>
-  <div class="meta"><span class="stars">11★</span><span class="date">2026-09-24</span></div>
-</article><article class="card" data-cat="lint" data-search="rauchg/skills turns a screen recording into a timeline of every paint">
-  <a class="repo" href="https://github.com/rauchg/skills" target="_blank" rel="noopener">rauchg/skills</a>
-  <p class="why">Turns a screen recording into a timeline of every paint</p>
-  <div class="meta"><span class="stars">9★</span><span class="date">2026-10-06</span></div>
-</article><article class="card" data-cat="lint" data-search="kyanitelabs/tastecheck 20 craft skills → interview into a ds, gate ships on type/oklch/a11y">
-  <a class="repo" href="https://github.com/KyaniteLabs/tastecheck" target="_blank" rel="noopener">KyaniteLabs/tastecheck</a>
-  <p class="why">20 craft skills → interview into a DS, gate ships on type/OKLCH/a11y</p>
-  <div class="meta"><span class="stars">8★</span><span class="date">2026-09-25</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="lint" data-search="abc-xiaoxuan/award-level-web-design agent skill with 8-dimension screenshot self-review">
-  <a class="repo" href="https://github.com/ABC-xiaoxuan/award-level-web-design" target="_blank" rel="noopener">ABC-xiaoxuan/award-level-web-design</a>
-  <p class="why">Agent skill with 8-dimension screenshot self-review</p>
-  <div class="meta"><span class="stars">7★</span><span class="date">2026-10-16</span><span class="badge">MIT</span></div>
-</article></div>
-  </section>
-
-  <section data-section="brand">
-    <h2>Brand &amp; illustration <span>8</span></h2>
-    <p class="sec-sub">Logo · brand systems · icons · art</p>
-    <div class="grid"><article class="card" data-cat="brand" data-search="wheresryan22/anatomy agent skill for interactive isometric svg/webgl illustrations">
-  <a class="repo" href="https://github.com/wheresryan22/anatomy" target="_blank" rel="noopener">wheresryan22/anatomy</a>
-  <p class="why">Agent skill for interactive isometric SVG/WebGL illustrations</p>
-  <div class="meta"><span class="stars">6,314★</span><span class="date">2026-10-13</span></div>
-</article><article class="card" data-cat="brand" data-search="samyost1/3dicon claude skill: one prompt → looping transparent animated 3d icon">
-  <a class="repo" href="https://github.com/samyost1/3dicon" target="_blank" rel="noopener">samyost1/3dicon</a>
-  <p class="why">Claude skill: one prompt → looping transparent animated 3D icon</p>
-  <div class="meta"><span class="stars">558★</span><span class="date">2026-10-15</span></div>
-</article><article class="card" data-cat="brand" data-search="kaankiziltug/logo-design-skill logo principles, svg craft, testing, 1400+ reference library">
-  <a class="repo" href="https://github.com/kaankiziltug/logo-design-skill" target="_blank" rel="noopener">kaankiziltug/logo-design-skill</a>
-  <p class="why">Logo principles, SVG craft, testing, 1400+ reference library</p>
-  <div class="meta"><span class="stars">462★</span><span class="date">2026-09-29</span></div>
-</article><article class="card" data-cat="brand" data-search="fayazara/robot-heads animated react 3d robot avatars for agent activity uis">
-  <a class="repo" href="https://github.com/fayazara/robot-heads" target="_blank" rel="noopener">fayazara/robot-heads</a>
-  <p class="why">Animated React 3D robot avatars for agent activity UIs</p>
-  <div class="meta"><span class="stars">314★</span><span class="date">2026-10-14</span></div>
-</article><article class="card" data-cat="brand" data-search="devesh-shirsath/spotkit claude skill for ds-consistent minimal svg product illustrations">
-  <a class="repo" href="https://github.com/Devesh-Shirsath/spotkit" target="_blank" rel="noopener">Devesh-Shirsath/spotkit</a>
-  <p class="why">Claude skill for DS-consistent minimal SVG product illustrations</p>
-  <div class="meta"><span class="stars">71★</span><span class="date">2026-09-30</span></div>
-</article><article class="card" data-cat="brand" data-search="yakew7/designhub local-first brand toolkit (tokens, mockups, brand book pdf)">
-  <a class="repo" href="https://github.com/yakew7/DesignHub" target="_blank" rel="noopener">yakew7/DesignHub</a>
-  <p class="why">Local-first brand toolkit (tokens, mockups, brand book PDF)</p>
-  <div class="meta"><span class="stars">10★</span><span class="date">2026-09-24</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="brand" data-search="kovenlabs/animated-icons animated react icons with color slots from shadcn theme">
-  <a class="repo" href="https://github.com/kovenlabs/animated-icons" target="_blank" rel="noopener">kovenlabs/animated-icons</a>
-  <p class="why">Animated React icons with color slots from shadcn theme</p>
-  <div class="meta"><span class="stars">8★</span><span class="date">2026-10-05</span><span class="badge">MIT</span></div>
-</article><article class="card" data-cat="brand" data-search="fatihaydost/brand-identity-skill claude skill that builds logo, type, and palette as one brand system">
-  <a class="repo" href="https://github.com/fatihaydost/brand-identity-skill" target="_blank" rel="noopener">fatihaydost/brand-identity-skill</a>
-  <p class="why">Claude skill that builds logo, type, and palette as one brand system</p>
-  <div class="meta"><span class="stars">7★</span><span class="date">2026-10-05</span><span class="badge">MIT</span></div>
-</article></div>
-  </section>
-
-  <p class="empty" id="empty">No repos match that filter.</p>
-  <footer>Built for Daniel · repo scout digests · proposed only (near-misses excluded) · 131 unique</footer>
-</div>
 <script>
-(() => {
-  const q = document.getElementById('q');
-  const chips = [...document.querySelectorAll('.chip')];
-  const cards = [...document.querySelectorAll('.card')];
-  const sections = [...document.querySelectorAll('section[data-section]')];
-  const empty = document.getElementById('empty');
-  const stats = document.getElementById('stats');
-  let filter = 'all';
-  function apply() {
-    const term = q.value.trim().toLowerCase();
-    let shown = 0;
-    cards.forEach(card => {
-      const catOk = filter === 'all' || card.dataset.cat === filter;
-      const searchOk = !term || card.dataset.search.includes(term);
-      const ok = catOk && searchOk;
-      card.classList.toggle('hidden', !ok);
-      if (ok) shown++;
-    });
-    sections.forEach(sec => {
-      const any = [...sec.querySelectorAll('.card')].some(c => !c.classList.contains('hidden'));
-      sec.style.display = any ? '' : 'none';
-    });
-    empty.classList.toggle('show', shown === 0);
-    stats.textContent = shown + ' showing · ' + cards.length + ' unique repos';
+const REPOS = [{"repo": "INSANE0777/Awwwards-mcp", "why": "MCP feeds Awwwards-style design refs to agents", "stars": 49, "license": "MIT", "date": "2026-09-24", "cat": "mcp"}, {"repo": "dobzha/dobzha-storybook-ds-skill", "why": "Storybook-first design-system skill: tokens, states, Figma MCP sync", "stars": 14, "license": "", "date": "2026-09-24", "cat": "skills"}, {"repo": "r0ine/creative-web-intelligence", "why": "400+ rule pack to stop agents shipping generic-looking sites", "stars": 11, "license": "", "date": "2026-09-24", "cat": "lint"}, {"repo": "yakew7/DesignHub", "why": "Local-first brand toolkit (tokens, mockups, brand book PDF)", "stars": 10, "license": "MIT", "date": "2026-09-24", "cat": "brand"}, {"repo": "velloo-design/velloo", "why": "Local-first design canvas for AI coding agents", "stars": 8, "license": "Apache-2.0", "date": "2026-09-24", "cat": "mcp"}, {"repo": "uday-a/uipkge-registry", "why": "Dual Vue/React shadcn-compatible registry (200+ components)", "stars": 5, "license": "MIT", "date": "2026-09-24", "cat": "kits"}, {"repo": "michaelvereb/ai-ui", "why": "Astro components for agent UIs (reasoning traces, streaming)", "stars": 5, "license": "MIT", "date": "2026-09-24", "cat": "kits"}, {"repo": "JBelly-tech/jbelly-ui", "why": "UI design skill: tokens + recipes + anti-AI-default preflight", "stars": 3, "license": "MIT", "date": "2026-09-24", "cat": "skills"}, {"repo": "AnxForever/stylekit", "why": "Visual style library for AI UI (148 styles, tokens, prompts, MCP)", "stars": 541, "license": "MIT", "date": "2026-09-25", "cat": "skills"}, {"repo": "southleft/story-ui", "why": "AI Storybook story generator for any framework/design system", "stars": 205, "license": "MIT", "date": "2026-09-25", "cat": "skills"}, {"repo": "sugarcube-sh/sugarcube", "why": "Design-tokens-in → CSS/components-out CLI", "stars": 127, "license": "", "date": "2026-09-25", "cat": "kits"}, {"repo": "szilu/ux-designer-skill", "why": "Claude Code skill: UX/UI best-practice guidance", "stars": 68, "license": "MIT", "date": "2026-09-25", "cat": "skills"}, {"repo": "MohammadShehadeh/hirael", "why": "shadcn-style components/blocks/templates (Radix/Base UI, RTL)", "stars": 29, "license": "MIT", "date": "2026-09-25", "cat": "kits"}, {"repo": "PyModel/react-frontend-skills", "why": "React 19/Next/TS UI architecture agent skills", "stars": 27, "license": "MIT", "date": "2026-09-25", "cat": "skills"}, {"repo": "jangtrinh/design-os-figma-plugin", "why": "Figma plugin + CLI so shell agents edit the open file over WebSocket", "stars": 11, "license": "MIT", "date": "2026-09-25", "cat": "mcp"}, {"repo": "KyaniteLabs/tastecheck", "why": "20 craft skills → interview into a DS, gate ships on type/OKLCH/a11y", "stars": 8, "license": "MIT", "date": "2026-09-25", "cat": "lint"}, {"repo": "bitjaru/styleseed", "why": "Design-method engine: 23 agent skills for judgment, grammars, palettes", "stars": 967, "license": "MIT", "date": "2026-09-28", "cat": "skills"}, {"repo": "Manavarya09/design-extract", "why": "Site→DTCG tokens + MCP + emitters (Tailwind/Figma/shadcn/iOS/Android)", "stars": 4142, "license": "MIT", "date": "2026-09-28", "cat": "mcp"}, {"repo": "kwakseongjae/oh-my-design", "why": "Installer for 500+ graded company DESIGN.md refs + skills", "stars": 523, "license": "MIT", "date": "2026-09-28", "cat": "skills"}, {"repo": "starwind-ui/starwind-ui", "why": "55 framework-portable Tailwind UI components (Astro/React/Vue)", "stars": 738, "license": "MIT", "date": "2026-09-28", "cat": "kits"}, {"repo": "referodesign/refero_skill", "why": "Research-first design skill; 150K+ real app screens via Refero MCP", "stars": 284, "license": "MIT", "date": "2026-09-28", "cat": "skills"}, {"repo": "TranHoaiHung/figma-ui-mcp", "why": "MCP: AI draws UI on Figma canvas + reads designs back", "stars": 255, "license": "MIT", "date": "2026-09-28", "cat": "mcp"}, {"repo": "Laith0003/ux-skill", "why": "Offline anti-AI-slop design linter (152 rules) + MCP", "stars": 76, "license": "MIT", "date": "2026-09-28", "cat": "lint"}, {"repo": "dembrandt/dembrandt-skills", "why": "Senior UX/DS knowledge as auto-applied agent skills", "stars": 63, "license": "MIT", "date": "2026-09-28", "cat": "skills"}, {"repo": "shadcn-ui/lint", "why": "Agent-first Tailwind design-system linter (ESLint/Oxlint)", "stars": 2918, "license": "", "date": "2026-09-29", "cat": "lint"}, {"repo": "facebook/astryx", "why": "Meta open-source design system, customizable and agent-ready", "stars": 13483, "license": "", "date": "2026-09-29", "cat": "kits"}, {"repo": "kaankiziltug/logo-design-skill", "why": "Logo principles, SVG craft, testing, 1400+ reference library", "stars": 462, "license": "", "date": "2026-09-29", "cat": "brand"}, {"repo": "keshav-exe/mdxcn", "why": "Docs-oriented UI kit via shadcn CLI", "stars": 369, "license": "", "date": "2026-09-29", "cat": "kits"}, {"repo": "NVIDIA/elements", "why": "NVIDIA design system + UI Agent Harness; tokens, MCP", "stars": 89, "license": "", "date": "2026-09-29", "cat": "kits"}, {"repo": "southleft/ds-contracts-poc", "why": "Machine-readable component contracts → React + Figma", "stars": 61, "license": "", "date": "2026-09-29", "cat": "kits"}, {"repo": "alvinindra/figma-mcp-rust", "why": "Figma MCP via plugin (~73 tools), avoids REST rate limits", "stars": 56, "license": "", "date": "2026-09-29", "cat": "mcp"}, {"repo": "carbon-design-system/carbon-mcp", "why": "Official IBM Carbon MCP: components, tokens, icons, docs Q&A", "stars": 35, "license": "", "date": "2026-09-29", "cat": "mcp"}, {"repo": "arla6ka/skills", "why": "Reverse-engineer a DS from an existing app (tokens, migrate, review)", "stars": 10, "license": "", "date": "2026-09-30", "cat": "skills"}, {"repo": "QingYunA/agent-html", "why": "Zero-dep shadcn-inspired single-file HTML design system + skill", "stars": 39, "license": "", "date": "2026-09-30", "cat": "kits"}, {"repo": "alwkala/Qahera-UI-Kit", "why": "AI-native contract-driven multi-target UI kit (RTL/a11y)", "stars": 44, "license": "", "date": "2026-09-30", "cat": "kits"}, {"repo": "Devesh-Shirsath/spotkit", "why": "Claude skill for DS-consistent minimal SVG product illustrations", "stars": 71, "license": "", "date": "2026-09-30", "cat": "brand"}, {"repo": "knapsack-oss/design-system-contract", "why": "JSON design-system contract so agents read real props/variants", "stars": 4, "license": "", "date": "2026-09-30", "cat": "kits"}, {"repo": "flash-hero/GOATED-UI-SKILL", "why": "Awwwards-grade frontend/motion skill with Playwright motion audit", "stars": 1, "license": "", "date": "2026-09-30", "cat": "skills"}, {"repo": "feimacode/open-design-agent-kit", "why": "Packages Open Design skills/brand systems into Cursor/Claude/Codex", "stars": 1, "license": "", "date": "2026-09-30", "cat": "skills"}, {"repo": "mal4i6ka/allcrew-figma-plugin", "why": "Local-first Figma plugin + MCP bridge for tokens and codegen", "stars": 1, "license": "", "date": "2026-09-30", "cat": "mcp"}, {"repo": "ZacharyZhang-NY/Ely-GPUI-Components", "why": "GPUI/Rust UI kit with light/dark + live browser demos", "stars": 238, "license": "", "date": "2026-10-01", "cat": "kits"}, {"repo": "kuratlielia/arc-library", "why": "Open React/shadcn CLI component library with calm motion", "stars": 135, "license": "", "date": "2026-10-01", "cat": "kits"}, {"repo": "mirzaaghazadeh/iphone-duo-skills", "why": "Agent skills for foldable iPhone Duo adaptive layout", "stars": 119, "license": "", "date": "2026-10-01", "cat": "skills"}, {"repo": "PyModel/niblet-skill-mcp", "why": "MCP + design skill grounding agent UI in real product screens", "stars": 76, "license": "", "date": "2026-10-01", "cat": "mcp"}, {"repo": "fujiDevv/calamansi-ui", "why": "Animated React kit (TS, Tailwind v4, Motion, GSAP)", "stars": 22, "license": "", "date": "2026-10-01", "cat": "kits"}, {"repo": "Ciao1019/ui-sift", "why": "Agent skill for clean UI / refined interactions", "stars": 19, "license": "", "date": "2026-10-01", "cat": "skills"}, {"repo": "JALAL591/compose-bridge", "why": "Jetpack Compose live visual editor + MCP for agents", "stars": 10, "license": "", "date": "2026-10-01", "cat": "mcp"}, {"repo": "Achref23illi/ui-craft", "why": "Mobile UI agent skill with screenshot review from ~2600 iOS screens", "stars": 7, "license": "", "date": "2026-10-01", "cat": "skills"}, {"repo": "thiagoxikota/figma-maxxing", "why": "Figma agent skills with preflight, slop-check, handoff gates", "stars": 4, "license": "", "date": "2026-10-02", "cat": "skills"}, {"repo": "Clovis500c/figma-bridge", "why": "Local MCP + Figma plugin for layouts, DTCG/Tailwind tokens", "stars": 2, "license": "", "date": "2026-10-02", "cat": "mcp"}, {"repo": "AndrewMason7/stitch-plugin", "why": "Google Stitch UI/UX plugin: 15 MCP tools, 17 design-to-code skills", "stars": 1, "license": "", "date": "2026-10-02", "cat": "mcp"}, {"repo": "MiddleSugar7000/premium-saas-web-skill", "why": "Cursor/Claude skill for premium SaaS landing UI", "stars": 1, "license": "", "date": "2026-10-02", "cat": "skills"}, {"repo": "SvaraNova/skills", "why": "Drop-in SKILL.md packs for frontend UI, web motion, data viz", "stars": 1, "license": "", "date": "2026-10-02", "cat": "skills"}, {"repo": "Abhijeet34/halderworks-design", "why": "Measurement-driven DS: one token set, two themes, DTCG/CSS/Tailwind", "stars": 0, "license": "", "date": "2026-10-02", "cat": "kits"}, {"repo": "eugenioenko/yarcl", "why": "React library where the config file is the design system", "stars": 0, "license": "", "date": "2026-10-02", "cat": "kits"}, {"repo": "BotHarness/BotUI", "why": "Copy-and-own React UI kit aimed at agent products", "stars": 0, "license": "", "date": "2026-10-02", "cat": "kits"}, {"repo": "idantas/ilse", "why": "Point at a problem in the running app; coding agent changes the code", "stars": 3, "license": "", "date": "2026-10-05", "cat": "mcp"}, {"repo": "Jakeschincariol/replica-skill", "why": "Eleven Claude skills that reverse-engineer and rebuild features/flows", "stars": 384, "license": "", "date": "2026-10-05", "cat": "skills"}, {"repo": "nickture/skills", "why": "Checkable interface rules for clarity, consistency, scalability", "stars": 15, "license": "", "date": "2026-10-05", "cat": "skills"}, {"repo": "diegomarino/tui-design", "why": "Agent skill for designing/building/auditing terminal UIs", "stars": 13, "license": "", "date": "2026-10-05", "cat": "skills"}, {"repo": "Barrey/fullstack-web-ui-skills", "why": "Visual design guardrails for SaaS screens and dashboards", "stars": 13, "license": "", "date": "2026-10-05", "cat": "skills"}, {"repo": "flohoeller/affectui-components", "why": "Handcrafted React components with calm motion, shadcn CLI install", "stars": 8, "license": "", "date": "2026-10-05", "cat": "kits"}, {"repo": "kovenlabs/animated-icons", "why": "Animated React icons with color slots from shadcn theme", "stars": 8, "license": "MIT", "date": "2026-10-05", "cat": "brand"}, {"repo": "fatihaydost/brand-identity-skill", "why": "Claude skill that builds logo, type, and palette as one brand system", "stars": 7, "license": "MIT", "date": "2026-10-05", "cat": "brand"}, {"repo": "QingYunA/answer-me-with-html", "why": "Agent skill that answers hard questions with a readable one-page HTML", "stars": 1478, "license": "", "date": "2026-10-06", "cat": "skills"}, {"repo": "viandwi24/edmi-ui", "why": "Editorial shadcn DS for React/Vue/Svelte 5 with AI chat components", "stars": 2, "license": "", "date": "2026-10-06", "cat": "kits"}, {"repo": "djig/ui-loop", "why": "MCP shows agent crops of UI it just changed + a11y/overflow checks", "stars": 1, "license": "", "date": "2026-10-06", "cat": "mcp"}, {"repo": "VoltAgent/official-mcp-servers", "why": "Curated list of 280+ official MCP servers", "stars": 93, "license": "", "date": "2026-10-06", "cat": "mcp"}, {"repo": "bizarro/skills", "why": "Animated interactive sites: WebGL vs Three.js, motion, frame budgets", "stars": 21, "license": "", "date": "2026-10-06", "cat": "motion"}, {"repo": "rauchg/skills", "why": "Turns a screen recording into a timeline of every paint", "stars": 9, "license": "", "date": "2026-10-06", "cat": "lint"}, {"repo": "ledutu-studio/pickfix-mcp", "why": "Browser-extension UI feedback → agent fixes via local MCP", "stars": 1, "license": "", "date": "2026-10-06", "cat": "mcp"}, {"repo": "noemuch/skills", "why": "Design-engineer skills: systems, interfaces, motion, agent workflows", "stars": 2, "license": "", "date": "2026-10-06", "cat": "skills"}, {"repo": "lucasmarkes/hairline", "why": "Six isometric line figures that react to the pointer", "stars": 806, "license": "", "date": "2026-10-07", "cat": "motion"}, {"repo": "alchaincyf/huashu-art-motion", "why": "Agent skill that animates art in code (35 styles, 9 narration patterns)", "stars": 663, "license": "", "date": "2026-10-07", "cat": "motion"}, {"repo": "ythx-101/live-panel-skill", "why": "One JSON → animated architecture diagram or light-theme infographic", "stars": 625, "license": "", "date": "2026-10-07", "cat": "motion"}, {"repo": "Crysta1221/shadcn-m3e", "why": "shadcn/ui rebuilt to Material 3 Expressive (React 19, Tailwind v4)", "stars": 38, "license": "", "date": "2026-10-07", "cat": "kits"}, {"repo": "boburxd/broom-design", "why": "Combines ~25 popular design skills + no-dep slop checker", "stars": 6, "license": "", "date": "2026-10-07", "cat": "skills"}, {"repo": "ham7a311/Vitrine", "why": "UI component library that installs as agent skills", "stars": 5, "license": "", "date": "2026-10-07", "cat": "kits"}, {"repo": "ZacharyZhang-NY/MujicaUI", "why": "Gothic-styled native UI kit in Go", "stars": 20, "license": "", "date": "2026-10-07", "cat": "kits"}, {"repo": "DozenTwelve/Papermorph", "why": "AI skill that turns books into animated narrated interactive pages", "stars": 448, "license": "", "date": "2026-10-07", "cat": "motion"}, {"repo": "oil-oil/oil-ui", "why": "Agent skill tries several UI directions, compares side by side vs screenshots", "stars": 1015, "license": "MIT", "date": "2026-10-08", "cat": "skills"}, {"repo": "kostja94/bricks", "why": "Component contracts so agents build parts that fit the project", "stars": 199, "license": "", "date": "2026-10-08", "cat": "kits"}, {"repo": "lcandy2/sim-agentation", "why": "Mark up a running iOS simulator; hand notes to agent over MCP", "stars": 41, "license": "", "date": "2026-10-08", "cat": "mcp"}, {"repo": "uxkin/agent", "why": "MCP with 50K+ iOS screens, journeys, site design systems", "stars": 1, "license": "", "date": "2026-10-08", "cat": "mcp"}, {"repo": "radityama/tessera", "why": "CLI + MCP to search/inspect/reuse real components from UI libraries", "stars": 0, "license": "", "date": "2026-10-08", "cat": "mcp"}, {"repo": "Nathandona/truecanvas", "why": "Figma-style canvas from real React components; agent edits → PR", "stars": 0, "license": "", "date": "2026-10-08", "cat": "mcp"}, {"repo": "ragipdiler/rampkit", "why": "OKLCH palette extract/generate + token export with WCAG checks", "stars": 3, "license": "", "date": "2026-10-08", "cat": "kits"}, {"repo": "arpitbbhayani/array-ui", "why": "No-custom-CSS design system for personal sites and HTML explainers", "stars": 3, "license": "", "date": "2026-10-08", "cat": "kits"}, {"repo": "storytold/effectcraft", "why": "Open-source motion graphics + compositing in pure Rust", "stars": 5195, "license": "", "date": "2026-10-12", "cat": "motion"}, {"repo": "shader-effects-inc/shaders", "why": "WebGPU UI components for React, Vue, Svelte, Solid, JS & Framer", "stars": 4437, "license": "", "date": "2026-10-12", "cat": "motion"}, {"repo": "storytold/designcraft", "why": "Open-source page/layout design editor in Rust", "stars": 3014, "license": "", "date": "2026-10-12", "cat": "kits"}, {"repo": "feitangyuan/onetake", "why": "Continuous-camera motion-film skill (no cut-to-next-slide)", "stars": 2144, "license": "", "date": "2026-10-12", "cat": "motion"}, {"repo": "echris6/motion-video-kit", "why": "Business-video skill kit with independent critic loop", "stars": 1087, "license": "", "date": "2026-10-12", "cat": "motion"}, {"repo": "openai/mcp-extensions", "why": "Build ChatGPT plugins that feel native via MCP", "stars": 1025, "license": "", "date": "2026-10-12", "cat": "mcp"}, {"repo": "vojtaholik/good-css", "why": "Modern CSS techniques as an agent skill, each with a live specimen", "stars": 340, "license": "", "date": "2026-10-12", "cat": "skills"}, {"repo": "wheresryan22/anatomy", "why": "Agent skill for interactive isometric SVG/WebGL illustrations", "stars": 6314, "license": "", "date": "2026-10-13", "cat": "brand"}, {"repo": "deeplethe/solid-glass", "why": "shadcn/Tailwind DS for AI apps with solid/smoky glass", "stars": 230, "license": "", "date": "2026-10-13", "cat": "kits"}, {"repo": "artouc/stop-describing-ui", "why": "Agent skill that strips hand-holding UI copy", "stars": 70, "license": "", "date": "2026-10-13", "cat": "skills"}, {"repo": "Halaska-Studio/ui", "why": "Single-file React kit for AI-product patterns (thinking/streaming)", "stars": 40, "license": "", "date": "2026-10-13", "cat": "kits"}, {"repo": "Seokwoooo/lucian-uxui-prompt", "why": "200 interactive UI elements with live gallery + copy-as-prompt", "stars": 26, "license": "", "date": "2026-10-13", "cat": "kits"}, {"repo": "gholtzap/lintapple", "why": "Runtime UI policy linter (fonts, contrast, spacing, Playwright)", "stars": 482, "license": "", "date": "2026-10-14", "cat": "lint"}, {"repo": "thesysdev/open-intelligent-ui", "why": "Open Generative/Intelligent UI on OpenUI with primitives + tokens", "stars": 359, "license": "", "date": "2026-10-14", "cat": "kits"}, {"repo": "fayazara/robot-heads", "why": "Animated React 3D robot avatars for agent activity UIs", "stars": 314, "license": "", "date": "2026-10-14", "cat": "brand"}, {"repo": "juliobsz/skills", "why": "Agent skill for Awwwards-class sites from one line", "stars": 309, "license": "", "date": "2026-10-14", "cat": "skills"}, {"repo": "Atoll92/agent-standup", "why": "Live animated team-call UX for Claude Code/Codex sessions", "stars": 177, "license": "", "date": "2026-10-14", "cat": "motion"}, {"repo": "Miftahul-Islam-Efaz/Motion-graphics-skill", "why": "Motion-graphics skill for Claude/Codex/Cursor (local render)", "stars": 95, "license": "", "date": "2026-10-14", "cat": "motion"}, {"repo": "diip3sh/exploded", "why": "Claude skill that explodes a live UI into paint layers, states, tokens", "stars": 36, "license": "", "date": "2026-10-14", "cat": "skills"}, {"repo": "xenitV1/liquid-glass-skill", "why": "Apple Liquid Glass skill across web tokens / SwiftUI / Compose / Flutter", "stars": 10, "license": "", "date": "2026-10-14", "cat": "skills"}, {"repo": "samyost1/3dicon", "why": "Claude skill: one prompt → looping transparent animated 3D icon", "stars": 558, "license": "", "date": "2026-10-15", "cat": "brand"}, {"repo": "moguzbulbul/blueprint-animation", "why": "Animated before→after UX redesign as a blueprint draw-through", "stars": 418, "license": "", "date": "2026-10-15", "cat": "motion"}, {"repo": "with-pebbly/aseprite-ai-artist", "why": "MCP + skills so agents paint pixel art in a live Aseprite window", "stars": 324, "license": "", "date": "2026-10-15", "cat": "mcp"}, {"repo": "audiocn/ui", "why": "Audio UI components for React, built the shadcn way", "stars": 257, "license": "", "date": "2026-10-15", "cat": "kits"}, {"repo": "Caho1/open-claude-ui", "why": "High-fidelity Claude desktop UI recreation (~30 React components)", "stars": 175, "license": "", "date": "2026-10-15", "cat": "kits"}, {"repo": "anishfn/shapeshift", "why": "Morphing text-input→UI pattern", "stars": 953, "license": "MIT", "date": "2026-10-16", "cat": "kits"}, {"repo": "flohoeller/affectui", "why": "Calm one-file React/shadcn + motion for AI-product UIs", "stars": 36, "license": "MIT", "date": "2026-10-16", "cat": "kits"}, {"repo": "ABC-xiaoxuan/award-level-web-design", "why": "Agent skill with 8-dimension screenshot self-review", "stars": 7, "license": "MIT", "date": "2026-10-16", "cat": "lint"}, {"repo": "yckonnnnn/zack-design-skills", "why": "8 design skills + 60 judgment rules against obvious AI web look", "stars": 6, "license": "MIT", "date": "2026-10-16", "cat": "skills"}, {"repo": "felipemenezes098/swiftui-flx", "why": "Copy-paste shadcn-style component kit for SwiftUI", "stars": 24, "license": "AGPL-3.0", "date": "2026-10-16", "cat": "kits"}, {"repo": "karminski/karminski-design-skills", "why": "Personal UI design skill pack (norms + workflows)", "stars": 24, "license": "CC BY-NC-SA 4.0", "date": "2026-10-16", "cat": "skills"}, {"repo": "1weiho/cinematic-shot", "why": "Agent skill for directing cinematic product-launch films", "stars": 165, "license": "MIT", "date": "2026-10-19", "cat": "motion"}, {"repo": "0xS4N4TG/papercut-explainer", "why": "Cut-paper explainer reels via agent skills + Remotion", "stars": 79, "license": "MIT", "date": "2026-10-19", "cat": "motion"}, {"repo": "MK27MK/uxed", "why": "Agent skills aimed at UX/design flow", "stars": 67, "license": "", "date": "2026-10-19", "cat": "skills"}, {"repo": "Kirito14IT/prompt-spider-ui", "why": "Canvas 2d mechanical-spider UI; optional MCP for live agent task viz", "stars": 44, "license": "MIT", "date": "2026-10-19", "cat": "kits"}, {"repo": "ZSeven-W/codex-openpencil", "why": "Codex plugin for OpenPencil (rust/wasm canvas for AI UI design)", "stars": 38, "license": "MIT", "date": "2026-10-19", "cat": "mcp"}, {"repo": "mathruffian-dot/claude-motion-explainer", "why": "One-liner → narrated explainer anim (HyperFrames + voice/subs)", "stars": 23, "license": "MIT", "date": "2026-10-19", "cat": "motion"}, {"repo": "cabralorenzo/bencho", "why": "41 copy-paste react blocks + 24 UI sounds from bencho.dev", "stars": 20, "license": "", "date": "2026-10-19", "cat": "kits"}, {"repo": "lemonteaau/smartisan-ui-skill", "why": "Agent skill for Smartisan OS–style UI", "stars": 19, "license": "", "date": "2026-10-19", "cat": "skills"}, {"repo": "vercel-labs/json-render", "why": "JSON→UI rendering for agents", "stars": 0, "license": "", "date": "2026-09-14", "cat": "kits"}, {"repo": "MCP-UI-Org/mcp-ui", "why": "MCP UI primitives for agent interfaces", "stars": 0, "license": "", "date": "2026-09-14", "cat": "mcp"}, {"repo": "mui/base-ui", "why": "Unstyled accessible React primitives from MUI", "stars": 0, "license": "", "date": "2026-09-14", "cat": "kits"}, {"repo": "carbon-design-system/carbon-components-svelte", "why": "IBM Carbon components for Svelte", "stars": 0, "license": "", "date": "2026-09-14", "cat": "kits"}];
+const CATS = [{"id": "skills", "label": "Agent skills", "sub": "Cursor / Claude skills", "hue": "#5B8DEF"}, {"id": "kits", "label": "Design systems", "sub": "UI kits & libraries", "hue": "#7C6CF0"}, {"id": "mcp", "label": "MCP tooling", "sub": "Agent connectors", "hue": "#2BB673"}, {"id": "motion", "label": "Motion & media", "sub": "Animation / video", "hue": "#F06B6B"}, {"id": "lint", "label": "Lint & QA", "sub": "Anti-slop checks", "hue": "#E8A838"}, {"id": "brand", "label": "Brand & art", "sub": "Identity / illustration", "hue": "#E86BA8"}];
+const COUNTS = {"skills": 36, "kits": 41, "mcp": 24, "motion": 15, "lint": 7, "brand": 8};
+
+const ICONS = {
+  skills: `<svg class="icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="gs" x1="12" y1="8" x2="52" y2="56"><stop stop-color="#7BA3F5"/><stop offset="1" stop-color="#3D6FD9"/></linearGradient></defs>
+    <rect x="10" y="14" width="44" height="36" rx="10" fill="url(#gs)"/>
+    <path d="M22 28h20M22 36h14" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/>
+    <circle cx="48" cy="18" r="10" fill="#F5C542" stroke="#fff" stroke-width="2"/>
+    <path d="M48 13v6M45 16h6" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+  </svg>`,
+  kits: `<svg class="icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="gk" x1="8" y1="10" x2="56" y2="54"><stop stop-color="#9B8FF5"/><stop offset="1" stop-color="#5E4FD6"/></linearGradient></defs>
+    <rect x="12" y="12" width="18" height="18" rx="6" fill="url(#gk)"/>
+    <rect x="34" y="12" width="18" height="18" rx="6" fill="#C4BCFA"/>
+    <rect x="12" y="34" width="18" height="18" rx="6" fill="#C4BCFA"/>
+    <rect x="34" y="34" width="18" height="18" rx="6" fill="url(#gk)"/>
+  </svg>`,
+  mcp: `<svg class="icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="gm" x1="10" y1="12" x2="54" y2="52"><stop stop-color="#4DD494"/><stop offset="1" stop-color="#1F9A5C"/></linearGradient></defs>
+    <circle cx="32" cy="32" r="14" fill="url(#gm)"/>
+    <circle cx="14" cy="18" r="7" fill="#6EE0AD"/>
+    <circle cx="50" cy="18" r="7" fill="#6EE0AD"/>
+    <circle cx="14" cy="46" r="7" fill="#6EE0AD"/>
+    <circle cx="50" cy="46" r="7" fill="#6EE0AD"/>
+    <path d="M19 22l8 6M45 22l-8 6M19 42l8-6M45 42l-8-6" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>`,
+  motion: `<svg class="icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="gmo" x1="8" y1="16" x2="56" y2="48"><stop stop-color="#FF8A8A"/><stop offset="1" stop-color="#E04545"/></linearGradient></defs>
+    <rect x="10" y="16" width="44" height="32" rx="10" fill="url(#gmo)"/>
+    <path d="M28 24l14 8-14 8V24z" fill="#fff"/>
+  </svg>`,
+  lint: `<svg class="icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="gl" x1="14" y1="8" x2="48" y2="56"><stop stop-color="#F5C04A"/><stop offset="1" stop-color="#D4891A"/></linearGradient></defs>
+    <path d="M32 8l20 12v24L32 56 12 44V20L32 8z" fill="url(#gl)"/>
+    <path d="M24 32l6 6 12-14" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`,
+  brand: `<svg class="icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="gb" x1="12" y1="10" x2="52" y2="54"><stop stop-color="#F08ABB"/><stop offset="1" stop-color="#C93A7A"/></linearGradient></defs>
+    <circle cx="32" cy="26" r="14" fill="url(#gb)"/>
+    <path d="M14 52c4-10 12-14 18-14s14 4 18 14" fill="#F5B0D0"/>
+    <circle cx="26" cy="24" r="2.5" fill="#fff"/><circle cx="38" cy="24" r="2.5" fill="#fff"/>
+  </svg>`
+};
+
+const grid = document.getElementById("grid");
+const panel = document.getElementById("panel");
+const listEl = document.getElementById("list");
+const emptyEl = document.getElementById("empty");
+const searchEl = document.getElementById("search");
+const titleEl = document.getElementById("panel-title");
+const countEl = document.getElementById("panel-count");
+
+let active = null;
+
+CATS.forEach((c) => {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "cat";
+  btn.dataset.id = c.id;
+  btn.style.setProperty("--hue", c.hue);
+  btn.setAttribute("role", "option");
+  btn.innerHTML = `<span class="tile">${ICONS[c.id]}</span>
+    <span class="cat-label">${c.label}</span>
+    <span class="cat-meta">${COUNTS[c.id]} repos</span>`;
+  btn.addEventListener("click", () => toggle(c.id));
+  grid.appendChild(btn);
+});
+
+function toggle(id) {
+  if (active === id) {
+    active = null;
+    panel.classList.remove("open");
+    document.querySelectorAll(".cat").forEach(b => b.classList.remove("is-active"));
+    return;
   }
-  chips.forEach(chip => chip.addEventListener('click', () => {
-    chips.forEach(c => c.classList.remove('active'));
-    chip.classList.add('active');
-    filter = chip.dataset.filter;
-    apply();
-  }));
-  q.addEventListener('input', apply);
-})();
+  active = id;
+  document.querySelectorAll(".cat").forEach(b => b.classList.toggle("is-active", b.dataset.id === id));
+  const cat = CATS.find(c => c.id === id);
+  titleEl.textContent = cat.label;
+  searchEl.value = "";
+  renderList();
+  panel.classList.add("open");
+  requestAnimationFrame(() => {
+    panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+}
+
+function renderList() {
+  const q = (searchEl.value || "").trim().toLowerCase();
+  const items = REPOS
+    .filter(r => r.cat === active)
+    .filter(r => !q || (r.repo + " " + r.why + " " + (r.license||"")).toLowerCase().includes(q))
+    .sort((a,b) => (b.date||"").localeCompare(a.date||"") || (b.stars||0) - (a.stars||0));
+
+  countEl.textContent = items.length + " shown · " + COUNTS[active] + " total";
+  listEl.innerHTML = "";
+  emptyEl.hidden = items.length > 0;
+
+  items.forEach((r, i) => {
+    const li = document.createElement("li");
+    const a = document.createElement("a");
+    a.className = "card";
+    a.href = "https://github.com/" + r.repo;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.style.animationDelay = (Math.min(i, 24) * 0.03) + "s";
+    const stars = r.stars != null ? r.stars + "★" : "—";
+    const lic = r.license ? r.license : "no license noted";
+    a.innerHTML = `<div class="name">${escapeHtml(r.repo)}</div>
+      <div class="why">${escapeHtml(r.why)}</div>
+      <div class="meta"><span>${escapeHtml(String(stars))}</span><span>${escapeHtml(r.date||"")}</span><span>${escapeHtml(lic)}</span></div>`;
+    li.appendChild(a);
+    listEl.appendChild(li);
+  });
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+}
+
+searchEl.addEventListener("input", () => { if (active) renderList(); });
 </script>
 </body>
 </html>
