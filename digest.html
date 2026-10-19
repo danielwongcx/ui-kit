@@ -331,8 +331,18 @@ const titleEl = document.getElementById("panel-title");
 const countEl = document.getElementById("panel-count");
 const closeBtn = document.getElementById("close");
 const backdrop = document.getElementById("backdrop");
+const SORT_KEY = "repo-scout-digest-sort";
 
 let active = null;
+
+(function restoreSort() {
+  try {
+    const saved = localStorage.getItem(SORT_KEY);
+    if (saved && [...sortEl.options].some(o => o.value === saved)) {
+      sortEl.value = saved;
+    }
+  } catch (_) {}
+})();
 
 CATS.forEach((c) => {
   const btn = document.createElement("button");
@@ -432,7 +442,10 @@ function escapeHtml(s) {
 closeBtn.addEventListener("click", closeModal);
 backdrop.addEventListener("click", closeModal);
 searchEl.addEventListener("input", renderList);
-sortEl.addEventListener("change", renderList);
+sortEl.addEventListener("change", () => {
+  try { localStorage.setItem(SORT_KEY, sortEl.value); } catch (_) {}
+  renderList();
+});
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
 });
