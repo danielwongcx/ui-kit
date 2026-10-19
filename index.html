@@ -1022,6 +1022,110 @@
       box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent);
     }
 
+    .select-demo optgroup {
+      font: inherit;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0.55rem 0.65rem 0.25rem;
+    }
+
+    .select-demo optgroup option {
+      text-transform: none;
+      letter-spacing: normal;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--ink);
+    }
+
+    .select-demo.dark optgroup {
+      color: #8b919c;
+    }
+
+    .select-demo.dark optgroup option {
+      color: #f2f2f7;
+    }
+
+    .select-demo hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 6px 4px;
+    }
+
+    .select-demo.dark hr {
+      border-top-color: #333343;
+    }
+
+    .select-support {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.55rem 0.85rem;
+      margin: 0 0 1.15rem;
+      padding: 0.75rem 0.95rem;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: color-mix(in srgb, #fff 70%, var(--page));
+      font-size: 0.82rem;
+      line-height: 1.4;
+      color: var(--ink);
+    }
+
+    .select-support__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.28rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .select-support__badge::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: currentColor;
+    }
+
+    .select-support.is-yes {
+      border-color: color-mix(in srgb, #1e6851 28%, var(--line));
+      background: color-mix(in srgb, #1e6851 8%, #fff);
+    }
+
+    .select-support.is-yes .select-support__badge {
+      background: color-mix(in srgb, #1e6851 16%, #fff);
+      color: #1e6851;
+    }
+
+    .select-support.is-no {
+      border-color: color-mix(in srgb, #b45309 28%, var(--line));
+      background: color-mix(in srgb, #b45309 8%, #fff);
+    }
+
+    .select-support.is-no .select-support__badge {
+      background: color-mix(in srgb, #b45309 14%, #fff);
+      color: #9a3412;
+    }
+
+    .select-support__detail {
+      color: var(--muted);
+      min-width: 0;
+      flex: 1;
+    }
+
+    .select-support__detail code {
+      font-family: var(--mono);
+      font-size: 0.85em;
+      color: #3a3a44;
+    }
+
     .select-fallback {
       display: none;
       margin: 0.85rem 0 0;
@@ -1718,10 +1822,18 @@
           Native customizable <code>&lt;select&gt;</code> via
           <code>appearance: base-select</code> (Chromium 135+).
           Rich HTML inside <code>&lt;option&gt;</code>,
+          <code>&lt;optgroup&gt;</code> grouping,
           <code>&lt;selectedcontent&gt;</code> for the closed preview,
           and <code>::picker(select)</code> / <code>:open</code> for the popup —
           no JS dropdown library.
         </p>
+      </div>
+
+      <div class="select-support" id="select-support" role="status" aria-live="polite">
+        <span class="select-support__badge" id="select-support-badge">Checking…</span>
+        <span class="select-support__detail" id="select-support-detail">
+          Detecting <code>appearance: base-select</code>…
+        </span>
       </div>
 
       <div class="sec-grid two">
@@ -1850,10 +1962,95 @@
             <p class="hint">Checked option picks up <code>--accent</code></p>
           </div>
         </article>
+
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Select / grouped</span>
+            <span class="canvas-tag">optgroup</span>
+          </div>
+          <div class="canvas-body">
+            <select class="select-demo" aria-label="Region">
+              <button type="button">
+                <selectedcontent></selectedcontent>
+              </button>
+              <optgroup label="Asia">
+                <option value="hk" selected>
+                  <span class="select-row">
+                    <span class="select-ico" aria-hidden="true">🇭🇰</span>
+                    <span class="select-text">
+                      <span class="select-label">Hong Kong</span>
+                      <span class="select-sub">Asia · HKT</span>
+                    </span>
+                  </span>
+                </option>
+                <option value="sg">
+                  <span class="select-row">
+                    <span class="select-ico" aria-hidden="true">🇸🇬</span>
+                    <span class="select-text">
+                      <span class="select-label">Singapore</span>
+                      <span class="select-sub">Asia · SGT</span>
+                    </span>
+                  </span>
+                </option>
+                <option value="jp">
+                  <span class="select-row">
+                    <span class="select-ico" aria-hidden="true">🇯🇵</span>
+                    <span class="select-text">
+                      <span class="select-label">Tokyo</span>
+                      <span class="select-sub">Asia · JST</span>
+                    </span>
+                  </span>
+                </option>
+              </optgroup>
+              <hr />
+              <optgroup label="Europe">
+                <option value="uk">
+                  <span class="select-row">
+                    <span class="select-ico" aria-hidden="true">🇬🇧</span>
+                    <span class="select-text">
+                      <span class="select-label">London</span>
+                      <span class="select-sub">Europe · GMT</span>
+                    </span>
+                  </span>
+                </option>
+                <option value="de">
+                  <span class="select-row">
+                    <span class="select-ico" aria-hidden="true">🇩🇪</span>
+                    <span class="select-text">
+                      <span class="select-label">Berlin</span>
+                      <span class="select-sub">Europe · CET</span>
+                    </span>
+                  </span>
+                </option>
+              </optgroup>
+              <optgroup label="Americas">
+                <option value="us">
+                  <span class="select-row">
+                    <span class="select-ico" aria-hidden="true">🇺🇸</span>
+                    <span class="select-text">
+                      <span class="select-label">New York</span>
+                      <span class="select-sub">Americas · ET</span>
+                    </span>
+                  </span>
+                </option>
+                <option value="br">
+                  <span class="select-row">
+                    <span class="select-ico" aria-hidden="true">🇧🇷</span>
+                    <span class="select-text">
+                      <span class="select-label">São Paulo</span>
+                      <span class="select-sub">Americas · BRT</span>
+                    </span>
+                  </span>
+                </option>
+              </optgroup>
+            </select>
+            <p class="hint"><code>&lt;optgroup&gt;</code> labels + optional <code>&lt;hr&gt;</code> separator</p>
+          </div>
+        </article>
       </div>
       <p class="select-fallback">
         This browser doesn’t support <code>appearance: base-select</code> yet.
-        Try Chrome 135+ to see the styled picker.
+        Try Chrome 135+ to see the styled picker and grouped options.
       </p>
     </section>
 
@@ -1989,6 +2186,38 @@
         });
       });
 
+    })();
+  </script>
+  <script>
+    (function () {
+      var box = document.getElementById('select-support');
+      var badge = document.getElementById('select-support-badge');
+      var detail = document.getElementById('select-support-detail');
+      if (!box || !badge || !detail) return;
+
+      var supported = false;
+      try {
+        supported = !!(window.CSS && CSS.supports && (
+          CSS.supports('appearance', 'base-select') ||
+          CSS.supports('-webkit-appearance', 'base-select')
+        ));
+      } catch (e) {}
+
+      var ua = (navigator.userAgent || '').replace(/</g, '');
+      var shortUa = /Chrome\/[\d.]+|CriOS\/[\d.]+|Edg\/[\d.]+|Firefox\/[\d.]+|Safari\/[\d.]+|Version\/[\d.]+/.exec(ua);
+      var browserBit = shortUa ? shortUa[0] : 'this browser';
+
+      if (supported) {
+        box.classList.add('is-yes');
+        box.classList.remove('is-no');
+        badge.textContent = 'Supported';
+        detail.innerHTML = browserBit + ' reports <code>appearance: base-select</code>. Styled picker, rich options, and <code>optgroup</code> demos should work.';
+      } else {
+        box.classList.add('is-no');
+        box.classList.remove('is-yes');
+        badge.textContent = 'Not supported';
+        detail.innerHTML = browserBit + ' does not support <code>appearance: base-select</code> yet. You still get a native select; try Chrome 135+ for the custom picker.';
+      }
     })();
   </script>
   <script src="shared/site-header.js" defer></script>
