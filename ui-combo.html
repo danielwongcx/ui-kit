@@ -116,6 +116,15 @@
       outline-offset: 2px;
     }
 
+    @media (max-width: 720px) {
+      .lib-nav {
+        display: none;
+      }
+      html {
+        scroll-padding-top: calc(var(--site-header-h, 56px) + 16px);
+      }
+    }
+
     /* —— Page shell —— */
     .lib {
       max-width: 960px;
