@@ -1,17 +1,37 @@
 /**
- * Gallery-only: collapsible .sec sections + floating speed-dial FAB.
- * Register new gallery sections in SECTION_LINKS (id must match section id).
+ * Collapsible .sec sections + floating speed-dial FAB.
+ * SECTION_LINKS is chosen from data-page (gallery vs taste).
+ * Register new sections in the matching map (id must match section id).
  */
 (function () {
   'use strict';
 
-  var SECTION_LINKS = [
+  var GALLERY_SECTION_LINKS = [
     { id: 'digits', label: 'Digits' },
     { id: 'buttons', label: 'Buttons' },
     { id: 'cards', label: 'Cards' },
     { id: 'palettes', label: 'Palettes' },
     { id: 'select', label: 'Select' }
   ];
+
+  var TASTE_SECTION_LINKS = [
+    { id: 'motion', label: 'Motion' },
+    { id: 'app', label: 'App' },
+    { id: 'buttons', label: 'Buttons+' },
+    { id: 'states', label: 'States' },
+    { id: 'forms', label: 'Forms' },
+    { id: 'cards', label: 'Cards+' },
+    { id: 'palettes', label: 'Palettes' },
+    { id: 'digest-strip', label: 'Digest' }
+  ];
+
+  function sectionLinksForPage() {
+    var page = document.body && document.body.getAttribute('data-page');
+    if (page === 'taste') return TASTE_SECTION_LINKS;
+    return GALLERY_SECTION_LINKS;
+  }
+
+  var SECTION_LINKS = sectionLinksForPage();
 
   var reduceMotion = false;
   try {

@@ -7,7 +7,8 @@
 
   var PAGE_LINKS = [
     { id: 'gallery', label: 'Gallery', href: 'index.html' },
-    { id: 'digest', label: 'Digest', href: 'digest.html' }
+    { id: 'digest', label: 'Digest', href: 'digest.html' },
+    { id: 'taste', label: 'Taste', href: 'taste.html' }
   ];
 
   function activePageId() {

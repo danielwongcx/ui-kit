@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UI Library · Taste</title>
+  <script>
+    (function () {
+      try {
+        var id = localStorage.getItem('ui-kit-taste-palette') || 'ink';
+        var pages = {
+          ink: '#ececf0', forest: '#eef4f0', slate: '#f0f1f3',
+          ocean: '#eef6f6', amber: '#faf6ee', rosewood: '#f8f1f3'
+        };
+        var page = pages[id] || pages.ink;
+        document.documentElement.setAttribute('data-theme', id);
+        document.documentElement.style.setProperty('--page', page);
+      } catch (e) {}
+    })();
+  </script>
+  <style>
+    :root {
+      --page: #ececf0;
+      --canvas: #ffffff;
+      --ink: #1c1c22;
+      --muted: #6b6b76;
+      --line: #e4e4ea;
+      --accent: #1e6851;
+      --brand: #1e6851;
+      --up: #1a7f4b;
+      --down: #c0392b;
+      --spring: linear(
+        0, 0.006, 0.025, 0.07, 0.14, 0.25, 0.4, 0.55, 0.7, 0.82,
+        0.92, 0.99, 1.04, 1.08, 1.09, 1.07, 1.04, 1.02, 1.005, 1
+      );
+      --spring-dur: 0.75s;
+      --nav-h: 52px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: calc(var(--site-header-h, 56px) + var(--nav-h) + 16px); }
+    body {
+      margin: 0; min-height: 100dvh; background: var(--page); color: var(--ink);
+      font-family: var(--sans); -webkit-font-smoothing: antialiased;
+    }
+    .lib-nav {
+      position: sticky; top: var(--site-header-h, 56px); z-index: 40;
+      height: var(--nav-h); display: flex; align-items: center; gap: 0.75rem;
+      padding: 0 1.25rem; background: color-mix(in srgb, var(--page) 88%, #fff);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .lib-brand { font-size: 11px; font-weight: 650; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+    .lib-links { display: flex; gap: 0.15rem; margin-left: auto; overflow-x: auto; }
+    .lib-links a {
+      font-size: 12px; font-weight: 600; color: var(--muted); text-decoration: none;
+      padding: 0.4rem 0.7rem; border-radius: 999px; white-space: nowrap;
+    }
+    .lib-links a:hover { color: var(--ink); background: #fff; }
+    .lib-links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    @media (max-width: 720px) {
+      .lib-nav { display: none; }
+      html { scroll-padding-top: calc(var(--site-header-h, 56px) + 16px); }
+    }
+    .lib { max-width: 960px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    .lib-hero { margin: 0 0 2.5rem; }
+    .lib-hero h1 { margin: 0 0 0.4rem; font-size: 1.35rem; font-weight: 700; letter-spacing: -0.03em; }
+    .lib-hero p { margin: 0; font-size: 0.9rem; line-height: 1.5; color: var(--muted); max-width: 40rem; }
+    .lib-hero code { font-family: var(--mono); font-size: 0.85em; color: #3a3a44; }
+    .sec { margin: 0 0 3rem; }
+    .sec-head { margin: 0 0 1.15rem; }
+    .sec-head h2 { margin: 0 0 0.3rem; font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; }
+    .sec-head p { margin: 0; font-size: 0.82rem; line-height: 1.45; color: var(--muted); max-width: 42rem; }
+    .sec-grid { display: grid; gap: 1.15rem; align-items: start; }
+    .sec-grid.two { grid-template-columns: 1fr; }
+    @media (min-width: 720px) { .sec-grid.two { grid-template-columns: 1fr 1fr; } }
+    .sec-grid.three { grid-template-columns: 1fr; }
+    @media (min-width: 720px) { .sec-grid.three { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 900px) { .sec-grid.three { grid-template-columns: 1fr 1fr 1fr; } }
+    .canvas {
+      background: var(--canvas); border: 1px solid var(--line); border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008; overflow: hidden; display: flex; flex-direction: column;
+    }
+    .canvas-chrome {
+      display: flex; align-items: center; gap: 0.5rem; padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid var(--line); background: #fafafa;
+    }
+    .canvas-name { font-family: var(--mono); font-size: 11px; font-weight: 500; color: #3a3a44; letter-spacing: 0.01em; }
+    .canvas-tag { margin-left: auto; font-family: var(--mono); font-size: 10px; color: var(--muted); }
+    .canvas-body {
+      padding: 1.5rem 1.25rem; display: flex; flex-direction: column;
+      align-items: stretch; justify-content: center; gap: 1rem; min-height: 160px;
+    }
+    .canvas-body.center { align-items: center; }
+    .hint { margin: 0; font-size: 0.72rem; color: var(--muted); text-align: center; }
+    .play-row { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
+    .play-btn {
+      appearance: none; border: 1px solid var(--line); background: #fff; color: var(--ink);
+      font: inherit; font-size: 12px; font-weight: 600; padding: 0.4rem 0.85rem;
+      border-radius: 999px; cursor: pointer;
+      transition: transform var(--spring-dur) var(--spring), background 0.15s ease;
+    }
+    .play-btn:hover { background: #f4f4f7; }
+    .play-btn:active { transform: scale(0.98); }
+    .play-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .note-rm { font-size: 0.7rem; color: var(--muted); text-align: center; margin: 0; }
+
+    /* —— Motion: masked headline —— */
+    .mask-line { overflow: hidden; line-height: 1.15; }
+    .mask-line span {
+      display: block; transform: translateY(110%);
+      transition: transform var(--spring-dur) var(--spring);
+      font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 700; letter-spacing: -0.03em;
+    }
+    .mask-line.is-in span { transform: translateY(0); }
+    .mask-line.is-in span:nth-child(2) { transition-delay: 0.08s; }
+    @media (prefers-reduced-motion: reduce) {
+      .mask-line span { transform: none; transition: none; }
+    }
+
+    /* —— Rolling figures —— */
+    .roll {
+      display: flex; gap: 0.15rem; font-variant-numeric: tabular-nums;
+      font-size: 2.4rem; font-weight: 700; letter-spacing: -0.04em; line-height: 1;
+      justify-content: center;
+    }
+    .roll-col {
+      height: 1lh; overflow: hidden; position: relative;
+    }
+    .roll-strip {
+      display: flex; flex-direction: column; transition: transform 1.1s var(--spring);
+    }
+    .roll-strip span { display: block; height: 1lh; line-height: 1; text-align: center; width: 0.65em; }
+    .roll.is-done .roll-strip { transition: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .roll-strip { transition: none !important; }
+    }
+
+    /* —— Drag row —— */
+    .drag-row {
+      display: flex; gap: 0.75rem; overflow-x: auto; scroll-snap-type: x mandatory;
+      padding: 0.25rem 0 0.75rem; margin: 0 -0.25rem;
+      -webkit-overflow-scrolling: touch;
+    }
+    .drag-row::-webkit-scrollbar { height: 6px; }
+    .drag-row::-webkit-scrollbar-thumb { background: #d0d0d8; border-radius: 999px; }
+    .drag-card {
+      flex: 0 0 72%; max-width: 220px; scroll-snap-align: start;
+      border: 1px solid var(--line); border-radius: 16px; padding: 1rem 1.1rem;
+      background: #fafafa; min-height: 110px;
+    }
+    .drag-row > .drag-card:first-child { margin-left: 0.25rem; }
+    .drag-card h4 { margin: 0 0 0.35rem; font-size: 0.95rem; font-weight: 650; }
+    .drag-card p { margin: 0; font-size: 0.78rem; color: var(--muted); line-height: 1.4; }
+
+    /* —— Index + preview —— */
+    .idx-wrap { display: grid; grid-template-columns: 1fr; gap: 1rem; width: 100%; }
+    @media (min-width: 640px) { .idx-wrap { grid-template-columns: 1.1fr 0.9fr; align-items: stretch; } }
+    .idx-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.15rem; }
+    .idx-row {
+      display: flex; justify-content: space-between; align-items: center; gap: 0.75rem;
+      padding: 0.65rem 0.75rem; border-radius: 10px; border: 1px solid transparent;
+      cursor: pointer; background: transparent; font: inherit; color: inherit; text-align: left; width: 100%;
+    }
+    .idx-row:hover, .idx-row.is-active { background: #f4f4f7; border-color: var(--line); }
+    .idx-row strong { font-size: 0.88rem; font-weight: 650; }
+    .idx-row span { font-size: 0.72rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .idx-preview {
+      border-radius: 14px; border: 1px solid var(--line); overflow: hidden;
+      background: #e8e8ee; min-height: 160px; position: relative;
+    }
+    .idx-preview img {
+      width: 100%; height: 100%; object-fit: cover; display: block; min-height: 160px;
+      transition: opacity 0.35s ease;
+    }
+    .idx-inline { display: none; margin-top: 0.5rem; border-radius: 10px; overflow: hidden; }
+    .idx-inline img { width: 100%; display: block; max-height: 140px; object-fit: cover; }
+    @media (hover: none) {
+      .idx-preview { display: none; }
+      .idx-row.is-active + .idx-inline, .idx-row.is-active .idx-inline { display: block; }
+      .idx-inline { display: none; }
+      .idx-row.is-active .idx-inline { display: block; width: 100%; margin-top: 0.55rem; }
+      .idx-wrap { grid-template-columns: 1fr; }
+    }
+
+    /* —— Shutter —— */
+    .shutter {
+      width: 100%; max-width: 280px; margin: 0 auto; aspect-ratio: 4/3;
+      border-radius: 12px; overflow: hidden; background: #ddd;
+      clip-path: inset(50% 0 50% 0); transition: clip-path 0.9s var(--spring);
+    }
+    .shutter.is-open { clip-path: inset(0 0 0 0); }
+    .shutter img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    @media (prefers-reduced-motion: reduce) {
+      .shutter { clip-path: none; transition: none; }
+    }
+
+    /* —— Curtain footer —— */
+    .curtain-stage {
+      position: relative; height: 140px; border-radius: 12px; overflow: hidden;
+      background: #1c1c22; color: #f4f5f7;
+    }
+    .curtain-panel {
+      position: absolute; inset: 0; display: grid; place-items: center;
+      background: #2a2e38; transform: translateY(0);
+      transition: transform 0.85s var(--spring); font-weight: 650; letter-spacing: -0.02em;
+    }
+    .curtain-stage.is-open .curtain-panel { transform: translateY(-100%); }
+    .curtain-under { position: absolute; inset: 0; display: grid; place-items: center; font-size: 0.85rem; color: #b8bcc6; padding: 1rem; text-align: center; }
+    @media (prefers-reduced-motion: reduce) {
+      .curtain-panel { transition: none; }
+      .curtain-stage.is-open .curtain-panel { transform: translateY(-100%); }
+    }
+
+    /* —— App / Data —— */
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; width: 100%; }
+    @media (min-width: 560px) { .kpi-row { grid-template-columns: 1fr 1fr 1fr; } }
+    .kpi {
+      padding: 1rem 1.05rem; border: 1px solid var(--line); border-radius: 12px;
+      background: #fff;
+    }
+    .kpi-label { font-size: 0.72rem; color: var(--muted); margin: 0 0 0.35rem; font-weight: 550; }
+    .kpi-val { font-size: 1.55rem; font-weight: 700; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; margin: 0; line-height: 1.1; }
+    .kpi-delta { margin: 0.35rem 0 0; font-size: 0.78rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .kpi-delta.up { color: var(--up); }
+    .kpi-delta.down { color: var(--down); }
+    .flat-panel {
+      border: 1px solid var(--line); border-radius: 12px; background: #fafafa;
+      padding: 1rem 1.1rem; width: 100%;
+    }
+    .flat-panel h4 { margin: 0 0 0.35rem; font-size: 0.9rem; font-weight: 650; }
+    .flat-panel p { margin: 0; font-size: 0.8rem; color: var(--muted); line-height: 1.45; }
+    .chart-wrap { width: 100%; }
+    .chart-wrap svg { width: 100%; height: auto; display: block; }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    .data-table th, .data-table td {
+      padding: 0.55rem 0.65rem; border-bottom: 1px solid var(--line); text-align: left;
+    }
+    .data-table th { font-weight: 650; color: var(--muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.03em; }
+    .data-table td.num, .data-table th.num { text-align: right; font-variant-numeric: tabular-nums; }
+    .data-table tbody tr:last-child td { border-bottom: none; }
+
+    /* —— Buttons+ —— */
+    .island-btn {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      padding: 0.45rem 0.45rem 0.45rem 1.05rem; border: none; border-radius: 999px;
+      background: #1c1c22; color: #fff; font: inherit; font-size: 0.9rem; font-weight: 650;
+      cursor: pointer; transition: transform var(--spring-dur) var(--spring);
+    }
+    .island-btn:hover .island-ico { transform: translateX(2px); }
+    .island-btn:active { transform: scale(0.98); }
+    .island-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .island-ico {
+      width: 34px; height: 34px; border-radius: 999px; background: #fff; color: #1c1c22;
+      display: grid; place-items: center; transition: transform var(--spring-dur) var(--spring);
+    }
+    .island-ico svg { width: 16px; height: 16px; }
+    .mag-btn {
+      appearance: none; border: none; background: #1e6851; color: #fff;
+      font: inherit; font-size: 0.9rem; font-weight: 650; padding: 0.75rem 1.35rem;
+      border-radius: 12px; cursor: pointer;
+      transition: transform var(--spring-dur) var(--spring);
+    }
+    .mag-btn:hover { transform: translateY(-1px); }
+    .mag-btn:active { transform: scale(0.98); }
+    .btn-stack { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: center; }
+
+    /* —— States —— */
+    .state-shell {
+      border: 1px solid var(--line); border-radius: 12px; background: #fff;
+      min-height: 150px; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem;
+    }
+    .state-shell h4 { margin: 0; font-size: 0.88rem; font-weight: 650; }
+    .state-msg { margin: auto 0; text-align: center; padding: 0.5rem; }
+    .state-msg strong { display: block; font-size: 0.92rem; margin-bottom: 0.25rem; }
+    .state-msg span { font-size: 0.78rem; color: var(--muted); line-height: 1.4; }
+    .state-skel { display: flex; flex-direction: column; gap: 0.55rem; }
+    .skel-line {
+      height: 10px; border-radius: 6px; background: linear-gradient(90deg, #ececf0, #f6f6f8, #ececf0);
+      background-size: 200% 100%; animation: skel 1.2s ease-in-out infinite;
+    }
+    .skel-line.w60 { width: 60%; } .skel-line.w80 { width: 80%; } .skel-line.w40 { width: 40%; }
+    @keyframes skel { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+    @media (prefers-reduced-motion: reduce) { .skel-line { animation: none; background: #ececf0; } }
+    .state-err { color: var(--down); }
+    .state-zero .kpi-val { color: var(--muted); }
+
+    /* —— Forms —— */
+    .settings { width: 100%; display: flex; flex-direction: column; gap: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+    .settings-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      padding: 0.85rem 1rem; background: #fff; border-bottom: 1px solid var(--line);
+    }
+    .settings-row:last-child { border-bottom: none; }
+    .settings-row label { font-size: 0.88rem; font-weight: 550; }
+    .settings-row .meta { font-size: 0.72rem; color: var(--muted); margin-top: 0.15rem; }
+    .toggle {
+      width: 40px; height: 24px; border-radius: 999px; border: none; background: #d0d0d8;
+      position: relative; cursor: pointer; transition: background 0.2s ease; flex-shrink: 0;
+    }
+    .toggle[aria-checked="true"] { background: #1e6851; }
+    .toggle::after {
+      content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px;
+      border-radius: 999px; background: #fff; transition: transform 0.2s var(--spring);
+    }
+    .toggle[aria-checked="true"]::after { transform: translateX(16px); }
+    .seg {
+      display: inline-flex; padding: 3px; border-radius: 10px; background: #ececf0; gap: 2px;
+    }
+    .seg button {
+      appearance: none; border: none; background: transparent; font: inherit;
+      font-size: 0.78rem; font-weight: 600; padding: 0.4rem 0.75rem; border-radius: 8px;
+      color: var(--muted); cursor: pointer;
+    }
+    .seg button[aria-pressed="true"] { background: #fff; color: var(--ink); box-shadow: 0 1px 2px #00000010; }
+    .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .chip {
+      appearance: none; border: 1px solid var(--line); background: #fff; font: inherit;
+      font-size: 0.75rem; font-weight: 600; padding: 0.35rem 0.7rem; border-radius: 999px;
+      color: var(--muted); cursor: pointer;
+    }
+    .chip[aria-pressed="true"] { border-color: #1c1c22; color: var(--ink); background: #f4f4f7; }
+    .field { display: flex; flex-direction: column; gap: 0.35rem; width: 100%; }
+    .field label { font-size: 0.78rem; font-weight: 600; color: var(--muted); }
+    .field input, .field select {
+      font: inherit; font-size: 0.9rem; padding: 0.65rem 0.75rem; border-radius: 10px;
+      border: 1px solid var(--line); background: #fff; color: var(--ink);
+    }
+    .field input:focus-visible, .field select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+    /* —— Leave calendar —— */
+    .leave {
+      width: 100%; overflow-x: auto; border: 1px solid var(--line); border-radius: 12px;
+    }
+    .leave table { width: 100%; border-collapse: collapse; font-size: 0.75rem; min-width: 480px; }
+    .leave th, .leave td { padding: 0.45rem 0.35rem; text-align: center; border-bottom: 1px solid var(--line); }
+    .leave th { font-weight: 600; color: var(--muted); font-size: 0.68rem; }
+    .leave td.name { text-align: left; padding-left: 0.75rem; font-weight: 600; white-space: nowrap; }
+    .leave .cell { width: 28px; height: 22px; margin: 0 auto; border-radius: 4px; }
+    .leave .holiday { background: #e8f3ec; }
+    .leave .sick {
+      background: repeating-linear-gradient(-45deg, #f5e8e8, #f5e8e8 3px, #eedada 3px, #eedada 6px);
+    }
+    .leave .pending { border: 1.5px dashed #a0a0aa; background: transparent; box-sizing: border-box; }
+    .leave-legend { display: flex; flex-wrap: wrap; gap: 0.75rem; font-size: 0.72rem; color: var(--muted); }
+    .leave-legend i { display: inline-block; width: 14px; height: 14px; border-radius: 3px; vertical-align: -2px; margin-right: 0.3rem; }
+
+    /* —— Bento NestedRadius —— */
+    .bento {
+      display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px;
+      padding: 16px; border-radius: 40px; background: #f0f0f4; border: 1px solid var(--line);
+    }
+    .bento-tile {
+      border-radius: 24px; background: #fff; border: 1px solid var(--line);
+      padding: 1.15rem 1.2rem; min-height: 120px;
+    }
+    .bento-tile.tall { grid-row: span 1; }
+    .bento-tile h4 { margin: 0 0 0.35rem; font-size: 0.95rem; font-weight: 650; }
+    .bento-tile p { margin: 0; font-size: 0.78rem; color: var(--muted); line-height: 1.4; }
+    @media (max-width: 560px) { .bento { grid-template-columns: 1fr; border-radius: 28px; } }
+
+    /* —— Palettes —— */
+    .palette-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+    @media (min-width: 720px) { .palette-grid { grid-template-columns: 1fr 1fr 1fr 1fr; } }
+    .pal-card {
+      appearance: none; border: 1px solid var(--line); border-radius: 14px; background: #fff;
+      padding: 0.85rem; cursor: pointer; text-align: left; font: inherit; color: inherit;
+      transition: border-color 0.15s ease, transform var(--spring-dur) var(--spring);
+    }
+    .pal-card:hover { border-color: #c8c8d0; }
+    .pal-card.is-active { border-color: #1c1c22; box-shadow: 0 0 0 1px #1c1c22; }
+    .pal-card:active { transform: scale(0.98); }
+    .pal-swatches { display: flex; height: 36px; border-radius: 8px; overflow: hidden; margin-bottom: 0.55rem; }
+    .pal-swatches span { flex: 1; }
+    .pal-name { font-size: 0.82rem; font-weight: 650; margin: 0; }
+    .pal-meta { font-size: 0.68rem; color: var(--muted); margin: 0.15rem 0 0; font-family: var(--mono); }
+
+    /* —— Digest strip —— */
+    .ba { display: grid; grid-template-columns: 1fr; gap: 1rem; width: 100%; }
+    @media (min-width: 640px) { .ba { grid-template-columns: 1fr 1fr; } }
+    .ba-col { border: 1px solid var(--line); border-radius: 12px; padding: 1rem; background: #fafafa; }
+    .ba-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin: 0 0 0.75rem; }
+    .ba-eyebrow { font-size: 0.68rem; font-weight: 650; color: #8b7a5e; letter-spacing: 0.06em; text-transform: uppercase; margin: 0 0 0.5rem; }
+    .ba-icons { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; }
+    .ba-icon-card {
+      border-radius: 10px; background: #fff; border: 1px solid var(--line); padding: 0.65rem 0.4rem;
+      text-align: center; font-size: 0.65rem; color: var(--muted);
+    }
+    .ba-icon-card .circ {
+      width: 28px; height: 28px; border-radius: 999px; margin: 0 auto 0.35rem;
+      background: #efe6d8; display: grid; place-items: center; font-size: 0.75rem;
+    }
+    .ba-quiet h4 { margin: 0 0 0.25rem; font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; }
+    .ba-quiet p { margin: 0 0 0.75rem; font-size: 0.78rem; color: var(--muted); }
+    .ba-field { height: 48px; border-radius: 10px; background: #fff; border: 1px solid var(--line); }
+
+    .lib-foot {
+      margin-top: 1rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+      font-size: 0.72rem; color: var(--muted); line-height: 1.5;
+    }
+    .lib-foot code { font-family: var(--mono); font-size: 0.95em; }
+  </style>
+  <link rel="stylesheet" href="shared/site-header.css" />
+  <link rel="stylesheet" href="shared/section-fab.css" />
+</head>
+<body data-page="taste">
+  <nav class="lib-nav" aria-label="Taste sections">
+    <div class="lib-brand">Sections</div>
+    <div class="lib-links">
+      <a href="#motion">Motion</a>
+      <a href="#app">App</a>
+      <a href="#buttons">Buttons+</a>
+      <a href="#states">States</a>
+      <a href="#forms">Forms</a>
+      <a href="#cards">Cards+</a>
+      <a href="#palettes">Palettes</a>
+      <a href="#digest-strip">Digest</a>
+    </div>
+  </nav>
+
+  <div class="lib">
+    <header class="lib-hero">
+      <h1>Taste gallery</h1>
+      <p>
+        Patterns distilled from a
+        <a href="https://github.com/Leonxlnx/taste-skill" style="color:inherit">taste-skill</a>
+        study: quiet motion recipes, honest app/data UI, island buttons, trade-word states,
+        and NestedRadius cards. Static HTML/CSS/JS demos — same shell tokens as the main gallery
+        (<code>--page</code> / <code>--canvas</code> / spring). Index stays the original Digits · Buttons · Cards kit.
+      </p>
+    </header>
+
+    <!-- ===================== MOTION ===================== -->
+    <section class="sec" id="motion">
+      <div class="sec-head">
+        <h2>Motion</h2>
+        <p>
+          Viewport-friendly recipes with Play controls. Prefer-reduced-motion skips springs
+          and jumps to the final frame.
+        </p>
+      </div>
+      <div class="sec-grid two">
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Motion / masked-headline</span>
+            <span class="canvas-tag">line rise</span>
+          </div>
+          <div class="canvas-body center">
+            <div class="mask-line" id="mask-demo" aria-live="polite">
+              <span>Ship quieter</span>
+              <span>product UI</span>
+            </div>
+            <div class="play-row">
+              <button type="button" class="play-btn" data-play="mask">Play</button>
+            </div>
+            <p class="note-rm">Reduced motion: shows final text immediately</p>
+          </div>
+        </article>
+
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Motion / rolling-figures</span>
+            <span class="canvas-tag">viewport once</span>
+          </div>
+          <div class="canvas-body center">
+            <div class="roll" id="roll-demo" aria-label="Revenue 2480">
+              <span style="font-size:1.4rem;align-self:center;margin-right:0.15rem">$</span>
+              <div class="roll-col" data-digit="2"><div class="roll-strip"></div></div>
+              <div class="roll-col" data-digit="4"><div class="roll-strip"></div></div>
+              <div class="roll-col" data-digit="8"><div class="roll-strip"></div></div>
+              <div class="roll-col" data-digit="0"><div class="roll-strip"></div></div>
+            </div>
+            <div class="play-row">
+              <button type="button" class="play-btn" data-play="roll">Play</button>
+            </div>
+            <p class="note-rm">One-shot on enter · tabular nums · not the live odometer</p>
+          </div>
+        </article>
+
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Motion / drag-row</span>
+            <span class="canvas-tag">overflow-x · snap</span>
+          </div>
+          <div class="canvas-body">
+            <div class="drag-row" tabindex="0" aria-label="Scrollable cards">
+              <div class="drag-card"><h4>Inbox</h4><p>Unread threads, first card margin-aligned to the stage.</p></div>
+              <div class="drag-card"><h4>Approvals</h4><p>Pending spend sits snap-aligned as you swipe.</p></div>
+              <div class="drag-card"><h4>Ship log</h4><p>Native scroll — no JS drag library.</p></div>
+              <div class="drag-card"><h4>Notes</h4><p>Keep cards short; let the row carry the motion.</p></div>
+            </div>
+            <p class="hint">Swipe / scroll horizontally · snap-start</p>
+          </div>
+        </article>
+
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Motion / index-preview</span>
+            <span class="canvas-tag">hover · touch inline</span>
+          </div>
+          <div class="canvas-body">
+            <div class="idx-wrap" id="idx-demo">
+              <ul class="idx-list">
+                <li>
+                  <button type="button" class="idx-row is-active" data-src="assets/sophie-bennett.jpg" data-fallback="0">
+                    <strong>North line</strong><span>01</span>
+                    <div class="idx-inline"><img alt="" src="assets/sophie-bennett.jpg" /></div>
+                  </button>
+                </li>
+                <li>
+                  <button type="button" class="idx-row" data-src="assets/sophie-bennett-wide.jpg" data-fallback="1">
+                    <strong>Harbour walk</strong><span>02</span>
+                    <div class="idx-inline"><img alt="" src="assets/sophie-bennett-wide.jpg" /></div>
+                  </button>
+                </li>
+                <li>
+                  <button type="button" class="idx-row" data-src="assets/sophie-bennett.jpg" data-fallback="2">
+                    <strong>Evening desk</strong><span>03</span>
+                    <div class="idx-inline"><img alt="" src="assets/sophie-bennett.jpg" /></div>
+                  </button>
+                </li>
+              </ul>
+              <div class="idx-preview">
+                <img id="idx-img" alt="Preview" src="assets/sophie-bennett.jpg" />
+              </div>
+            </div>
+            <p class="hint">Hover row → fixed frame · on touch, preview opens inline</p>
+          </div>
+        </article>
+
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Motion / shutter-image</span>
+            <span class="canvas-tag">clip-path</span>
+          </div>
+          <div class="canvas-body center">
+            <div class="shutter" id="shutter-demo">
+              <img alt="" src="assets/sophie-bennett-wide.jpg" />
+            </div>
+            <div class="play-row">
+              <button type="button" class="play-btn" data-play="shutter">Play</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Motion / curtain-footer</span>
+            <span class="canvas-tag">mini</span>
+          </div>
+          <div class="canvas-body">
+            <div class="curtain-stage" id="curtain-demo">
+              <div class="curtain-under">Footer copy revealed — quiet close.</div>
+              <div class="curtain-panel">Pull the curtain</div>
+            </div>
+            <div class="play-row">
+              <button type="button" class="play-btn" data-play="curtain">Play</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== APP ===================== -->
+    <section class="sec" id="app">
+      <div class="sec-head">
+        <h2>App / Data</h2>
+        <p>
+          Quiet product UI: KPI as type (no icon circles, no sparklines on tiles),
+          flat panels with a tone step, one honest chart series, tables without zebra.
+        </p>
+      </div>
+      <div class="sec-grid">
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">App / kpi-row</span>
+            <span class="canvas-tag">type + delta</span>
+          </div>
+          <div class="canvas-body">
+            <div class="kpi-row">
+              <div class="kpi">
+                <p class="kpi-label">Net revenue</p>
+                <p class="kpi-val">$48.2k</p>
+                <p class="kpi-delta up">+6.4% vs last week</p>
+              </div>
+              <div class="kpi">
+                <p class="kpi-label">Active seats</p>
+                <p class="kpi-val">1,284</p>
+                <p class="kpi-delta up">+32</p>
+              </div>
+              <div class="kpi">
+                <p class="kpi-label">Churn</p>
+                <p class="kpi-val">1.8%</p>
+                <p class="kpi-delta down">+0.3 pts</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <div class="sec-grid two">
+          <article class="canvas">
+            <div class="canvas-chrome">
+              <span class="canvas-name">App / flat-panel</span>
+              <span class="canvas-tag">1px · no shadow</span>
+            </div>
+            <div class="canvas-body">
+              <div class="flat-panel">
+                <h4>Settlement window</h4>
+                <p>Payouts clear T+2. Tone step separates the panel from the page — no resting shadow.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="canvas">
+            <div class="canvas-chrome">
+              <span class="canvas-name">App / chart</span>
+              <span class="canvas-tag">one series</span>
+            </div>
+            <div class="canvas-body">
+              <div class="chart-wrap" aria-label="Weekly volume chart">
+                <svg viewBox="0 0 320 140" role="img">
+                  <g stroke="#e8e8ee" stroke-width="1">
+                    <line x1="32" y1="20" x2="32" y2="120" />
+                    <line x1="32" y1="120" x2="300" y2="120" />
+                    <line x1="32" y1="70" x2="300" y2="70" stroke-dasharray="2 4" />
+                    <line x1="32" y1="45" x2="300" y2="45" stroke-dasharray="2 4" />
+                    <line x1="32" y1="95" x2="300" y2="95" stroke-dasharray="2 4" />
+                  </g>
+                  <polyline fill="none" stroke="#1e6851" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"
+                    points="40,98 80,88 120,92 160,70 200,62 240,48 280,40" />
+                  <circle cx="280" cy="40" r="3.5" fill="#1e6851" />
+                </svg>
+              </div>
+              <p class="hint">Faint grids · colour on data only</p>
+            </div>
+          </article>
+        </div>
+
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">App / data-table</span>
+            <span class="canvas-tag">no zebra</span>
+          </div>
+          <div class="canvas-body" style="padding:0">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Account</th>
+                  <th>Region</th>
+                  <th class="num">Volume</th>
+                  <th class="num">Margin</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Northwind</td><td>HK</td><td class="num">128,400</td><td class="num">18.2%</td></tr>
+                <tr><td>Contoso</td><td>SG</td><td class="num">96,050</td><td class="num">14.7%</td></tr>
+                <tr><td>Fabrikam</td><td>JP</td><td class="num">71,220</td><td class="num">21.0%</td></tr>
+                <tr><td>Adventure</td><td>AU</td><td class="num">54,880</td><td class="num">12.4%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== BUTTONS ===================== -->
+    <section class="sec" id="buttons">
+      <div class="sec-head">
+        <h2>Buttons+</h2>
+        <p>Island / button-in-button trailing icon, magnetic-ish hover, press scale 0.98, flat fill, kit spring.</p>
+      </div>
+      <div class="sec-grid two">
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Buttons+ / island</span>
+            <span class="canvas-tag">nested icon</span>
+          </div>
+          <div class="canvas-body center">
+            <div class="btn-stack">
+              <button type="button" class="island-btn">
+                Continue
+                <span class="island-ico" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h9M8 3.5 12.5 8 8 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </button>
+            </div>
+            <p class="hint">Hover nudges the icon · press scales 0.98</p>
+          </div>
+        </article>
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Buttons+ / magnetic</span>
+            <span class="canvas-tag">flat fill</span>
+          </div>
+          <div class="canvas-body center">
+            <div class="btn-stack">
+              <button type="button" class="mag-btn">Save draft</button>
+            </div>
+            <p class="hint">No gradient · spring on lift / press</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== STATES ===================== -->
+    <section class="sec" id="states">
+      <div class="sec-head">
+        <h2>States</h2>
+        <p>Same shell in empty · zero · loading · error. Trade words — not “No items”.</p>
+      </div>
+      <div class="sec-grid two">
+        <article class="canvas">
+          <div class="canvas-chrome"><span class="canvas-name">States / empty</span><span class="canvas-tag">trade words</span></div>
+          <div class="canvas-body">
+            <div class="state-shell">
+              <h4>Open deals</h4>
+              <div class="state-msg">
+                <strong>Waiting on the customer</strong>
+                <span>Nothing to chase until they reply on the quote.</span>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="canvas">
+          <div class="canvas-chrome"><span class="canvas-name">States / zero</span><span class="canvas-tag">honest zero</span></div>
+          <div class="canvas-body">
+            <div class="state-shell state-zero">
+              <h4>Refunds today</h4>
+              <div class="kpi" style="border:none;padding:0.5rem 0">
+                <p class="kpi-val">0</p>
+                <p class="kpi-delta" style="color:var(--muted);font-weight:500">Quiet morning — no refunds posted.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="canvas">
+          <div class="canvas-chrome"><span class="canvas-name">States / loading</span><span class="canvas-tag">skeleton</span></div>
+          <div class="canvas-body">
+            <div class="state-shell">
+              <h4>Ledger</h4>
+              <div class="state-skel" aria-busy="true" aria-label="Loading">
+                <div class="skel-line w80"></div>
+                <div class="skel-line w60"></div>
+                <div class="skel-line w40"></div>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="canvas">
+          <div class="canvas-chrome"><span class="canvas-name">States / error</span><span class="canvas-tag">plain talk</span></div>
+          <div class="canvas-body">
+            <div class="state-shell">
+              <h4>Settlement</h4>
+              <div class="state-msg">
+                <strong class="state-err">Bank feed timed out</strong>
+                <span>Retry in a minute — we did not post a partial batch.</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== FORMS ===================== -->
+    <section class="sec" id="forms">
+      <div class="sec-head">
+        <h2>Forms</h2>
+        <p>Quiet settings rows, filter chips, segmented control, one text field + native select.</p>
+      </div>
+      <div class="sec-grid two">
+        <article class="canvas">
+          <div class="canvas-chrome"><span class="canvas-name">Forms / settings</span><span class="canvas-tag">rows</span></div>
+          <div class="canvas-body" style="padding:1rem">
+            <div class="settings">
+              <div class="settings-row">
+                <div>
+                  <label for="tog-digest">Weekly digest</label>
+                  <div class="meta">Monday 09:00 Asia/Hong_Kong</div>
+                </div>
+                <button type="button" class="toggle" id="tog-digest" role="switch" aria-checked="true" aria-label="Weekly digest"></button>
+              </div>
+              <div class="settings-row">
+                <div>
+                  <label for="tog-slack">Slack alerts</label>
+                  <div class="meta">High-priority only</div>
+                </div>
+                <button type="button" class="toggle" id="tog-slack" role="switch" aria-checked="false" aria-label="Slack alerts"></button>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="canvas">
+          <div class="canvas-chrome"><span class="canvas-name">Forms / filters</span><span class="canvas-tag">seg · chips</span></div>
+          <div class="canvas-body">
+            <div class="seg" role="group" aria-label="Range">
+              <button type="button" aria-pressed="true">7d</button>
+              <button type="button" aria-pressed="false">30d</button>
+              <button type="button" aria-pressed="false">90d</button>
+            </div>
+            <div class="chips" role="group" aria-label="Status filters">
+              <button type="button" class="chip" aria-pressed="true">Open</button>
+              <button type="button" class="chip" aria-pressed="false">Won</button>
+              <button type="button" class="chip" aria-pressed="false">Lost</button>
+            </div>
+            <div class="field">
+              <label for="q-name">Counterparty</label>
+              <input id="q-name" type="text" placeholder="Search name" />
+            </div>
+            <div class="field">
+              <label for="q-region">Region</label>
+              <select id="q-region">
+                <option>All regions</option>
+                <option>Hong Kong</option>
+                <option>Singapore</option>
+                <option>Tokyo</option>
+              </select>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== CARDS ===================== -->
+    <section class="sec" id="cards">
+      <div class="sec-head">
+        <h2>Cards+</h2>
+        <p>Leave calendar strip (holiday / sick / pending) and an asymmetric NestedRadius bento (40 = 24 + 16).</p>
+      </div>
+      <div class="sec-grid">
+        <article class="canvas">
+          <div class="canvas-chrome"><span class="canvas-name">Cards+ / leave-calendar</span><span class="canvas-tag">hatch · pale · dash</span></div>
+          <div class="canvas-body">
+            <div class="leave">
+              <table>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="name">Ada</td>
+                    <td><div class="cell holiday" title="Holiday"></div></td>
+                    <td><div class="cell holiday" title="Holiday"></div></td>
+                    <td></td><td></td><td></td>
+                  </tr>
+                  <tr>
+                    <td class="name">Ben</td>
+                    <td></td>
+                    <td><div class="cell sick" title="Sick"></div></td>
+                    <td><div class="cell sick" title="Sick"></div></td>
+                    <td></td><td></td>
+                  </tr>
+                  <tr>
+                    <td class="name">Cara</td>
+                    <td></td><td></td><td></td>
+                    <td><div class="cell pending" title="Pending"></div></td>
+                    <td><div class="cell pending" title="Pending"></div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="leave-legend">
+              <span><i class="holiday" style="background:#e8f3ec"></i>Holiday</span>
+              <span><i class="sick" style="background:repeating-linear-gradient(-45deg,#f5e8e8,#f5e8e8 2px,#eedada 2px,#eedada 4px)"></i>Sick</span>
+              <span><i style="border:1.5px dashed #a0a0aa;background:transparent"></i>Pending</span>
+            </div>
+          </div>
+        </article>
+        <article class="canvas">
+          <div class="canvas-chrome"><span class="canvas-name">Cards+ / nested-bento</span><span class="canvas-tag">40 = 24 + 16</span></div>
+          <div class="canvas-body">
+            <div class="bento">
+              <div class="bento-tile tall">
+                <h4>Pipeline</h4>
+                <p>Asymmetric nest — outer radius 40, gutter 16, inner tiles 24.</p>
+              </div>
+              <div class="bento-tile">
+                <h4>Focus</h4>
+                <p>One accent action; keep chrome flat.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== PALETTES ===================== -->
+    <section class="sec" id="palettes">
+      <div class="sec-head">
+        <h2>Taste palettes</h2>
+        <p>
+          One ground / one ink / one accent. Clicking sets the page <code>--page</code> shell only
+          (stored as <code>ui-kit-taste-palette</code>). Demos keep hard-coded colours.
+          Avoids cream+terracotta and violet assistant looks.
+        </p>
+      </div>
+      <div class="palette-grid" id="taste-palettes">
+        <button type="button" class="pal-card" data-palette="ink" data-page="#ececf0" data-brand="#1c1c22" aria-pressed="false">
+          <div class="pal-swatches"><span style="background:#ececf0"></span><span style="background:#1c1c22"></span><span style="background:#1e6851"></span></div>
+          <p class="pal-name">Ink</p>
+          <p class="pal-meta">#ececf0 · forest accent</p>
+        </button>
+        <button type="button" class="pal-card" data-palette="forest" data-page="#eef4f0" data-brand="#1e6851" aria-pressed="false">
+          <div class="pal-swatches"><span style="background:#eef4f0"></span><span style="background:#1c1c22"></span><span style="background:#1e6851"></span></div>
+          <p class="pal-name">Forest</p>
+          <p class="pal-meta">#eef4f0 · green</p>
+        </button>
+        <button type="button" class="pal-card" data-palette="ocean" data-page="#eef6f6" data-brand="#0f6e6e" aria-pressed="false">
+          <div class="pal-swatches"><span style="background:#eef6f6"></span><span style="background:#1c1c22"></span><span style="background:#0f6e6e"></span></div>
+          <p class="pal-name">Ocean</p>
+          <p class="pal-meta">#eef6f6 · teal</p>
+        </button>
+        <button type="button" class="pal-card" data-palette="slate" data-page="#f0f1f3" data-brand="#3d4450" aria-pressed="false">
+          <div class="pal-swatches"><span style="background:#f0f1f3"></span><span style="background:#1c1c22"></span><span style="background:#3d4450"></span></div>
+          <p class="pal-name">Slate</p>
+          <p class="pal-meta">#f0f1f3 · cool grey</p>
+        </button>
+      </div>
+      <p class="hint" style="margin-top:0.85rem">Active: <code id="taste-pal-label">ink</code></p>
+    </section>
+
+    <!-- ===================== DIGEST STRIP ===================== -->
+    <section class="sec" id="digest-strip">
+      <div class="sec-head">
+        <h2>Anti-slop strip</h2>
+        <p>Educational before/after — eyebrow + icon cards vs type + flat field.</p>
+      </div>
+      <article class="canvas">
+        <div class="canvas-chrome"><span class="canvas-name">Digest / before-after</span><span class="canvas-tag">teach only</span></div>
+        <div class="canvas-body">
+          <div class="ba">
+            <div class="ba-col">
+              <p class="ba-label">Before</p>
+              <p class="ba-eyebrow">Our solution</p>
+              <div class="ba-icons">
+                <div class="ba-icon-card"><div class="circ">✦</div>Fast</div>
+                <div class="ba-icon-card"><div class="circ">◎</div>Smart</div>
+                <div class="ba-icon-card"><div class="circ">◇</div>Secure</div>
+              </div>
+            </div>
+            <div class="ba-col ba-quiet">
+              <p class="ba-label">After</p>
+              <h4>Settlement clears T+2</h4>
+              <p>One sentence. Flat field below carries the detail — no icon row.</p>
+              <div class="ba-field" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <footer class="lib-foot">
+      Taste page · motion recipes · quiet app/data · island buttons · trade-word states ·
+      NestedRadius leave/bento · shell palettes. Spring <code>linear()</code> (~10% overshoot).
+      Prefers-reduced-motion disables springs. Index gallery unchanged.
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var reduce = false;
+      try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+
+      /* Rolling strips — explicit digit height (lh can be flaky in transforms) */
+      var ROLL_H = 38; /* px, matches .roll font-size ~2.4rem */
+      document.querySelectorAll('.roll-col').forEach(function (col) {
+        var strip = col.querySelector('.roll-strip');
+        if (!strip) return;
+        col.style.height = ROLL_H + 'px';
+        for (var i = 0; i <= 9; i++) {
+          var s = document.createElement('span');
+          s.textContent = String(i);
+          s.style.height = ROLL_H + 'px';
+          s.style.lineHeight = ROLL_H + 'px';
+          strip.appendChild(s);
+        }
+        strip.style.transform = 'translateY(0)';
+      });
+
+      function playMask() {
+        var el = document.getElementById('mask-demo');
+        if (!el) return;
+        el.classList.remove('is-in');
+        void el.offsetWidth;
+        if (reduce) { el.classList.add('is-in'); return; }
+        requestAnimationFrame(function () { el.classList.add('is-in'); });
+      }
+
+      function playRoll() {
+        var root = document.getElementById('roll-demo');
+        if (!root) return;
+        root.classList.remove('is-done');
+        root.querySelectorAll('.roll-col').forEach(function (col, idx) {
+          var strip = col.querySelector('.roll-strip');
+          var d = parseInt(col.getAttribute('data-digit'), 10) || 0;
+          if (!strip) return;
+          strip.style.transition = 'none';
+          strip.style.transform = 'translateY(0px)';
+          void strip.offsetWidth;
+          var y = (-d * ROLL_H) + 'px';
+          if (reduce) {
+            strip.style.transform = 'translateY(' + y + ')';
+            return;
+          }
+          strip.style.transition = 'transform 1.1s var(--spring)';
+          strip.style.transitionDelay = (idx * 0.06) + 's';
+          requestAnimationFrame(function () {
+            strip.style.transform = 'translateY(' + y + ')';
+          });
+        });
+      }
+
+      function playShutter() {
+        var el = document.getElementById('shutter-demo');
+        if (!el) return;
+        el.classList.remove('is-open');
+        void el.offsetWidth;
+        if (reduce) { el.classList.add('is-open'); return; }
+        requestAnimationFrame(function () { el.classList.add('is-open'); });
+      }
+
+      function playCurtain() {
+        var el = document.getElementById('curtain-demo');
+        if (!el) return;
+        el.classList.remove('is-open');
+        void el.offsetWidth;
+        requestAnimationFrame(function () { el.classList.add('is-open'); });
+      }
+
+      document.querySelectorAll('[data-play]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var k = btn.getAttribute('data-play');
+          if (k === 'mask') playMask();
+          else if (k === 'roll') playRoll();
+          else if (k === 'shutter') playShutter();
+          else if (k === 'curtain') playCurtain();
+        });
+      });
+
+      /* Auto-play once when in view */
+      if ('IntersectionObserver' in window) {
+        var once = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (!en.isIntersecting) return;
+            var id = en.target.id;
+            if (id === 'mask-demo') playMask();
+            if (id === 'roll-demo') playRoll();
+            if (id === 'shutter-demo') playShutter();
+            once.unobserve(en.target);
+          });
+        }, { threshold: 0.45 });
+        ['mask-demo', 'roll-demo', 'shutter-demo'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) once.observe(el);
+        });
+      } else {
+        playMask(); playRoll(); playShutter();
+      }
+
+      /* Index preview */
+      var idxImg = document.getElementById('idx-img');
+      var rows = Array.prototype.slice.call(document.querySelectorAll('.idx-row'));
+      function setIdx(row) {
+        rows.forEach(function (r) { r.classList.toggle('is-active', r === row); });
+        if (idxImg && row) {
+          var src = row.getAttribute('data-src');
+          if (src) idxImg.src = src;
+        }
+      }
+      rows.forEach(function (row) {
+        row.addEventListener('mouseenter', function () { setIdx(row); });
+        row.addEventListener('focus', function () { setIdx(row); });
+        row.addEventListener('click', function () { setIdx(row); });
+      });
+
+      /* Toggles */
+      document.querySelectorAll('.toggle').forEach(function (t) {
+        t.addEventListener('click', function () {
+          var on = t.getAttribute('aria-checked') === 'true';
+          t.setAttribute('aria-checked', on ? 'false' : 'true');
+        });
+      });
+
+      /* Seg + chips */
+      document.querySelectorAll('.seg').forEach(function (seg) {
+        seg.querySelectorAll('button').forEach(function (b) {
+          b.addEventListener('click', function () {
+            seg.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+            b.setAttribute('aria-pressed', 'true');
+          });
+        });
+      });
+      document.querySelectorAll('.chips').forEach(function (group) {
+        group.querySelectorAll('.chip').forEach(function (c) {
+          c.addEventListener('click', function () {
+            var on = c.getAttribute('aria-pressed') === 'true';
+            c.setAttribute('aria-pressed', on ? 'false' : 'true');
+          });
+        });
+      });
+
+      /* Taste palettes — page shell only */
+      var KEY = 'ui-kit-taste-palette';
+      var cards = Array.prototype.slice.call(document.querySelectorAll('.pal-card'));
+      var label = document.getElementById('taste-pal-label');
+      function applyPal(card, persist) {
+        if (!card) return;
+        var id = card.getAttribute('data-palette');
+        var page = card.getAttribute('data-page');
+        var brand = card.getAttribute('data-brand');
+        document.documentElement.setAttribute('data-theme', id);
+        document.documentElement.style.setProperty('--page', page);
+        if (brand) document.documentElement.style.setProperty('--brand', brand);
+        cards.forEach(function (c) {
+          var on = c === card;
+          c.classList.toggle('is-active', on);
+          c.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        if (label) label.textContent = id;
+        if (persist) { try { localStorage.setItem(KEY, id); } catch (e) {} }
+      }
+      var saved = 'ink';
+      try { saved = localStorage.getItem(KEY) || 'ink'; } catch (e) {}
+      var initial = cards.filter(function (c) { return c.getAttribute('data-palette') === saved; })[0] || cards[0];
+      applyPal(initial, false);
+      cards.forEach(function (card) {
+        card.addEventListener('click', function () { applyPal(card, true); });
+      });
+    })();
+  </script>
+  <script src="shared/site-header.js" defer></script>
+  <script src="shared/section-fab.js" defer></script>
+</body>
+</html>
