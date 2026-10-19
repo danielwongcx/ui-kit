@@ -1000,18 +1000,15 @@
       background: #d8d4ce;
     }
 
-    /* Inset: photo recessed inside the 24px card (not flush — flush + same radius
-       made the top corners read square / double-border against the 40px stage). */
-    .profile-card--inset {
-      padding: 12px 12px 14px;
-    }
-
+    /* Inset: stacked photo + body. Photo is flush in the 24px card and clipped by
+       overflow:hidden so corners nest cleanly in the 40px stage (same as FlightCard).
+       No extra card padding — that doubled the top white gutter and fought NestedRadius. */
     .profile-card--inset .profile-card__photo {
-      border-radius: 12px; /* nest inside card pad: ~24 − 12 */
+      border-radius: 0;
     }
 
     .profile-card--inset .profile-card__body {
-      padding: 0.85rem 0.15rem 0.1rem;
+      padding: 1rem 1rem 1.05rem;
     }
 
     .profile-card__name {
