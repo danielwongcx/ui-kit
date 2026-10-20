@@ -9,8 +9,9 @@ Static component gallery and digest catalog for Daniel Wong — served from GitH
 | Gallery | https://danielwongcx.github.io/ui-kit/ |
 | Digest | https://danielwongcx.github.io/ui-kit/digest.html |
 | Taste | https://danielwongcx.github.io/ui-kit/taste.html |
+| Learn Piano 101 | https://danielwongcx.github.io/ui-kit/learn-piano-101.html |
 
-Local mirrors: `index.html` (identical twin: `ui-combo.html`), `digest.html`, and `taste.html`.
+Local mirrors: `index.html` (identical twin: `ui-combo.html`), `digest.html`, `taste.html`, and `learn-piano-101.html`.
 
 Gallery sections: Digits, Buttons, Cards, Palettes, and Select (native `appearance: base-select`). Index stays the original gallery.
 
@@ -18,7 +19,7 @@ Taste sections: Motion, App/Data, Buttons+, States, Forms, Cards+, Taste palette
 
 ## Shared chrome
 
-- **Site header** (`shared/site-header.css` + `shared/site-header.js`) — sticky, mobile hamburger, page links (Gallery · Digest · Taste). Every page must load it; see `AGENTS.md`.
+- **Site header** (`shared/site-header.css` + `shared/site-header.js`) — sticky, mobile hamburger, page links (Gallery · Digest · Taste · Piano). Every page must load it; see `AGENTS.md`.
 - **Section FAB** (`shared/section-fab.*`) — gallery + taste. Collapsible sections + floating speed-dial (page-specific section map).
 
 ## Agents
