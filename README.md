@@ -10,7 +10,7 @@ Static component gallery and digest catalog for Daniel Wong — served from GitH
 | Digest | https://danielwongcx.github.io/ui-kit/digest.html |
 | Taste | https://danielwongcx.github.io/ui-kit/taste.html |
 | Learn Piano 101 | https://danielwongcx.github.io/ui-kit/learn-piano-101.html |
-| ASCII Sharks | https://danielwongcx.github.io/ui-kit/ascii-sharks.html |
+| ASCII | https://danielwongcx.github.io/ui-kit/ascii-sharks.html |
 
 Local mirrors: `index.html` (identical twin: `ui-combo.html`), `digest.html`, `taste.html`, `learn-piano-101.html`, and `ascii-sharks.html`.
 
@@ -20,7 +20,7 @@ Taste sections: Motion, App/Data, Buttons+, States, Forms, Cards+, Taste palette
 
 ## Shared chrome
 
-- **Site header** (`shared/site-header.css` + `shared/site-header.js`) — sticky, mobile hamburger, page links (Gallery · Digest · Taste · Piano · Sharks). Every page must load it; see `AGENTS.md`.
+- **Site header** (`shared/site-header.css` + `shared/site-header.js`) — sticky, mobile hamburger, page links (Gallery · Digest · Taste · Piano · ASCII). Every page must load it; see `AGENTS.md`.
 - **Section FAB** (`shared/section-fab.*`) — gallery + taste. Collapsible sections + floating speed-dial (page-specific section map).
 
 ## Agents
@@ -31,4 +31,4 @@ Read **[AGENTS.md](./AGENTS.md)** before adding or editing pages. Page links are
 
 - No build / no CDN. Palettes switch the page shell background only; demo colours stay hard-coded.
 - `index.html` ≡ `ui-combo.html` (keep them in sync).
-- ASCII Sharks is a static port of [stackedlol/ascii-sharks](https://github.com/stackedlol/ascii-sharks). `?sharks=thresher,hammerhead,mako,nurse` picks species (first is largest). With no query, four classic sharks swim. Dark is the default ocean; Light is a separate paper-and-ink palette (`?theme=light`). The corner control remembers the choice.
+- ASCII (`ascii-sharks.html`) switches between two vendored scenes. **Sharks** is a static port of [stackedlol/ascii-sharks](https://github.com/stackedlol/ascii-sharks). `?sharks=thresher,hammerhead,mako,nurse` picks species (first is largest). With no query, four classic sharks swim. Dark is the default ocean; Light is a separate paper-and-ink palette (`?theme=light`). **Train** is [Viaduct Steam Train](https://www.ascii-magic.com/ascii/viaduct-steam-train) from [ascii-magic-art](https://github.com/kailashsr38/ascii-magic-art) v1.0.2 (MIT), played with the piece’s default halftone-dots look. `?scene=sharks` or `?scene=train` selects a scene; the corner control remembers the last choice. Only the active scene runs.

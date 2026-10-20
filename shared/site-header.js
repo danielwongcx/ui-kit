@@ -10,7 +10,7 @@
     { id: 'digest', label: 'Digest', href: 'digest.html' },
     { id: 'taste', label: 'Taste', href: 'taste.html' },
     { id: 'learn-piano-101', label: 'Piano', href: 'learn-piano-101.html' },
-    { id: 'ascii-sharks', label: 'Sharks', href: 'ascii-sharks.html' }
+    { id: 'ascii-sharks', label: 'ASCII', href: 'ascii-sharks.html' }
   ];
 
   function activePageId() {
