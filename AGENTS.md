@@ -10,6 +10,7 @@ Multi-page **static** UI kit published on GitHub Pages from the `main` branch ro
 - Digest: https://danielwongcx.github.io/ui-kit/digest.html
 - Taste: https://danielwongcx.github.io/ui-kit/taste.html (`taste.html`) — motion / app-data / buttons+ / states / forms / cards+ patterns from taste-skill study
 - Learn Piano 101: https://danielwongcx.github.io/ui-kit/learn-piano-101.html (`learn-piano-101.html`) — full-viewport beginner piano film; click starts the visual GSAP timeline. GSAP and the motion runtime live in `vendor/` (no CDN, no soundtrack).
+- ASCII Sharks: https://danielwongcx.github.io/ui-kit/ascii-sharks.html (`ascii-sharks.html`) — full-viewport ASCII shark ocean. Default is the upstream dark field (`#000`, cyan wake). A corner Light / Dark control switches a renderer palette (cream paper and ink bodies); the choice is stored in `localStorage`. The engine is vendored at `vendor/ascii-sharks/ocean.js` (port of [stackedlol/ascii-sharks](https://github.com/stackedlol/ascii-sharks); no CDN). Optional `?sharks=thresher,hammerhead,mako,nurse` and `?theme=light`.
 
 No build step. Plain HTML / CSS / JS.
 

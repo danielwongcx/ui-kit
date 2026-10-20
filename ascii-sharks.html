@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ASCII Sharks — ui-kit</title>
+<script>
+document.documentElement.setAttribute("data-ocean", (function () {
+  var q = new URLSearchParams(location.search).get("theme");
+  if (q === "light" || q === "dark") return q;
+  try {
+    var stored = localStorage.getItem("ascii-sharks-theme");
+    if (stored === "light" || stored === "dark") return stored;
+  } catch (e) {}
+  return "dark";
+})());
+</script>
+<link rel="stylesheet" href="shared/site-header.css">
+<style>
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: #000;
+    overflow: hidden;
+  }
+  html[data-ocean="light"],
+  html[data-ocean="light"] body {
+    background: #f4f2ec;
+  }
+  body[data-page="ascii-sharks"] {
+    --site-ink: #e7eef6;
+    --site-muted: #9aa8b8;
+    --site-line: rgba(255, 255, 255, 0.14);
+    --site-bar-bg: color-mix(in srgb, #000 62%, transparent);
+    --site-pill: rgba(255, 255, 255, 0.08);
+    --site-accent: #8fdfff;
+  }
+  html[data-ocean="light"] body[data-page="ascii-sharks"] {
+    --site-ink: #1c1c22;
+    --site-muted: #5c6570;
+    --site-line: rgba(28, 28, 34, 0.12);
+    --site-bar-bg: color-mix(in srgb, #f4f2ec 78%, transparent);
+    --site-pill: rgba(255, 255, 255, 0.72);
+    --site-accent: #0e7490;
+  }
+  body[data-page="ascii-sharks"] > .site-header {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    height: calc(var(--site-header-h, 56px) + env(safe-area-inset-top, 0px));
+  }
+  body[data-page="ascii-sharks"] .site-header__panel {
+    background: color-mix(in srgb, #05070c 94%, transparent);
+  }
+  html[data-ocean="light"] body[data-page="ascii-sharks"] .site-header__panel {
+    background: color-mix(in srgb, #f4f2ec 94%, transparent);
+  }
+  #ocean {
+    position: fixed;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  html[data-ocean="light"] #ocean {
+    background: #f4f2ec;
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .credit {
+    position: fixed;
+    z-index: 40;
+    right: max(12px, env(safe-area-inset-right, 0px));
+    bottom: max(10px, env(safe-area-inset-bottom, 0px));
+    margin: 0;
+    max-width: min(42vw, 280px);
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+    line-height: 1.35;
+    letter-spacing: 0.01em;
+    color: rgba(176, 196, 214, 0.62);
+    text-align: right;
+  }
+  .credit a {
+    color: rgba(168, 224, 255, 0.82);
+    text-decoration: none;
+  }
+  .credit a:hover { color: #fff; text-decoration: underline; }
+  .credit a:focus-visible {
+    outline: 2px solid #8fdfff;
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  html[data-ocean="light"] .credit { color: rgba(40, 48, 58, 0.66); }
+  html[data-ocean="light"] .credit a { color: #0e7490; }
+  html[data-ocean="light"] .credit a:hover { color: #111; }
+  html[data-ocean="light"] .credit a:focus-visible { outline-color: #0e7490; }
+
+  .theme-switch {
+    position: fixed;
+    z-index: 40;
+    left: max(12px, env(safe-area-inset-left, 0px));
+    bottom: max(10px, env(safe-area-inset-bottom, 0px));
+    display: flex;
+    gap: 2px;
+    margin: 0;
+    padding: 3px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(0, 0, 0, 0.42);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .theme-switch button {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: rgba(220, 230, 240, 0.82);
+    background: transparent;
+    border: 0;
+    border-radius: 999px;
+    padding: 0 12px;
+    min-height: 32px;
+    min-width: 52px;
+    cursor: pointer;
+  }
+  .theme-switch button[aria-pressed="true"] {
+    background: rgba(255, 255, 255, 0.16);
+    color: #fff;
+  }
+  .theme-switch button:focus-visible {
+    outline: 2px solid #8fdfff;
+    outline-offset: 2px;
+  }
+  html[data-ocean="light"] .theme-switch {
+    border-color: rgba(20, 24, 32, 0.14);
+    background: rgba(255, 255, 255, 0.72);
+  }
+  html[data-ocean="light"] .theme-switch button { color: #3a4250; }
+  html[data-ocean="light"] .theme-switch button[aria-pressed="true"] {
+    background: #1c1c22;
+    color: #f4f2ec;
+  }
+  html[data-ocean="light"] .theme-switch button:focus-visible { outline-color: #0e7490; }
+</style>
+</head>
+<body data-page="ascii-sharks">
+<h1 class="sr-only">ASCII sharks</h1>
+<canvas id="ocean" aria-hidden="true"></canvas>
+<div class="theme-switch" role="group" aria-label="Ocean theme">
+  <button type="button" data-theme="light">Light</button>
+  <button type="button" data-theme="dark">Dark</button>
+</div>
+<p class="credit">ASCII sharks by <a href="https://github.com/stackedlol/ascii-sharks">stackedlol</a></p>
+<script src="vendor/ascii-sharks/ocean.js"></script>
+<script>
+(function () {
+  var KEY = "ascii-sharks-theme";
+  var params = new URLSearchParams(location.search);
+  // ?sharks=thresher,hammerhead,mako,nurse — first is biggest, the rest step down.
+  // No param: four classic sharks, matching the upstream demo.
+  var raw = params.get("sharks");
+  var kinds = raw ? raw.split(",").filter(Boolean) : undefined;
+  var sharks = kinds
+    ? kinds.map(function (kind, i) { return { kind: kind, size: 1 - i * 0.1 }; })
+    : undefined;
+  var name = document.documentElement.getAttribute("data-ocean") === "light" ? "light" : "dark";
+  var engine = new AsciiSharks.OceanEngine(
+    document.getElementById("ocean"),
+    sharks,
+    AsciiSharks.THEMES[name]
+  );
+  var buttons = document.querySelectorAll(".theme-switch button");
+
+  function paintPressed() {
+    for (var i = 0; i < buttons.length; i++) {
+      var on = buttons[i].getAttribute("data-theme") === name;
+      buttons[i].setAttribute("aria-pressed", on ? "true" : "false");
+    }
+  }
+
+  function select(next, persist) {
+    if (next !== "light" && next !== "dark") return;
+    name = next;
+    document.documentElement.setAttribute("data-ocean", name);
+    engine.setTheme(AsciiSharks.THEMES[name]);
+    paintPressed();
+    if (!persist) return;
+    try { localStorage.setItem(KEY, name); } catch (e) {}
+  }
+
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener("click", function (event) {
+      select(event.currentTarget.getAttribute("data-theme"), true);
+    });
+  }
+  paintPressed();
+})();
+</script>
+<script src="shared/site-header.js" defer></script>
+</body>
+</html>
