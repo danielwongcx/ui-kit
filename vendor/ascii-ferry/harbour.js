@@ -279,6 +279,11 @@ function windowLit(win, t, still) {
  */
 export function startHarbour(canvas) {
   if (!canvas || !canvas.getContext) return function () {};
+  if (typeof canvas._harbourStop === "function") {
+    var previous = canvas._harbourStop;
+    canvas._harbourStop = null;
+    previous();
+  }
   var ctx = canvas.getContext("2d");
   var reduced = false;
   try {
@@ -288,12 +293,12 @@ export function startHarbour(canvas) {
   var layout = null;
   var view = null;
   var elapsed = 0;
-  var lastWall = 0;
   var lastDrawWall = 0;
   var raf = 0;
   var stopped = false;
   var visible = true;
   var step = 1000 / FPS;
+  canvas.dataset.ferryBuild = "step4";
 
   function layoutNow() {
     var w = canvas.clientWidth || document.documentElement.clientWidth || 0;
@@ -577,11 +582,21 @@ export function startHarbour(canvas) {
   }
 
   function pauseClock() {
-    lastWall = 0;
+    lastDrawWall = 0;
   }
 
   function onVis() {
     if (document.hidden) pauseClock();
+  }
+
+  function stop() {
+    stopped = true;
+    if (raf) cancelAnimationFrame(raf);
+    raf = 0;
+    if (io) io.disconnect();
+    document.removeEventListener("visibilitychange", onVis);
+    window.removeEventListener("resize", onResize);
+    if (canvas._harbourStop === stop) canvas._harbourStop = null;
   }
 
   layoutNow();
@@ -589,15 +604,13 @@ export function startHarbour(canvas) {
   draw(elapsed, reduced);
 
   window.addEventListener("resize", onResize);
+  var io = null;
   if (reduced) {
-    return function stop() {
-      stopped = true;
-      window.removeEventListener("resize", onResize);
-    };
+    canvas._harbourStop = stop;
+    return stop;
   }
 
   document.addEventListener("visibilitychange", onVis);
-  var io = null;
   if (typeof IntersectionObserver !== "undefined") {
     io = new IntersectionObserver(function (entries) {
       visible = !!(entries[0] && entries[0].isIntersecting);
@@ -606,8 +619,10 @@ export function startHarbour(canvas) {
     io.observe(canvas);
   }
 
-  // Date.now, not the rAF timestamp: after a hidden scene, some browsers
-  // flush a burst of animation frames and the boat would cross in a blink.
+  // One fixed step per wall-clock interval. Browsers sometimes flush a
+  // burst of animation frames after a canvas was display:none; those
+  // callbacks share one Date.now(), so a timestamp delta would fling the
+  // boat across the harbour. Missed time is dropped, never caught up.
   var loop = function () {
     if (stopped) return;
     raf = requestAnimationFrame(loop);
@@ -615,28 +630,24 @@ export function startHarbour(canvas) {
       pauseClock();
       return;
     }
+    if (!view) {
+      if (!layoutNow()) return;
+      elapsed = stillTime(view.cols);
+      lastDrawWall = Date.now();
+      draw(elapsed, false);
+      return;
+    }
     var wall = Date.now();
-    if (!lastWall) {
-      lastWall = wall;
+    if (!lastDrawWall) {
       lastDrawWall = wall;
       return;
     }
-    var dt = (wall - lastWall) / 1000;
-    lastWall = wall;
-    if (dt < 0) dt = 0;
-    if (dt > 0.05) dt = 0.05;
-    elapsed += dt;
     if (wall - lastDrawWall < step) return;
     lastDrawWall = wall;
+    elapsed += step / 1000;
     draw(elapsed, false);
   };
   raf = requestAnimationFrame(loop);
-
-  return function stop() {
-    stopped = true;
-    cancelAnimationFrame(raf);
-    if (io) io.disconnect();
-    document.removeEventListener("visibilitychange", onVis);
-    window.removeEventListener("resize", onResize);
-  };
+  canvas._harbourStop = stop;
+  return stop;
 }
