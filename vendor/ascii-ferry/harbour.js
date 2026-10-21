@@ -288,8 +288,8 @@ export function startHarbour(canvas) {
   var layout = null;
   var view = null;
   var elapsed = 0;
-  var prev = 0;
-  var lastDraw = 0;
+  var lastWall = 0;
+  var lastDrawWall = 0;
   var raf = 0;
   var stopped = false;
   var visible = true;
@@ -393,7 +393,7 @@ export function startHarbour(canvas) {
   }
 
   function draw(nowT, still) {
-    if (!layoutNow() || !view) return;
+    if (!layout || !view) return;
     prep();
     var t = still ? stillTime(view.cols) : nowT;
     var cols = view.cols;
@@ -572,11 +572,16 @@ export function startHarbour(canvas) {
   }
 
   function onResize() {
+    layoutNow();
     draw(elapsed, reduced);
   }
 
+  function pauseClock() {
+    lastWall = 0;
+  }
+
   function onVis() {
-    if (document.hidden) prev = 0;
+    if (document.hidden) pauseClock();
   }
 
   layoutNow();
@@ -596,19 +601,33 @@ export function startHarbour(canvas) {
   if (typeof IntersectionObserver !== "undefined") {
     io = new IntersectionObserver(function (entries) {
       visible = !!(entries[0] && entries[0].isIntersecting);
-      if (!visible) prev = 0;
+      if (!visible) pauseClock();
     });
     io.observe(canvas);
   }
 
-  var loop = function (now) {
+  // Date.now, not the rAF timestamp: after a hidden scene, some browsers
+  // flush a burst of animation frames and the boat would cross in a blink.
+  var loop = function () {
     if (stopped) return;
     raf = requestAnimationFrame(loop);
-    if (!visible || document.hidden) return;
-    if (prev) elapsed += (now - prev) / 1000;
-    prev = now;
-    if (now - lastDraw < step) return;
-    lastDraw = now - ((now - lastDraw) % step);
+    if (!visible || document.hidden) {
+      pauseClock();
+      return;
+    }
+    var wall = Date.now();
+    if (!lastWall) {
+      lastWall = wall;
+      lastDrawWall = wall;
+      return;
+    }
+    var dt = (wall - lastWall) / 1000;
+    lastWall = wall;
+    if (dt < 0) dt = 0;
+    if (dt > 0.05) dt = 0.05;
+    elapsed += dt;
+    if (wall - lastDrawWall < step) return;
+    lastDrawWall = wall;
     draw(elapsed, false);
   };
   raf = requestAnimationFrame(loop);
