@@ -11,7 +11,8 @@
     { id: 'buttons', label: 'Buttons' },
     { id: 'cards', label: 'Cards' },
     { id: 'palettes', label: 'Palettes' },
-    { id: 'select', label: 'Select' }
+    { id: 'select', label: 'Select' },
+    { id: 'glow-border', label: 'Glow border' }
   ];
 
   var TASTE_SECTION_LINKS = [
