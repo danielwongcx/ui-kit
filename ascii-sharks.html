@@ -44,12 +44,10 @@ document.title = (function () {
     background: #f4f2ec;
   }
   html[data-scene="train"],
-  html[data-scene="train"] body {
-    background: #000;
-  }
+  html[data-scene="train"] body,
   html[data-scene="ferry"],
   html[data-scene="ferry"] body {
-    background: #070b14;
+    background: #000;
   }
   html[data-scene="hrtd"],
   html[data-scene="hrtd"] body {
@@ -100,7 +98,8 @@ document.title = (function () {
     background: #f4f2ec;
   }
   html:not([data-scene="sharks"]) #ocean { display: none; }
-  #train {
+  #train,
+  #ferry {
     position: fixed;
     inset: 0;
     z-index: 0;
@@ -111,15 +110,6 @@ document.title = (function () {
     overflow: hidden;
   }
   html:not([data-scene="train"]) #train { display: none; }
-  #ferry {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    display: block;
-    width: 100%;
-    height: 100%;
-    background: #070b14;
-  }
   html:not([data-scene="ferry"]) #ferry { display: none; }
   #hrtd {
     position: fixed;
@@ -131,7 +121,8 @@ document.title = (function () {
     background: #100814;
   }
   html:not([data-scene="hrtd"]) #hrtd { display: none; }
-  #train-pre {
+  #train-pre,
+  #ferry-pre {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -269,7 +260,9 @@ document.title = (function () {
 <div id="train">
   <pre id="train-pre" aria-hidden="true"></pre>
 </div>
-<canvas id="ferry" aria-hidden="true"></canvas>
+<div id="ferry">
+  <pre id="ferry-pre" aria-hidden="true"></pre>
+</div>
 <canvas id="hrtd" aria-hidden="true"></canvas>
 <div class="dock">
   <div class="dock-controls">
@@ -309,7 +302,7 @@ document.title = (function () {
 import { play } from "./vendor/ascii-magic/runtime/player.js";
 import { CELL_W } from "./vendor/ascii-magic/runtime/canvas.js";
 import * as trainPiece from "./vendor/ascii-magic/pieces/viaduct-steam-train.js";
-import { startHarbour } from "./vendor/ascii-ferry/harbour.js?v=7";
+import * as ferryPiece from "./vendor/ascii-ferry/harbour.js?v=8";
 import { startMade } from "./vendor/ascii-hrtd/made.js";
 
 var SCENE_KEY = "ascii-scene";
@@ -341,7 +334,7 @@ var themeSwitch = document.querySelector(".theme-switch");
 var heading = document.getElementById("scene-heading");
 var ocean = document.getElementById("ocean");
 var trainPre = document.getElementById("train-pre");
-var ferryCanvas = document.getElementById("ferry");
+var ferryPre = document.getElementById("ferry-pre");
 var hrtdCanvas = document.getElementById("hrtd");
 
 function sharkSpecs() {
@@ -359,14 +352,14 @@ function paintPressed(buttons, attr, value) {
   }
 }
 
-function fitTrain() {
-  var cols = trainPiece.meta.cols;
-  var rows = trainPiece.meta.rows;
+function fitPiece(pre, meta) {
+  var cols = meta.cols;
+  var rows = meta.rows;
   var availW = document.documentElement.clientWidth;
   var availH = document.documentElement.clientHeight;
   var px = Math.min((availW - 2) / (cols * CELL_W), (availH - 2) / (rows * CELL_W));
   if (!isFinite(px) || px < 1) px = 8;
-  trainPre.style.fontSize = px + "px";
+  pre.style.fontSize = px + "px";
 }
 
 function startSharks() {
@@ -383,7 +376,7 @@ function stopSharks() {
 }
 
 function startTrain() {
-  fitTrain();
+  fitPiece(trainPre, trainPiece.meta);
   if (trainStop) return;
   // meta.look is "dots": halftone on black, the piece page default. Tone tuning
   // in meta.dots is applied by play() unless overridden.
@@ -397,8 +390,10 @@ function stopTrain() {
 }
 
 function startFerry() {
+  fitPiece(ferryPre, ferryPiece.meta);
   if (ferryStop) return;
-  ferryStop = startHarbour(ferryCanvas);
+  // Same player, grid, and halftone-dots look as the train. The picture is original.
+  ferryStop = play(ferryPre, ferryPiece, { look: { look: "dots" } });
 }
 
 function stopFerry() {
@@ -488,7 +483,8 @@ document.querySelector(".theme-switch").addEventListener("keydown", function (ev
 });
 
 window.addEventListener("resize", function () {
-  if (scene === "train") fitTrain();
+  if (scene === "train") fitPiece(trainPre, trainPiece.meta);
+  else if (scene === "ferry") fitPiece(ferryPre, ferryPiece.meta);
 });
 
 applyScene(scene, false, false);

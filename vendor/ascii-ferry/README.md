@@ -1,5 +1,5 @@
 # Harbour ferry (original)
 
-Night harbour crossing drawn by `harbour.js` for ui-kit. Original art and code — not a port of ascii-sharks or ascii-magic-art.
+Night harbour crossing for ui-kit. The picture — a double-ended ferry, lit skyline, and black water — is original art in `harbour.js`.
 
-`ascii-sharks.html` starts it with `startHarbour(canvas)` when the Ferry scene is selected. The grid stays inside roughly 72–150 columns and 52–86 rows, the frame rate is capped, and `prefers-reduced-motion` holds a single frame.
+`ascii-sharks.html` plays it with the same local halftone player as the viaduct train: 192×108 square cells, 15fps, dots on black. `prefers-reduced-motion` holds one frame with the ferry centred.
