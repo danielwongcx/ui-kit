@@ -298,7 +298,6 @@ export function startHarbour(canvas) {
   var stopped = false;
   var visible = true;
   var step = 1000 / FPS;
-  canvas.dataset.ferryBuild = "step4";
 
   function layoutNow() {
     var w = canvas.clientWidth || document.documentElement.clientWidth || 0;
