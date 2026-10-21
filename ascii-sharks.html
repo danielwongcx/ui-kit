@@ -16,16 +16,19 @@ document.documentElement.setAttribute("data-ocean", (function () {
 })());
 document.documentElement.setAttribute("data-scene", (function () {
   var q = new URLSearchParams(location.search).get("scene");
-  if (q === "sharks" || q === "train") return q;
+  if (q === "sharks" || q === "train" || q === "ferry") return q;
   try {
     var stored = localStorage.getItem("ascii-scene");
-    if (stored === "sharks" || stored === "train") return stored;
+    if (stored === "sharks" || stored === "train" || stored === "ferry") return stored;
   } catch (e) {}
   return "sharks";
 })());
-document.title = document.documentElement.getAttribute("data-scene") === "train"
-  ? "Viaduct Steam Train — ui-kit"
-  : "ASCII Sharks — ui-kit";
+document.title = (function () {
+  var scene = document.documentElement.getAttribute("data-scene");
+  if (scene === "train") return "Viaduct Steam Train — ui-kit";
+  if (scene === "ferry") return "Harbour Ferry — ui-kit";
+  return "ASCII Sharks — ui-kit";
+})();
 </script>
 <link rel="stylesheet" href="shared/site-header.css">
 <style>
@@ -42,6 +45,10 @@ document.title = document.documentElement.getAttribute("data-scene") === "train"
   html[data-scene="train"],
   html[data-scene="train"] body {
     background: #000;
+  }
+  html[data-scene="ferry"],
+  html[data-scene="ferry"] body {
+    background: #070b14;
   }
   body[data-page="ascii-sharks"] {
     --site-ink: #e7eef6;
@@ -87,7 +94,7 @@ document.title = document.documentElement.getAttribute("data-scene") === "train"
   html[data-ocean="light"][data-scene="sharks"] #ocean {
     background: #f4f2ec;
   }
-  html[data-scene="train"] #ocean { display: none; }
+  html:not([data-scene="sharks"]) #ocean { display: none; }
   #train {
     position: fixed;
     inset: 0;
@@ -99,6 +106,16 @@ document.title = document.documentElement.getAttribute("data-scene") === "train"
     overflow: hidden;
   }
   html:not([data-scene="train"]) #train { display: none; }
+  #ferry {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: #070b14;
+  }
+  html:not([data-scene="ferry"]) #ferry { display: none; }
   #train-pre {
     position: absolute;
     width: 1px;
@@ -114,6 +131,7 @@ document.title = document.documentElement.getAttribute("data-scene") === "train"
     white-space: pre;
   }
   html[data-scene="train"] .theme-switch,
+  html[data-scene="ferry"] .theme-switch,
   .theme-switch[hidden] { display: none; }
   .sr-only {
     position: absolute;
@@ -222,33 +240,40 @@ document.title = document.documentElement.getAttribute("data-scene") === "train"
   html[data-ocean="light"][data-scene="sharks"] .seg button:focus-visible { outline-color: #0e7490; }
   @media (max-width: 640px) {
     .dock { flex-direction: column; align-items: flex-start; }
-    .credit { max-width: min(100%, 320px); text-align: left; }
+    .credit { max-width: min(100%, 420px); text-align: left; }
+  }
+  @media (max-width: 420px) {
+    .scene-switch button { padding: 0 10px; }
   }
 </style>
 </head>
 <body data-page="ascii-sharks">
-<h1 class="sr-only" id="scene-heading">ASCII sharks</h1>
+<h1 class="sr-only" id="scene-heading" aria-live="polite">ASCII sharks</h1>
 <canvas id="ocean" aria-hidden="true"></canvas>
 <div id="train">
   <pre id="train-pre" aria-hidden="true"></pre>
 </div>
+<canvas id="ferry" aria-hidden="true"></canvas>
 <div class="dock">
   <div class="dock-controls">
     <div class="seg scene-switch" role="group" aria-label="Scene">
       <button type="button" data-scene="sharks">Sharks</button>
       <button type="button" data-scene="train">Train</button>
+      <button type="button" data-scene="ferry">Ferry</button>
     </div>
     <div class="seg theme-switch" role="group" aria-label="Ocean theme">
       <button type="button" data-theme="light">Light</button>
       <button type="button" data-theme="dark">Dark</button>
     </div>
   </div>
-  <p class="credit">Sharks by <a href="https://github.com/stackedlol/ascii-sharks">stackedlol</a> · <a href="https://www.ascii-magic.com/ascii/viaduct-steam-train">Viaduct Steam Train</a> by ASCII Magic</p>
+  <p class="credit">Sharks by <a href="https://github.com/stackedlol/ascii-sharks">stackedlol</a> · <a href="https://www.ascii-magic.com/ascii/viaduct-steam-train">Viaduct Steam Train</a> by ASCII Magic · Harbour ferry — original</p>
 </div>
 <script>
 (function () {
-  var scene = document.documentElement.getAttribute("data-scene") === "train" ? "train" : "sharks";
+  var scene = document.documentElement.getAttribute("data-scene");
+  if (scene !== "sharks" && scene !== "train" && scene !== "ferry") scene = "sharks";
   var theme = document.documentElement.getAttribute("data-ocean") === "light" ? "light" : "dark";
+  var headings = { sharks: "ASCII sharks", train: "Viaduct steam train", ferry: "Harbour ferry" };
   var sceneButtons = document.querySelectorAll(".scene-switch button");
   var themeButtons = document.querySelectorAll(".theme-switch button");
   for (var i = 0; i < sceneButtons.length; i++) {
@@ -257,8 +282,8 @@ document.title = document.documentElement.getAttribute("data-scene") === "train"
   for (var j = 0; j < themeButtons.length; j++) {
     themeButtons[j].setAttribute("aria-pressed", themeButtons[j].getAttribute("data-theme") === theme ? "true" : "false");
   }
-  document.getElementById("scene-heading").textContent = scene === "train" ? "Viaduct steam train" : "ASCII sharks";
-  if (scene === "train") document.querySelector(".theme-switch").hidden = true;
+  document.getElementById("scene-heading").textContent = headings[scene];
+  if (scene !== "sharks") document.querySelector(".theme-switch").hidden = true;
 })();
 </script>
 <script src="vendor/ascii-sharks/ocean.js"></script>
@@ -266,20 +291,35 @@ document.title = document.documentElement.getAttribute("data-scene") === "train"
 import { play } from "./vendor/ascii-magic/runtime/player.js";
 import { CELL_W } from "./vendor/ascii-magic/runtime/canvas.js";
 import * as trainPiece from "./vendor/ascii-magic/pieces/viaduct-steam-train.js";
+import { startHarbour } from "./vendor/ascii-ferry/harbour.js";
 
 var SCENE_KEY = "ascii-scene";
 var THEME_KEY = "ascii-sharks-theme";
+var SCENES = ["sharks", "train", "ferry"];
+var TITLES = {
+  sharks: "ASCII Sharks — ui-kit",
+  train: "Viaduct Steam Train — ui-kit",
+  ferry: "Harbour Ferry — ui-kit"
+};
+var HEADINGS = {
+  sharks: "ASCII sharks",
+  train: "Viaduct steam train",
+  ferry: "Harbour ferry"
+};
 var params = new URLSearchParams(location.search);
-var scene = document.documentElement.getAttribute("data-scene") === "train" ? "train" : "sharks";
+var scene = document.documentElement.getAttribute("data-scene");
+if (SCENES.indexOf(scene) < 0) scene = "sharks";
 var themeName = document.documentElement.getAttribute("data-ocean") === "light" ? "light" : "dark";
 var engine = null;
 var trainStop = null;
+var ferryStop = null;
 var sceneButtons = document.querySelectorAll(".scene-switch button");
 var themeButtons = document.querySelectorAll(".theme-switch button");
 var themeSwitch = document.querySelector(".theme-switch");
 var heading = document.getElementById("scene-heading");
 var ocean = document.getElementById("ocean");
 var trainPre = document.getElementById("train-pre");
+var ferryCanvas = document.getElementById("ferry");
 
 function sharkSpecs() {
   var raw = params.get("sharks");
@@ -333,20 +373,30 @@ function stopTrain() {
   trainStop = null;
 }
 
+function startFerry() {
+  if (ferryStop) return;
+  ferryStop = startHarbour(ferryCanvas);
+}
+
+function stopFerry() {
+  if (!ferryStop) return;
+  ferryStop();
+  ferryStop = null;
+}
+
 function applyScene(next, persist, focus) {
-  if (next !== "sharks" && next !== "train") return;
+  if (SCENES.indexOf(next) < 0) return;
   scene = next;
   document.documentElement.setAttribute("data-scene", scene);
-  document.title = scene === "train" ? "Viaduct Steam Train — ui-kit" : "ASCII Sharks — ui-kit";
-  heading.textContent = scene === "train" ? "Viaduct steam train" : "ASCII sharks";
+  document.title = TITLES[scene];
+  heading.textContent = HEADINGS[scene];
   themeSwitch.hidden = scene !== "sharks";
-  if (scene === "train") {
-    stopSharks();
-    startTrain();
-  } else {
-    stopTrain();
-    startSharks();
-  }
+  if (scene !== "sharks") stopSharks();
+  if (scene !== "train") stopTrain();
+  if (scene !== "ferry") stopFerry();
+  if (scene === "sharks") startSharks();
+  else if (scene === "train") startTrain();
+  else startFerry();
   paintPressed(sceneButtons, "data-scene", scene);
   if (focus) {
     for (var i = 0; i < sceneButtons.length; i++) {
@@ -375,10 +425,12 @@ for (var i = 0; i < sceneButtons.length; i++) {
 document.querySelector(".scene-switch").addEventListener("keydown", function (event) {
   if (event.key !== "ArrowRight" && event.key !== "ArrowLeft" && event.key !== "Home" && event.key !== "End") return;
   event.preventDefault();
+  var index = SCENES.indexOf(scene);
   var next = scene;
-  if (event.key === "Home") next = "sharks";
-  else if (event.key === "End") next = "train";
-  else next = scene === "sharks" ? "train" : "sharks";
+  if (event.key === "Home") next = SCENES[0];
+  else if (event.key === "End") next = SCENES[SCENES.length - 1];
+  else if (event.key === "ArrowRight") next = SCENES[(index + 1) % SCENES.length];
+  else next = SCENES[(index - 1 + SCENES.length) % SCENES.length];
   applyScene(next, true, true);
 });
 for (var t = 0; t < themeButtons.length; t++) {
