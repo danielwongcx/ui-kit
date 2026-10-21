@@ -2026,75 +2026,30 @@
       to { --a: 360deg; }
     }
 
-    .canvas:has(.glow-stage) {
+    /* The section scroller clips while collapsed. Open, the bloom must
+       not meet an overflow edge — Chrome draws that as a hard rectangle. */
+    #glow-border:not(.is-collapsed) .sec-body__inner,
+    .canvas:has(.glow-stage),
+    .canvas-body.glow-stage {
       overflow: visible;
     }
 
     .canvas-body.glow-stage {
-      /* Room past the bloom so the section’s overflow clip is empty dark. */
-      padding: 6.25rem 5.75rem;
-    }
-
-    .glow-defs {
-      position: absolute;
-      width: 0;
-      height: 0;
-      overflow: hidden;
+      isolation: isolate;
+      padding: 6.5rem 6rem;
     }
 
     .glow-wrap {
       --glow-radius: 16px;
+      --glow-blur: 14px;
+      /* Coloured pixels sit this far inside the blurred box, past where
+         a 14px Gaussian still has any light, so the filter clip is empty. */
+      --glow-room: 72px;
       position: relative;
       z-index: 0;
       width: min(100%, 340px);
       isolation: isolate;
       overflow: visible;
-    }
-
-    /* Stops are inherited colour variables. The gradient itself stays on
-       the animated element so var(--a) resolves there (it does not inherit).
-       Fallbacks are the rainbow until a chip sets --glow-c1…c6.
-       The bloom uses an SVG blur whose filter region is larger than the
-       shape, so the halo is not cut to the element’s border box. */
-    .glow-card,
-    .glow-bloom__stroke {
-      background: conic-gradient(
-        from var(--a),
-        var(--glow-c1, #ff0000),
-        var(--glow-c2, #ffff00),
-        var(--glow-c3, #00ff00),
-        var(--glow-c4, #00ffff),
-        var(--glow-c5, #0000ff),
-        var(--glow-c6, #ff00ff),
-        var(--glow-c1, #ff0000)
-      );
-      --a: 0deg;
-      animation: glow-spin 3s linear infinite;
-    }
-
-    /* Filter sits on the wrapper so it blurs the masked stroke, not a filled box. */
-    .glow-bloom {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      filter: url("#glow-bloom");
-      opacity: 0.95;
-    }
-
-    .glow-bloom__stroke {
-      position: absolute;
-      inset: 0;
-      border-radius: var(--glow-radius);
-      padding: 12px;
-      -webkit-mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor;
-      mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
-      mask-composite: exclude;
     }
 
     .glow-picks {
@@ -2180,20 +2135,61 @@
     }
 
     .glow-card {
+      --a: 0deg;
       position: relative;
-      z-index: 1;
+      isolation: isolate;
+      overflow: visible;
       display: block;
       width: 100%;
       margin: 0;
-      padding: 2px;
-      border: 0;
+      padding: 0;
+      border: 2px solid transparent;
       border-radius: var(--glow-radius);
+      background:
+        linear-gradient(#16161a, #16161a) padding-box,
+        conic-gradient(
+          from var(--a),
+          var(--glow-c1, #ff0000),
+          var(--glow-c2, #ffff00),
+          var(--glow-c3, #00ff00),
+          var(--glow-c4, #00ffff),
+          var(--glow-c5, #0000ff),
+          var(--glow-c6, #ff00ff),
+          var(--glow-c1, #ff0000)
+        ) border-box;
       color: inherit;
       font: inherit;
       text-align: left;
       cursor: default;
       appearance: none;
       -webkit-appearance: none;
+      animation: glow-spin 3s linear infinite;
+    }
+
+    /* inherits:false would freeze ::after at 0deg. inherit copies the spin.
+       The gradient is painted only in the content box; the padding is the
+       empty margin the blur fades through before the element’s border box. */
+    .glow-card::after {
+      --a: inherit;
+      content: "";
+      position: absolute;
+      inset: calc(var(--glow-room) * -1);
+      z-index: -1;
+      padding: var(--glow-room);
+      border-radius: calc(var(--glow-radius) + var(--glow-room));
+      background: conic-gradient(
+        from var(--a),
+        var(--glow-c1, #ff0000),
+        var(--glow-c2, #ffff00),
+        var(--glow-c3, #00ff00),
+        var(--glow-c4, #00ffff),
+        var(--glow-c5, #0000ff),
+        var(--glow-c6, #ff00ff),
+        var(--glow-c1, #ff0000)
+      ) content-box;
+      filter: blur(var(--glow-blur));
+      opacity: 0.7;
+      pointer-events: none;
     }
 
     .glow-face {
@@ -2288,8 +2284,7 @@
       html { scroll-behavior: auto; }
       .digit-stack { transition: none; }
       .billing .pill { transition: none; }
-      .glow-card,
-      .glow-bloom__stroke {
+      .glow-card {
         animation: none;
       }
       .glow-card--btn:active {
@@ -4017,11 +4012,6 @@
 
     <!-- ===================== GLOW BORDER ===================== -->
     <section class="sec" id="glow-border">
-      <svg class="glow-defs" width="0" height="0" aria-hidden="true" focusable="false">
-        <filter id="glow-bloom" x="-220%" y="-420%" width="540%" height="940%" color-interpolation-filters="sRGB">
-          <feGaussianBlur stdDeviation="18" />
-        </filter>
-      </svg>
       <div class="sec-head">
         <h2>Glow border</h2>
         <p>
@@ -4070,7 +4060,6 @@
           </div>
           <div class="canvas-body dark glow-stage">
             <div class="glow-wrap">
-              <div class="glow-bloom" aria-hidden="true"><div class="glow-bloom__stroke"></div></div>
               <div class="glow-card">
                 <div class="glow-face">
                   <div class="glow-top">
@@ -4096,7 +4085,6 @@
           </div>
           <div class="canvas-body dark glow-stage">
             <div class="glow-wrap glow-wrap--btn">
-              <div class="glow-bloom" aria-hidden="true"><div class="glow-bloom__stroke"></div></div>
               <button type="button" class="glow-card glow-card--btn">
                 <span class="glow-face glow-face--btn">Continue</span>
               </button>
