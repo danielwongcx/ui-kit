@@ -2024,7 +2024,18 @@
 
     .glow-wrap {
       --glow-radius: 16px;
-      --glow-conic: conic-gradient(
+      position: relative;
+      z-index: 0;
+      width: min(100%, 340px);
+      isolation: isolate;
+    }
+
+    /* Gradient lives on the animated element. An intermediate custom
+       property would resolve --a on the wrapper (stuck at 0deg) because
+       @property --a does not inherit. */
+    .glow-wrap::before,
+    .glow-card {
+      background: conic-gradient(
         from var(--a),
         #ff0000,
         #ffff00,
@@ -2034,10 +2045,8 @@
         #ff00ff,
         #ff0000
       );
-      position: relative;
-      z-index: 0;
-      width: min(100%, 340px);
-      isolation: isolate;
+      --a: 0deg;
+      animation: glow-spin 3s linear infinite;
     }
 
     .glow-wrap::before {
@@ -2046,12 +2055,9 @@
       inset: -5px;
       z-index: 0;
       border-radius: calc(var(--glow-radius) + 8px);
-      background: var(--glow-conic);
       filter: blur(11px);
       opacity: 0.8;
       pointer-events: none;
-      --a: 0deg;
-      animation: glow-spin 3s linear infinite;
     }
 
     .glow-card {
@@ -2063,15 +2069,12 @@
       padding: 2px;
       border: 0;
       border-radius: var(--glow-radius);
-      background: var(--glow-conic);
       color: inherit;
       font: inherit;
       text-align: left;
       cursor: default;
       appearance: none;
       -webkit-appearance: none;
-      --a: 0deg;
-      animation: glow-spin 3s linear infinite;
     }
 
     .glow-face {
