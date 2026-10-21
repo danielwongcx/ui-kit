@@ -2057,7 +2057,7 @@
        The bloom uses an SVG blur whose filter region is larger than the
        shape, so the halo is not cut to the element’s border box. */
     .glow-card,
-    .glow-bloom {
+    .glow-bloom__stroke {
       background: conic-gradient(
         from var(--a),
         var(--glow-c1, #ff0000),
@@ -2072,14 +2072,29 @@
       animation: glow-spin 3s linear infinite;
     }
 
+    /* Filter sits on the wrapper so it blurs the masked stroke, not a filled box. */
     .glow-bloom {
       position: absolute;
       inset: 0;
       z-index: 0;
-      border-radius: var(--glow-radius);
       pointer-events: none;
       filter: url("#glow-bloom");
       opacity: 0.95;
+    }
+
+    .glow-bloom__stroke {
+      position: absolute;
+      inset: 0;
+      border-radius: var(--glow-radius);
+      padding: 12px;
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      mask-composite: exclude;
     }
 
     .glow-picks {
@@ -2274,7 +2289,7 @@
       .digit-stack { transition: none; }
       .billing .pill { transition: none; }
       .glow-card,
-      .glow-bloom {
+      .glow-bloom__stroke {
         animation: none;
       }
       .glow-card--btn:active {
@@ -4055,7 +4070,7 @@
           </div>
           <div class="canvas-body dark glow-stage">
             <div class="glow-wrap">
-              <div class="glow-bloom" aria-hidden="true"></div>
+              <div class="glow-bloom" aria-hidden="true"><div class="glow-bloom__stroke"></div></div>
               <div class="glow-card">
                 <div class="glow-face">
                   <div class="glow-top">
@@ -4081,7 +4096,7 @@
           </div>
           <div class="canvas-body dark glow-stage">
             <div class="glow-wrap glow-wrap--btn">
-              <div class="glow-bloom" aria-hidden="true"></div>
+              <div class="glow-bloom" aria-hidden="true"><div class="glow-bloom__stroke"></div></div>
               <button type="button" class="glow-card glow-card--btn">
                 <span class="glow-face glow-face--btn">Continue</span>
               </button>
