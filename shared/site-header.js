@@ -10,7 +10,9 @@
     { id: 'digest', label: 'Digest', href: 'digest.html' },
     { id: 'taste', label: 'Taste', href: 'taste.html' },
     { id: 'learn-piano-101', label: 'Piano', href: 'learn-piano-101.html' },
-    { id: 'ascii-sharks', label: 'ASCII', href: 'ascii-sharks.html' }
+    { id: 'ascii-sharks', label: 'ASCII', href: 'ascii-sharks.html' },
+    { id: 'ferry', label: 'Ferry', href: 'ferry.html' },
+    { id: 'mtr', label: 'MTR', href: 'mtr.html' }
   ];
 
   function activePageId() {
