@@ -2136,6 +2136,7 @@
 
     .glow-card {
       --a: 0deg;
+      --glow-fill: #16161a;
       position: relative;
       isolation: isolate;
       overflow: visible;
@@ -2146,7 +2147,7 @@
       border: 2px solid transparent;
       border-radius: var(--glow-radius);
       background:
-        linear-gradient(#16161a, #16161a) padding-box,
+        linear-gradient(var(--glow-fill), var(--glow-fill)) padding-box,
         conic-gradient(
           from var(--a),
           var(--glow-c1, #ff0000),
@@ -2194,7 +2195,7 @@
 
     .glow-face {
       border-radius: calc(var(--glow-radius) - 2px);
-      background: #16161a;
+      background: var(--glow-fill);
       padding: 1.05rem 1.15rem 1rem;
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
@@ -2278,6 +2279,55 @@
       letter-spacing: -0.01em;
       color: #f6f6f8;
       line-height: 1.1;
+    }
+
+    /* Light stage: cream ground, warm-white face, fuller bloom so the
+       rim still reads. Same radius, room, and blur as the dark pair. */
+    .canvas-body.glow-stage--light {
+      background: #f3efe8;
+      color: #1c1b19;
+    }
+
+    .canvas-body.glow-stage--light .hint {
+      color: #6f6a63;
+    }
+
+    .glow-card--light {
+      --glow-fill: #fffcf8;
+    }
+
+    .glow-stage--light .glow-card::after {
+      opacity: 1;
+    }
+
+    .glow-card--light .glow-face {
+      box-shadow: inset 0 1px 0 #fff;
+    }
+
+    .glow-card--light .glow-title {
+      color: #1c1b19;
+    }
+
+    .glow-card--light .glow-code {
+      color: #4e4943;
+    }
+
+    .glow-card--light .glow-code .tok-kw { color: #b4236a; }
+    .glow-card--light .glow-code .tok-prop { color: #1c1b19; font-weight: 600; }
+    .glow-card--light .glow-code .tok-fn { color: #2451c2; }
+    .glow-card--light .glow-code .tok-str { color: #8a5a00; }
+    .glow-card--light .glow-code .tok-punct { color: #6b6560; }
+
+    .glow-card--light .glow-face--btn {
+      color: #1c1b19;
+    }
+
+    .glow-card--light.glow-card--btn:hover .glow-face--btn {
+      background: #f4efe6;
+    }
+
+    .glow-card--light.glow-card--btn:focus-visible {
+      outline-color: #1c1b19;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -4018,9 +4068,9 @@
           <code>@property --a</code> registers an angle that spins a
           <code>conic-gradient</code> on the shell behind the card. A solid
           inner panel leaves a thin rim; a blurred copy glows outside it.
-          The chips write colour stops onto this section, so the card and
-          the button update together. Reduced motion holds the rim still
-          in the chosen colour.
+          The chips write colour stops onto this section, so the dark and
+          light cards and buttons update together. Reduced motion holds
+          the rim still in the chosen colour.
         </p>
       </div>
 
@@ -4090,6 +4140,46 @@
               </button>
             </div>
             <p class="hint">Same stops as the card · 3s linear</p>
+          </div>
+        </article>
+
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">GlowBorder / light</span>
+            <span class="canvas-tag">card</span>
+          </div>
+          <div class="canvas-body glow-stage glow-stage--light">
+            <div class="glow-wrap">
+              <div class="glow-card glow-card--light">
+                <div class="glow-face">
+                  <div class="glow-top">
+                    <span class="glow-lights" aria-hidden="true">
+                      <span></span><span></span><span></span>
+                    </span>
+                    <p class="glow-title">on a light stage</p>
+                  </div>
+                  <p class="glow-code">
+                    <code><span class="tok-kw">@property</span> <span class="tok-prop">--a</span> <span class="tok-punct">{</span> <span class="tok-fn">syntax</span><span class="tok-punct">:</span> <span class="tok-str">"&lt;angle&gt;"</span> <span class="tok-punct">}</span></code>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <p class="hint">Same stops · light face</p>
+          </div>
+        </article>
+
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">GlowBorder / light</span>
+            <span class="canvas-tag">button</span>
+          </div>
+          <div class="canvas-body glow-stage glow-stage--light">
+            <div class="glow-wrap glow-wrap--btn">
+              <button type="button" class="glow-card glow-card--btn glow-card--light">
+                <span class="glow-face glow-face--btn">Continue</span>
+              </button>
+            </div>
+            <p class="hint">Same stops · light face</p>
           </div>
         </article>
       </div>
