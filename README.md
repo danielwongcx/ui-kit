@@ -14,7 +14,7 @@ Static component gallery and digest catalog for Daniel Wong — served from GitH
 
 Local mirrors: `index.html` (identical twin: `ui-combo.html`), `digest.html`, `taste.html`, `learn-piano-101.html`, and `ascii-sharks.html`.
 
-Gallery sections: Digits, Buttons, Cards, Palettes, and Select (native `appearance: base-select`). Palettes holds ten page-shell themes plus twenty reference colour pairings (name, four swatches, mood; click a swatch to copy the hex — pairings do not recolour the page). Index stays the original gallery.
+Gallery sections: Digits, Buttons, Cards, Palettes, Select (native `appearance: base-select`), and Glow border (pure-CSS `@property` angle + rotating `conic-gradient` rim). Palettes holds ten page-shell themes plus twenty reference colour pairings (name, four swatches, mood; click a swatch to copy the hex — pairings do not recolour the page). Index stays the original gallery.
 
 Taste sections: Motion, App/Data, Buttons+, States, Forms, Cards+, Taste palettes, anti-slop digest strip.
 
