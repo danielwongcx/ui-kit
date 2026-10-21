@@ -1,7 +1,9 @@
 /**
  * Harbour ferry — original ui-kit picture.
- * A night crossing: lit towers, black-green water, one double-ended ferry.
- * Not derived from ascii-sharks or ascii-magic-art.
+ * A night crossing: lit towers, black-green water, one double-ended
+ * Star Ferry (Celestial Star 天星). Not derived from ascii-sharks or
+ * ascii-magic-art. The skyline, moon, and water stay; only the vessel
+ * wears the red hull, green promenade, and cream cabin.
  *
  * The page plays this the same way as the viaduct train: a fixed 192×108
  * square-cell frame at 15fps, halftone dots on black. Every cell is a shade
@@ -13,9 +15,9 @@
 const W = 192;
 const H = 108;
 const HORIZON = 50;
-const BOAT_W = 80;
-const BOAT_H = 18;
-const BOAT_TOP = 56;
+const BOAT_W = 92;
+const BOAT_H = 23;
+const BOAT_TOP = 51;
 const SPEED = 11;
 const GAP = 24;
 const SPAN = W + BOAT_W + GAP;
@@ -45,9 +47,13 @@ const ANCHORS = [
   ["#2f6e84", "#4a9eb4", "#7ec8d4", 6],
   ["#a8cdd6", "#c5dde6", 2],
   ["#d4c29a", "#e0cfae", 3],
-  ["#1f7a4c", "#46c484", 3],
-  ["#d06860", "#e8b0a8", 2],
-  ["#2f9a62", "#a8d4bc", 2],
+  ["#0f4a28", "#1b6e3a", "#2e9450", 4],
+  ["#a0141c", "#e02830", "#ff5c50", 4],
+  ["#f3eee4", 1],
+  ["#dcd4c6", 1],
+  ["#e4cba6", "#dcc49a", 2],
+  ["#e6b454", 1],
+  ["#e07068", 1],
   ["#121614", "#24302a", 2],
 ];
 
@@ -67,7 +73,7 @@ const LUM = PAL.map((c) => (0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]) / 255
 export const meta = {
   slug: "harbour-ferry",
   name: "Harbour Ferry",
-  note: "A double-ended ferry crosses a night harbour in front of a lit skyline.",
+  note: "Star Ferry Celestial Star — red hull, green promenade, cream cabin — crosses a night harbour.",
   cols: W,
   rows: H,
   fps: 15,
@@ -102,13 +108,19 @@ const C = {
   path: hex("#c5dde6"),
   cream: hex("#e0cfae"),
   cream2: hex("#d4c29a"),
-  white: hex("#ddd4c2"),
+  white: hex("#f3eee4"),
+  ivory: hex("#dcd4c6"),
+  cabin: hex("#e4cba6"),
+  cabinShade: hex("#dcc49a"),
   lamp: hex("#e4c888"),
-  green: hex("#1f7a4c"),
-  greenLite: hex("#46c484"),
-  greenDeep: hex("#186440"),
-  red: hex("#e07068"),
-  nav: hex("#a8d4bc"),
+  green: hex("#1b6e3a"),
+  greenLite: hex("#2e9450"),
+  red: hex("#e02830"),
+  redDeep: hex("#a0141c"),
+  redHi: hex("#ff5c50"),
+  gold: hex("#e6b454"),
+  band: hex("#14181e"),
+  glass: hex("#141820"),
   wake: hex("#c5dde6"),
   wakeDim: hex("#8ec4d0"),
   far: hex("#d4c8b0"),
@@ -174,27 +186,107 @@ const BUILDINGS = [
   { x: 177, w: 15, h: 11, step: 2, lit: 0.3 },
 ];
 
-/* Double-ended ferry, centred. x1 is exclusive. */
-const HULL = [
-  { x0: 38, x1: 42, kind: "lamp" },
-  { x0: 39, x1: 41, kind: "mast" },
-  { x0: 39, x1: 41, kind: "mast" },
-  { x0: 33, x1: 47, kind: "funnel" },
-  { x0: 32, x1: 48, kind: "funnel" },
-  { x0: 31, x1: 49, kind: "funnel" },
-  { x0: 24, x1: 56, kind: "house" },
-  { x0: 22, x1: 58, kind: "windows" },
-  { x0: 16, x1: 64, kind: "deck" },
-  { x0: 14, x1: 66, kind: "windows" },
-  { x0: 10, x1: 70, kind: "cabin" },
-  { x0: 8, x1: 72, kind: "windows" },
-  { x0: 6, x1: 74, kind: "cabin" },
-  { x0: 3, x1: 77, kind: "hull" },
-  { x0: 1, x1: 79, kind: "hull" },
-  { x0: 0, x1: 80, kind: "boot" },
-  { x0: 2, x1: 78, kind: "boot" },
-  { x0: 6, x1: 74, kind: "keel" },
-];
+/* Celestial Star, local grid. Waterline sits on the lower red, local y 20. */
+const MASTS = [16, 74];
+const FUNNEL_X0 = 41;
+const FUNNEL_X1 = 51;
+
+/* Side profile. u is 0 at midships and 1 at the stems. The red bottom
+ * rises toward both ends; the promenade sheer rises with it. */
+function starProfile(x) {
+  const u = Math.abs(x - 45.5) / 45.5;
+  const end = u < 0.4 ? 0 : (u - 0.4) / 0.6;
+  const su = end * end * (3 - 2 * end);
+  const rise = u < 0.78 ? 0 : (u - 0.78) / 0.22;
+  const bottom = Math.round(lerp(21, 17, rise));
+  const redTop = Math.round(lerp(17, 12, su));
+  const deckTop = Math.round(lerp(13, 12, su));
+  return { u, bottom, redTop, deckTop };
+}
+
+function paintStar(add, left, top) {
+  const px = (x, y, c, lv) => add(left + x, top + y, c, 1, lv || 0);
+
+  for (let x = 0; x < BOAT_W; x++) {
+    const { u, bottom, redTop, deckTop } = starProfile(x);
+    if (u > 0.985) continue;
+    const stem = u > 0.9;
+    for (let y = (stem ? redTop : deckTop); y <= bottom; y++) {
+      let col = C.green;
+      let lv = 1;
+      if (y >= redTop) {
+        col = y === redTop ? C.redHi : y >= bottom - 1 ? C.redDeep : C.red;
+        lv = 1;
+      } else if (y === redTop - 1) {
+        col = C.gold;
+        lv = 1;
+      } else if (y === deckTop) {
+        col = C.greenLite;
+      }
+      px(x, y, col, lv);
+    }
+    if (u < 0.74) px(x, 7, C.white, 0);
+    if (u < 0.62) {
+      const edge = u > 0.54;
+      for (let y = 8; y <= 11; y++) {
+        const win = !edge && (y === 9 || y === 10) && x % 4 !== 0;
+        px(x, y, win ? C.glass : y >= 11 ? C.cabinShade : C.cabin, 0);
+      }
+    }
+    if (u < 0.78) px(x, 12, C.ivory, 0);
+  }
+
+  for (let i = 0; i < 6; i++) {
+    const x = 26 + i * 8;
+    px(x, 14, C.ivory, 0);
+    px(x + 1, 14, C.ivory, 0);
+    px(x, 15, C.ivory, 0);
+    px(x + 1, 15, C.redHi, 1);
+  }
+
+  px(2, 12, C.redHi, 1);
+  px(3, 12, C.redHi, 1);
+  px(BOAT_W - 4, 12, C.greenLite, 1);
+  px(BOAT_W - 3, 12, C.greenLite, 1);
+
+  for (let m = 0; m < MASTS.length; m++) {
+    const mx = MASTS[m];
+    for (let y = 0; y <= 7; y++) {
+      px(mx, y, C.ivory, 0);
+      px(mx + 1, y, C.ivory, 0);
+    }
+    for (let dx = -2; dx <= 3; dx++) px(mx + dx, 1, C.ivory, 0);
+    px(mx, 0, C.lamp, 1);
+    px(mx + 1, 0, C.ivory, 0);
+  }
+
+  for (let y = 2; y <= 6; y++) {
+    const inset = y === 2 || y === 6 ? 1 : 0;
+    for (let x = FUNNEL_X0 + inset; x < FUNNEL_X1 - inset; x++) {
+      const band = y === 3 || y === 4;
+      px(x, y, band ? C.band : C.ivory, 0);
+    }
+  }
+  px(44, 3, C.ivory, 1);
+  px(48, 3, C.ivory, 1);
+
+  for (const base of [24, 58]) {
+    for (let x = base; x < base + 12; x++) {
+      const red = Math.floor((x - base) / 3) % 2 === 0;
+      px(x, 6, red ? C.redHi : C.white, red ? 1 : 0);
+      px(x, 7, red ? C.red : C.ivory, 0);
+    }
+  }
+
+  const prop = (x, y) => {
+    px(x, y, C.band, 0);
+    px(x + 1, y, C.gold, 1);
+    px(x + 2, y, C.band, 0);
+    px(x + 1, y + 1, C.band, 0);
+  };
+  prop(1, starProfile(2).bottom - 1);
+  prop(BOAT_W - 4, starProfile(BOAT_W - 3).bottom - 1);
+}
 
 const MOON_X = 158;
 const MOON_Y = 14;
@@ -465,34 +557,11 @@ export default function create() {
 
     const left = boatLeft(t);
     const top = BOAT_TOP + Math.round(Math.sin(t * 0.62) * 0.45);
-    for (let ry = 0; ry < HULL.length; ry++) {
-      const row = HULL[ry];
-      for (let rx = row.x0; rx < row.x1; rx++) {
-        let col = C.white;
-        let lv = 0;
-        if (row.kind === "lamp") {
-          col = C.lamp;
-          lv = 1;
-        } else if (row.kind === "mast") col = C.cream2;
-        else if (row.kind === "funnel") col = rx > row.x0 + 2 && rx < row.x1 - 3 ? C.greenLite : C.green;
-        else if (row.kind === "windows") col = (rx - row.x0) % 4 < 2 ? C.win : C.white;
-        else if (row.kind === "deck") {
-          col = (rx - row.x0) % 9 === 4 ? C.lamp : C.white;
-          if (col === C.lamp) lv = 1;
-        } else if (row.kind === "hull") col = ry > 13 ? C.cream2 : C.cream;
-        else if (row.kind === "boot") {
-          if (ry === 15 && rx < 3) col = C.red;
-          else if (ry === 15 && rx >= BOAT_W - 3) col = C.nav;
-          else col = C.green;
-          if (col === C.red || col === C.nav) lv = 1;
-        } else if (row.kind === "keel") col = C.greenDeep;
-        add(left + rx, top + ry, col, 1, lv);
-      }
-    }
+    paintStar(add, left, top);
 
     const stern = left + 2;
     const bow = left + BOAT_W - 3;
-    const waterY = top + 15;
+    const waterY = top + 20;
     for (let i = 1; i <= 40; i++) {
       const fade = 1 - i / 41;
       const spread = Math.min(4, Math.round(0.3 + i * 0.1));
