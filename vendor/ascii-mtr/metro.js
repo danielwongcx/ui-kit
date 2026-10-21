@@ -1,6 +1,7 @@
 /**
  * MTR night crossing — original ui-kit picture.
- * A silver metro with a red stripe runs an elevated guideway above the harbour.
+ * A KCR first-generation EMU (yellow cab, silver body, thin red stripe)
+ * runs an elevated guideway above the harbour.
  * Not derived from ascii-sharks, ascii-magic-art, or the harbour ferry.
  *
  * The page plays this the same way as the viaduct train and the ferry: a fixed
@@ -61,6 +62,7 @@ const ANCHORS = [
   ["#e09830", "#f0c060", "#ffe0a0", 3],
   ["#fff4d4", "#fffdf8", 2],
   ["#152033", "#243044", 2],
+  ["#f5c400", 1],
   ["#14171d", "#2a3038", 2],
   ["#1c6e48", "#3dce7a", 2],
 ];
@@ -82,7 +84,7 @@ const LUM = PAL.map((c) => (0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]) / 255
 export const meta = {
   slug: "mtr-night-crossing",
   name: "MTR Night Crossing",
-  note: "A silver metro with a red stripe crosses an elevated guideway above the harbour at night.",
+  note: "A KCR first-generation EMU — yellow cab, silver body, thin red stripe — crosses an elevated guideway above the harbour at night.",
   cols: W,
   rows: H,
   fps: 15,
@@ -115,23 +117,27 @@ const C = {
   concDark: hex("#6e6860"),
   rail: hex("#d0d8e0"),
   railDim: hex("#8e98a4"),
-  ivory: hex("#d8cfc0"),
-  ivoryMid: hex("#e4dcd0"),
-  ivoryLo: hex("#c4b8a6"),
-  shadow: hex("#8a8176"),
+  silver: hex("#d0d8e0"),
+  silverMid: hex("#8e98a4"),
+  silverShade: hex("#8e98a4"),
+  roof: hex("#8e98a4"),
+  roofLite: hex("#8e98a4"),
+  roofDeep: hex("#5c564e"),
+  shadow: hex("#5c564e"),
   under: hex("#2a3038"),
   wheel: hex("#14171d"),
+  skirt: hex("#14171d"),
+  yellow: hex("#f5c400"),
+  yellowShade: hex("#f5c400"),
+  pillar: hex("#14171d"),
+  wind: hex("#243044"),
   red: hex("#ff7468"),
   redMid: hex("#ff5c52"),
   redDeep: hex("#e0443c"),
   amber: hex("#ffd080"),
-  dest: hex("#f0c060"),
-  head: hex("#fffdf8"),
   lamp: hex("#ffe0a0"),
-  glass: hex("#1a2436"),
+  glass: hex("#152033"),
   glassLite: hex("#243044"),
-  hvac: hex("#f7f4ee"),
-  hvacShade: hex("#cfc6ba"),
   signal: hex("#3dce7a"),
   hill: hex("#121614"),
   hillLite: hex("#1e2a24"),
@@ -182,17 +188,13 @@ const MOON_X = 166;
 const MOON_Y = 13;
 const MOON_R = 5;
 
-/* Window bays and red doors, local to a 30-wide car. */
-const BAYS = [
-  [1, 5],
-  [10, 5],
-  [19, 5],
-];
-const DOORS = [
-  [6, 4],
-  [15, 4],
-  [24, 4],
-];
+/* Side bays on a 30-wide car: wide windows, then a double door. The cab
+ * car keeps two of each and spends the nose on the yellow front. */
+const BAYS = [[1, 5], [13, 5], [25, 5]];
+const DOORS = [[7, 5], [19, 5]];
+const CAB_BAYS = [[1, 5], [13, 5]];
+const CAB_DOORS = [[7, 5]];
+const CAB_FACE = 18;
 
 function trainLeft(t) {
   let x = (t * SPEED + PHASE) % SPAN;
@@ -404,83 +406,83 @@ export default function create() {
 
   const paintCar = (ox, kind, spin, car) => {
     const y = ROOF;
+    const cab = kind === "front";
+    const face = cab ? CAB_FACE : CAR_W;
     for (let ry = 0; ry <= 11; ry++) {
       for (let rx = 0; rx < CAR_W; rx++) {
-        let col = C.ivory;
-        if (ry === 0) col = C.ivoryMid;
-        else if (ry >= 10) col = C.ivoryLo;
-        else if (rx === 0 || rx === CAR_W - 1) col = C.ivoryLo;
-        add(ox + rx, y + ry, col, 1, 0);
+        const nose = rx >= face;
+        let col = C.silver;
+        let lv = 0;
+        if (ry === 0) col = C.roof;
+        else if (ry >= 10) col = C.skirt;
+        else if (nose) {
+          col = ry >= 7 ? C.yellowShade : C.yellow;
+          lv = 1;
+        } else if (rx === 0 || rx === CAR_W - 1) col = C.silverShade;
+        add(ox + rx, y + ry, col, 1, lv);
       }
     }
-    const pods = [[4, 7], [17, 7]];
-    for (let p = 0; p < pods.length; p++) {
-      const px = ox + pods[p][0];
-      const pw = pods[p][1];
-      for (let rx = 0; rx < pw; rx++) {
-        const edge = rx === 0 || rx === pw - 1;
-        add(px + rx, y - 2, edge ? C.hvacShade : C.hvac, 1, 0);
-        add(px + rx, y - 1, C.hvacShade, 1, 0);
-      }
+    const ventX = cab ? 9 : 20;
+    const ventW = cab ? 7 : 6;
+    for (let rx = 0; rx < ventW; rx++) {
+      const edge = rx === 0 || rx === ventW - 1;
+      add(ox + ventX + rx, y - 2, edge ? C.roof : C.roofLite, 1, 0);
+      add(ox + ventX + rx, y - 1, C.roof, 1, 0);
     }
-    const bays = kind === "front" ? BAYS.slice(0, 2) : BAYS;
-    const doors = kind === "front" ? DOORS.slice(0, 2) : DOORS;
+    const bays = cab ? CAB_BAYS : BAYS;
+    const doors = cab ? CAB_DOORS : DOORS;
     for (let i = 0; i < bays.length; i++) {
-      const bx = ox + bays[i][0];
+      const bx = bays[i][0];
       const bw = bays[i][1];
-      const lit = hash01(car, i, 6) > 0.18;
-      for (let ry = 2; ry <= 4; ry++) {
-        for (let rx = 1; rx < bw - 1; rx++) {
-          let col = C.glass;
-          if (lit) col = hash01(car * 8 + i, ry + rx, 12) > 0.8 ? C.winDim : C.win;
-          if (lit && ry === 4 && rx === 2 && hash01(car, i, 14) > 0.6) col = C.glassLite;
-          add(bx + rx, y + ry, col, 1, 0);
+      for (let ry = 3; ry <= 5; ry++) {
+        for (let rx = 0; rx < bw; rx++) {
+          const corner = (rx === 0 || rx === bw - 1) && (ry === 3 || ry === 5);
+          if (corner) continue;
+          add(ox + bx + rx, y + ry, C.glass, 1, 0);
         }
       }
-    }
-    for (let rx = 0; rx < CAR_W; rx++) {
-      add(ox + rx, y + 5, C.red, 1, 2);
-      add(ox + rx, y + 6, C.red, 1, 2);
     }
     for (let i = 0; i < doors.length; i++) {
-      const dx = ox + doors[i][0];
+      const dx = doors[i][0];
       const dw = doors[i][1];
-      for (let ry = 2; ry <= 9; ry++) {
+      const mid = (dw / 2) | 0;
+      for (let ry = 3; ry <= 9; ry++) {
         for (let rx = 0; rx < dw; rx++) {
-          const pane = rx > 0 && rx < dw - 1 && ry <= 4;
-          add(dx + rx, y + ry, pane ? C.glass : C.red, 1, pane ? 0 : 2);
+          const seam = rx === mid;
+          const pane = !seam && ry <= 5;
+          add(ox + dx + rx, y + ry, seam ? C.skirt : pane ? C.glass : C.silver, 1, 0);
         }
       }
     }
-    if (kind === "front") {
-      for (let ry = 0; ry <= 10; ry++) {
-        for (let rx = 21; rx < CAR_W; rx++) {
-          let col = ry <= 6 ? C.ivoryMid : C.ivoryLo;
-          if (ry >= 2 && ry <= 5 && rx >= 23 && rx <= 28) col = C.glass;
-          if (ry === 1 && rx >= 23 && rx <= 27) col = C.dest;
-          if (ry >= 6 && ry <= 9 && rx >= 22 && rx <= 28) col = C.red;
-          if ((ry === 8 || ry === 9) && (rx === 23 || rx === 27)) col = C.head;
-          const hot = col === C.head || col === C.dest;
-          add(ox + rx, y + ry, col, 1, hot ? 2 : col === C.red ? 2 : 0);
-        }
+    for (let rx = 0; rx < face; rx++) {
+      add(ox + rx, y + 8, C.red, 1, 2);
+      add(ox + rx, y + 9, C.redDeep, 1, 1);
+    }
+    if (cab) {
+      const x0 = ox + face;
+      for (let ry = 3; ry <= 5; ry++) {
+        for (let rx = 2; rx <= 4; rx++) add(x0 + rx, y + ry, C.wind, 1, 0);
+        add(x0 + 5, y + ry, C.pillar, 1, 0);
+        add(x0 + 6, y + ry, C.pillar, 1, 0);
+        for (let rx = 7; rx <= 9; rx++) add(x0 + rx, y + ry, C.wind, 1, 0);
       }
+      add(x0 + 5, y + 1, C.red, 1, 2);
+      add(x0 + 6, y + 1, C.red, 1, 2);
     }
     if (kind === "rear") {
-      add(ox + 1, y + 8, C.red, 1, 2);
-      add(ox + 2, y + 8, C.red, 1, 2);
-      add(ox + 1, y + 9, C.red, 1, 2);
-      add(ox + 2, y + 9, C.red, 1, 2);
+      add(ox + 1, y + 4, C.red, 1, 2);
+      add(ox + 2, y + 4, C.red, 1, 2);
     }
     const hubY = spin ? 0 : 2;
     for (let b = 0; b < 2; b++) {
-      const cx = ox + (b === 0 ? 5 : 18);
-      for (let rx = 0; rx < 8; rx++) add(cx + rx, y + 11, C.under, 1, 0);
+      const cx = ox + (b === 0 ? 3 : 15);
+      for (let rx = 0; rx < 8; rx++) add(cx + rx, y + 11, C.skirt, 1, 0);
       for (let w = 0; w < 2; w++) {
-        const wx = cx + w * 4;
+        const wx = cx + 1 + w * 4;
         for (let dy = 0; dy < 3; dy++) {
           for (let dx = 0; dx < 3; dx++) {
             const hub = dx === 1 && dy === hubY;
-            add(wx + dx, y + 12 + dy, hub ? C.wheel : C.railDim, 1, 0);
+            add(wx + dx, y + 12 + dy, hub ? C.roofDeep : C.wheel, 1, 0);
           }
         }
       }
@@ -580,7 +582,7 @@ export default function create() {
       const a = (1 - i / 17) * 0.8;
       add(nose + i, RAIL - 1, C.lamp, a, a > 0.45 ? 1 : 0);
       add(nose + i, RAIL, C.amber, a * 0.65, 0);
-      if (i < 8) add(nose + i, RAIL - 2, C.head, a * 0.35, 0);
+      if (i < 8) add(nose + i, RAIL - 2, C.lamp, a * 0.35, 0);
     }
     for (let i = 1; i <= 5; i++) add(left - i, RAIL - 2, C.redMid, (1 - i / 6) * 0.4, 0);
 
