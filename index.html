@@ -1625,6 +1625,12 @@
     /* —— Colour pairings (reference only; does not switch the page shell) —— */
     .pairings {
       margin-top: 2.25rem;
+      scroll-margin-top: calc(var(--site-header-h, 56px) + var(--nav-h, 52px) + 12px);
+    }
+    @media (max-width: 720px) {
+      .pairings {
+        scroll-margin-top: calc(var(--site-header-h, 56px) + 12px);
+      }
     }
     .pairings-head {
       margin: 0 0 1rem;
@@ -1715,14 +1721,8 @@
       line-height: 1.2;
       color: var(--muted);
       text-align: center;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.03em;
       white-space: nowrap;
-    }
-    @media (min-width: 560px) {
-      .pairing-hex { font-size: 10px; }
-    }
-    @media (min-width: 860px) {
-      .pairing-hex { font-size: 11px; }
     }
     .pairing-swatch.is-copied .pairing-hex {
       color: var(--brand);
@@ -3886,10 +3886,7 @@
         pairingTimer = window.setTimeout(restorePairingCopy, 1400);
       }
 
-      function copyHex(textValue) {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          return navigator.clipboard.writeText(textValue);
-        }
+      function copyHexLegacy(textValue) {
         return new Promise(function (resolve, reject) {
           var area = document.createElement('textarea');
           area.value = textValue;
@@ -3905,6 +3902,15 @@
           if (ok) resolve();
           else reject(new Error('copy failed'));
         });
+      }
+
+      function copyHex(textValue) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          return navigator.clipboard.writeText(textValue).catch(function () {
+            return copyHexLegacy(textValue);
+          });
+        }
+        return copyHexLegacy(textValue);
       }
 
       pairingButtons.forEach(function (btn) {
