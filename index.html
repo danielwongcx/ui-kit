@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>UI Library · Digits · Buttons · Cards · Palettes · Select · Glow</title>
   <script>
-    /* Apply saved page shell palette before paint (page bg only) */
+    /* Apply saved page shell and glow stops before paint */
     (function () {
       try {
         var id = localStorage.getItem('ui-kit-palette') || 'forest';
@@ -18,6 +18,14 @@
         var page = pages[id] || pages.forest;
         document.documentElement.setAttribute('data-theme', id);
         document.documentElement.style.setProperty('--page', page);
+        var glow = JSON.parse(localStorage.getItem('ui-kit-glow') || 'null');
+        if (glow && glow.stops && glow.stops.length === 6) {
+          for (var i = 0; i < glow.stops.length; i++) {
+            if (/^#[0-9a-fA-F]{6}$/.test(glow.stops[i])) {
+              document.documentElement.style.setProperty('--glow-c' + (i + 1), glow.stops[i]);
+            }
+          }
+        }
       } catch (e) {}
     })();
   </script>
@@ -2019,45 +2027,147 @@
     }
 
     .canvas-body.glow-stage {
-      padding: 2.85rem 2.1rem;
+      padding: 3.25rem 3rem;
     }
 
     .glow-wrap {
       --glow-radius: 16px;
+      /* Filtered box is larger than the rim so the blur can fade out
+         before it hits a rectangular clip. */
+      --glow-spread: 40px;
+      --glow-pad: 24px;
+      --glow-blur: 12px;
+      --glow-ring: 8px;
       position: relative;
       z-index: 0;
       width: min(100%, 340px);
       isolation: isolate;
+      overflow: visible;
     }
 
-    /* Gradient lives on the animated element. An intermediate custom
-       property would resolve --a on the wrapper (stuck at 0deg) because
-       @property --a does not inherit. */
-    .glow-wrap::before,
-    .glow-card {
+    /* Stops are inherited colour variables. The gradient itself stays on
+       the animated element so var(--a) resolves there (it does not inherit).
+       Fallbacks are the rainbow until a chip sets --glow-c1…c6. */
+    .glow-card,
+    .glow-halo__ring {
       background: conic-gradient(
         from var(--a),
-        #ff0000,
-        #ffff00,
-        #00ff00,
-        #00ffff,
-        #0000ff,
-        #ff00ff,
-        #ff0000
+        var(--glow-c1, #ff0000),
+        var(--glow-c2, #ffff00),
+        var(--glow-c3, #00ff00),
+        var(--glow-c4, #00ffff),
+        var(--glow-c5, #0000ff),
+        var(--glow-c6, #ff00ff),
+        var(--glow-c1, #ff0000)
       );
       --a: 0deg;
       animation: glow-spin 3s linear infinite;
     }
 
-    .glow-wrap::before {
-      content: "";
+    .glow-halo {
       position: absolute;
-      inset: -5px;
+      inset: calc(var(--glow-spread) * -1);
       z-index: 0;
-      border-radius: calc(var(--glow-radius) + 8px);
-      filter: blur(11px);
-      opacity: 0.8;
       pointer-events: none;
+      filter: blur(var(--glow-blur));
+      opacity: 0.92;
+    }
+
+    .glow-halo__ring {
+      position: absolute;
+      inset: var(--glow-pad);
+      border-radius: calc(var(--glow-radius) + var(--glow-spread) - var(--glow-pad));
+      padding: var(--glow-ring);
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      mask-composite: exclude;
+    }
+
+    .glow-picks {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.45rem;
+      margin: 0 0 1.15rem;
+    }
+
+    .glow-pick {
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      min-height: 36px;
+      margin: 0;
+      border: 1px solid var(--line);
+      background: #f7f7f9;
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.35rem 0.75rem 0.35rem 0.4rem;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    .glow-pick:hover {
+      background: #fff;
+      border-color: #cfcfd8;
+    }
+
+    .glow-pick:focus-visible,
+    .glow-color:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .glow-pick.is-on {
+      background: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent);
+    }
+
+    .glow-swatch {
+      width: 1.05rem;
+      height: 1.05rem;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: var(--swatch, #ccc);
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.14);
+    }
+
+    .glow-swatch--rainbow {
+      background: conic-gradient(#ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+    }
+
+    .glow-pick--custom {
+      padding-right: 0.8rem;
+    }
+
+    .glow-color {
+      width: 1.15rem;
+      height: 1.15rem;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: none;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .glow-color::-webkit-color-swatch-wrapper { padding: 0; }
+    .glow-color::-webkit-color-swatch {
+      border: 0;
+      border-radius: 50%;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.14);
+    }
+    .glow-color::-moz-color-swatch {
+      border: 0;
+      border-radius: 50%;
     }
 
     .glow-card {
@@ -2170,7 +2280,7 @@
       .digit-stack { transition: none; }
       .billing .pill { transition: none; }
       .glow-card,
-      .glow-wrap::before {
+      .glow-halo__ring {
         animation: none;
       }
       .glow-card--btn:active {
@@ -3901,13 +4011,42 @@
       <div class="sec-head">
         <h2>Glow border</h2>
         <p>
-          <code>@property --a</code> registers an angle. That angle drives a
-          <code>conic-gradient</code> on the shell behind the card, and a
-          blurred copy of the same gradient glows outside the rim. The inner
-          panel is a solid dark fill, so the rainbow reads as a thin border.
-          Pure CSS — no JS. Reduced motion holds the rim still.
+          <code>@property --a</code> registers an angle that spins a
+          <code>conic-gradient</code> on the shell behind the card. A solid
+          inner panel leaves a thin rim; a blurred copy glows outside it.
+          The chips write colour stops onto this section, so the card and
+          the button update together. Reduced motion holds the rim still
+          in the chosen colour.
         </p>
       </div>
+
+      <div class="glow-picks" role="group" aria-label="Glow colour">
+        <button type="button" class="glow-pick is-on" data-glow="rainbow" aria-pressed="true">
+          <span class="glow-swatch glow-swatch--rainbow" aria-hidden="true"></span>
+          Rainbow
+        </button>
+        <button type="button" class="glow-pick" data-glow="violet" aria-pressed="false">
+          <span class="glow-swatch" style="--swatch: linear-gradient(135deg, #6d5efc, #ddd6fe)" aria-hidden="true"></span>
+          Violet
+        </button>
+        <button type="button" class="glow-pick" data-glow="teal" aria-pressed="false">
+          <span class="glow-swatch" style="--swatch: linear-gradient(135deg, #0f766e, #5eead4)" aria-hidden="true"></span>
+          Teal
+        </button>
+        <button type="button" class="glow-pick" data-glow="gold" aria-pressed="false">
+          <span class="glow-swatch" style="--swatch: linear-gradient(135deg, #a16207, #fde68a)" aria-hidden="true"></span>
+          Gold
+        </button>
+        <button type="button" class="glow-pick" data-glow="rose" aria-pressed="false">
+          <span class="glow-swatch" style="--swatch: linear-gradient(135deg, #9f1239, #fda4af)" aria-hidden="true"></span>
+          Rose
+        </button>
+        <label class="glow-pick glow-pick--custom" id="glow-custom-label">
+          <input type="color" class="glow-color" id="glow-custom" value="#6d5efc" aria-label="Custom glow colour">
+          Custom
+        </label>
+      </div>
+      <p class="visually-hidden" id="glow-color-status" aria-live="polite">Rainbow glow</p>
 
       <div class="sec-grid two">
         <article class="canvas">
@@ -3917,6 +4056,7 @@
           </div>
           <div class="canvas-body dark glow-stage">
             <div class="glow-wrap">
+              <div class="glow-halo" aria-hidden="true"><div class="glow-halo__ring"></div></div>
               <div class="glow-card">
                 <div class="glow-face">
                   <div class="glow-top">
@@ -3931,7 +4071,7 @@
                 </div>
               </div>
             </div>
-            <p class="hint"><code>@property --a</code> · conic-gradient · 3s linear</p>
+            <p class="hint"><code>var(--glow-c1)</code>…<code>c6</code> · 3s linear</p>
           </div>
         </article>
 
@@ -3942,11 +4082,12 @@
           </div>
           <div class="canvas-body dark glow-stage">
             <div class="glow-wrap glow-wrap--btn">
+              <div class="glow-halo" aria-hidden="true"><div class="glow-halo__ring"></div></div>
               <button type="button" class="glow-card glow-card--btn">
                 <span class="glow-face glow-face--btn">Continue</span>
               </button>
             </div>
-            <p class="hint">Same rim on a control · 3s linear infinite</p>
+            <p class="hint">Same stops as the card · 3s linear</p>
           </div>
         </article>
       </div>
@@ -4182,6 +4323,110 @@
         badge.textContent = 'Not supported';
         detail.innerHTML = browserBit + ' does not support <code>appearance: base-select</code> yet. You still get a native select; try Chrome 135+ for the custom picker.';
       }
+    })();
+  </script>
+  <script>
+    (function () {
+      var root = document.getElementById('glow-border');
+      var status = document.getElementById('glow-color-status');
+      var customLabel = document.getElementById('glow-custom-label');
+      var customInput = document.getElementById('glow-custom');
+      if (!root || !customInput) return;
+
+      var PRESETS = {
+        rainbow: ['#ff0000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#ff00ff'],
+        violet: ['#6d5efc', '#ddd6fe', '#4c1d95', '#a78bfa', '#6d5efc', '#ede9fe'],
+        teal: ['#14b8a6', '#ccfbf1', '#0f766e', '#5eead4', '#14b8a6', '#f0fdfa'],
+        gold: ['#f5c542', '#fff7d6', '#a16207', '#fde68a', '#f5c542', '#fffbeb'],
+        rose: ['#fb7185', '#ffe4e6', '#9f1239', '#fda4af', '#fb7185', '#fff1f2']
+      };
+      var NAMES = {
+        rainbow: 'Rainbow',
+        violet: 'Violet',
+        teal: 'Teal',
+        gold: 'Gold',
+        rose: 'Rose'
+      };
+      var KEY = 'ui-kit-glow';
+      var buttons = Array.prototype.slice.call(root.querySelectorAll('[data-glow]'));
+
+      function clamp(n) { return Math.max(0, Math.min(255, Math.round(n))); }
+      function hexToRgb(hex) {
+        var n = parseInt(String(hex).replace('#', ''), 16);
+        if (!isFinite(n)) return [109, 94, 252];
+        return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+      }
+      function rgbToHex(r, g, b) {
+        function h(v) {
+          var s = clamp(v).toString(16);
+          return s.length === 1 ? '0' + s : s;
+        }
+        return '#' + h(r) + h(g) + h(b);
+      }
+      function mix(hex, toward, t) {
+        var a = hexToRgb(hex);
+        var b = hexToRgb(toward);
+        return rgbToHex(
+          a[0] + (b[0] - a[0]) * t,
+          a[1] + (b[1] - a[1]) * t,
+          a[2] + (b[2] - a[2]) * t
+        );
+      }
+      function customStops(hex) {
+        var light = mix(hex, '#ffffff', 0.62);
+        var deep = mix(hex, '#0a0a0c', 0.42);
+        return [hex, light, deep, light, hex, light];
+      }
+      function paint(colors) {
+        for (var i = 0; i < colors.length; i++) {
+          root.style.setProperty('--glow-c' + (i + 1), colors[i]);
+        }
+      }
+      function mark(id) {
+        buttons.forEach(function (btn) {
+          var on = btn.getAttribute('data-glow') === id;
+          btn.classList.toggle('is-on', on);
+          btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        if (customLabel) customLabel.classList.toggle('is-on', id === 'custom');
+      }
+      function say(text) {
+        if (status) status.textContent = text;
+      }
+      function save(value) {
+        try { localStorage.setItem(KEY, JSON.stringify(value)); } catch (e) {}
+      }
+      function choosePreset(id, persist) {
+        var colors = PRESETS[id];
+        if (!colors) return;
+        paint(colors);
+        mark(id);
+        say(NAMES[id] + ' glow');
+        if (persist) save({ id: id, stops: colors });
+      }
+      function chooseCustom(hex, persist) {
+        if (!/^#[0-9a-fA-F]{6}$/.test(hex)) return;
+        var colors = customStops(hex);
+        customInput.value = hex;
+        paint(colors);
+        mark('custom');
+        say('Custom glow ' + hex);
+        if (persist) save({ id: 'custom', hex: hex, stops: colors });
+      }
+
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          choosePreset(btn.getAttribute('data-glow'), true);
+        });
+      });
+      customInput.addEventListener('input', function () {
+        chooseCustom(customInput.value, true);
+      });
+
+      var saved = null;
+      try { saved = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
+      if (saved && saved.id === 'custom' && saved.hex) chooseCustom(saved.hex, false);
+      else if (saved && PRESETS[saved.id]) choosePreset(saved.id, false);
     })();
   </script>
   <script src="shared/site-header.js" defer></script>
