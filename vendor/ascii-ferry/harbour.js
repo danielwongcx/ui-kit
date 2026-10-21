@@ -1,652 +1,542 @@
 /**
- * Harbour ferry — original ui-kit ASCII scene.
- * A quiet night crossing: block skyline, a few lit windows, one ferry,
- * ripple water, and a soft wake. Drawn on a fixed-budget grid.
+ * Harbour ferry — original ui-kit picture.
+ * A night crossing: lit towers, black-green water, one double-ended ferry.
  * Not derived from ascii-sharks or ascii-magic-art.
  *
- *   import { startHarbour } from "./harbour.js";
- *   const stop = startHarbour(canvas);
+ * The page plays this the same way as the viaduct train: a fixed 192×108
+ * square-cell frame at 15fps, halftone dots on black. Every cell is a shade
+ * block plus a palette key so the shared player can size the dots.
+ *
+ *   import * as ferry from "./harbour.js";
+ *   play(pre, ferry, { look: { look: "dots" } });
  */
-"use strict";
+const W = 192;
+const H = 108;
+const HORIZON = 50;
+const BOAT_W = 80;
+const BOAT_H = 18;
+const BOAT_TOP = 56;
+const SPEED = 11;
+const GAP = 24;
+const SPAN = W + BOAT_W + GAP;
+const PHASE = (W + BOAT_W) / 2;
+const LEVELS = "▁▂▃▄▅▆▇█";
+const KEYS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-var COLS0 = 120;
-var ROWS0 = 64;
-var HORIZON0 = 26;
-var WATERLINE0 = 50;
-var LOOP_SECONDS = 36;
-var FPS = 20;
+const SKY = 1;
+const BLDG = 2;
+const WATER = 3;
 
-/* Side-on ferry. Legend:
- *   # cream mass   = dark lower deck   % boot topping   F funnel
- *   * cabin window + deck lamp         . mast lamp      | mast
- *   r stern light  g bow light         / \ raked ends
- * Leading spaces keep the mast lined up with the hull. */
-var FERRY = [
-  "                         .                            ",
-  "                         |                            ",
-  "                    FF   |                            ",
-  "                    FF########                        ",
-  "                      #******#                        ",
-  "        ########################################      ",
-  "        ###*###*###*###*###*###*###*###*###*####      ",
-  "        ########################################      ",
-  "     /############################################\\   ",
-  "   /===+====+====+====+====+====+====+====+====+====\\ ",
-  "  r##################################################g",
-  "    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  "
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
+const lerp = (a, b, t) => a + (b - a) * t;
+const mix = (a, b, t) => [lerp(a[0], b[0], t), lerp(a[1], b[1], t), lerp(a[2], b[2], t)];
+const toHex = (c) => "#" + c.map((v) => Math.round(clamp(v, 0, 255)).toString(16).padStart(2, "0")).join("");
+
+/* Luminance stays in the train's band: a bright field, dark silhouettes,
+ * and highlights that do not blow the halftone white point. */
+const ANCHORS = [
+  ["#3d6ea6", "#7eacd4", "#b7cce4", 8],
+  ["#9a8078", "#c8b098", 3],
+  ["#d8c8a8", "#e4d4b4", 2],
+  ["#141820", "#222a38", "#3a465c", 4],
+  ["#d4a060", "#e4c888", 3],
+  ["#c5d4e4", "#d8e2ee", 2],
+  ["#2f6e84", "#4a9eb4", "#7ec8d4", 6],
+  ["#a8cdd6", "#c5dde6", 2],
+  ["#d4c29a", "#e0cfae", 3],
+  ["#1f7a4c", "#46c484", 3],
+  ["#d06860", "#e8b0a8", 2],
+  ["#2f9a62", "#a8d4bc", 2],
+  ["#121614", "#24302a", 2],
 ];
 
-var FERRY_H = FERRY.length;
-var BOAT_W = FERRY[0].length;
-var HULL_ROW = 10;
-var HULL_L = FERRY[HULL_ROW].indexOf("#");
-var HULL_R = FERRY[HULL_ROW].lastIndexOf("#");
-
-/* Hand-placed skyline in a 120-column canonical grid. Heights are
- * rows above the waterline. Scaled to whatever grid the viewport needs. */
-var BUILDINGS = [
-  { x: 0, w: 8, h: 9, step: true },
-  { x: 9, w: 4, h: 16, spire: 4 },
-  { x: 14, w: 10, h: 7, step: true },
-  { x: 25, w: 6, h: 12 },
-  { x: 32, w: 3, h: 21, spire: 4, beacon: true },
-  { x: 36, w: 9, h: 8, step: true },
-  { x: 46, w: 5, h: 5 },
-  { x: 52, w: 12, h: 10, step: true },
-  { x: 65, w: 4, h: 15, spire: 3 },
-  { x: 70, w: 7, h: 6 },
-  { x: 78, w: 5, h: 18, spire: 3 },
-  { x: 84, w: 13, h: 8, step: true },
-  { x: 98, w: 6, h: 13 },
-  { x: 105, w: 7, h: 6, step: true },
-  { x: 113, w: 7, h: 10 }
-];
-
-var SPARKS = [
-  { xf: 0.2, yf: 0.56, period: 7.4, phase: 0.3 },
-  { xf: 0.47, yf: 0.68, period: 9.1, phase: 2.4 },
-  { xf: 0.74, yf: 0.52, period: 6.2, phase: 4.0 }
-];
-
-function clamp(v, a, b) {
-  return v < a ? a : v > b ? b : v;
+const PAL = [];
+for (const a of ANCHORS) {
+  const n = a[a.length - 1];
+  const cs = a.slice(0, -1).map(hex);
+  for (let i = 0; i < n; i++) {
+    const t = (i / Math.max(1, n - 1)) * (cs.length - 1);
+    const k = Math.min(cs.length - 2, Math.floor(t));
+    PAL.push(cs.length === 1 ? cs[0] : mix(cs[k], cs[k + 1], t - k));
+  }
 }
 
+const LUM = PAL.map((c) => (0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]) / 255);
+
+export const meta = {
+  slug: "harbour-ferry",
+  name: "Harbour Ferry",
+  note: "A double-ended ferry crosses a night harbour in front of a lit skyline.",
+  cols: W,
+  rows: H,
+  fps: 15,
+  cell: "square",
+  look: "dots",
+  dots: { tone: { gamma: 0.62, floor: 0.03, sat: 0.82 } },
+  palette: Object.fromEntries(PAL.map((c, i) => [KEYS[i], toHex(c)])),
+};
+
+const C = {
+  skyTop: hex("#3d6ea6"),
+  skyMid: hex("#7eacd4"),
+  skyHor: hex("#b7cce4"),
+  haze: hex("#c8b098"),
+  moon: hex("#e4d4b4"),
+  moonEdge: hex("#d8c8a8"),
+  glow: hex("#d0c0a4"),
+  star: hex("#d8e2ee"),
+  starDim: hex("#b7c8dc"),
+  bld: hex("#161a24"),
+  bldLite: hex("#3a465c"),
+  brace: hex("#8ea0b4"),
+  win: hex("#e4c888"),
+  winCool: hex("#d8e2ee"),
+  winDim: hex("#2a303c"),
+  beacon: hex("#e07068"),
+  waterDeep: hex("#2f6e84"),
+  waterMid: hex("#4a9eb4"),
+  waterLit: hex("#7ec8d4"),
+  shore: hex("#c8b098"),
+  reflect: hex("#c4a070"),
+  path: hex("#c5dde6"),
+  cream: hex("#e0cfae"),
+  cream2: hex("#d4c29a"),
+  white: hex("#ddd4c2"),
+  lamp: hex("#e4c888"),
+  green: hex("#1f7a4c"),
+  greenLite: hex("#46c484"),
+  greenDeep: hex("#186440"),
+  red: hex("#e07068"),
+  nav: hex("#a8d4bc"),
+  wake: hex("#c5dde6"),
+  wakeDim: hex("#8ec4d0"),
+  far: hex("#d4c8b0"),
+  post: hex("#1a1e28"),
+  peak: hex("#141816"),
+  peakLite: hex("#24302a"),
+};
+
 function hash01(x, y, s) {
-  var n = Math.imul((x + 1) ^ Math.imul(s + 3, 0x9e3779b1), 0x85ebca6b) ^ Math.imul(y + 1, 0xc2b2ae35);
+  let n = Math.imul((x + 1) ^ Math.imul(s + 3, 0x9e3779b1), 0x85ebca6b) ^ Math.imul(y + 1, 0xc2b2ae35);
   n = Math.imul(n ^ (n >>> 13), 0xc2b2ae35);
   n ^= n >>> 16;
   return (n >>> 0) / 4294967296;
 }
 
 function mulberry32(seed) {
-  var a = seed >>> 0;
-  return function () {
+  let a = seed >>> 0;
+  return () => {
     a = (a + 0x6d2b79f5) >>> 0;
-    var t = a;
+    let t = a;
     t = Math.imul(t ^ (t >>> 15), t | 1);
     t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
 
-function spanOf(cols) {
-  return cols + BOAT_W + 6;
+function noise2(x, y, seed) {
+  const xi = Math.floor(x);
+  const yi = Math.floor(y);
+  const xf = (x - xi);
+  const yf = (y - yi);
+  const sx = xf * xf * (3 - 2 * xf);
+  const sy = yf * yf * (3 - 2 * yf);
+  const h = (px, py) => hash01(px, py, seed);
+  const a = h(xi, yi);
+  const b = h(xi + 1, yi);
+  const c = h(xi, yi + 1);
+  const d = h(xi + 1, yi + 1);
+  return lerp(lerp(a, b, sx), lerp(c, d, sx), sy);
 }
 
-function speedOf(cols) {
-  return spanOf(cols) / LOOP_SECONDS;
-}
+/* Hand-placed skyline on the 192-wide grid. Heights are rows above the water. */
+const BUILDINGS = [
+  { x: 0, w: 9, h: 14, step: 3, lit: 0.42 },
+  { x: 10, w: 6, h: 26, spire: 5, lit: 0.52 },
+  { x: 17, w: 12, h: 11, step: 2, lit: 0.36 },
+  { x: 30, w: 8, h: 32, antenna: 6, beacon: true, lit: 0.64 },
+  { x: 39, w: 5, h: 18, lit: 0.34 },
+  { x: 45, w: 12, h: 24, chevron: true, lit: 0.5 },
+  { x: 58, w: 7, h: 15, lit: 0.4 },
+  { x: 66, w: 10, h: 28, step: 4, lit: 0.58 },
+  { x: 77, w: 5, h: 34, antenna: 6, beacon: true, lit: 0.7 },
+  { x: 83, w: 11, h: 13, step: 2, lit: 0.34 },
+  { x: 95, w: 8, h: 26, spire: 4, lit: 0.56 },
+  { x: 104, w: 14, h: 10, step: 2, lit: 0.3 },
+  { x: 119, w: 6, h: 21, lit: 0.46 },
+  { x: 126, w: 9, h: 16, step: 3, lit: 0.4 },
+  { x: 136, w: 7, h: 20, lit: 0.44 },
+  { x: 144, w: 8, h: 12, lit: 0.28 },
+  { x: 153, w: 6, h: 9, lit: 0.22 },
+  { x: 160, w: 10, h: 13, step: 2, lit: 0.33 },
+  { x: 171, w: 5, h: 18, lit: 0.4 },
+  { x: 177, w: 15, h: 11, step: 2, lit: 0.3 },
+];
 
-function boatLeft(t, cols) {
-  var span = spanOf(cols);
-  var x = (t * speedOf(cols)) % span;
-  if (x < 0) x += span;
+/* Double-ended ferry, centred. x1 is exclusive. */
+const HULL = [
+  { x0: 38, x1: 42, kind: "lamp" },
+  { x0: 39, x1: 41, kind: "mast" },
+  { x0: 39, x1: 41, kind: "mast" },
+  { x0: 33, x1: 47, kind: "funnel" },
+  { x0: 32, x1: 48, kind: "funnel" },
+  { x0: 31, x1: 49, kind: "funnel" },
+  { x0: 24, x1: 56, kind: "house" },
+  { x0: 22, x1: 58, kind: "windows" },
+  { x0: 16, x1: 64, kind: "deck" },
+  { x0: 14, x1: 66, kind: "windows" },
+  { x0: 10, x1: 70, kind: "cabin" },
+  { x0: 8, x1: 72, kind: "windows" },
+  { x0: 6, x1: 74, kind: "cabin" },
+  { x0: 3, x1: 77, kind: "hull" },
+  { x0: 1, x1: 79, kind: "hull" },
+  { x0: 0, x1: 80, kind: "boot" },
+  { x0: 2, x1: 78, kind: "boot" },
+  { x0: 6, x1: 74, kind: "keel" },
+];
+
+const MOON_X = 158;
+const MOON_Y = 14;
+const MOON_R = 6;
+
+function boatLeft(t) {
+  let x = (t * SPEED + PHASE) % SPAN;
+  if (x < 0) x += SPAN;
   return x - BOAT_W;
 }
 
-function stillTime(cols) {
-  var left = (cols - BOAT_W) * 0.5;
-  return (left + BOAT_W) / speedOf(cols);
-}
-
-function moonClear(mask, cols, rows, x, y) {
-  for (var dy = -1; dy <= 1; dy++) {
-    for (var dx = -2; dx <= 2; dx++) {
-      var xx = x + dx;
-      var yy = y + dy;
-      if (yy < 0 || yy >= rows || xx < 0 || xx >= cols) continue;
-      if (mask[yy * cols + xx]) return false;
-    }
-  }
-  return true;
-}
-
-function buildView(cols, rows) {
-  var horizon = clamp(Math.round(rows * HORIZON0 / ROWS0), 12, rows - 22);
-  var waterline = clamp(
-    Math.round(rows * WATERLINE0 / ROWS0),
-    horizon + FERRY_H + 2,
-    rows - 4
-  );
-  var mask = new Uint8Array(cols * rows);
-  var windows = [];
-  var spires = [];
-  var beacons = [];
-
-  for (var bi = 0; bi < BUILDINGS.length; bi++) {
-    var b = BUILDINGS[bi];
-    var x0 = Math.round(b.x / COLS0 * cols);
-    var x1 = Math.round((b.x + b.w) / COLS0 * cols);
-    if (x1 <= x0) x1 = Math.min(cols, x0 + 1);
-    if (x0 < 0) x0 = 0;
-    if (x1 > cols) x1 = cols;
-    var bh = Math.max(3, Math.round(b.h / ROWS0 * rows));
-    var y1 = horizon;
-    var y0 = Math.max(1, y1 - bh);
-    var tone = (bi % 2) + 1;
-    var stepRows = b.step ? Math.max(1, Math.round((y1 - y0) * 0.16)) : 0;
-    for (var y = y0; y < y1; y++) {
-      var inset = y < y0 + stepRows && x1 - x0 > 5 ? 1 : 0;
-      var xa = x0 + inset;
-      var xb = x1 - inset;
-      for (var x = xa; x < xb; x++) mask[y * cols + x] = tone;
-    }
-    if (b.spire && x1 > x0) {
-      var cx = (x0 + x1 - 1) >> 1;
-      var sh = Math.max(2, Math.round((b.spire / ROWS0) * rows));
-      var top = y0;
-      for (var s = 1; s <= sh; s++) {
-        var sy = y0 - s;
-        if (sy < 1) break;
-        if (mask[sy * cols + cx]) break;
-        spires.push({ x: cx, y: sy });
-        top = sy;
-      }
-      if (b.beacon && top > 1) {
-        beacons.push({ x: cx, y: top - 1, phase: hash01(cx, top, 4) * 5 });
-      }
-    }
-    if (x1 - x0 < 3 || y1 - y0 < 4) continue;
-    for (var wy = y0 + 1; wy < y1 - 1; wy += 2) {
-      for (var wx = x0 + 1; wx < x1 - 1; wx += 2) {
-        if (!mask[wy * cols + wx]) continue;
-        if (hash01(wx, wy, 2) > 0.44) continue;
-        windows.push({
-          x: wx,
-          y: wy,
-          warm: hash01(wx, wy, 5) < 0.8,
-          blink: hash01(wx, wy, 8) < 0.16,
-          phase: hash01(wx, wy, 9) * 10
-        });
-      }
-    }
-  }
-
-  var stars = [];
-  var rng = mulberry32(20261021);
-  var starN = Math.round(cols * 0.7);
-  for (var i = 0; i < starN; i++) {
-    var sx = rng() * cols | 0;
-    var sy = 1 + (rng() * Math.max(1, horizon - 3) | 0);
-    if (sy >= horizon || sy < 0 || mask[sy * cols + sx]) continue;
-    var roll = rng();
-    stars.push({
-      x: sx,
-      y: sy,
-      ch: roll < 0.07 ? "*" : roll < 0.42 ? "." : "·",
-      bright: rng() < 0.32,
-      tw: rng() < 0.18,
-      phase: rng() * 6.283
-    });
-  }
-
-  var moonX = Math.round(cols * 0.8);
-  var moonY = Math.max(2, Math.round(horizon * 0.3));
-  for (var n = 0; n < 18; n++) {
-    if (moonClear(mask, cols, rows, moonX, moonY)) break;
-    moonX -= 2;
-    if (moonX < 3) {
-      moonX = Math.round(cols * 0.8);
-      moonY += 1;
-    }
-  }
-
-  var ripples = [];
-  var rr = mulberry32(77);
-  var waterRows = Math.max(1, rows - horizon - 1);
-  var ripN = Math.min(400, Math.round(cols * waterRows * 0.042));
-  for (var k = 0; k < ripN; k++) {
-    var depth = Math.pow(rr(), 0.62);
-    var ry = horizon + 1 + (waterRows * depth | 0);
-    if (ry >= rows) ry = rows - 1;
-    ripples.push({
-      x: rr() * cols | 0,
-      y: ry,
-      phase: rr() * 6.283,
-      depth: depth
-    });
-  }
-
-  return {
-    cols: cols,
-    rows: rows,
-    horizon: horizon,
-    waterline: waterline,
-    mask: mask,
-    windows: windows,
-    spires: spires,
-    beacons: beacons,
-    stars: stars,
-    moonX: moonX,
-    moonY: moonY,
-    ripples: ripples,
-    buoys: [
-      { xf: 0.08, phase: 0.15 },
-      { xf: 0.9, phase: 1.85 }
-    ]
+export default function create() {
+  const rgb = new Float32Array(W * H * 3);
+  const mask = new Uint8Array(W * H);
+  const put = (x, y, c, m) => {
+    x = Math.round(x);
+    y = Math.round(y);
+    if (x < 0 || y < 0 || x >= W || y >= H) return;
+    const i = y * W + x;
+    rgb[i * 3] = c[0];
+    rgb[i * 3 + 1] = c[1];
+    rgb[i * 3 + 2] = c[2];
+    if (m) mask[i] = m;
   };
-}
 
-function measureRatio(ctx) {
-  ctx.font = '100px ui-monospace, "SF Mono", Menlo, Consolas, monospace';
-  var w = ctx.measureText("M").width / 100;
-  if (!(w > 0.35 && w < 0.85)) return 0.6;
-  return w;
-}
-
-function computeLayout(cssW, cssH, ratio) {
-  var target = cssW < 720 ? 7.1 : 9.1;
-  var cols = clamp(Math.round(cssW / target), 72, 150);
-  var cellW = cssW / cols;
-  var idealH = cellW / ratio;
-  var rows = clamp(Math.round(cssH / idealH), 52, 86);
-  var cellH = cssH / rows;
-  var fontPx = Math.min(cellH * 0.94, cellW / ratio);
-  return { cols: cols, rows: rows, cellW: cellW, cellH: cellH, fontPx: fontPx, cssW: cssW, cssH: cssH };
-}
-
-function windowLit(win, t, still) {
-  if (still || !win.blink) return true;
-  var period = 8.5 + (win.phase % 4);
-  return ((t + win.phase) % period) > 1.25;
-}
-
-/**
- * Play the harbour on a canvas. Returns stop().
- * Honours prefers-reduced-motion with one still frame, pauses when the
- * canvas leaves the viewport or the tab is hidden, and caps the frame rate.
- */
-export function startHarbour(canvas) {
-  if (!canvas || !canvas.getContext) return function () {};
-  if (typeof canvas._harbourStop === "function") {
-    var previous = canvas._harbourStop;
-    canvas._harbourStop = null;
-    previous();
-  }
-  var ctx = canvas.getContext("2d");
-  var reduced = false;
-  try {
-    reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  } catch (e) {}
-  var ratio = measureRatio(ctx);
-  var layout = null;
-  var view = null;
-  var elapsed = 0;
-  var lastDrawWall = 0;
-  var raf = 0;
-  var stopped = false;
-  var visible = true;
-  var step = 1000 / FPS;
-
-  function layoutNow() {
-    var w = canvas.clientWidth || document.documentElement.clientWidth || 0;
-    var h = canvas.clientHeight || document.documentElement.clientHeight || 0;
-    if (w < 2 || h < 2) return false;
-    layout = computeLayout(w, h, ratio);
-    layout.dpr = Math.min(2, window.devicePixelRatio || 1);
-    if (!view || view.cols !== layout.cols || view.rows !== layout.rows) {
-      view = buildView(layout.cols, layout.rows);
+  for (let y = 0; y < H; y++) {
+    const v = y / HORIZON;
+    let sky = v < 0.55 ? mix(C.skyTop, C.skyMid, v / 0.55) : mix(C.skyMid, C.skyHor, (v - 0.55) / 0.45);
+    if (v > 0.72 && v < 1) sky = mix(sky, C.haze, ((v - 0.72) / 0.28) * 0.45);
+    for (let x = 0; x < W; x++) {
+      let c = sky;
+      const d = Math.hypot(x - MOON_X, (y - MOON_Y) * 1.15);
+      if (y < HORIZON) c = mix(c, C.glow, clamp(1 - (d - MOON_R) / 26, 0, 1) ** 1.6 * 0.5);
+      put(x, y, c, y < HORIZON ? SKY : WATER);
     }
-    var bw = Math.max(1, Math.round(w * layout.dpr));
-    var bh = Math.max(1, Math.round(h * layout.dpr));
-    if (canvas.width !== bw || canvas.height !== bh) {
-      canvas.width = bw;
-      canvas.height = bh;
+  }
+
+  for (let y = HORIZON; y < H; y++) {
+    const depth = (y - HORIZON) / (H - HORIZON);
+    const band = depth < 0.45 ? mix(C.waterLit, C.waterMid, depth / 0.45) : mix(C.waterMid, C.waterDeep, (depth - 0.45) / 0.55);
+    for (let x = 0; x < W; x++) {
+      let c = band;
+      const n = noise2(x / 7, y / 3, 11);
+      c = mix(c, C.waterLit, n * 0.22 * (1 - depth));
+      if (y < HORIZON + 7) c = mix(c, C.shore, (1 - (y - HORIZON) / 7) * 0.28);
+      put(x, y, c, WATER);
     }
-    return true;
   }
 
-  function prep() {
-    ctx.setTransform(layout.dpr, 0, 0, layout.dpr, 0, 0);
-    ctx.font = layout.fontPx.toFixed(2) + 'px ui-monospace, "SF Mono", Menlo, Consolas, monospace';
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
+  for (let y = MOON_Y - MOON_R; y <= MOON_Y + MOON_R; y++) {
+    for (let x = MOON_X - MOON_R; x <= MOON_X + MOON_R; x++) {
+      const d = Math.hypot(x - MOON_X, y - MOON_Y);
+      if (d <= MOON_R) put(x, y, d > MOON_R - 1.4 ? C.moonEdge : C.moon, SKY);
+    }
   }
 
-  function glyph(gx, gy, ch, color) {
-    ctx.fillStyle = color;
-    ctx.fillText(ch, gx * layout.cellW + layout.cellW * 0.5, gy * layout.cellH + layout.cellH * 0.5);
+  const rng = mulberry32(20261021);
+  for (let i = 0; i < Math.round(W * 0.85); i++) {
+    const x = rng() * W | 0;
+    const y = 1 + (rng() * (MOON_Y + 22) | 0);
+    if (y >= HORIZON || mask[y * W + x] !== SKY) continue;
+    if (Math.hypot(x - MOON_X, y - MOON_Y) < MOON_R + 3) continue;
+    put(x, y, rng() < 0.22 ? C.star : C.starDim, SKY);
   }
 
-  function mass(gx, gy, color) {
-    ctx.fillStyle = color;
-    ctx.fillRect(gx * layout.cellW, gy * layout.cellH, layout.cellW + 0.7, layout.cellH + 0.7);
+  for (let x = 0; x < W; x++) {
+    const hump = Math.exp(-(((x - 168) / 30) ** 2));
+    const left = Math.exp(-(((x - 22) / 40) ** 2));
+    const top = 46 - 9 * hump - 5 * left - 1.5 * Math.sin(x * 0.16);
+    for (let y = Math.floor(top); y < HORIZON; y++) {
+      put(x, y, mix(C.peak, C.peakLite, clamp((y - top) / 7, 0, 1)), SKY);
+    }
   }
 
-  function pane(gx, gy, color) {
-    var px = gx * layout.cellW;
-    var py = gy * layout.cellH;
-    ctx.fillStyle = "#1c140e";
-    ctx.fillRect(px, py, layout.cellW + 0.7, layout.cellH + 0.7);
-    ctx.fillStyle = color;
-    ctx.fillRect(
-      px + layout.cellW * 0.1,
-      py + layout.cellH * 0.14,
-      layout.cellW * 0.8,
-      layout.cellH * 0.7
-    );
-  }
-
-  function lamp(gx, gy, color) {
-    var cx = gx * layout.cellW + layout.cellW * 0.5;
-    var cy = gy * layout.cellH + layout.cellH * 0.5;
-    var r = Math.max(1.4, Math.min(layout.cellW, layout.cellH) * 0.36);
-    ctx.fillStyle = color;
-    ctx.beginPath();
-    ctx.arc(cx, cy, r, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  function streak(gx, gy, color, weight) {
-    var px = gx * layout.cellW;
-    var py = gy * layout.cellH + layout.cellH * (0.5 - weight * 0.5);
-    ctx.fillStyle = color;
-    ctx.fillRect(px + layout.cellW * 0.06, py, layout.cellW * 0.88, Math.max(1.25, layout.cellH * weight));
-    glyph(gx, gy, weight > 0.16 ? "~" : "-", color);
-  }
-
-  function paintFerry(left, top) {
-    for (var ry = 0; ry < FERRY_H; ry++) {
-      var row = FERRY[ry];
-      for (var rx = 0; rx < row.length; rx++) {
-        var ch = row.charAt(rx);
-        if (ch === " ") continue;
-        var gx = left + rx;
-        var gy = top + ry;
-        if (gy < -2 || gy > view.rows + 1 || gx < -2 || gx > view.cols + 1) continue;
-        if (ch === "#") mass(gx, gy, ry >= HULL_ROW ? "#e4ddd0" : "#f6f3eb");
-        else if (ch === "F") mass(gx, gy, "#7a3a34");
-        else if (ch === "%") mass(gx, gy, "#3a2c22");
-        else if (ch === "=") mass(gx, gy, "#141b28");
-        else if (ch === "/" || ch === "\\") mass(gx, gy, "#f3efe6");
-        else if (ch === "*") pane(gx, gy, "#ffd48a");
-        else if (ch === "+") lamp(gx, gy, "#f0b45a");
-        else if (ch === ".") lamp(gx, gy, "#fff6d8");
-        else if (ch === "r") lamp(gx, gy, "#ff5c54");
-        else if (ch === "g") lamp(gx, gy, "#3ddc78");
-        else if (ch === "|") {
-          var px = gx * layout.cellW;
-          var py = gy * layout.cellH;
-          ctx.fillStyle = "#e6e0d2";
-          ctx.fillRect(px + layout.cellW * 0.36, py, Math.max(1.2, layout.cellW * 0.26), layout.cellH + 0.6);
-          glyph(gx, gy, "|", "#f4f0e6");
+  const twinkles = [];
+  const beacons = [];
+  for (let bi = 0; bi < BUILDINGS.length; bi++) {
+    const b = BUILDINGS[bi];
+    const y1 = HORIZON;
+    const y0 = y1 - b.h;
+    const face = mix(C.bld, C.bldLite, (bi % 5) * 0.06);
+    for (let y = y0; y < y1; y++) {
+      let inset = 0;
+      if (b.step && y < y0 + b.step && b.w > 5) inset = 1;
+      const xa = b.x + inset;
+      const xb = b.x + b.w - inset;
+      for (let x = xa; x < xb; x++) {
+        const edge = (x - xa) / Math.max(1, xb - xa - 1);
+        const grain = (hash01(x, y, 6) - 0.5) * 0.18;
+        put(x, y, mix(face, C.bldLite, clamp(edge * 0.45 + grain, 0, 0.7)), BLDG);
+      }
+    }
+    if (b.chevron) {
+      const mid = y0 + Math.round(b.h * 0.42);
+      for (let y = y0 + 1; y < mid; y++) {
+        const v = (y - y0) / Math.max(1, mid - y0);
+        put(b.x + 1 + Math.round(v * (b.w - 3)), y, C.brace, BLDG);
+        put(b.x + b.w - 2 - Math.round(v * (b.w - 3)), y, C.brace, BLDG);
+      }
+    }
+    if (b.spire || b.antenna) {
+      const cx = b.x + (b.w >> 1);
+      const reach = b.antenna || b.spire;
+      let tip = y0;
+      for (let s = 1; s <= reach; s++) {
+        const y = y0 - s;
+        if (y < 1) break;
+        put(cx, y, C.bldLite, BLDG);
+        tip = y;
+      }
+      if (b.beacon && tip > 1) {
+        const y = tip - 1;
+        beacons.push({ i: y * W + cx, phase: hash01(cx, y, 4) * 4 });
+        put(cx, y, C.bldLite, BLDG);
+      }
+    }
+    if (b.w < 3 || b.h < 5) continue;
+    for (let y = y0 + 2; y < y1 - 1; y += 2) {
+      for (let x = b.x + 1; x < b.x + b.w - 1; x += 2) {
+        if (hash01(x, y, 2) > b.lit) continue;
+        const warm = hash01(x, y, 5) < 0.78;
+        const col = warm ? C.win : C.winCool;
+        put(x, y, col, BLDG);
+        const drop = HORIZON - y;
+        const ry = HORIZON + Math.max(2, Math.round(drop * 0.42));
+        if (ry < H - 10 && hash01(x, ry, 3) > 0.42) {
+          put(x, ry, mix(C.waterMid, warm ? C.reflect : C.winCool, 0.55), WATER);
+          if (ry + 1 < H - 8 && hash01(x, ry, 7) > 0.55) put(x, ry + 1, mix(C.waterDeep, C.reflect, 0.28), WATER);
+        }
+        if (hash01(x, y, 8) < 0.18) {
+          twinkles.push({
+            i: y * W + x,
+            on: col,
+            off: mix(C.bld, C.winDim, 0.4),
+            phase: hash01(x, y, 9) * 8,
+          });
         }
       }
     }
   }
 
-  function draw(nowT, still) {
-    if (!layout || !view) return;
-    prep();
-    var t = still ? stillTime(view.cols) : nowT;
-    var cols = view.cols;
-    var rows = view.rows;
-    var horizon = view.horizon;
-    var waterline = view.waterline;
-    var cellW = layout.cellW;
-    var cellH = layout.cellH;
-    var hy = horizon * cellH;
-
-    var sky = ctx.createLinearGradient(0, 0, 0, hy);
-    sky.addColorStop(0, "#0b1020");
-    sky.addColorStop(0.62, "#16233a");
-    sky.addColorStop(1, "#314864");
-    ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, layout.cssW, hy + 1);
-
-    var sea = ctx.createLinearGradient(0, hy, 0, layout.cssH);
-    sea.addColorStop(0, "#123044");
-    sea.addColorStop(0.35, "#0a1c2a");
-    sea.addColorStop(1, "#050e16");
-    ctx.fillStyle = sea;
-    ctx.fillRect(0, hy, layout.cssW, layout.cssH - hy + 1);
-
-    for (var si = 0; si < view.stars.length; si++) {
-      var star = view.stars[si];
-      var dim = star.tw && !still && Math.sin(t * 0.9 + star.phase) > 0.86;
-      glyph(star.x, star.y, dim ? "·" : star.ch, dim ? "#2a3548" : star.bright ? "#e8eef8" : "#8494a8");
+  const posts = [8, 16, 170, 180];
+  for (let p = 0; p < posts.length; p++) {
+    const x = posts[p];
+    const y0 = 98 + (p % 2);
+    for (let y = y0; y < H; y++) {
+      put(x, y, C.post, WATER);
+      put(x + 1, y, C.bld, WATER);
     }
+    put(x - 1, y0, C.bldLite, WATER);
+    put(x, y0, C.cream2, WATER);
+    put(x + 1, y0, C.cream2, WATER);
+    put(x + 2, y0, C.bldLite, WATER);
+  }
 
-    glyph(view.moonX - 1, view.moonY, "(", "#c9b992");
-    glyph(view.moonX, view.moonY, "o", "#f6f0de");
-    glyph(view.moonX + 1, view.moonY, ")", "#c9b992");
-
-    var mask = view.mask;
-    for (var y = 0; y < horizon; y++) {
-      var x = 0;
-      while (x < cols) {
-        var tone = mask[y * cols + x];
-        if (!tone) { x++; continue; }
-        var x0 = x;
-        x++;
-        while (x < cols && mask[y * cols + x] === tone) x++;
-        ctx.fillStyle = tone === 1 ? "#080a10" : "#141a26";
-        ctx.fillRect(x0 * cellW, y * cellH, (x - x0) * cellW + 0.65, cellH + 0.65);
+  const out = new Float32Array(W * H * 3);
+  const adj = new Int8Array(W * H);
+  const keyCache = new Int16Array(32768);
+  keyCache.fill(-1);
+  const nearest = (r, g, b) => {
+    r = r < 0 ? 0 : r > 255 ? 255 : r;
+    g = g < 0 ? 0 : g > 255 ? 255 : g;
+    b = b < 0 ? 0 : b > 255 ? 255 : b;
+    const key = ((r >> 3) << 10) | ((g >> 3) << 5) | (b >> 3);
+    const hit = keyCache[key];
+    if (hit >= 0) return hit;
+    let best = 0;
+    let bd = 1e9;
+    for (let i = 0; i < PAL.length; i++) {
+      const p = PAL[i];
+      const d = (p[0] - r) ** 2 * 0.3 + (p[1] - g) ** 2 * 0.59 + (p[2] - b) ** 2 * 0.11;
+      if (d < bd) {
+        bd = d;
+        best = i;
       }
     }
-
-    ctx.fillStyle = "#ddd6c8";
-    for (var sp = 0; sp < view.spires.length; sp++) {
-      var spire = view.spires[sp];
-      ctx.fillRect(
-        spire.x * cellW + cellW * 0.4,
-        spire.y * cellH,
-        Math.max(1, cellW * 0.18),
-        cellH + 0.6
-      );
-    }
-
-    for (var bi = 0; bi < view.beacons.length; bi++) {
-      var beacon = view.beacons[bi];
-      var beaconOn = still || ((t + beacon.phase) % 2.6) < 0.22;
-      if (beaconOn) lamp(beacon.x, beacon.y, "#ff5a4a");
-    }
-
-    for (var wi = 0; wi < view.windows.length; wi++) {
-      var win = view.windows[wi];
-      if (!windowLit(win, t, still)) continue;
-      pane(win.x, win.y, win.warm ? "#ffcc78" : "#d5e6f8");
-    }
-
-    for (var ri = 0; ri < view.ripples.length; ri++) {
-      var rp = view.ripples[ri];
-      var wave = Math.sin(t * 0.8 + rp.phase);
-      var gate = rp.depth > 0.62 ? -0.2 : 0.16;
-      if (!still && wave < gate) continue;
-      if (still && wave < -0.05) continue;
-      var rch = "·";
-      var rcol = rp.depth > 0.45 ? "#1e4e60" : "#163848";
-      if (wave > 0.62) {
-        rch = "-";
-        rcol = rp.depth > 0.4 ? "#2c7490" : "#1c4c62";
-      }
-      if (wave > 0.9 && rp.depth > 0.5) {
-        rch = "~";
-        rcol = "#3c96a8";
-      }
-      glyph(rp.x, rp.y, rch, rcol);
-    }
-
-    var band = Math.max(4, Math.round((waterline - horizon) * 0.42));
-    for (var wr = 0; wr < view.windows.length; wr++) {
-      var src = view.windows[wr];
-      if (!windowLit(src, t, still)) continue;
-      var drop = horizon - src.y;
-      if (drop < 1) continue;
-      var ry = horizon + Math.max(1, Math.round(drop * 0.4));
-      if (ry >= horizon + band || ry >= waterline - 1 || ry >= rows) continue;
-      if (!still && Math.sin(t * 1.25 + src.x * 0.65 + src.y) < -0.05) continue;
-      var wob = still ? 0 : Math.round(Math.sin(t * 0.7 + src.x * 0.35));
-      glyph(src.x + wob, ry, "·", src.warm ? "#6a5434" : "#3a4e60");
-    }
-
-    var mReflect = Math.min(rows - 1, horizon + Math.max(5, Math.round(rows * 0.1)));
-    for (var my = horizon + 1; my < mReflect; my++) {
-      if (!still && Math.sin(t * 1.15 + my * 0.8) < -0.25) continue;
-      var mx = view.moonX + (still ? 0 : Math.round(Math.sin(t * 0.6 + my) * 0.8));
-      glyph(mx, my, my % 2 ? ":" : "·", "#5d6b5e");
-    }
-
-    ctx.fillStyle = "#3d5e78";
-    ctx.fillRect(0, hy + cellH * 0.42, layout.cssW, Math.max(1, cellH * 0.07));
-
-    var left = boatLeft(t, cols);
-    var bob = still ? 0 : Math.sin(t * 0.72) * 0.4;
-    var top = waterline - (FERRY_H - 1) + bob;
-    var stern = left + HULL_L;
-    var bow = left + HULL_R;
-    var reach = Math.min(36, Math.round(cols * 0.28));
-    for (var i = 1; i <= reach; i++) {
-      var fade = 1 - i / (reach + 1);
-      var spread = Math.min(4.2, 0.45 + i * 0.13);
-      var wx = Math.round(stern - i);
-      if (wx < 0 || wx >= cols) continue;
-      var near = fade > 0.62;
-      var mid = fade > 0.32;
-      var col = near ? "#e7fbff" : mid ? "#8fd0de" : "#3d7f90";
-      var weight = near ? 0.2 : mid ? 0.12 : 0.08;
-      streak(wx, waterline, col, weight);
-      var arm = Math.round(spread);
-      if (waterline - arm > horizon) streak(wx, waterline - arm, mid ? "#6eb4c4" : "#2c6574", mid ? 0.1 : 0.07);
-      if (waterline + arm < rows) streak(wx, waterline + arm, mid ? "#6eb4c4" : "#2c6574", mid ? 0.1 : 0.07);
-    }
-    for (var bk = 1; bk <= 5; bk++) {
-      var bx = Math.round(bow + bk);
-      if (bx < 0 || bx >= cols) continue;
-      streak(bx, waterline, bk < 3 ? "#d5f6ff" : "#5ea8b8", bk < 3 ? 0.16 : 0.09);
-      if (waterline > horizon + 1) glyph(bx, waterline - 1, "·", "#8fd4e4");
-    }
-
-    var reflectL = Math.round(left + HULL_L);
-    var reflectR = Math.round(left + HULL_R);
-    for (var hy2 = 1; hy2 <= 3; hy2++) {
-      var ry2 = waterline + hy2;
-      if (ry2 >= rows) break;
-      for (var hx = reflectL; hx <= reflectR; hx++) {
-        if (hx < 0 || hx >= cols) continue;
-        var hs = Math.sin(hx * 0.9 + hy2 + t * (still ? 0 : 1.1));
-        if (hs < 0.15) continue;
-        glyph(hx, ry2, hs > 0.55 ? "-" : "·", hy2 === 1 ? "#c5c6bc" : hy2 === 2 ? "#7a8078" : "#3e4844");
-      }
-    }
-
-    for (var bu = 0; bu < view.buoys.length; bu++) {
-      var buoy = view.buoys[bu];
-      var ux = Math.round(cols * buoy.xf);
-      var uy = horizon + Math.round((waterline - horizon) * 0.46);
-      var ubob = still ? 0 : Math.sin(t * 1.1 + buoy.phase) * 0.35;
-      var flash = still || ((t + buoy.phase) % 2.7) < 0.24;
-      glyph(ux, uy + ubob, "o", "#d4923e");
-      if (flash) lamp(ux, uy + ubob - 1, "#ffe3a4");
-      else glyph(ux, uy + ubob - 1, "·", "#6e5830");
-    }
-
-    for (var sk = 0; sk < SPARKS.length; sk++) {
-      var spark = SPARKS[sk];
-      var show = still ? sk === 1 : ((t + spark.phase) % spark.period) < 0.42;
-      if (!show) continue;
-      var sx2 = Math.round(cols * spark.xf);
-      var sy2 = horizon + Math.round((rows - horizon - 2) * spark.yf);
-      if (sy2 <= horizon || sy2 >= rows) continue;
-      glyph(sx2, sy2, "+", "#f4fbff");
-    }
-
-    paintFerry(left, top);
-  }
-
-  function onResize() {
-    layoutNow();
-    draw(elapsed, reduced);
-  }
-
-  function pauseClock() {
-    lastDrawWall = 0;
-  }
-
-  function onVis() {
-    if (document.hidden) pauseClock();
-  }
-
-  function stop() {
-    stopped = true;
-    if (raf) cancelAnimationFrame(raf);
-    raf = 0;
-    if (io) io.disconnect();
-    document.removeEventListener("visibilitychange", onVis);
-    window.removeEventListener("resize", onResize);
-    if (canvas._harbourStop === stop) canvas._harbourStop = null;
-  }
-
-  layoutNow();
-  if (view) elapsed = stillTime(view.cols);
-  draw(elapsed, reduced);
-
-  window.addEventListener("resize", onResize);
-  var io = null;
-  if (reduced) {
-    canvas._harbourStop = stop;
-    return stop;
-  }
-
-  document.addEventListener("visibilitychange", onVis);
-  if (typeof IntersectionObserver !== "undefined") {
-    io = new IntersectionObserver(function (entries) {
-      visible = !!(entries[0] && entries[0].isIntersecting);
-      if (!visible) pauseClock();
-    });
-    io.observe(canvas);
-  }
-
-  // One fixed step per wall-clock interval. Browsers sometimes flush a
-  // burst of animation frames after a canvas was display:none; those
-  // callbacks share one Date.now(), so a timestamp delta would fling the
-  // boat across the harbour. Missed time is dropped, never caught up.
-  var loop = function () {
-    if (stopped) return;
-    raf = requestAnimationFrame(loop);
-    if (!visible || document.hidden) {
-      pauseClock();
-      return;
-    }
-    if (!view) {
-      if (!layoutNow()) return;
-      elapsed = stillTime(view.cols);
-      lastDrawWall = Date.now();
-      draw(elapsed, false);
-      return;
-    }
-    var wall = Date.now();
-    if (!lastDrawWall) {
-      lastDrawWall = wall;
-      return;
-    }
-    if (wall - lastDrawWall < step) return;
-    lastDrawWall = wall;
-    elapsed += step / 1000;
-    draw(elapsed, false);
+    keyCache[key] = best;
+    return best;
   };
-  raf = requestAnimationFrame(loop);
-  canvas._harbourStop = stop;
-  return stop;
+
+  const rowCh = new Array(W);
+  const rowCo = new Array(W);
+
+  return (t) => {
+    out.set(rgb);
+    adj.fill(0);
+    const band = HORIZON + 24;
+    for (let y = HORIZON; y < band; y++) {
+      const shift = Math.round(Math.sin(t * 0.55 + y * 0.5));
+      if (!shift) continue;
+      const row = y * W;
+      for (let x = 0; x < W; x++) {
+        let src = x - shift;
+        if (src < 0) src += W;
+        else if (src >= W) src -= W;
+        const s = (row + src) * 3;
+        const d = (row + x) * 3;
+        out[d] = rgb[s];
+        out[d + 1] = rgb[s + 1];
+        out[d + 2] = rgb[s + 2];
+      }
+    }
+
+    for (let y = HORIZON; y < H; y++) {
+      for (let x = 0; x < W; x++) {
+        const wob = Math.sin(x * 0.31 + t * 0.9) * Math.sin(y * 0.22 - t * 0.35);
+        adj[y * W + x] = wob > 0.62 ? 1 : wob < -0.62 ? -1 : 0;
+      }
+    }
+
+    for (let y = HORIZON + 1; y < HORIZON + 32; y++) {
+      const fade = 1 - (y - HORIZON) / 32;
+      const wob = Math.round(Math.sin(t * 0.75 + y * 0.65));
+      const width = 1 + Math.round(fade * 2);
+      for (let dx = -width; dx <= width; dx++) {
+        if (Math.sin(y * 1.25 + dx * 1.7 + t * 1.15) < -0.05) continue;
+        const x = MOON_X + wob + dx;
+        if (x < 0 || x >= W) continue;
+        const i = y * W + x;
+        const o = i * 3;
+        const a = fade * (dx === 0 ? 0.72 : 0.4);
+        out[o] = lerp(out[o], C.path[0], a);
+        out[o + 1] = lerp(out[o + 1], C.path[1], a);
+        out[o + 2] = lerp(out[o + 2], C.path[2], a);
+        if (a > 0.35) adj[i] = 1;
+      }
+    }
+
+    for (let i = 0; i < twinkles.length; i++) {
+      const w = twinkles[i];
+      const period = 7.5 + (w.phase % 3);
+      if (((t + w.phase) % period) > 1.1) continue;
+      const o = w.i * 3;
+      out[o] = w.off[0];
+      out[o + 1] = w.off[1];
+      out[o + 2] = w.off[2];
+    }
+    for (let i = 0; i < beacons.length; i++) {
+      const b = beacons[i];
+      if (((t + b.phase) % 3.4) > 0.28) continue;
+      const o = b.i * 3;
+      out[o] = C.beacon[0];
+      out[o + 1] = C.beacon[1];
+      out[o + 2] = C.beacon[2];
+      adj[b.i] = 1;
+    }
+
+    const add = (x, y, c, a, lv) => {
+      x = Math.round(x);
+      y = Math.round(y);
+      if (x < 0 || y < 0 || x >= W || y >= H) return;
+      const i = y * W + x;
+      const o = i * 3;
+      out[o] = lerp(out[o], c[0], a);
+      out[o + 1] = lerp(out[o + 1], c[1], a);
+      out[o + 2] = lerp(out[o + 2], c[2], a);
+      adj[i] = lv || 0;
+    };
+
+    const far = ((t * SPEED * 0.42 + 70) % (W + 36) + (W + 36)) % (W + 36) - 18;
+    for (let ry = 0; ry < 3; ry++) {
+      const inset = ry === 0 ? 4 : ry === 2 ? 1 : 0;
+      for (let rx = inset; rx < 16 - inset; rx++) {
+        const col = ry === 1 && rx % 4 === 1 ? C.win : C.far;
+        add(far + rx, HORIZON + 2 + ry, col, 1, 0);
+      }
+    }
+
+    const left = boatLeft(t);
+    const top = BOAT_TOP + Math.round(Math.sin(t * 0.62) * 0.45);
+    for (let ry = 0; ry < HULL.length; ry++) {
+      const row = HULL[ry];
+      for (let rx = row.x0; rx < row.x1; rx++) {
+        let col = C.white;
+        let lv = 0;
+        if (row.kind === "lamp") {
+          col = C.lamp;
+          lv = 1;
+        } else if (row.kind === "mast") col = C.cream2;
+        else if (row.kind === "funnel") col = rx > row.x0 + 2 && rx < row.x1 - 3 ? C.greenLite : C.green;
+        else if (row.kind === "windows") col = (rx - row.x0) % 4 < 2 ? C.win : C.white;
+        else if (row.kind === "deck") {
+          col = (rx - row.x0) % 9 === 4 ? C.lamp : C.white;
+          if (col === C.lamp) lv = 1;
+        } else if (row.kind === "hull") col = ry > 13 ? C.cream2 : C.cream;
+        else if (row.kind === "boot") {
+          if (ry === 15 && rx < 3) col = C.red;
+          else if (ry === 15 && rx >= BOAT_W - 3) col = C.nav;
+          else col = C.green;
+          if (col === C.red || col === C.nav) lv = 1;
+        } else if (row.kind === "keel") col = C.greenDeep;
+        add(left + rx, top + ry, col, 1, lv);
+      }
+    }
+
+    const stern = left + 2;
+    const bow = left + BOAT_W - 3;
+    const waterY = top + 15;
+    for (let i = 1; i <= 40; i++) {
+      const fade = 1 - i / 41;
+      const spread = Math.min(4, Math.round(0.3 + i * 0.1));
+      const x = Math.round(stern - i);
+      const col = fade > 0.55 ? C.wake : C.wakeDim;
+      const a = 0.35 + fade * 0.6;
+      const lv = fade > 0.4 ? 1 : 0;
+      add(x, waterY, col, a, lv);
+      if (waterY - spread > HORIZON) add(x, waterY - spread, C.wakeDim, a * 0.7, 0);
+      if (waterY + spread < H) add(x, waterY + spread, C.wakeDim, a * 0.7, 0);
+    }
+    for (let i = 1; i <= 6; i++) add(bow + i, waterY, i < 3 ? C.wake : C.wakeDim, i < 3 ? 0.8 : 0.45, i < 3 ? 1 : 0);
+
+    for (let dy = 1; dy <= 8; dy++) {
+      const y = top + BOAT_H - 1 + dy;
+      if (y >= H) break;
+      const fade = (1 - dy / 9) * 0.62;
+      for (let rx = 1; rx < BOAT_W - 1; rx++) {
+        if (Math.sin(rx * 0.85 + dy * 1.3 + t * 1.05) < 0.02) continue;
+        const src = (top + BOAT_H - 1 - Math.min(4, dy)) * W + Math.round(left + rx);
+        if (src < 0 || src >= W * H) continue;
+        const o = src * 3;
+        add(left + rx, y, [out[o] * 0.7, out[o + 1] * 0.75, out[o + 2] * 0.72], fade, 0);
+      }
+    }
+
+    const text = new Array(H);
+    const color = new Array(H);
+    for (let y = 0; y < H; y++) {
+      const base = y * W;
+      for (let x = 0; x < W; x++) {
+        const o = (base + x) * 3;
+        const r = out[o];
+        const g = out[o + 1];
+        const b = out[o + 2];
+        const k = nearest(r, g, b);
+        const yl = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+        const lv = yl > 0.86 ? 7 : clamp(Math.round(5 + (yl - LUM[k]) * 12) + adj[base + x], 2, 6);
+        rowCh[x] = LEVELS[lv];
+        rowCo[x] = KEYS[k];
+      }
+      text[y] = rowCh.join("");
+      color[y] = rowCo.join("");
+    }
+    return { text: text.join("\n"), color: color.join("\n") };
+  };
 }
