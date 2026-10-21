@@ -1622,6 +1622,130 @@
       text-transform: capitalize;
     }
 
+    /* —— Colour pairings (reference only; does not switch the page shell) —— */
+    .pairings {
+      margin-top: 2.25rem;
+    }
+    .pairings-head {
+      margin: 0 0 1rem;
+    }
+    .pairings-head h3 {
+      margin: 0 0 0.3rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .pairings-head p {
+      margin: 0;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: var(--muted);
+      max-width: 40rem;
+    }
+    .pairings-grid {
+      display: grid;
+      gap: 1.15rem;
+      align-items: stretch;
+    }
+    @media (min-width: 560px) {
+      .pairings-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (min-width: 860px) {
+      .pairings-grid { grid-template-columns: 1fr 1fr 1fr; }
+    }
+    .pairing {
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .pairing:hover {
+      border-color: color-mix(in srgb, var(--brand) 35%, var(--line));
+    }
+    .pairing-body {
+      padding: 0.9rem 0.85rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      flex: 1;
+    }
+    .pairing-swatches {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.35rem;
+    }
+    .pairing-swatch {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.35rem;
+      min-width: 0;
+      min-height: 44px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .pairing-swatch:hover .pairing-chip {
+      box-shadow: inset 0 0 0 1px #ffffff66, 0 0 0 1px #00000022;
+    }
+    .pairing-swatch:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .pairing-chip {
+      display: block;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid #00000018;
+      box-shadow: inset 0 0 0 1px #ffffff40;
+    }
+    .pairing-hex {
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.2;
+      color: var(--muted);
+      text-align: center;
+      letter-spacing: -0.04em;
+      white-space: nowrap;
+    }
+    @media (min-width: 560px) {
+      .pairing-hex { font-size: 10px; }
+    }
+    @media (min-width: 860px) {
+      .pairing-hex { font-size: 11px; }
+    }
+    .pairing-swatch.is-copied .pairing-hex {
+      color: var(--brand);
+      font-weight: 700;
+    }
+    .pairing-mood {
+      margin: auto 0 0;
+      font-size: 0.78rem;
+      line-height: 1.4;
+      color: var(--muted);
+    }
+    .pairing-status {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
 
     /* —— Customizable native select (Chromium 135+) —— */
     .select-demo {
@@ -1911,7 +2035,8 @@
         Self-contained demos: Digits · Buttons · Cards · Palettes · Select.
         Digit scroll with a natural <code>linear()</code> spring (~10%
         overshoot), hard-coded glow CTAs (violet / teal / slate), nested-radius
-        cards, ten page-shell colour palettes you can switch, and a native
+        cards, ten page-shell colour palettes you can switch, twenty reference
+        colour pairings, and a native
         CSS-customizable <code>&lt;select&gt;</code>
         (<code>appearance: base-select</code>).
       </p>
@@ -2570,6 +2695,7 @@
           Forest is sampled from a fintech reference (deep green · soft cream).
           Click a card to switch the <strong>page shell</strong> background among
           ten palettes. Digit, button, and card demos keep their original colours.
+          Colour pairings further down are reference combos and do not change the page.
         </p>
         <p class="palette-active-note">Active page palette: <strong id="palette-active-label">forest</strong></p>
       </div>
@@ -2806,6 +2932,560 @@
           </div>
         </button>
       </div>
+
+      <div class="pairings" id="color-pairings">
+        <div class="pairings-head">
+          <h3>Color pairings</h3>
+          <p>
+            Twenty reference combos of four colours. They do not change the page shell.
+            Click a swatch to copy its hex.
+          </p>
+        </div>
+        <div class="pairings-grid">
+        <article class="pairing">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Classic Blue &amp; White</span>
+            <span class="canvas-tag">01</span>
+          </div>
+          <div class="pairing-body">
+            <div class="pairing-swatches" role="group" aria-label="Classic Blue &amp; White">
+            <button type="button" class="pairing-swatch" data-hex="#1E3A8A" aria-label="Copy #1E3A8A">
+              <span class="pairing-chip" style="background:#1E3A8A" aria-hidden="true"></span>
+              <span class="pairing-hex">#1E3A8A</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#3882F6" aria-label="Copy #3882F6">
+              <span class="pairing-chip" style="background:#3882F6" aria-hidden="true"></span>
+              <span class="pairing-hex">#3882F6</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#93C5FD" aria-label="Copy #93C5FD">
+              <span class="pairing-chip" style="background:#93C5FD" aria-hidden="true"></span>
+              <span class="pairing-hex">#93C5FD</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#F8FAFC" aria-label="Copy #F8FAFC">
+              <span class="pairing-chip" style="background:#F8FAFC" aria-hidden="true"></span>
+              <span class="pairing-hex">#F8FAFC</span>
+            </button>
+            </div>
+            <p class="pairing-mood">Clean, fresh &amp; professional</p>
+          </div>
+        </article>
+        <article class="pairing">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Green &amp; Beige</span>
+            <span class="canvas-tag">02</span>
+          </div>
+          <div class="pairing-body">
+            <div class="pairing-swatches" role="group" aria-label="Green &amp; Beige">
+            <button type="button" class="pairing-swatch" data-hex="#166534" aria-label="Copy #166534">
+              <span class="pairing-chip" style="background:#166534" aria-hidden="true"></span>
+              <span class="pairing-hex">#166534</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#22C55E" aria-label="Copy #22C55E">
+              <span class="pairing-chip" style="background:#22C55E" aria-hidden="true"></span>
+              <span class="pairing-hex">#22C55E</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#A7F3D0" aria-label="Copy #A7F3D0">
+              <span class="pairing-chip" style="background:#A7F3D0" aria-hidden="true"></span>
+              <span class="pairing-hex">#A7F3D0</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#F5E9D7" aria-label="Copy #F5E9D7">
+              <span class="pairing-chip" style="background:#F5E9D7" aria-hidden="true"></span>
+              <span class="pairing-hex">#F5E9D7</span>
+            </button>
+            </div>
+            <p class="pairing-mood">Natural, calm &amp; balanced</p>
+          </div>
+        </article>
+        <article class="pairing">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Orange &amp; Navy</span>
+            <span class="canvas-tag">03</span>
+          </div>
+          <div class="pairing-body">
+            <div class="pairing-swatches" role="group" aria-label="Orange &amp; Navy">
+            <button type="button" class="pairing-swatch" data-hex="#F97316" aria-label="Copy #F97316">
+              <span class="pairing-chip" style="background:#F97316" aria-hidden="true"></span>
+              <span class="pairing-hex">#F97316</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#F8923C" aria-label="Copy #F8923C">
+              <span class="pairing-chip" style="background:#F8923C" aria-hidden="true"></span>
+              <span class="pairing-hex">#F8923C</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#1E3A8A" aria-label="Copy #1E3A8A">
+              <span class="pairing-chip" style="background:#1E3A8A" aria-hidden="true"></span>
+              <span class="pairing-hex">#1E3A8A</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#E5E7EB" aria-label="Copy #E5E7EB">
+              <span class="pairing-chip" style="background:#E5E7EB" aria-hidden="true"></span>
+              <span class="pairing-hex">#E5E7EB</span>
+            </button>
+            </div>
+            <p class="pairing-mood">Bold, energetic &amp; modern</p>
+          </div>
+        </article>
+        <article class="pairing">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Purple &amp; Pink</span>
+            <span class="canvas-tag">04</span>
+          </div>
+          <div class="pairing-body">
+            <div class="pairing-swatches" role="group" aria-label="Purple &amp; Pink">
+            <button type="button" class="pairing-swatch" data-hex="#6D28D9" aria-label="Copy #6D28D9">
+              <span class="pairing-chip" style="background:#6D28D9" aria-hidden="true"></span>
+              <span class="pairing-hex">#6D28D9</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#A855F7" aria-label="Copy #A855F7">
+              <span class="pairing-chip" style="background:#A855F7" aria-hidden="true"></span>
+              <span class="pairing-hex">#A855F7</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#F472B6" aria-label="Copy #F472B6">
+              <span class="pairing-chip" style="background:#F472B6" aria-hidden="true"></span>
+              <span class="pairing-hex">#F472B6</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#FCE7F3" aria-label="Copy #FCE7F3">
+              <span class="pairing-chip" style="background:#FCE7F3" aria-hidden="true"></span>
+              <span class="pairing-hex">#FCE7F3</span>
+            </button>
+            </div>
+            <p class="pairing-mood">Creative, vibrant &amp; stylish</p>
+          </div>
+        </article>
+        <article class="pairing">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Black &amp; Yellow</span>
+            <span class="canvas-tag">05</span>
+          </div>
+          <div class="pairing-body">
+            <div class="pairing-swatches" role="group" aria-label="Black &amp; Yellow">
+            <button type="button" class="pairing-swatch" data-hex="#111827" aria-label="Copy #111827">
+              <span class="pairing-chip" style="background:#111827" aria-hidden="true"></span>
+              <span class="pairing-hex">#111827</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#374151" aria-label="Copy #374151">
+              <span class="pairing-chip" style="background:#374151" aria-hidden="true"></span>
+              <span class="pairing-hex">#374151</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#FACC15" aria-label="Copy #FACC15">
+              <span class="pairing-chip" style="background:#FACC15" aria-hidden="true"></span>
+              <span class="pairing-hex">#FACC15</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#FEF08A" aria-label="Copy #FEF08A">
+              <span class="pairing-chip" style="background:#FEF08A" aria-hidden="true"></span>
+              <span class="pairing-hex">#FEF08A</span>
+            </button>
+            </div>
+            <p class="pairing-mood">Strong, bold &amp; eye-catching</p>
+          </div>
+        </article>
+        <article class="pairing">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Teal &amp; Coral</span>
+            <span class="canvas-tag">06</span>
+          </div>
+          <div class="pairing-body">
+            <div class="pairing-swatches" role="group" aria-label="Teal &amp; Coral">
+            <button type="button" class="pairing-swatch" data-hex="#0F766E" aria-label="Copy #0F766E">
+              <span class="pairing-chip" style="background:#0F766E" aria-hidden="true"></span>
+              <span class="pairing-hex">#0F766E</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#14B8A6" aria-label="Copy #14B8A6">
+              <span class="pairing-chip" style="background:#14B8A6" aria-hidden="true"></span>
+              <span class="pairing-hex">#14B8A6</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#F87171" aria-label="Copy #F87171">
+              <span class="pairing-chip" style="background:#F87171" aria-hidden="true"></span>
+              <span class="pairing-hex">#F87171</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#FFE4E6" aria-label="Copy #FFE4E6">
+              <span class="pairing-chip" style="background:#FFE4E6" aria-hidden="true"></span>
+              <span class="pairing-hex">#FFE4E6</span>
+            </button>
+            </div>
+            <p class="pairing-mood">Fresh, modern &amp; lively</p>
+          </div>
+        </article>
+        <article class="pairing">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Red &amp; Gray</span>
+            <span class="canvas-tag">07</span>
+          </div>
+          <div class="pairing-body">
+            <div class="pairing-swatches" role="group" aria-label="Red &amp; Gray">
+            <button type="button" class="pairing-swatch" data-hex="#DC2626" aria-label="Copy #DC2626">
+              <span class="pairing-chip" style="background:#DC2626" aria-hidden="true"></span>
+              <span class="pairing-hex">#DC2626</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#F87171" aria-label="Copy #F87171">
+              <span class="pairing-chip" style="background:#F87171" aria-hidden="true"></span>
+              <span class="pairing-hex">#F87171</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#4B5563" aria-label="Copy #4B5563">
+              <span class="pairing-chip" style="background:#4B5563" aria-hidden="true"></span>
+              <span class="pairing-hex">#4B5563</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#E5E7EB" aria-label="Copy #E5E7EB">
+              <span class="pairing-chip" style="background:#E5E7EB" aria-hidden="true"></span>
+              <span class="pairing-hex">#E5E7EB</span>
+            </button>
+            </div>
+            <p class="pairing-mood">Confident, clean &amp; powerful</p>
+          </div>
+        </article>
+        <article class="pairing">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Pink &amp; Brown</span>
+            <span class="canvas-tag">08</span>
+          </div>
+          <div class="pairing-body">
+            <div class="pairing-swatches" role="group" aria-label="Pink &amp; Brown">
+            <button type="button" class="pairing-swatch" data-hex="#EC4899" aria-label="Copy #EC4899">
+              <span class="pairing-chip" style="background:#EC4899" aria-hidden="true"></span>
+              <span class="pairing-hex">#EC4899</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#F472B6" aria-label="Copy #F472B6">
+              <span class="pairing-chip" style="background:#F472B6" aria-hidden="true"></span>
+              <span class="pairing-hex">#F472B6</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#8B5E3C" aria-label="Copy #8B5E3C">
+              <span class="pairing-chip" style="background:#8B5E3C" aria-hidden="true"></span>
+              <span class="pairing-hex">#8B5E3C</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#F5E9D7" aria-label="Copy #F5E9D7">
+              <span class="pairing-chip" style="background:#F5E9D7" aria-hidden="true"></span>
+              <span class="pairing-hex">#F5E9D7</span>
+            </button>
+            </div>
+            <p class="pairing-mood">Warm, soft &amp; elegant</p>
+          </div>
+        </article>
+        <article class="pairing">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Blue &amp; Orange</span>
+            <span class="canvas-tag">09</span>
+          </div>
+          <div class="pairing-body">
+            <div class="pairing-swatches" role="group" aria-label="Blue &amp; Orange">
+            <button type="button" class="pairing-swatch" data-hex="#1D4ED8" aria-label="Copy #1D4ED8">
+              <span class="pairing-chip" style="background:#1D4ED8" aria-hidden="true"></span>
+              <span class="pairing-hex">#1D4ED8</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#3882F6" aria-label="Copy #3882F6">
+              <span class="pairing-chip" style="background:#3882F6" aria-hidden="true"></span>
+              <span class="pairing-hex">#3882F6</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#F97316" aria-label="Copy #F97316">
+              <span class="pairing-chip" style="background:#F97316" aria-hidden="true"></span>
+              <span class="pairing-hex">#F97316</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#FDBA74" aria-label="Copy #FDBA74">
+              <span class="pairing-chip" style="background:#FDBA74" aria-hidden="true"></span>
+              <span class="pairing-hex">#FDBA74</span>
+            </button>
+            </div>
+            <p class="pairing-mood">Energetic, modern &amp; dynamic</p>
+          </div>
+        </article>
+        <article class="pairing">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Monochrome (Gray)</span>
+            <span class="canvas-tag">10</span>
+          </div>
+          <div class="pairing-body">
+            <div class="pairing-swatches" role="group" aria-label="Monochrome (Gray)">
+            <button type="button" class="pairing-swatch" data-hex="#111827" aria-label="Copy #111827">
+              <span class="pairing-chip" style="background:#111827" aria-hidden="true"></span>
+              <span class="pairing-hex">#111827</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#4B5563" aria-label="Copy #4B5563">
+              <span class="pairing-chip" style="background:#4B5563" aria-hidden="true"></span>
+              <span class="pairing-hex">#4B5563</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#9CA3AF" aria-label="Copy #9CA3AF">
+              <span class="pairing-chip" style="background:#9CA3AF" aria-hidden="true"></span>
+              <span class="pairing-hex">#9CA3AF</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#E5E7EB" aria-label="Copy #E5E7EB">
+              <span class="pairing-chip" style="background:#E5E7EB" aria-hidden="true"></span>
+              <span class="pairing-hex">#E5E7EB</span>
+            </button>
+            </div>
+            <p class="pairing-mood">Minimal, clean &amp; timeless</p>
+          </div>
+        </article>
+        <article class="pairing">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Earth Tones</span>
+            <span class="canvas-tag">11</span>
+          </div>
+          <div class="pairing-body">
+            <div class="pairing-swatches" role="group" aria-label="Earth Tones">
+            <button type="button" class="pairing-swatch" data-hex="#92400E" aria-label="Copy #92400E">
+              <span class="pairing-chip" style="background:#92400E" aria-hidden="true"></span>
+              <span class="pairing-hex">#92400E</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#D97706" aria-label="Copy #D97706">
+              <span class="pairing-chip" style="background:#D97706" aria-hidden="true"></span>
+              <span class="pairing-hex">#D97706</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#65A30D" aria-label="Copy #65A30D">
+              <span class="pairing-chip" style="background:#65A30D" aria-hidden="true"></span>
+              <span class="pairing-hex">#65A30D</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#E7E5D9" aria-label="Copy #E7E5D9">
+              <span class="pairing-chip" style="background:#E7E5D9" aria-hidden="true"></span>
+              <span class="pairing-hex">#E7E5D9</span>
+            </button>
+            </div>
+            <p class="pairing-mood">Natural, warm &amp; organic</p>
+          </div>
+        </article>
+        <article class="pairing">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Pastel Mix</span>
+            <span class="canvas-tag">12</span>
+          </div>
+          <div class="pairing-body">
+            <div class="pairing-swatches" role="group" aria-label="Pastel Mix">
+            <button type="button" class="pairing-swatch" data-hex="#C4B5FD" aria-label="Copy #C4B5FD">
+              <span class="pairing-chip" style="background:#C4B5FD" aria-hidden="true"></span>
+              <span class="pairing-hex">#C4B5FD</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#A7F3D0" aria-label="Copy #A7F3D0">
+              <span class="pairing-chip" style="background:#A7F3D0" aria-hidden="true"></span>
+              <span class="pairing-hex">#A7F3D0</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#93C5FD" aria-label="Copy #93C5FD">
+              <span class="pairing-chip" style="background:#93C5FD" aria-hidden="true"></span>
+              <span class="pairing-hex">#93C5FD</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#FED7AA" aria-label="Copy #FED7AA">
+              <span class="pairing-chip" style="background:#FED7AA" aria-hidden="true"></span>
+              <span class="pairing-hex">#FED7AA</span>
+            </button>
+            </div>
+            <p class="pairing-mood">Soft, calm &amp; friendly</p>
+          </div>
+        </article>
+        <article class="pairing">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Dark &amp; Neon</span>
+            <span class="canvas-tag">13</span>
+          </div>
+          <div class="pairing-body">
+            <div class="pairing-swatches" role="group" aria-label="Dark &amp; Neon">
+            <button type="button" class="pairing-swatch" data-hex="#0F172A" aria-label="Copy #0F172A">
+              <span class="pairing-chip" style="background:#0F172A" aria-hidden="true"></span>
+              <span class="pairing-hex">#0F172A</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#8B5CF6" aria-label="Copy #8B5CF6">
+              <span class="pairing-chip" style="background:#8B5CF6" aria-hidden="true"></span>
+              <span class="pairing-hex">#8B5CF6</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#EC4899" aria-label="Copy #EC4899">
+              <span class="pairing-chip" style="background:#EC4899" aria-hidden="true"></span>
+              <span class="pairing-hex">#EC4899</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#22D3EE" aria-label="Copy #22D3EE">
+              <span class="pairing-chip" style="background:#22D3EE" aria-hidden="true"></span>
+              <span class="pairing-hex">#22D3EE</span>
+            </button>
+            </div>
+            <p class="pairing-mood">Futuristic, bold &amp; modern</p>
+          </div>
+        </article>
+        <article class="pairing">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Blue &amp; Sand</span>
+            <span class="canvas-tag">14</span>
+          </div>
+          <div class="pairing-body">
+            <div class="pairing-swatches" role="group" aria-label="Blue &amp; Sand">
+            <button type="button" class="pairing-swatch" data-hex="#1E40AF" aria-label="Copy #1E40AF">
+              <span class="pairing-chip" style="background:#1E40AF" aria-hidden="true"></span>
+              <span class="pairing-hex">#1E40AF</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#60A5FA" aria-label="Copy #60A5FA">
+              <span class="pairing-chip" style="background:#60A5FA" aria-hidden="true"></span>
+              <span class="pairing-hex">#60A5FA</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#D4B996" aria-label="Copy #D4B996">
+              <span class="pairing-chip" style="background:#D4B996" aria-hidden="true"></span>
+              <span class="pairing-hex">#D4B996</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#FAF9F6" aria-label="Copy #FAF9F6">
+              <span class="pairing-chip" style="background:#FAF9F6" aria-hidden="true"></span>
+              <span class="pairing-hex">#FAF9F6</span>
+            </button>
+            </div>
+            <p class="pairing-mood">Calm, clean &amp; coastal</p>
+          </div>
+        </article>
+        <article class="pairing">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Lavender &amp; Gray</span>
+            <span class="canvas-tag">15</span>
+          </div>
+          <div class="pairing-body">
+            <div class="pairing-swatches" role="group" aria-label="Lavender &amp; Gray">
+            <button type="button" class="pairing-swatch" data-hex="#A788FA" aria-label="Copy #A788FA">
+              <span class="pairing-chip" style="background:#A788FA" aria-hidden="true"></span>
+              <span class="pairing-hex">#A788FA</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#C4B5FD" aria-label="Copy #C4B5FD">
+              <span class="pairing-chip" style="background:#C4B5FD" aria-hidden="true"></span>
+              <span class="pairing-hex">#C4B5FD</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#9CA3AF" aria-label="Copy #9CA3AF">
+              <span class="pairing-chip" style="background:#9CA3AF" aria-hidden="true"></span>
+              <span class="pairing-hex">#9CA3AF</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#F3F4F6" aria-label="Copy #F3F4F6">
+              <span class="pairing-chip" style="background:#F3F4F6" aria-hidden="true"></span>
+              <span class="pairing-hex">#F3F4F6</span>
+            </button>
+            </div>
+            <p class="pairing-mood">Soft, modern &amp; elegant</p>
+          </div>
+        </article>
+        <article class="pairing">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Olive &amp; Cream</span>
+            <span class="canvas-tag">16</span>
+          </div>
+          <div class="pairing-body">
+            <div class="pairing-swatches" role="group" aria-label="Olive &amp; Cream">
+            <button type="button" class="pairing-swatch" data-hex="#4B5563" aria-label="Copy #4B5563">
+              <span class="pairing-chip" style="background:#4B5563" aria-hidden="true"></span>
+              <span class="pairing-hex">#4B5563</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#A89A5B" aria-label="Copy #A89A5B">
+              <span class="pairing-chip" style="background:#A89A5B" aria-hidden="true"></span>
+              <span class="pairing-hex">#A89A5B</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#E7E5D6" aria-label="Copy #E7E5D6">
+              <span class="pairing-chip" style="background:#E7E5D6" aria-hidden="true"></span>
+              <span class="pairing-hex">#E7E5D6</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#FAFAF8" aria-label="Copy #FAFAF8">
+              <span class="pairing-chip" style="background:#FAFAF8" aria-hidden="true"></span>
+              <span class="pairing-hex">#FAFAF8</span>
+            </button>
+            </div>
+            <p class="pairing-mood">Classic, earthy &amp; soothing</p>
+          </div>
+        </article>
+        <article class="pairing">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Aqua &amp; Coral</span>
+            <span class="canvas-tag">17</span>
+          </div>
+          <div class="pairing-body">
+            <div class="pairing-swatches" role="group" aria-label="Aqua &amp; Coral">
+            <button type="button" class="pairing-swatch" data-hex="#0891B2" aria-label="Copy #0891B2">
+              <span class="pairing-chip" style="background:#0891B2" aria-hidden="true"></span>
+              <span class="pairing-hex">#0891B2</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#14B8A6" aria-label="Copy #14B8A6">
+              <span class="pairing-chip" style="background:#14B8A6" aria-hidden="true"></span>
+              <span class="pairing-hex">#14B8A6</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#F87185" aria-label="Copy #F87185">
+              <span class="pairing-chip" style="background:#F87185" aria-hidden="true"></span>
+              <span class="pairing-hex">#F87185</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#FFE4E6" aria-label="Copy #FFE4E6">
+              <span class="pairing-chip" style="background:#FFE4E6" aria-hidden="true"></span>
+              <span class="pairing-hex">#FFE4E6</span>
+            </button>
+            </div>
+            <p class="pairing-mood">Fresh, playful &amp; energetic</p>
+          </div>
+        </article>
+        <article class="pairing">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Gold &amp; Black</span>
+            <span class="canvas-tag">18</span>
+          </div>
+          <div class="pairing-body">
+            <div class="pairing-swatches" role="group" aria-label="Gold &amp; Black">
+            <button type="button" class="pairing-swatch" data-hex="#D4AF37" aria-label="Copy #D4AF37">
+              <span class="pairing-chip" style="background:#D4AF37" aria-hidden="true"></span>
+              <span class="pairing-hex">#D4AF37</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#F59E0B" aria-label="Copy #F59E0B">
+              <span class="pairing-chip" style="background:#F59E0B" aria-hidden="true"></span>
+              <span class="pairing-hex">#F59E0B</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#111827" aria-label="Copy #111827">
+              <span class="pairing-chip" style="background:#111827" aria-hidden="true"></span>
+              <span class="pairing-hex">#111827</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#374151" aria-label="Copy #374151">
+              <span class="pairing-chip" style="background:#374151" aria-hidden="true"></span>
+              <span class="pairing-hex">#374151</span>
+            </button>
+            </div>
+            <p class="pairing-mood">Luxurious, premium &amp; bold</p>
+          </div>
+        </article>
+        <article class="pairing">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Mint &amp; Purple</span>
+            <span class="canvas-tag">19</span>
+          </div>
+          <div class="pairing-body">
+            <div class="pairing-swatches" role="group" aria-label="Mint &amp; Purple">
+            <button type="button" class="pairing-swatch" data-hex="#10B981" aria-label="Copy #10B981">
+              <span class="pairing-chip" style="background:#10B981" aria-hidden="true"></span>
+              <span class="pairing-hex">#10B981</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#6EE7B7" aria-label="Copy #6EE7B7">
+              <span class="pairing-chip" style="background:#6EE7B7" aria-hidden="true"></span>
+              <span class="pairing-hex">#6EE7B7</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#8B5CF6" aria-label="Copy #8B5CF6">
+              <span class="pairing-chip" style="background:#8B5CF6" aria-hidden="true"></span>
+              <span class="pairing-hex">#8B5CF6</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#E9D5FF" aria-label="Copy #E9D5FF">
+              <span class="pairing-chip" style="background:#E9D5FF" aria-hidden="true"></span>
+              <span class="pairing-hex">#E9D5FF</span>
+            </button>
+            </div>
+            <p class="pairing-mood">Fresh, creative &amp; trendy</p>
+          </div>
+        </article>
+        <article class="pairing">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Warm Neutrals</span>
+            <span class="canvas-tag">20</span>
+          </div>
+          <div class="pairing-body">
+            <div class="pairing-swatches" role="group" aria-label="Warm Neutrals">
+            <button type="button" class="pairing-swatch" data-hex="#78716C" aria-label="Copy #78716C">
+              <span class="pairing-chip" style="background:#78716C" aria-hidden="true"></span>
+              <span class="pairing-hex">#78716C</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#A8A29E" aria-label="Copy #A8A29E">
+              <span class="pairing-chip" style="background:#A8A29E" aria-hidden="true"></span>
+              <span class="pairing-hex">#A8A29E</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#D6D3D1" aria-label="Copy #D6D3D1">
+              <span class="pairing-chip" style="background:#D6D3D1" aria-hidden="true"></span>
+              <span class="pairing-hex">#D6D3D1</span>
+            </button>
+            <button type="button" class="pairing-swatch" data-hex="#F5F5F4" aria-label="Copy #F5F5F4">
+              <span class="pairing-chip" style="background:#F5F5F4" aria-hidden="true"></span>
+              <span class="pairing-hex">#F5F5F4</span>
+            </button>
+            </div>
+            <p class="pairing-mood">Subtle, clean &amp; versatile</p>
+          </div>
+        </article>
+        </div>
+        <p class="pairing-status" id="pairing-status" role="status" aria-live="polite"></p>
+      </div>
+
     </section>
 
 
@@ -3052,7 +3732,7 @@
     <footer class="lib-foot">
       Digits · Buttons · Cards · Palettes · Select. Digit-scroll <code>lh</code> + natural
       <code>linear()</code> spring (~10% overshoot) · hard-coded glow buttons
-      (violet / teal / slate) · nested radius · page-shell palettes · native
+      (violet / teal / slate) · nested radius · page-shell palettes · colour pairings · native
       <code>appearance: base-select</code>. No CDN.
       Prefers-reduced-motion disables the spring.
     </footer>
@@ -3178,6 +3858,66 @@
       cards.forEach(function (card) {
         card.addEventListener('click', function () {
           applyPalette(card, true);
+        });
+      });
+
+
+      /* —— Colour pairings: copy hex, does not touch page-shell palettes —— */
+      var pairingStatus = document.getElementById('pairing-status');
+      var pairingButtons = Array.prototype.slice.call(document.querySelectorAll('.pairing-swatch'));
+      var pairingTimer = 0;
+      var pairingCopied = null;
+
+      function restorePairingCopy() {
+        if (!pairingCopied) return;
+        var label = pairingCopied.querySelector('.pairing-hex');
+        if (label) label.textContent = pairingCopied.getAttribute('data-hex');
+        pairingCopied.classList.remove('is-copied');
+        pairingCopied = null;
+      }
+
+      function flashPairingCopy(btn, message) {
+        if (pairingTimer) window.clearTimeout(pairingTimer);
+        if (pairingCopied && pairingCopied !== btn) restorePairingCopy();
+        pairingCopied = btn;
+        var label = btn.querySelector('.pairing-hex');
+        if (label) label.textContent = message;
+        btn.classList.add('is-copied');
+        pairingTimer = window.setTimeout(restorePairingCopy, 1400);
+      }
+
+      function copyHex(textValue) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          return navigator.clipboard.writeText(textValue);
+        }
+        return new Promise(function (resolve, reject) {
+          var area = document.createElement('textarea');
+          area.value = textValue;
+          area.setAttribute('readonly', '');
+          area.style.position = 'fixed';
+          area.style.top = '0';
+          area.style.left = '-9999px';
+          document.body.appendChild(area);
+          area.select();
+          var ok = false;
+          try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+          document.body.removeChild(area);
+          if (ok) resolve();
+          else reject(new Error('copy failed'));
+        });
+      }
+
+      pairingButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var hex = btn.getAttribute('data-hex');
+          if (!hex) return;
+          copyHex(hex).then(function () {
+            flashPairingCopy(btn, 'Copied');
+            if (pairingStatus) pairingStatus.textContent = 'Copied ' + hex;
+          }).catch(function () {
+            flashPairingCopy(btn, 'Failed');
+            if (pairingStatus) pairingStatus.textContent = 'Could not copy ' + hex;
+          });
         });
       });
 
