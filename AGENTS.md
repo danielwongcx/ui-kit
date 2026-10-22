@@ -54,6 +54,10 @@ In-page `.lib-nav` is for **section anchors only**. Cross-page links belong in t
 
 `index.html` and `ui-combo.html` **must stay byte-identical**. After editing one, copy to the other.
 
+## UI copy
+
+Avoid unnecessary secondary labels and descriptions. Let the layout do the explaining.
+
 ## Do not
 
 - Remove Digits / Buttons / Cards demos when adding themes
