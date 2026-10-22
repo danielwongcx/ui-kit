@@ -58,6 +58,10 @@ In-page `.lib-nav` is for **section anchors only**. Cross-page links belong in t
 
 Avoid unnecessary secondary labels and descriptions. Let the layout do the explaining.
 
+## Bug fixes
+
+Fix a bug at its cause, reasoning from first principles and established best practice. Do not patch over the symptom.
+
 ## Do not
 
 - Remove Digits / Buttons / Cards demos when adding themes
