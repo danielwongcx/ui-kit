@@ -6,7 +6,7 @@ Rules for AI agents editing this repository.
 
 Multi-page **static** UI kit published on GitHub Pages from the `main` branch root:
 
-- Gallery: https://danielwongcx.github.io/ui-kit/ (`index.html`, mirrored by `ui-combo.html`) — Digits · Buttons · Cards · Palettes · Select · Glow border kit; keep index unchanged when adding other pages
+- Gallery: https://danielwongcx.github.io/ui-kit/ (`index.html`, mirrored by `ui-combo.html`) — Digits · Buttons · Cards · Palettes · Select · Glow border · Color combos; keep index unchanged when adding other pages. Color combos (`#color-combos`) is on `index.html` only.
 - Digest: https://danielwongcx.github.io/ui-kit/digest.html
 - Taste: https://danielwongcx.github.io/ui-kit/taste.html (`taste.html`) — motion / app-data / buttons+ / states / forms / cards+ patterns from taste-skill study
 - Learn Piano 101: https://danielwongcx.github.io/ui-kit/learn-piano-101.html (`learn-piano-101.html`) — full-viewport beginner piano film; click starts the visual GSAP timeline. GSAP and the motion runtime live in `vendor/` (no CDN, no soundtrack).
@@ -52,7 +52,7 @@ In-page `.lib-nav` is for **section anchors only**. Cross-page links belong in t
 
 ## Identical gallery copies
 
-`index.html` and `ui-combo.html` **must stay byte-identical**. After editing one, copy to the other.
+`index.html` and `ui-combo.html` stay in sync for the shared gallery demos. Color combos (`#color-combos`) lives on `index.html` only — do not copy that section into `ui-combo.html` unless asked. After other gallery edits, copy them across.
 
 ## UI copy
 

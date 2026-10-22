@@ -12,7 +12,8 @@
     { id: 'cards', label: 'Cards' },
     { id: 'palettes', label: 'Palettes' },
     { id: 'select', label: 'Select' },
-    { id: 'glow-border', label: 'Glow border' }
+    { id: 'glow-border', label: 'Glow border' },
+    { id: 'color-combos', label: 'Color combos' }
   ];
 
   var TASTE_SECTION_LINKS = [
@@ -136,6 +137,7 @@
     dial.setAttribute('role', 'menu');
 
     SECTION_LINKS.forEach(function (item) {
+      if (!document.getElementById(item.id)) return;
       var b = document.createElement('button');
       b.type = 'button';
       b.className = 'sec-fab__item';
