@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>UI Library · Digits · Buttons · Cards · Palettes · Select · Glow</title>
+  <title>UI Library · Digits · Buttons · Cards · Palettes · Select · Glow · Combos</title>
   <script>
     /* Apply saved page shell and glow stops before paint */
     (function () {
@@ -2341,6 +2341,152 @@
         transform: none;
       }
     }
+
+    /* —— Colour combos (reference posters; does not switch the page shell) ——
+       Fredoka latin, SIL OFL — vendor/fonts/fredoka/OFL.txt. Self-hosted. */
+    @font-face {
+      font-family: "Fredoka";
+      font-style: normal;
+      font-weight: 400 700;
+      font-display: swap;
+      src: url("vendor/fonts/fredoka/fredoka-latin.woff2") format("woff2");
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+
+    .combo-grid {
+      display: grid;
+      gap: 1.15rem;
+      align-items: stretch;
+    }
+    @media (min-width: 720px) {
+      .combo-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    .combo {
+      --combo-font: "Fredoka", "Arial Rounded MT Bold", ui-rounded, "Segoe UI", sans-serif;
+      container-type: inline-size;
+      display: flex;
+      flex-direction: column;
+      aspect-ratio: 3 / 4;
+      min-width: 0;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #00000016;
+      box-shadow: 0 1px 2px #00000010, 0 12px 28px -18px #00000028;
+      background: var(--combo-b, #fff);
+    }
+
+    .combo-half {
+      position: relative;
+      flex: 1 1 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-width: 0;
+      min-height: 0;
+      font-family: var(--combo-font);
+    }
+    .combo-half--a {
+      background: var(--combo-a);
+      color: var(--combo-b);
+      padding: 2.45rem 0.75rem 0.9rem;
+    }
+    .combo-half--b {
+      background: var(--combo-b);
+      color: var(--combo-a);
+      padding: 0.9rem 0.75rem 3.15rem;
+    }
+
+    .combo-kicker {
+      position: absolute;
+      top: 0.72rem;
+      left: 0.75rem;
+      right: 0.75rem;
+      margin: 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 0.6rem;
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .combo-core {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.85rem;
+      width: 100%;
+      min-width: 0;
+    }
+
+    .combo-name {
+      margin: 0;
+      max-width: 100%;
+      font-size: 2.15rem;
+      font-size: clamp(1.85rem, 11.6cqi, 4rem);
+      font-weight: 700;
+      line-height: 0.92;
+      letter-spacing: 0.012em;
+      text-transform: uppercase;
+    }
+
+    .combo-copy {
+      appearance: none;
+      -webkit-appearance: none;
+      margin: 0;
+      padding: 0.35rem 0.55rem;
+      min-height: 44px;
+      min-width: 44px;
+      border: 0;
+      border-radius: 10px;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-weight: 600;
+      font-size: 1rem;
+      font-size: clamp(0.92rem, 4cqi, 1.15rem);
+      line-height: 1.35;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .combo-copy:hover {
+      background: color-mix(in srgb, currentColor 12%, transparent);
+    }
+    .combo-copy:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+      box-shadow: 0 0 0 5px #111;
+    }
+    .combo-hex,
+    .combo-rgb {
+      display: block;
+    }
+    .combo-rgb { margin-top: 0.12rem; }
+    .combo-copy.is-copied .combo-hex { font-weight: 700; }
+
+    .combo-note {
+      position: absolute;
+      left: 0.8rem;
+      right: 0.8rem;
+      bottom: 0.65rem;
+      margin: 0;
+      font-size: 0.75rem;
+      font-size: clamp(0.68rem, 2.65cqi, 0.84rem);
+      font-weight: 500;
+      line-height: 1.35;
+    }
+
+    @media (max-width: 420px) {
+      .combo-kicker {
+        letter-spacing: 0.08em;
+        font-size: 0.56rem;
+      }
+    }
   </style>
   <link rel="stylesheet" href="shared/site-header.css" />
   <link rel="stylesheet" href="shared/section-fab.css" />
@@ -2355,6 +2501,7 @@
       <a href="#palettes">Palettes</a>
       <a href="#select">Select</a>
       <a href="#glow-border">Glow border</a>
+      <a href="#color-combos">Color combos</a>
     </div>
   </nav>
 
@@ -2362,11 +2509,11 @@
     <header class="lib-hero">
       <h1>Component gallery</h1>
       <p>
-        Self-contained demos: Digits · Buttons · Cards · Palettes · Select · Glow border.
+        Self-contained demos: Digits · Buttons · Cards · Palettes · Select · Glow border · Color combos.
         Digit scroll with a natural <code>linear()</code> spring (~10%
         overshoot), hard-coded glow CTAs (violet / teal / slate), nested-radius
         cards, ten page-shell colour palettes you can switch, twenty reference
-        colour pairings, a native
+        colour pairings, six reciprocal color combos, a native
         CSS-customizable <code>&lt;select&gt;</code>
         (<code>appearance: base-select</code>), and a pure-CSS rotating glow
         border (<code>@property</code> angle + <code>conic-gradient</code>).
@@ -4185,10 +4332,161 @@
       </div>
     </section>
 
+    <!-- ===================== COLOR COMBOS ===================== -->
+    <section class="sec" id="color-combos">
+      <div class="sec-head">
+        <h2>Color combos</h2>
+        <p>
+          Six reciprocal posters inspired by YELCREATIVE. Each half fills with one colour and sets type in the other. Click a hex to copy it. These do not change the page shell.
+        </p>
+      </div>
+
+      <div class="combo-grid">
+        <article class="combo" style="--combo-a:#9ea76b;--combo-b:#efe8ca">
+          <div class="combo-half combo-half--a">
+            <p class="combo-kicker" aria-hidden="true"><span>YELCREATIVE</span><span>Color combos</span></p>
+            <div class="combo-core">
+              <h3 class="combo-name">Matcha</h3>
+              <button type="button" class="combo-copy" data-hex="#9ea76b" data-label="Hex: 9ea76b" aria-label="Copy Matcha #9ea76b">
+                <span class="combo-hex">Hex: 9ea76b</span>
+                <span class="combo-rgb">Rgb: 158, 167, 107</span>
+              </button>
+            </div>
+          </div>
+          <div class="combo-half combo-half--b">
+            <div class="combo-core">
+              <h3 class="combo-name">Milky</h3>
+              <button type="button" class="combo-copy" data-hex="#efe8ca" data-label="Hex: efe8ca" aria-label="Copy Milky #efe8ca">
+                <span class="combo-hex">Hex: efe8ca</span>
+                <span class="combo-rgb">Rgb: 239, 232, 202</span>
+              </button>
+            </div>
+            <p class="combo-note" aria-hidden="true">Right color combinations reflect the soul of the design and create an emotional connection.</p>
+          </div>
+        </article>
+
+        <article class="combo" style="--combo-a:#0d1e42;--combo-b:#ebc6ce">
+          <div class="combo-half combo-half--a">
+            <p class="combo-kicker" aria-hidden="true"><span>YELCREATIVE</span><span>Color combos</span></p>
+            <div class="combo-core">
+              <h3 class="combo-name">Sapphire</h3>
+              <button type="button" class="combo-copy" data-hex="#0d1e42" data-label="Hex: 0d1e42" aria-label="Copy Sapphire #0d1e42">
+                <span class="combo-hex">Hex: 0d1e42</span>
+                <span class="combo-rgb">Rgb: 13, 30, 66</span>
+              </button>
+            </div>
+          </div>
+          <div class="combo-half combo-half--b">
+            <div class="combo-core">
+              <h3 class="combo-name">Candy</h3>
+              <button type="button" class="combo-copy" data-hex="#ebc6ce" data-label="Hex: ebc6ce" aria-label="Copy Candy #ebc6ce">
+                <span class="combo-hex">Hex: ebc6ce</span>
+                <span class="combo-rgb">Rgb: 235, 198, 206</span>
+              </button>
+            </div>
+            <p class="combo-note" aria-hidden="true">Right color combinations reflect the soul of the design and create an emotional connection.</p>
+          </div>
+        </article>
+
+        <article class="combo" style="--combo-a:#c8d8c7;--combo-b:#2a2a2a">
+          <div class="combo-half combo-half--a">
+            <p class="combo-kicker" aria-hidden="true"><span>YELCREATIVE</span><span>Color combos</span></p>
+            <div class="combo-core">
+              <h3 class="combo-name">Mint Mist</h3>
+              <button type="button" class="combo-copy" data-hex="#c8d8c7" data-label="Hex: c8d8c7" aria-label="Copy Mint Mist #c8d8c7">
+                <span class="combo-hex">Hex: c8d8c7</span>
+                <span class="combo-rgb">Rgb: 200, 216, 199</span>
+              </button>
+            </div>
+          </div>
+          <div class="combo-half combo-half--b">
+            <div class="combo-core">
+              <h3 class="combo-name">Carbon Gray</h3>
+              <button type="button" class="combo-copy" data-hex="#2a2a2a" data-label="Hex: 2a2a2a" aria-label="Copy Carbon Gray #2a2a2a">
+                <span class="combo-hex">Hex: 2a2a2a</span>
+                <span class="combo-rgb">Rgb: 42, 42, 42</span>
+              </button>
+            </div>
+            <p class="combo-note" aria-hidden="true">Right color combinations reflect the soul of the design and create an emotional connection.</p>
+          </div>
+        </article>
+
+        <article class="combo" style="--combo-a:#9a5d3c;--combo-b:#dee4ed">
+          <div class="combo-half combo-half--a">
+            <p class="combo-kicker" aria-hidden="true"><span>YELCREATIVE</span><span>Color combos</span></p>
+            <div class="combo-core">
+              <h3 class="combo-name">Autumn Clay</h3>
+              <button type="button" class="combo-copy" data-hex="#9a5d3c" data-label="Hex: 9a5d3c" aria-label="Copy Autumn Clay #9a5d3c">
+                <span class="combo-hex">Hex: 9a5d3c</span>
+                <span class="combo-rgb">Rgb: 154, 93, 60</span>
+              </button>
+            </div>
+          </div>
+          <div class="combo-half combo-half--b">
+            <div class="combo-core">
+              <h3 class="combo-name">Frost Blue</h3>
+              <button type="button" class="combo-copy" data-hex="#dee4ed" data-label="Hex: dee4ed" aria-label="Copy Frost Blue #dee4ed">
+                <span class="combo-hex">Hex: dee4ed</span>
+                <span class="combo-rgb">Rgb: 222, 228, 237</span>
+              </button>
+            </div>
+            <p class="combo-note" aria-hidden="true">Right color combinations reflect the soul of the design and create an emotional connection.</p>
+          </div>
+        </article>
+
+        <article class="combo" style="--combo-a:#747167;--combo-b:#efeadf">
+          <div class="combo-half combo-half--a">
+            <p class="combo-kicker" aria-hidden="true"><span>YELCREATIVE</span><span>Color combos</span></p>
+            <div class="combo-core">
+              <h3 class="combo-name">Olive Stone</h3>
+              <button type="button" class="combo-copy" data-hex="#747167" data-label="Hex: 747167" aria-label="Copy Olive Stone #747167">
+                <span class="combo-hex">Hex: 747167</span>
+                <span class="combo-rgb">Rgb: 116, 113, 103</span>
+              </button>
+            </div>
+          </div>
+          <div class="combo-half combo-half--b">
+            <div class="combo-core">
+              <h3 class="combo-name">Soft Sand</h3>
+              <button type="button" class="combo-copy" data-hex="#efeadf" data-label="Hex: efeadf" aria-label="Copy Soft Sand #efeadf">
+                <span class="combo-hex">Hex: efeadf</span>
+                <span class="combo-rgb">Rgb: 239, 234, 223</span>
+              </button>
+            </div>
+            <p class="combo-note" aria-hidden="true">Right color combinations reflect the soul of the design and create an emotional connection.</p>
+          </div>
+        </article>
+
+        <article class="combo" style="--combo-a:#e3dcda;--combo-b:#6e333f">
+          <div class="combo-half combo-half--a">
+            <p class="combo-kicker" aria-hidden="true"><span>YELCREATIVE</span><span>Color combos</span></p>
+            <div class="combo-core">
+              <h3 class="combo-name">Platinum</h3>
+              <button type="button" class="combo-copy" data-hex="#e3dcda" data-label="Hex: e3dcda" aria-label="Copy Platinum #e3dcda">
+                <span class="combo-hex">Hex: e3dcda</span>
+                <span class="combo-rgb">Rgb: 227, 220, 218</span>
+              </button>
+            </div>
+          </div>
+          <div class="combo-half combo-half--b">
+            <div class="combo-core">
+              <h3 class="combo-name">Puce Red</h3>
+              <button type="button" class="combo-copy" data-hex="#6e333f" data-label="Hex: 6e333f" aria-label="Copy Puce Red #6e333f">
+                <span class="combo-hex">Hex: 6e333f</span>
+                <span class="combo-rgb">Rgb: 110, 51, 63</span>
+              </button>
+            </div>
+            <p class="combo-note" aria-hidden="true">Right color combinations reflect the soul of the design and create an emotional connection.</p>
+          </div>
+        </article>
+      </div>
+      <p class="visually-hidden" id="combo-status" role="status" aria-live="polite"></p>
+    </section>
+
     <footer class="lib-foot">
-      Digits · Buttons · Cards · Palettes · Select · Glow border. Digit-scroll <code>lh</code> + natural
+      Digits · Buttons · Cards · Palettes · Select · Glow border · Color combos. Digit-scroll <code>lh</code> + natural
       <code>linear()</code> spring (~10% overshoot) · hard-coded glow buttons
-      (violet / teal / slate) · nested radius · page-shell palettes · colour pairings · native
+      (violet / teal / slate) · nested radius · page-shell palettes · colour pairings · color combos · native
       <code>appearance: base-select</code> · rotating <code>conic-gradient</code> rim. No CDN.
       Prefers-reduced-motion disables the spring and holds the glow border still.
     </footer>
@@ -4379,6 +4677,44 @@
           }).catch(function () {
             flashPairingCopy(btn, 'Failed');
             if (pairingStatus) pairingStatus.textContent = 'Could not copy ' + hex;
+          });
+        });
+      });
+
+      /* —— Colour combos: copy hex, does not touch page-shell palettes —— */
+      var comboStatus = document.getElementById('combo-status');
+      var comboButtons = Array.prototype.slice.call(document.querySelectorAll('#color-combos .combo-copy'));
+      var comboTimer = 0;
+      var comboCopied = null;
+
+      function restoreComboCopy() {
+        if (!comboCopied) return;
+        var label = comboCopied.querySelector('.combo-hex');
+        if (label) label.textContent = comboCopied.getAttribute('data-label');
+        comboCopied.classList.remove('is-copied');
+        comboCopied = null;
+      }
+
+      function flashComboCopy(btn, message) {
+        if (comboTimer) window.clearTimeout(comboTimer);
+        if (comboCopied && comboCopied !== btn) restoreComboCopy();
+        comboCopied = btn;
+        var label = btn.querySelector('.combo-hex');
+        if (label) label.textContent = message;
+        btn.classList.add('is-copied');
+        comboTimer = window.setTimeout(restoreComboCopy, 1400);
+      }
+
+      comboButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var hex = btn.getAttribute('data-hex');
+          if (!hex) return;
+          copyHex(hex).then(function () {
+            flashComboCopy(btn, 'Copied');
+            if (comboStatus) comboStatus.textContent = 'Copied ' + hex;
+          }).catch(function () {
+            flashComboCopy(btn, 'Failed');
+            if (comboStatus) comboStatus.textContent = 'Could not copy ' + hex;
           });
         });
       });
