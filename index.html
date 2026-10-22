@@ -2467,7 +2467,11 @@
       display: block;
     }
     .combo-rgb { margin-top: 0.12rem; }
-    .combo-copy.is-copied .combo-hex { font-weight: 700; }
+    .combo-copy.is-copied .combo-hex {
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 0.18em;
+    }
 
     .combo-note {
       position: absolute;
@@ -4702,7 +4706,7 @@
         var label = btn.querySelector('.combo-hex');
         if (label) label.textContent = message;
         btn.classList.add('is-copied');
-        comboTimer = window.setTimeout(restoreComboCopy, 1400);
+        comboTimer = window.setTimeout(restoreComboCopy, 2800);
       }
 
       comboButtons.forEach(function (btn) {
