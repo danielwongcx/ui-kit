@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>UI Library · Digits · Buttons · Cards · Palettes · Select · Glow · Folder · Combos</title>
+  <title>UI Library · Digits · Buttons · Cards · Palettes · Select · Glow · Folder · Spacing · Combos</title>
   <script>
     /* Apply saved page shell and glow stops before paint */
     (function () {
@@ -2789,7 +2789,597 @@
         font-size: 0.56rem;
       }
     }
-  </style>
+      /* —— Spacing —— */
+    /*
+      4px scale (do not add steps):
+      0 2 4 6 8 10 12 14 16 20 24 28 32 36 40 44 48 56 64 80 96
+      Working set: 4 8 12 16 24 32 48 64
+      Ruler bars are proportional to the step. Layout gaps use the tokens.
+    */
+    #spacing {
+      --s-0: 0px;
+      --s-2: 2px;
+      --s-4: 4px;
+      --s-6: 6px;
+      --s-8: 8px;
+      --s-10: 10px;
+      --s-12: 12px;
+      --s-14: 14px;
+      --s-16: 16px;
+      --s-20: 20px;
+      --s-24: 24px;
+      --s-28: 28px;
+      --s-32: 32px;
+      --s-36: 36px;
+      --s-40: 40px;
+      --s-44: 44px;
+      --s-48: 48px;
+      --s-56: 56px;
+      --s-64: 64px;
+      --s-80: 80px;
+      --s-96: 96px;
+      --page-pad: var(--s-16);
+      --page-pad-lg: var(--s-32);
+      --section-gap: var(--s-64);
+      --section-gap-sm: var(--s-40);
+      --card-pad: var(--s-24);
+      --card-pad-sm: var(--s-16);
+      --card-gap: var(--s-16);
+      --stack-xs: var(--s-4);
+      --stack-sm: var(--s-8);
+      --stack-md: var(--s-12);
+      --stack-lg: var(--s-16);
+      --stack-xl: var(--s-24);
+      --stack-2xl: var(--s-32);
+      --inline-xs: var(--s-4);
+      --inline-sm: var(--s-8);
+      --inline-md: var(--s-12);
+      --inline-lg: var(--s-16);
+      --sp-secondary: color-mix(in srgb, var(--ink) 62%, var(--muted));
+    }
+
+    #spacing .sp-span { grid-column: 1 / -1; }
+    #spacing .sec-grid > * { min-width: 0; }
+
+    #spacing .canvas-body.sp-fit {
+      align-items: stretch;
+      justify-content: flex-start;
+      min-height: 0;
+      padding: var(--s-16);
+      gap: var(--stack-md);
+      container-type: inline-size;
+      container-name: sp;
+    }
+
+    #spacing .sp-kicker {
+      margin: 0 0 var(--s-8);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 650;
+      line-height: 1.35;
+      color: var(--muted);
+    }
+
+    #spacing .sp-legend {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--s-8);
+      margin: 0 0 var(--stack-sm);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1.4;
+      color: var(--muted);
+    }
+
+    #spacing .sp-legend__swatch {
+      width: var(--s-16);
+      height: var(--s-8);
+      border-radius: 99px;
+      background: var(--ink);
+      flex: none;
+    }
+
+    #spacing .sp-scale {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+    }
+
+    #spacing .sp-step {
+      display: grid;
+      grid-template-columns: 2.5rem minmax(0, 1fr);
+      align-items: center;
+      column-gap: var(--s-12);
+      padding: var(--s-2) 0;
+    }
+
+    #spacing .sp-step__px {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+      color: var(--muted);
+    }
+
+    #spacing .sp-step.is-core .sp-step__px {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    #spacing .sp-step__track {
+      display: block;
+      width: 100%;
+      height: var(--s-8);
+      border-radius: 99px;
+      background: #ececf1;
+      overflow: hidden;
+    }
+
+    #spacing .sp-step.is-core .sp-step__track {
+      height: var(--s-12);
+      background: #e6e6ee;
+    }
+
+    #spacing .sp-step__bar {
+      display: block;
+      height: 100%;
+      width: calc(var(--step) * 100% / 96);
+      border-radius: inherit;
+      background: #8e8e9a;
+    }
+
+    #spacing .sp-step.is-core .sp-step__bar {
+      background: var(--ink);
+    }
+
+    #spacing .sp-alias {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--stack-md);
+      width: 100%;
+    }
+
+    #spacing .sp-alias li {
+      display: grid;
+      grid-template-columns: 6.6rem minmax(0, 1fr);
+      gap: var(--s-8) var(--s-12);
+      align-items: start;
+      margin: 0;
+    }
+
+    #spacing .sp-alias__k {
+      padding-top: var(--s-6);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--ink);
+    }
+
+    #spacing .sp-alias__v {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--s-8);
+    }
+
+    #spacing .sp-pair {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-8);
+      min-height: var(--s-28);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 650;
+      color: var(--ink);
+    }
+
+    #spacing .sp-tick {
+      display: block;
+      width: var(--n);
+      height: var(--s-8);
+      border-radius: 99px;
+      background: var(--ink);
+      flex: none;
+    }
+
+    #spacing .sp-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-4);
+      min-height: var(--s-28);
+      padding: 0 var(--s-8);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 650;
+      color: var(--ink);
+    }
+
+    #spacing .sp-rules {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--stack-md);
+      width: 100%;
+    }
+
+    #spacing .sp-rules li {
+      position: relative;
+      margin: 0;
+      padding-left: var(--s-16);
+      font-size: 14px;
+      line-height: 1.45;
+      color: var(--ink);
+    }
+
+    #spacing .sp-rules li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.45em;
+      width: var(--s-6);
+      height: var(--s-6);
+      border-radius: 99px;
+      background: var(--ink);
+    }
+
+    #spacing .sp-note {
+      margin: var(--stack-lg) 0 0;
+      font-size: 12px;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    #spacing .sp-tools {
+      position: relative;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    #spacing .sp-gaps {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: var(--s-44);
+      padding: 0 var(--s-16);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 650;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    #spacing .sp-gaps:hover {
+      background: color-mix(in srgb, var(--page) 50%, #fff);
+    }
+
+    #spacing .sp-tools input:focus-visible + .sp-gaps {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    #spacing .sp-gaps .is-on { display: none; }
+
+    #spacing:has(#sp-gaps:checked) .sp-gaps {
+      background: color-mix(in srgb, var(--accent) 12%, #fff);
+      border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+      color: #3b3bd4;
+    }
+
+    #spacing:has(#sp-gaps:checked) .sp-gaps .is-off { display: none; }
+    #spacing:has(#sp-gaps:checked) .sp-gaps .is-on { display: inline; }
+
+    #spacing .sp-gap {
+      display: block;
+      flex: none;
+      width: 100%;
+      height: var(--gap);
+      pointer-events: none;
+    }
+
+    #spacing .sp-gap--x {
+      width: var(--gap);
+      height: auto;
+      align-self: stretch;
+    }
+
+    #spacing:has(#sp-gaps:checked) .sp-gap {
+      position: relative;
+      z-index: 1;
+      background: color-mix(in srgb, var(--accent) 18%, transparent);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 32%, transparent);
+      border-radius: var(--s-2);
+    }
+
+    #spacing:has(#sp-gaps:checked) .sp-gap::after {
+      content: attr(data-label);
+      position: absolute;
+      z-index: 1;
+      left: var(--s-8);
+      top: 50%;
+      translate: 0 -50%;
+      padding: var(--s-2) var(--s-4);
+      border-radius: var(--s-4);
+      background: #fff;
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 28%, #fff);
+      color: #2a2a9a;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    #spacing:has(#sp-gaps:checked) .sp-gap--x::after {
+      left: 50%;
+      top: 50%;
+      translate: -50% -50%;
+    }
+
+    #spacing .sp-split,
+    #spacing .sp-compare,
+    #spacing .sp-inline-grid,
+    #spacing .sp-trio {
+      display: grid;
+      gap: var(--stack-lg);
+      width: 100%;
+      align-items: start;
+    }
+
+    #spacing .sp-list,
+    #spacing .sp-card,
+    #spacing .sp-section,
+    #spacing .sp-field,
+    #spacing .sp-frame,
+    #spacing .sp-group,
+    #spacing .sp-case__body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #spacing .sp-list {
+      border: 1px solid var(--line);
+      border-radius: var(--s-12);
+      background: #fff;
+      overflow: hidden;
+    }
+
+    #spacing .sp-list p {
+      margin: 0;
+      padding: var(--s-8) var(--s-12);
+      background: var(--page);
+      font-size: 13px;
+      font-weight: 650;
+      line-height: 1.35;
+      color: var(--ink);
+    }
+
+    #spacing .sp-card {
+      width: 100%;
+      padding: var(--card-pad);
+      border: 1px solid var(--line);
+      border-radius: var(--s-12);
+      background: var(--page);
+    }
+
+    #spacing .sp-label {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--ink);
+    }
+
+    #spacing .sp-input {
+      display: flex;
+      align-items: center;
+      min-height: var(--s-44);
+      padding: 0 var(--s-12);
+      border: 1px solid var(--line);
+      border-radius: var(--s-8);
+      background: #fff;
+      font-size: 14px;
+      line-height: 1.3;
+      color: var(--ink);
+    }
+
+    #spacing .sp-frame {
+      padding: var(--page-pad);
+      border: 1px solid var(--line);
+      border-radius: var(--s-12);
+      background: var(--page);
+    }
+
+    #spacing .sp-block {
+      display: flex;
+      flex-direction: column;
+      gap: var(--stack-xs);
+      padding: var(--s-12) var(--s-16);
+      border: 1px solid var(--line);
+      border-radius: var(--s-8);
+      background: #fff;
+    }
+
+    #spacing .sp-block strong {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
+
+    #spacing .sp-block span {
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.35;
+      color: var(--muted);
+    }
+
+    #spacing .sp-line {
+      display: flex;
+      align-items: center;
+      width: fit-content;
+      max-width: 100%;
+      min-height: var(--s-44);
+    }
+
+    #spacing .sp-ico {
+      display: block;
+      width: var(--s-16);
+      height: var(--s-16);
+      flex: none;
+      color: var(--ink);
+    }
+
+    #spacing .sp-line__text {
+      font-size: 14px;
+      font-weight: 650;
+      line-height: 1.3;
+      color: var(--ink);
+    }
+
+    #spacing .sp-btn {
+      appearance: none;
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: #fff;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 650;
+      line-height: 1;
+      min-height: var(--s-44);
+      padding: 0 var(--s-16);
+      border-radius: var(--s-8);
+      cursor: pointer;
+    }
+
+    #spacing .sp-btn--quiet {
+      border-color: var(--line);
+      background: #fff;
+      color: var(--ink);
+    }
+
+    #spacing .sp-btn:hover { background: color-mix(in srgb, var(--ink) 86%, #fff); }
+    #spacing .sp-btn--quiet:hover { background: var(--page); }
+
+    #spacing .sp-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    #spacing .sp-specimen {
+      padding: var(--s-16);
+      border: 1px solid var(--line);
+      border-radius: var(--s-12);
+      background: var(--page);
+    }
+
+    #spacing .sp-case {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-8);
+      min-width: 0;
+    }
+
+    #spacing .sp-case figcaption {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 650;
+      line-height: 1.35;
+      color: var(--muted);
+    }
+
+    #spacing .sp-case__body {
+      padding: var(--s-16);
+      border: 1px solid var(--line);
+      border-radius: var(--s-12);
+      background: #fff;
+    }
+
+    #spacing .sp-case p {
+      margin: 0;
+      line-height: 1.35;
+    }
+
+    #spacing .sp-case--flat p,
+    #spacing .sp-case--space p {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    #spacing .sp-case--rank .sp-title {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    #spacing .sp-case--rank .sp-name,
+    #spacing .sp-case--rank .sp-body {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--sp-secondary);
+    }
+
+    #spacing .sp-case--rank .sp-meta {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--muted);
+    }
+
+    #spacing .sp-callout {
+      margin: var(--s-4) 0 0;
+      max-width: 40rem;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--ink);
+    }
+
+    @container sp (max-width: 380px) {
+      #spacing .sp-alias li { grid-template-columns: 1fr; }
+      #spacing .sp-alias__k { padding-top: 0; }
+    }
+
+    @container sp (min-width: 300px) {
+      #spacing .sp-split { grid-template-columns: 1fr 1fr; }
+    }
+
+    @container sp (min-width: 300px) {
+      #spacing .sp-compare { grid-template-columns: 1fr 1fr; }
+    }
+
+    @container sp (min-width: 520px) {
+      #spacing .sp-inline-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @container sp (min-width: 560px) {
+      #spacing .sp-trio { grid-template-columns: 1fr 1fr; }
+    }
+
+    @container sp (min-width: 820px) {
+      #spacing .sp-trio { grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+</style>
   <link rel="stylesheet" href="shared/site-header.css?v=4" />
   <link rel="stylesheet" href="shared/section-fab.css" />
 </head>
@@ -2804,6 +3394,7 @@
       <a href="#select">Select</a>
       <a href="#glow-border">Glow border</a>
       <a href="#folder">Folder</a>
+      <a href="#spacing">Spacing</a>
       <a href="#color-combos">Color combos</a>
     </div>
   </nav>
@@ -2812,7 +3403,7 @@
     <header class="lib-hero">
       <h1>Component gallery</h1>
       <p>
-        Self-contained demos: Digits · Buttons · Cards · Palettes · Select · Glow border · Folder · Color combos.
+        Self-contained demos: Digits · Buttons · Cards · Palettes · Select · Glow border · Folder · Spacing · Color combos.
         Digit scroll with a natural <code>linear()</code> spring (~10%
         overshoot), hard-coded glow CTAs (violet / teal / slate), nested-radius
         cards, ten page-shell colour palettes you can switch, twenty reference
@@ -5179,6 +5770,386 @@
       </div>
     </section>
 
+    <!-- ===================== SPACING ===================== -->
+    <section class="sec" id="spacing">
+      <div class="sec-head">
+        <h2>Spacing</h2>
+        <p>One 4px scale. Space, muted colour, and weight decide what you read first.</p>
+      </div>
+
+      <div class="sec-grid two">
+        <article class="canvas sp-span">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Scale</span>
+            <span class="canvas-tag">4px base · 0–96</span>
+          </div>
+          <div class="canvas-body sp-fit">
+            <p class="sp-legend"><span class="sp-legend__swatch" aria-hidden="true"></span>Working set 4 · 8 · 12 · 16 · 24 · 32 · 48 · 64</p>
+            <ul class="sp-scale">
+              <li class="sp-step" style="--step: 0" aria-label="0 pixels">
+                <span class="sp-step__px">0</span>
+                <span class="sp-step__track" aria-hidden="true"><span class="sp-step__bar"></span></span>
+              </li>
+              <li class="sp-step" style="--step: 2" aria-label="2 pixels">
+                <span class="sp-step__px">2</span>
+                <span class="sp-step__track" aria-hidden="true"><span class="sp-step__bar"></span></span>
+              </li>
+              <li class="sp-step is-core" style="--step: 4" aria-label="4 pixels, working set">
+                <span class="sp-step__px">4</span>
+                <span class="sp-step__track" aria-hidden="true"><span class="sp-step__bar"></span></span>
+              </li>
+              <li class="sp-step" style="--step: 6" aria-label="6 pixels">
+                <span class="sp-step__px">6</span>
+                <span class="sp-step__track" aria-hidden="true"><span class="sp-step__bar"></span></span>
+              </li>
+              <li class="sp-step is-core" style="--step: 8" aria-label="8 pixels, working set">
+                <span class="sp-step__px">8</span>
+                <span class="sp-step__track" aria-hidden="true"><span class="sp-step__bar"></span></span>
+              </li>
+              <li class="sp-step" style="--step: 10" aria-label="10 pixels">
+                <span class="sp-step__px">10</span>
+                <span class="sp-step__track" aria-hidden="true"><span class="sp-step__bar"></span></span>
+              </li>
+              <li class="sp-step is-core" style="--step: 12" aria-label="12 pixels, working set">
+                <span class="sp-step__px">12</span>
+                <span class="sp-step__track" aria-hidden="true"><span class="sp-step__bar"></span></span>
+              </li>
+              <li class="sp-step" style="--step: 14" aria-label="14 pixels">
+                <span class="sp-step__px">14</span>
+                <span class="sp-step__track" aria-hidden="true"><span class="sp-step__bar"></span></span>
+              </li>
+              <li class="sp-step is-core" style="--step: 16" aria-label="16 pixels, working set">
+                <span class="sp-step__px">16</span>
+                <span class="sp-step__track" aria-hidden="true"><span class="sp-step__bar"></span></span>
+              </li>
+              <li class="sp-step" style="--step: 20" aria-label="20 pixels">
+                <span class="sp-step__px">20</span>
+                <span class="sp-step__track" aria-hidden="true"><span class="sp-step__bar"></span></span>
+              </li>
+              <li class="sp-step is-core" style="--step: 24" aria-label="24 pixels, working set">
+                <span class="sp-step__px">24</span>
+                <span class="sp-step__track" aria-hidden="true"><span class="sp-step__bar"></span></span>
+              </li>
+              <li class="sp-step" style="--step: 28" aria-label="28 pixels">
+                <span class="sp-step__px">28</span>
+                <span class="sp-step__track" aria-hidden="true"><span class="sp-step__bar"></span></span>
+              </li>
+              <li class="sp-step is-core" style="--step: 32" aria-label="32 pixels, working set">
+                <span class="sp-step__px">32</span>
+                <span class="sp-step__track" aria-hidden="true"><span class="sp-step__bar"></span></span>
+              </li>
+              <li class="sp-step" style="--step: 36" aria-label="36 pixels">
+                <span class="sp-step__px">36</span>
+                <span class="sp-step__track" aria-hidden="true"><span class="sp-step__bar"></span></span>
+              </li>
+              <li class="sp-step" style="--step: 40" aria-label="40 pixels">
+                <span class="sp-step__px">40</span>
+                <span class="sp-step__track" aria-hidden="true"><span class="sp-step__bar"></span></span>
+              </li>
+              <li class="sp-step" style="--step: 44" aria-label="44 pixels">
+                <span class="sp-step__px">44</span>
+                <span class="sp-step__track" aria-hidden="true"><span class="sp-step__bar"></span></span>
+              </li>
+              <li class="sp-step is-core" style="--step: 48" aria-label="48 pixels, working set">
+                <span class="sp-step__px">48</span>
+                <span class="sp-step__track" aria-hidden="true"><span class="sp-step__bar"></span></span>
+              </li>
+              <li class="sp-step" style="--step: 56" aria-label="56 pixels">
+                <span class="sp-step__px">56</span>
+                <span class="sp-step__track" aria-hidden="true"><span class="sp-step__bar"></span></span>
+              </li>
+              <li class="sp-step is-core" style="--step: 64" aria-label="64 pixels, working set">
+                <span class="sp-step__px">64</span>
+                <span class="sp-step__track" aria-hidden="true"><span class="sp-step__bar"></span></span>
+              </li>
+              <li class="sp-step" style="--step: 80" aria-label="80 pixels">
+                <span class="sp-step__px">80</span>
+                <span class="sp-step__track" aria-hidden="true"><span class="sp-step__bar"></span></span>
+              </li>
+              <li class="sp-step" style="--step: 96" aria-label="96 pixels">
+                <span class="sp-step__px">96</span>
+                <span class="sp-step__track" aria-hidden="true"><span class="sp-step__bar"></span></span>
+              </li>
+            </ul>
+          </div>
+        </article>
+
+          <article class="canvas">
+            <div class="canvas-chrome">
+              <span class="canvas-name">Aliases</span>
+              <span class="canvas-tag">true px</span>
+            </div>
+            <div class="canvas-body sp-fit">
+              <ul class="sp-alias">
+                <li>
+                  <span class="sp-alias__k">Page inline</span>
+                  <span class="sp-alias__v">
+                    <span class="sp-pair"><span class="sp-tick" style="--n: var(--page-pad)" aria-hidden="true"></span>16 mobile</span>
+                    <span class="sp-pair"><span class="sp-tick" style="--n: var(--page-pad-lg)" aria-hidden="true"></span>32 desktop</span>
+                  </span>
+                </li>
+                <li>
+                  <span class="sp-alias__k">Section gap</span>
+                  <span class="sp-alias__v">
+                    <span class="sp-pair"><span class="sp-tick" style="--n: var(--section-gap)" aria-hidden="true"></span>64</span>
+                    <span class="sp-pair"><span class="sp-tick" style="--n: var(--section-gap-sm)" aria-hidden="true"></span>sm 40</span>
+                  </span>
+                </li>
+                <li>
+                  <span class="sp-alias__k">Card pad</span>
+                  <span class="sp-alias__v">
+                    <span class="sp-pair"><span class="sp-tick" style="--n: var(--card-pad)" aria-hidden="true"></span>24</span>
+                    <span class="sp-pair"><span class="sp-tick" style="--n: var(--card-pad-sm)" aria-hidden="true"></span>sm 16</span>
+                  </span>
+                </li>
+                <li>
+                  <span class="sp-alias__k">Card items</span>
+                  <span class="sp-alias__v">
+                    <span class="sp-pair"><span class="sp-tick" style="--n: var(--card-gap)" aria-hidden="true"></span>16</span>
+                  </span>
+                </li>
+                <li>
+                  <span class="sp-alias__k">Stack</span>
+                  <span class="sp-alias__v">
+                    <span class="sp-pill"><span class="sp-tick" style="--n: var(--stack-xs)" aria-hidden="true"></span>xs 4</span>
+                    <span class="sp-pill"><span class="sp-tick" style="--n: var(--stack-sm)" aria-hidden="true"></span>sm 8</span>
+                    <span class="sp-pill"><span class="sp-tick" style="--n: var(--stack-md)" aria-hidden="true"></span>md 12</span>
+                    <span class="sp-pill"><span class="sp-tick" style="--n: var(--stack-lg)" aria-hidden="true"></span>lg 16</span>
+                    <span class="sp-pill"><span class="sp-tick" style="--n: var(--stack-xl)" aria-hidden="true"></span>xl 24</span>
+                    <span class="sp-pill"><span class="sp-tick" style="--n: var(--stack-2xl)" aria-hidden="true"></span>2xl 32</span>
+                  </span>
+                </li>
+                <li>
+                  <span class="sp-alias__k">Inline</span>
+                  <span class="sp-alias__v">
+                    <span class="sp-pill"><span class="sp-tick" style="--n: var(--inline-xs)" aria-hidden="true"></span>xs 4</span>
+                    <span class="sp-pill"><span class="sp-tick" style="--n: var(--inline-sm)" aria-hidden="true"></span>sm 8</span>
+                    <span class="sp-pill"><span class="sp-tick" style="--n: var(--inline-md)" aria-hidden="true"></span>md 12</span>
+                    <span class="sp-pill"><span class="sp-tick" style="--n: var(--inline-lg)" aria-hidden="true"></span>lg 16</span>
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="canvas">
+            <div class="canvas-chrome">
+              <span class="canvas-name">Rules</span>
+              <span class="canvas-tag">proximity</span>
+            </div>
+            <div class="canvas-body sp-fit">
+              <ul class="sp-rules">
+                <li>One spacing scale. Don't freestyle px.</li>
+                <li>More space around a group than inside it. Proximity is relationship.</li>
+                <li>Start with generous whitespace, then tighten.</li>
+                <li>Macro gaps between sections. Tighter inside cards and forms.</li>
+                <li>Don't use 8px everywhere. Jump at section level.</li>
+              </ul>
+              <p class="sp-note">HK life-sim uses an 8px grid, 16px page pad, 8px chrome gaps, and taps of at least 44. Same 8px language, product-specific.</p>
+            </div>
+          </article>
+
+        <div class="sp-tools sp-span">
+          <input type="checkbox" id="sp-gaps" class="visually-hidden" />
+          <label for="sp-gaps" class="sp-gaps"><span class="is-off">Show gaps</span><span class="is-on">Hide gaps</span></label>
+        </div>
+
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Stack</span>
+            <span class="canvas-tag">sm 8 · xl 24</span>
+          </div>
+          <div class="canvas-body sp-fit">
+            <div class="sp-split">
+              <div>
+                <p class="sp-kicker" id="sp-k-even">Even · 8</p>
+                <div class="sp-list" aria-labelledby="sp-k-even">
+                  <p>Central → TST</p>
+                  <span class="sp-gap" style="--gap: var(--stack-sm)" data-label="8" aria-hidden="true"></span>
+                  <p>07:40</p>
+                  <span class="sp-gap" style="--gap: var(--stack-sm)" data-label="8" aria-hidden="true"></span>
+                  <p>TST → Central</p>
+                  <span class="sp-gap" style="--gap: var(--stack-sm)" data-label="8" aria-hidden="true"></span>
+                  <p>18:15</p>
+                </div>
+              </div>
+              <div>
+                <p class="sp-kicker" id="sp-k-grouped">8 inside · 24 between</p>
+                <div class="sp-list" aria-labelledby="sp-k-grouped">
+                  <div class="sp-group">
+                    <p>Central → TST</p>
+                    <span class="sp-gap" style="--gap: var(--stack-sm)" data-label="8" aria-hidden="true"></span>
+                    <p>07:40</p>
+                  </div>
+                  <span class="sp-gap" style="--gap: var(--stack-xl)" data-label="24" aria-hidden="true"></span>
+                  <div class="sp-group">
+                    <p>TST → Central</p>
+                    <span class="sp-gap" style="--gap: var(--stack-sm)" data-label="8" aria-hidden="true"></span>
+                    <p>18:15</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Card / form</span>
+            <span class="canvas-tag">pad 24 · 12 · 8 · 16</span>
+          </div>
+          <div class="canvas-body sp-fit">
+            <p class="sp-kicker" id="sp-k-form">Label 12 · fields 8 · sections 16 · pad 24</p>
+            <div class="sp-card" aria-labelledby="sp-k-form">
+              <div class="sp-section">
+                <div class="sp-field">
+                  <p class="sp-label">Name</p>
+                  <span class="sp-gap" style="--gap: var(--stack-md)" data-label="12" aria-hidden="true"></span>
+                  <div class="sp-input">Morning guest</div>
+                </div>
+                <span class="sp-gap" style="--gap: var(--stack-sm)" data-label="8" aria-hidden="true"></span>
+                <div class="sp-field">
+                  <p class="sp-label">Pier</p>
+                  <span class="sp-gap" style="--gap: var(--stack-md)" data-label="12" aria-hidden="true"></span>
+                  <div class="sp-input">Central</div>
+                </div>
+              </div>
+              <span class="sp-gap" style="--gap: var(--stack-lg)" data-label="16" aria-hidden="true"></span>
+              <div class="sp-section">
+                <div class="sp-field">
+                  <p class="sp-label">Note</p>
+                  <span class="sp-gap" style="--gap: var(--stack-md)" data-label="12" aria-hidden="true"></span>
+                  <div class="sp-input">Night crossing</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="canvas sp-span">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Page sections</span>
+            <span class="canvas-tag">pad 16 · gap 64 vs 8</span>
+          </div>
+          <div class="canvas-body sp-fit">
+            <div class="sp-compare">
+              <div>
+                <p class="sp-kicker" id="sp-k-cramped">Gap 8</p>
+                <div class="sp-frame" aria-labelledby="sp-k-cramped">
+                  <div class="sp-block">
+                    <strong>Tonight</strong>
+                    <span>Central harbour</span>
+                  </div>
+                  <span class="sp-gap" style="--gap: var(--s-8)" data-label="8" aria-hidden="true"></span>
+                  <div class="sp-block">
+                    <strong>Crossing</strong>
+                    <span>Celestial Star · 19:10</span>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p class="sp-kicker" id="sp-k-page">Section gap 64</p>
+                <div class="sp-frame" aria-labelledby="sp-k-page">
+                  <div class="sp-block">
+                    <strong>Tonight</strong>
+                    <span>Central harbour</span>
+                  </div>
+                  <span class="sp-gap" style="--gap: var(--section-gap)" data-label="64" aria-hidden="true"></span>
+                  <div class="sp-block">
+                    <strong>Crossing</strong>
+                    <span>Celestial Star · 19:10</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="canvas sp-span">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Inline</span>
+            <span class="canvas-tag">sm 8 · md 12</span>
+          </div>
+          <div class="canvas-body sp-fit">
+            <div class="sp-inline-grid">
+              <div class="sp-specimen">
+                <p class="sp-kicker" id="sp-k-icon">Icon + text · inline-sm 8</p>
+                <div class="sp-line" aria-labelledby="sp-k-icon">
+                  <svg class="sp-ico" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                    <circle cx="8" cy="8" r="5.25" fill="none" stroke="currentColor" stroke-width="1.5"></circle>
+                    <circle cx="8" cy="8" r="1.75" fill="currentColor"></circle>
+                  </svg>
+                  <span class="sp-gap sp-gap--x" style="--gap: var(--inline-sm)" data-label="8" aria-hidden="true"></span>
+                  <span class="sp-line__text">Central pier</span>
+                </div>
+              </div>
+              <div class="sp-specimen">
+                <p class="sp-kicker" id="sp-k-btns">Buttons · inline-md 12</p>
+                <div class="sp-line" role="group" aria-labelledby="sp-k-btns">
+                  <button type="button" class="sp-btn">Save</button>
+                  <span class="sp-gap sp-gap--x" style="--gap: var(--inline-md)" data-label="12" aria-hidden="true"></span>
+                  <button type="button" class="sp-btn sp-btn--quiet">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="canvas sp-span">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Hierarchy</span>
+            <span class="canvas-tag">space · colour · weight</span>
+          </div>
+          <div class="canvas-body sp-fit">
+            <div class="sp-trio">
+              <figure class="sp-case sp-case--flat">
+                <figcaption>Flat · hard to scan</figcaption>
+                <div class="sp-case__body">
+                  <p class="sp-title">Harbour notes</p>
+                  <span class="sp-gap" style="--gap: var(--stack-sm)" data-label="8" aria-hidden="true"></span>
+                  <p class="sp-name">Star Ferry</p>
+                  <span class="sp-gap" style="--gap: var(--stack-sm)" data-label="8" aria-hidden="true"></span>
+                  <p class="sp-body">Night crossing from Central.</p>
+                  <span class="sp-gap" style="--gap: var(--stack-sm)" data-label="8" aria-hidden="true"></span>
+                  <p class="sp-meta">Updated today</p>
+                </div>
+              </figure>
+              <figure class="sp-case sp-case--space">
+                <figcaption>Spacing · groups appear</figcaption>
+                <div class="sp-case__body">
+                  <p class="sp-title">Harbour notes</p>
+                  <span class="sp-gap" style="--gap: var(--stack-xl)" data-label="24" aria-hidden="true"></span>
+                  <div class="sp-group">
+                    <p class="sp-name">Star Ferry</p>
+                    <span class="sp-gap" style="--gap: var(--stack-sm)" data-label="8" aria-hidden="true"></span>
+                    <p class="sp-body">Night crossing from Central.</p>
+                  </div>
+                  <span class="sp-gap" style="--gap: var(--stack-xl)" data-label="24" aria-hidden="true"></span>
+                  <p class="sp-meta">Updated today</p>
+                </div>
+              </figure>
+              <figure class="sp-case sp-case--rank">
+                <figcaption>Space + type · clear</figcaption>
+                <div class="sp-case__body">
+                  <p class="sp-title">Harbour notes</p>
+                  <span class="sp-gap" style="--gap: var(--stack-xl)" data-label="24" aria-hidden="true"></span>
+                  <div class="sp-group">
+                    <p class="sp-name">Star Ferry</p>
+                    <span class="sp-gap" style="--gap: var(--stack-sm)" data-label="8" aria-hidden="true"></span>
+                    <p class="sp-body">Night crossing from Central.</p>
+                  </div>
+                  <span class="sp-gap" style="--gap: var(--stack-xl)" data-label="24" aria-hidden="true"></span>
+                  <p class="sp-meta">Updated today</p>
+                </div>
+              </figure>
+            </div>
+            <p class="sp-callout">Outer space over inner space, ink against muted colour, and weight. Not more borders.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+
     <!-- ===================== COLOR COMBOS ===================== -->
     <section class="sec" id="color-combos">
       <div class="sec-head">
@@ -5331,7 +6302,7 @@
     </section>
 
     <footer class="lib-foot">
-      Digits · Buttons · Cards · Palettes · Select · Glow border · Folder · Color combos. Digit-scroll <code>lh</code> + natural
+      Digits · Buttons · Cards · Palettes · Select · Glow border · Folder · Spacing · Color combos. Digit-scroll <code>lh</code> + natural
       <code>linear()</code> spring (~10% overshoot) · hard-coded glow buttons
       (violet / teal / slate) · nested radius · page-shell palettes · colour pairings · color combos · native
       <code>appearance: base-select</code> · rotating <code>conic-gradient</code> rim · SVG glass folder. No CDN.
@@ -5779,6 +6750,6 @@
     })();
   </script>
   <script src="shared/site-header.js?v=4" defer></script>
-  <script src="shared/section-fab.js" defer></script>
+  <script src="shared/section-fab.js?v=2" defer></script>
 </body>
 </html>
