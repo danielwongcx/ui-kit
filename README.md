@@ -13,10 +13,11 @@ Static component gallery and digest catalog for Daniel Wong — served from GitH
 | ASCII | https://danielwongcx.github.io/ui-kit/ascii-sharks.html |
 | Ferry | https://danielwongcx.github.io/ui-kit/ferry.html |
 | MTR | https://danielwongcx.github.io/ui-kit/mtr.html |
+| Folder | https://danielwongcx.github.io/ui-kit/folder.html |
 | One prompt | https://danielwongcx.github.io/ui-kit/one-prompt.html |
 | Motion studio | https://danielwongcx.github.io/ui-kit/motion-studio.html |
 
-Local mirrors: `index.html`, `digest.html`, `taste.html`, `learn-piano-101.html`, `ascii-sharks.html`, `ferry.html`, `mtr.html`, `one-prompt.html`, and `motion-studio.html`. `ui-combo.html` mirrors the gallery without the Color combos section. One prompt and Motion studio sit under the Explainer category in the site header.
+Local mirrors: `index.html`, `digest.html`, `taste.html`, `learn-piano-101.html`, `ascii-sharks.html`, `ferry.html`, `mtr.html`, `folder.html`, `one-prompt.html`, and `motion-studio.html`. `ui-combo.html` mirrors the gallery without the Color combos section. One prompt and Motion studio sit under the Explainer category in the site header.
 
 Gallery sections: Digits, Buttons, Cards, Palettes, Select (native `appearance: base-select`), Glow border (pure-CSS `@property` angle + rotating `conic-gradient` rim), Folder (frosted SVG glass folder card), and Color combos (six reciprocal two-colour posters on `index.html`; click a hex to copy it — they do not recolour the page). Palettes holds ten page-shell themes plus twenty reference colour pairings (name, four swatches, mood; click a swatch to copy the hex — pairings do not recolour the page). Index stays the original gallery.
 
@@ -24,7 +25,7 @@ Taste sections: Motion, App/Data, Buttons+, States, Forms, Cards+, Taste palette
 
 ## Shared chrome
 
-- **Site header** (`shared/site-header.css` + `shared/site-header.js`) — sticky, mobile hamburger. Top-level links: Gallery · Digest · Taste · Piano · ASCII · Ferry · MTR. **Explainer** is a category (One prompt, Motion studio): a dropdown on desktop, a labeled group in the mobile panel. Every page must load it; see `AGENTS.md`.
+- **Site header** (`shared/site-header.css` + `shared/site-header.js`) — sticky, mobile hamburger. Top-level links: Gallery · Digest · Taste · Piano · ASCII · Ferry · MTR · Folder. **Explainer** is a category (One prompt, Motion studio): a dropdown on desktop, a labeled group in the mobile panel. Every page must load it; see `AGENTS.md`.
 - **Section FAB** (`shared/section-fab.*`) — gallery + taste. Collapsible sections + floating speed-dial (page-specific section map).
 
 ## Agents
@@ -38,3 +39,4 @@ Read **[AGENTS.md](./AGENTS.md)** before adding or editing pages. Page links are
 - ASCII (`ascii-sharks.html`) switches between three scenes. **Sharks** is a static port of [stackedlol/ascii-sharks](https://github.com/stackedlol/ascii-sharks). `?sharks=thresher,hammerhead,mako,nurse` picks species (first is largest). With no query, four classic sharks swim. Dark is the default ocean; Light is a separate paper-and-ink palette (`?theme=light`). **Train** is [Viaduct Steam Train](https://www.ascii-magic.com/ascii/viaduct-steam-train) from [ascii-magic-art](https://github.com/kailashsr38/ascii-magic-art) v1.0.2 (MIT), played with the piece’s default halftone-dots look. **HRTD** is an original line, made with 💕 by HRTD (`vendor/ascii-hrtd/made.js`). `?scene=sharks`, `?scene=train`, or `?scene=hrtd` selects a scene; the corner control remembers the last choice in `localStorage` (`ascii-scene`). `?scene=ferry` opens `ferry.html` and `?scene=mtr` opens `mtr.html`. Only the active scene runs. Light / Dark stays on Sharks.
 - **Ferry** (`ferry.html`) is one page: an original night harbour crossing (`vendor/ascii-ferry/harbour.js`) on the same 192×108 square-cell grid, 15fps cadence, and halftone-dots look as the train. The boat is Star Ferry Celestial Star — deep red hull, forest-green promenade, cream cabin.
 - **MTR** (`mtr.html`) is one page: an original night metro (`vendor/ascii-mtr/metro.js`) on that same stage. A KCR first-generation EMU — yellow cab, silver body, thin red stripe — crosses an elevated guideway above the harbour.
+- **Folder** (`folder.html`) is a pure CSS glass folder card. The glass color choice sets `--glass-top`, `--glass-mid`, and `--glass-bot` on the frosted pocket (sea is the default). The gallery Folder section on `index.html` stays the SVG card.

@@ -219,7 +219,7 @@
   display: none;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 920px) {
   .site-header__nav {
     display: none;
   }
