@@ -3322,6 +3322,980 @@
       outline-offset: 2px;
     }
 
+    /* Layout lessons — Refactoring UI, Layout and Spacing.
+       Before/after specimens. Gaps reuse .sp-gap so Show gaps still labels them. */
+
+    #spacing .sp-credit {
+      margin-top: 0.35rem;
+      font-size: 0.72rem;
+    }
+
+    #spacing .sp-switch,
+    #spacing .sp-check {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--s-8);
+    }
+
+    #spacing .sp-opt {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: var(--s-44);
+      padding: 0 var(--s-12);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 650;
+      line-height: 1;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    #spacing .sp-opt:hover {
+      background: color-mix(in srgb, var(--page) 50%, #fff);
+    }
+
+    #spacing .sp-switch input:focus-visible + .sp-opt,
+    #spacing .sp-check input:focus-visible + .sp-opt {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    #spacing .sp-opt .is-on { display: none; }
+
+    #spacing .sp-switch input:checked + .sp-opt,
+    #spacing .sp-check input:checked + .sp-opt {
+      background: color-mix(in srgb, var(--accent) 12%, #fff);
+      border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+      color: #3b3bd4;
+    }
+
+    #spacing .sp-check input:checked + .sp-opt .is-off { display: none; }
+    #spacing .sp-check input:checked + .sp-opt .is-on { display: inline; }
+
+    #spacing .sp-ba,
+    #spacing .sp-amb {
+      display: grid;
+      gap: var(--stack-lg);
+      width: 100%;
+      align-items: start;
+    }
+
+    #spacing .sp-ba {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    }
+
+    #spacing .sp-amb { grid-template-columns: 1fr; }
+
+    #spacing .sp-fig {
+      margin: 0;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-8);
+    }
+
+    #spacing .sp-fig > figcaption {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: var(--s-4) var(--s-8);
+      margin: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 650;
+      line-height: 1.35;
+      color: var(--muted);
+    }
+
+    #spacing .sp-cap {
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    #spacing .sp-when-sm { display: none; }
+
+    #spacing:has(#sp-type-sm:checked) .sp-when-lg { display: none; }
+    #spacing:has(#sp-type-sm:checked) .sp-when-sm { display: inline; }
+
+    #spacing .sp-only-wide { display: none; }
+
+    #spacing:has(#sp-side-wide:checked) .sp-only-narrow { display: none; }
+    #spacing:has(#sp-side-wide:checked) .sp-only-wide { display: inline; }
+
+    /* 1 — Start with too much white space */
+    #spacing .sp-auth {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: var(--s-12);
+      background: #fff;
+    }
+
+    #spacing .sp-auth--min { padding: var(--s-8); }
+    #spacing .sp-auth--air { padding: var(--s-24); }
+
+    #spacing .sp-auth__copy {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-4);
+      min-width: 0;
+    }
+
+    #spacing .sp-auth--air .sp-auth__copy { gap: var(--s-12); }
+
+    #spacing .sp-auth__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: var(--s-8);
+    }
+
+    #spacing .sp-auth__top strong {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+
+    #spacing .sp-auth__step {
+      flex: none;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 650;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    #spacing .sp-auth__lead,
+    #spacing .sp-auth__hint {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.4;
+      color: var(--muted);
+    }
+
+    #spacing .sp-auth__sub {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    #spacing .sp-auth__fields {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      gap: var(--s-4);
+      min-width: 0;
+    }
+
+    #spacing .sp-auth--air .sp-auth__fields { gap: var(--s-12); }
+
+    #spacing .sp-auth__field {
+      flex: 1 1 7rem;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-4);
+    }
+
+    #spacing .sp-auth--air .sp-auth__field { gap: var(--s-8); }
+
+    #spacing .sp-auth__field > span {
+      font-size: 11px;
+      font-weight: 650;
+      line-height: 1.3;
+      color: var(--muted);
+    }
+
+    #spacing .sp-fake {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      min-height: var(--s-36);
+      padding: 0 var(--s-8);
+      border: 1px solid var(--line);
+      border-radius: var(--s-8);
+      background: var(--page);
+      font-size: 13px;
+      line-height: 1.2;
+      color: var(--ink);
+    }
+
+    #spacing .sp-auth__go {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      min-height: var(--s-36);
+      padding: 0 var(--s-12);
+      border-radius: var(--s-8);
+      background: var(--ink);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 650;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    #spacing .sp-board {
+      width: 100%;
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: var(--s-12);
+      background: #fff;
+      overflow: hidden;
+    }
+
+    #spacing .sp-board__bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: var(--s-8);
+      padding: var(--s-6) var(--s-8);
+      background: var(--page);
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    #spacing .sp-board__bar strong { font-weight: 700; }
+
+    #spacing .sp-board__bar span {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 650;
+    }
+
+    #spacing .sp-board table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      line-height: 1.3;
+      font-variant-numeric: tabular-nums;
+    }
+
+    #spacing .sp-board th,
+    #spacing .sp-board td {
+      padding: var(--s-4) var(--s-8);
+      text-align: left;
+      vertical-align: baseline;
+      border-top: 1px solid var(--line);
+    }
+
+    #spacing .sp-board th {
+      border-top: 0;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 650;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    #spacing .sp-board td:first-child,
+    #spacing .sp-board th:first-child,
+    #spacing .sp-board td:last-child,
+    #spacing .sp-board th:last-child {
+      white-space: nowrap;
+    }
+
+    #spacing .sp-board td:last-child,
+    #spacing .sp-board th:last-child { text-align: right; }
+
+    #spacing .sp-board td:nth-child(2) {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    #spacing .sp-board .is-late { color: #9a3412; font-weight: 700; }
+    #spacing .sp-board .is-board { font-weight: 700; }
+
+    /* 2 — Spacing and sizing system */
+    #spacing .sp-jump-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-8);
+      min-width: 0;
+    }
+
+    #spacing .sp-jump-list li {
+      display: grid;
+      grid-template-columns: 5.6rem minmax(0, 1fr) 3.1rem;
+      gap: var(--s-8);
+      align-items: center;
+      margin: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 650;
+      font-variant-numeric: tabular-nums;
+      color: var(--ink);
+    }
+
+    #spacing .sp-jbar {
+      display: block;
+      height: var(--s-8);
+      border-radius: 99px;
+      background: #ececf1;
+      overflow: hidden;
+    }
+
+    #spacing .sp-jbar i {
+      display: block;
+      height: 100%;
+      width: calc(var(--pct) * 2%);
+      max-width: 100%;
+      border-radius: inherit;
+      background: var(--ink);
+    }
+
+    #spacing .sp-jump-list .is-quiet .sp-jbar i { background: #c5c5d0; }
+    #spacing .sp-jump-list .is-quiet span:last-child { color: var(--muted); }
+
+    #spacing .sp-pick {
+      width: min(100%, 24rem);
+      min-width: 0;
+    }
+
+    #spacing .sp-pick__card {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      padding: var(--s-24);
+      border: 1px solid var(--line);
+      border-radius: var(--s-12);
+      background: #fff;
+    }
+
+    #spacing .sp-pick__k {
+      margin: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    #spacing .sp-pick__price {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    #spacing .sp-pick__price small {
+      margin-left: var(--s-6);
+      font-size: 11px;
+      font-weight: 650;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+    }
+
+    #spacing .sp-pick__go {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      max-width: 100%;
+      min-height: var(--s-36);
+      padding: 0 var(--s-16);
+      border-radius: var(--s-8);
+      background: var(--ink);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    #spacing .sp-pick__item {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    /* 3 — You don't have to fill the screen */
+    #spacing .sp-browser {
+      width: 100%;
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: var(--s-12);
+      background: var(--page);
+      overflow: hidden;
+    }
+
+    #spacing:has(#sp-fill-phone:checked) .sp-browser {
+      width: min(100%, 400px);
+      margin-inline: auto;
+    }
+
+    #spacing .sp-browser__chrome {
+      display: flex;
+      align-items: center;
+      gap: var(--s-6);
+      min-width: 0;
+      padding: var(--s-8) var(--s-12);
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+    }
+
+    #spacing .sp-browser__chrome span {
+      width: var(--s-8);
+      height: var(--s-8);
+      flex: none;
+      border-radius: 99px;
+      background: #e4e4ea;
+    }
+
+    #spacing .sp-browser__chrome i {
+      min-width: 0;
+      margin-left: var(--s-4);
+      overflow: hidden;
+      font-style: normal;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 650;
+      color: var(--muted);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    #spacing .sp-browser__nav {
+      padding: var(--s-8) var(--s-16);
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    #spacing .sp-fill {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-16);
+      min-width: 0;
+      padding: var(--s-16);
+    }
+
+    #spacing .sp-fill__note { display: none; min-width: 0; }
+
+    #spacing:has(#sp-fill-cols:checked) .sp-fill__note { display: block; }
+
+    #spacing .sp-fill__note strong {
+      display: block;
+      margin: 0 0 var(--s-8);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    #spacing .sp-fill__note p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    #spacing .sp-fill__form {
+      width: 100%;
+      min-width: 0;
+      padding: var(--s-16);
+      border: 1px solid var(--line);
+      border-radius: var(--s-12);
+      background: #fff;
+    }
+
+    #spacing:has(#sp-fill-fit:checked) .sp-fill__form,
+    #spacing:has(#sp-fill-cols:checked) .sp-fill__form {
+      width: min(100%, 280px);
+    }
+
+    #spacing:has(#sp-fill-fit:checked) .sp-fill__form { margin-inline: auto; }
+
+    #spacing .sp-fill__kicker {
+      margin: 0;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    #spacing .sp-fill__name {
+      margin: var(--s-4) 0 0;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    #spacing .sp-fill__meta {
+      margin: var(--s-4) 0 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    #spacing .sp-fill__price {
+      margin: var(--s-8) 0 0;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    #spacing .sp-fill__code {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-8);
+      margin-top: var(--s-12);
+    }
+
+    #spacing .sp-fill__code input {
+      flex: 1 1 8rem;
+      min-width: 0;
+      min-height: var(--s-44);
+      padding: 0 var(--s-12);
+      border: 1px solid var(--line);
+      border-radius: var(--s-8);
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      font-size: 14px;
+    }
+
+    #spacing .sp-fill__code button {
+      flex: 0 0 auto;
+      min-height: var(--s-44);
+      padding: 0 var(--s-12);
+      border: 1px solid var(--line);
+      border-radius: var(--s-8);
+      background: var(--page);
+      color: var(--ink);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    #spacing .sp-fill__code input:focus-visible,
+    #spacing .sp-fill__code button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    #spacing .sp-fill__rows {
+      margin: var(--s-12) 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-8);
+    }
+
+    #spacing .sp-fill__rows div {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--s-12);
+      font-size: 13px;
+    }
+
+    #spacing .sp-fill__rows dt {
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    #spacing .sp-fill__rows dd {
+      margin: 0;
+      font-weight: 650;
+      font-variant-numeric: tabular-nums;
+    }
+
+    #spacing .sp-fill__rows div:last-child {
+      padding-top: var(--s-8);
+      border-top: 1px solid var(--line);
+    }
+
+    #spacing .sp-fill__rows div:last-child dt,
+    #spacing .sp-fill__rows div:last-child dd {
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    /* 4 — Grids */
+    #spacing .sp-sides {
+      display: grid;
+      gap: var(--stack-lg);
+      width: 100%;
+      align-items: start;
+    }
+
+    #spacing .sp-side {
+      display: flex;
+      width: 100%;
+      min-width: 0;
+      min-height: 9.5rem;
+      border: 1px solid var(--line);
+      border-radius: var(--s-12);
+      background: #fff;
+      overflow: hidden;
+    }
+
+    #spacing:has(#sp-side-narrow:checked) .sp-side {
+      width: min(100%, 240px);
+    }
+
+    #spacing .sp-side__nav {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-4);
+      min-width: 0;
+      padding: var(--s-8);
+      background: #eef0f6;
+      border-right: 1px solid var(--line);
+    }
+
+    #spacing .sp-side--fluid .sp-side__nav { width: 25%; }
+    #spacing .sp-side--fixed .sp-side__nav { width: 7.5rem; flex: none; }
+
+    #spacing .sp-side__nav span {
+      display: block;
+      min-width: 0;
+      padding: var(--s-4) var(--s-6);
+      border-radius: var(--s-6);
+      font-size: 12px;
+      font-weight: 650;
+      line-height: 1.3;
+    }
+
+    #spacing .sp-side--fluid .sp-side__nav span { overflow-wrap: anywhere; }
+
+    #spacing .sp-side__nav .is-on {
+      background: #fff;
+      box-shadow: inset 0 0 0 1px var(--line);
+    }
+
+    #spacing .sp-side__main {
+      flex: 1 1 auto;
+      min-width: 0;
+      padding: var(--s-12);
+    }
+
+    #spacing .sp-side__main strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
+
+    #spacing .sp-side__main p {
+      margin: var(--s-4) 0 0;
+      font-size: 12px;
+      line-height: 1.35;
+      color: var(--muted);
+    }
+
+    #spacing .sp-vp-row {
+      container-type: inline-size;
+      container-name: vp;
+      display: flex;
+      align-items: stretch;
+      gap: var(--s-8);
+      width: 100%;
+      min-width: 0;
+    }
+
+    #spacing .sp-vp {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-4);
+    }
+
+    #spacing .sp-vp--lg { flex: 46 1 0; }
+    #spacing .sp-vp--md { flex: 34 1 0; }
+    #spacing .sp-vp--sm { flex: 20 1 0; }
+
+    #spacing .sp-vp__label {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 650;
+      line-height: 1.3;
+      color: var(--muted);
+    }
+
+    #spacing .sp-vp__screen {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 4.6rem;
+      padding: var(--s-6);
+      border: 1px dashed #c8c8d4;
+      border-radius: var(--s-8);
+      background: var(--page);
+    }
+
+    #spacing .sp-vp__card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2.75rem;
+      padding: var(--s-6);
+      border: 2px solid var(--ink);
+      border-radius: var(--s-8);
+      background: #fff;
+      max-width: 100%;
+      overflow: hidden;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.2;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    #spacing .sp-vp-row {
+      --cols-lg: 50%;
+      --cols-md: 83.33%;
+      --cols-sm: 100%;
+      --card-max: 26cqw;
+    }
+
+    #spacing .sp-vp--lg .sp-vp__card--cols { width: var(--cols-lg); }
+    #spacing .sp-vp--md .sp-vp__card--cols { width: var(--cols-md); }
+    #spacing .sp-vp--sm .sp-vp__card--cols { width: var(--cols-sm); }
+
+    /* Ideal width fits the wide and mid frames, and fills the small frame. */
+    #spacing .sp-vp__card--max { width: min(100%, var(--card-max)); }
+
+    #spacing .sp-vp__meter {
+      display: flex;
+      justify-content: center;
+      height: var(--s-4);
+    }
+
+    #spacing .sp-vp__meter i {
+      display: block;
+      height: 100%;
+      border-radius: 99px;
+      background: var(--ink);
+    }
+
+    #spacing .sp-vp--lg .sp-vp__meter i { width: var(--cols-lg); }
+    #spacing .sp-vp--md .sp-vp__meter i { width: var(--cols-md); }
+    #spacing .sp-vp--sm .sp-vp__meter i { width: var(--cols-sm); }
+    #spacing .sp-vp--lg .sp-vp__meter--max i,
+    #spacing .sp-vp--md .sp-vp__meter--max i,
+    #spacing .sp-vp--sm .sp-vp__meter--max i { width: min(100%, var(--card-max)); }
+
+    /* 5 — Relative sizing */
+    #spacing .sp-copy {
+      min-width: 0;
+      padding: var(--s-16);
+      border: 1px solid var(--line);
+      border-radius: var(--s-12);
+      background: #fff;
+      font-size: 18px;
+      line-height: 1.45;
+    }
+
+    #spacing .sp-copy__title {
+      margin: 0 0 0.35em;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      overflow-wrap: anywhere;
+    }
+
+    #spacing .sp-copy--lock .sp-copy__title { font-size: 2.5em; }
+    #spacing .sp-copy--free .sp-copy__title { font-size: 45px; }
+
+    #spacing .sp-copy p {
+      margin: 0;
+      max-width: 38em;
+      color: #3a3a44;
+    }
+
+    #spacing:has(#sp-type-sm:checked) .sp-copy { font-size: 14px; }
+    #spacing:has(#sp-type-sm:checked) .sp-copy--free .sp-copy__title { font-size: 22px; }
+
+    #spacing .sp-btns {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--s-12);
+      min-width: 0;
+      padding: var(--s-16);
+      border: 1px solid var(--line);
+      border-radius: var(--s-12);
+      background: var(--page);
+    }
+
+    #spacing .sp-bbtn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--s-8);
+      background: var(--ink);
+      color: #fff;
+      font-weight: 650;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    #spacing .sp-bbtn--em.sp-bbtn--sm { font-size: 12px; padding: 0.7em 1em; }
+    #spacing .sp-bbtn--em.sp-bbtn--md { font-size: 16px; padding: 0.7em 1em; }
+    #spacing .sp-bbtn--em.sp-bbtn--lg { font-size: 20px; padding: 0.7em 1em; }
+
+    #spacing .sp-bbtn--tune.sp-bbtn--sm {
+      font-size: 12px;
+      padding: var(--s-4) var(--s-8);
+    }
+
+    #spacing .sp-bbtn--tune.sp-bbtn--md {
+      font-size: 16px;
+      padding: var(--s-8) var(--s-16);
+    }
+
+    #spacing .sp-bbtn--tune.sp-bbtn--lg {
+      font-size: 20px;
+      padding: var(--s-16) var(--s-32);
+    }
+
+    /* 6 — Ambiguous spacing */
+    #spacing .sp-prose,
+    #spacing .sp-bullets,
+    #spacing .sp-formpair {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      padding: var(--s-12);
+      border: 1px solid var(--line);
+      border-radius: var(--s-12);
+      background: #fff;
+    }
+
+    #spacing .sp-prose p,
+    #spacing .sp-prose__h,
+    #spacing .sp-bullets li,
+    #spacing .sp-formpair p {
+      margin: 0;
+    }
+
+    #spacing .sp-prose p {
+      font-size: 13px;
+      line-height: 1.4;
+      color: var(--muted);
+    }
+
+    #spacing .sp-prose__h {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+
+    #spacing .sp-bullets {
+      gap: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    #spacing .sp-bullets--flat { gap: var(--s-2); }
+
+    #spacing .sp-bullets--flat li { line-height: 1.85; }
+
+    #spacing .sp-bullets--grouped { gap: var(--s-16); }
+
+    #spacing .sp-bullets--grouped li { line-height: 1.25; }
+
+    #spacing .sp-bullets li {
+      display: flex;
+      gap: var(--s-8);
+      font-size: 13px;
+      color: var(--ink);
+    }
+
+    #spacing .sp-bullets li::before {
+      content: "";
+      width: var(--s-6);
+      height: var(--s-6);
+      margin-top: 0.45em;
+      flex: none;
+      border-radius: 99px;
+      background: var(--ink);
+    }
+
+    #spacing .sp-formpair .sp-label { font-size: 12px; }
+
+    #spacing .sp-hrow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      min-width: 0;
+      max-width: 100%;
+      padding: var(--s-12);
+      border: 1px solid var(--line);
+      border-radius: var(--s-12);
+      background: #fff;
+    }
+
+    #spacing .sp-hcluster {
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      min-width: 0;
+      font-size: 13px;
+      font-weight: 650;
+      line-height: 1.2;
+    }
+
+    #spacing .sp-hrow--even .sp-hcluster { gap: var(--s-12); }
+    #spacing .sp-hrow--set .sp-hcluster { gap: var(--s-4); }
+
+    #spacing:has(#sp-gaps:checked) .sp-hrow { padding-top: var(--s-20); }
+
+    #spacing:has(#sp-gaps:checked) .sp-hrow .sp-gap--x::after {
+      top: 0;
+      translate: -50% -120%;
+    }
+
+    #spacing .sp-hico {
+      display: block;
+      width: var(--s-16);
+      height: var(--s-16);
+      flex: none;
+      color: var(--ink);
+    }
+
+    #spacing .sp-lesson-note { max-width: 42rem; }
+
+    @container sp (min-width: 640px) {
+      #spacing .sp-amb { grid-template-columns: 1fr 1fr; }
+
+      #spacing:has(#sp-fill-cols:checked) .sp-fill {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) min(100%, 280px);
+        align-items: start;
+      }
+
+      #spacing:has(#sp-fill-cols:checked) .sp-fill__form { width: 100%; }
+
+      #spacing:has(#sp-side-narrow:checked) .sp-sides {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
     @container sp (max-width: 380px) {
       #spacing .sp-alias li { grid-template-columns: 1fr; }
       #spacing .sp-alias__k { padding-top: 0; }
@@ -6870,7 +7844,8 @@
     <section class="sec" id="spacing">
       <div class="sec-head">
         <h2>Spacing</h2>
-        <p>One 4px scale. More space around a group than inside it.</p>
+        <p>One 4px scale. Start with room, then trim. More space around a group than inside it.</p>
+        <p class="sp-credit">Ideas adapted from Refactoring UI (Adam Wathan &amp; Steve Schoger).</p>
       </div>
 
       <div class="sec-grid two">
@@ -7188,6 +8163,563 @@
                 </div>
               </div>
             </div>
+          </div>
+        </article>
+
+        <article class="canvas sp-span">
+          <div class="canvas-chrome">
+            <span class="canvas-name">White space</span>
+            <span class="canvas-tag">start generous</span>
+          </div>
+          <div class="canvas-body sp-fit">
+            <div class="sp-ba">
+              <figure class="sp-fig">
+                <figcaption>
+                  <span class="sp-cap">Minimum</span>
+                  <span>pad 8 · gap 4</span>
+                </figcaption>
+                <div class="sp-auth sp-auth--min">
+                  <div class="sp-auth__copy">
+                    <div class="sp-auth__top">
+                      <strong>Pier alert</strong>
+                      <span class="sp-auth__step">1 of 3</span>
+                    </div>
+                    <p class="sp-auth__lead">A text when the ramp drops.</p>
+                    <p class="sp-auth__sub">Your phone</p>
+                    <p class="sp-auth__hint">The number for tonight's crossing.</p>
+                  </div>
+                  <span class="sp-gap" style="--gap: var(--s-4)" data-label="4" aria-hidden="true"></span>
+                  <div class="sp-auth__fields">
+                    <div class="sp-auth__field">
+                      <span>Code</span>
+                      <div class="sp-fake">+852</div>
+                    </div>
+                    <div class="sp-auth__field">
+                      <span>Number</span>
+                      <div class="sp-fake">5555 0142</div>
+                    </div>
+                    <span class="sp-auth__go">Next</span>
+                  </div>
+                </div>
+              </figure>
+              <figure class="sp-fig">
+                <figcaption>
+                  <span class="sp-cap">Start generous</span>
+                  <span>pad 24 · gap 16</span>
+                </figcaption>
+                <div class="sp-auth sp-auth--air">
+                  <div class="sp-auth__copy">
+                    <div class="sp-auth__top">
+                      <strong>Pier alert</strong>
+                      <span class="sp-auth__step">1 of 3</span>
+                    </div>
+                    <p class="sp-auth__lead">A text when the ramp drops.</p>
+                    <p class="sp-auth__sub">Your phone</p>
+                    <p class="sp-auth__hint">The number for tonight's crossing.</p>
+                  </div>
+                  <span class="sp-gap" style="--gap: var(--s-16)" data-label="16" aria-hidden="true"></span>
+                  <div class="sp-auth__fields">
+                    <div class="sp-auth__field">
+                      <span>Code</span>
+                      <div class="sp-fake">+852</div>
+                    </div>
+                    <div class="sp-auth__field">
+                      <span>Number</span>
+                      <div class="sp-fake">5555 0142</div>
+                    </div>
+                    <span class="sp-auth__go">Next</span>
+                  </div>
+                </div>
+              </figure>
+            </div>
+            <p class="sp-note sp-lesson-note">Pad 8 is the least space that stops the card looking broken. The other card started roomier, then came back to 24.</p>
+            <figure class="sp-fig">
+              <figcaption>
+                <span class="sp-cap">Dense on purpose</span>
+                <span>one screen</span>
+              </figcaption>
+              <div class="sp-board">
+                <div class="sp-board__bar">
+                  <strong>Tonight</strong>
+                  <span>6 sailings</span>
+                </div>
+                <table>
+                  <caption class="visually-hidden">Tonight's crossings, packed for one screen</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Time</th>
+                      <th scope="col">Sailing</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>19:10</td>
+                      <td>Star · Central</td>
+                      <td>Due</td>
+                    </tr>
+                    <tr>
+                      <td>19:20</td>
+                      <td>Solar · TST</td>
+                      <td class="is-board">Board</td>
+                    </tr>
+                    <tr>
+                      <td>19:30</td>
+                      <td>Morning · Central</td>
+                      <td class="is-late">Late</td>
+                    </tr>
+                    <tr>
+                      <td>19:40</td>
+                      <td>Night · TST</td>
+                      <td>Due</td>
+                    </tr>
+                    <tr>
+                      <td>19:50</td>
+                      <td>Northern · Central</td>
+                      <td>Due</td>
+                    </tr>
+                    <tr>
+                      <td>20:00</td>
+                      <td>Twinkling · TST</td>
+                      <td>Due</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </figure>
+            <p class="sp-note sp-lesson-note">A crossing board can be tight so the sailings fit one screen. That density is a choice.</p>
+          </div>
+        </article>
+
+        <article class="canvas sp-span">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Sizing system</span>
+            <span class="canvas-tag">base 16 · ~25%</span>
+          </div>
+          <div class="canvas-body sp-fit">
+            <div class="sp-ba">
+              <div>
+                <p class="sp-kicker" id="sp-k-linear">Linear +4</p>
+                <ul class="sp-jump-list" aria-labelledby="sp-k-linear">
+                  <li>
+                    <span>12 → 16</span>
+                    <span class="sp-jbar" style="--pct: 33"><i></i></span>
+                    <span>+33%</span>
+                  </li>
+                  <li class="is-quiet">
+                    <span>48 → 52</span>
+                    <span class="sp-jbar" style="--pct: 8"><i></i></span>
+                    <span>+8%</span>
+                  </li>
+                  <li class="is-quiet">
+                    <span>96 → 100</span>
+                    <span class="sp-jbar" style="--pct: 4"><i></i></span>
+                    <span>+4%</span>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <p class="sp-kicker" id="sp-k-jumps">This ruler, from 16</p>
+                <ul class="sp-jump-list" aria-labelledby="sp-k-jumps">
+                  <li>
+                    <span>16 → 24</span>
+                    <span class="sp-jbar" style="--pct: 50"><i></i></span>
+                    <span>+50%</span>
+                  </li>
+                  <li>
+                    <span>24 → 32</span>
+                    <span class="sp-jbar" style="--pct: 33"><i></i></span>
+                    <span>+33%</span>
+                  </li>
+                  <li>
+                    <span>32 → 48</span>
+                    <span class="sp-jbar" style="--pct: 50"><i></i></span>
+                    <span>+50%</span>
+                  </li>
+                  <li>
+                    <span>48 → 64</span>
+                    <span class="sp-jbar" style="--pct: 33"><i></i></span>
+                    <span>+33%</span>
+                  </li>
+                  <li>
+                    <span>64 → 96</span>
+                    <span class="sp-jbar" style="--pct: 50"><i></i></span>
+                    <span>+50%</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <p class="sp-note sp-lesson-note">A 4px step is a real change at 12px and a faint one at 96px. From the 16px base, every working step on the ruler jumps by at least a third.</p>
+            <figure class="sp-fig sp-pick">
+              <figcaption>
+                <span class="sp-cap">From the ruler</span>
+                <span>24 · 12 · 16 · 8</span>
+              </figcaption>
+              <div class="sp-pick__card">
+                <p class="sp-pick__k">Premier cabin</p>
+                <span class="sp-gap" style="--gap: var(--s-12)" data-label="12" aria-hidden="true"></span>
+                <p class="sp-pick__price">AVG $450 <small>HKD / NIGHT</small></p>
+                <span class="sp-gap" style="--gap: var(--s-16)" data-label="16" aria-hidden="true"></span>
+                <span class="sp-pick__go">View sailings</span>
+                <span class="sp-gap" style="--gap: var(--s-24)" data-label="24" aria-hidden="true"></span>
+                <p class="sp-pick__k">On board</p>
+                <span class="sp-gap" style="--gap: var(--s-8)" data-label="8" aria-hidden="true"></span>
+                <p class="sp-pick__item">Heated lounge</p>
+                <span class="sp-gap" style="--gap: var(--s-8)" data-label="8" aria-hidden="true"></span>
+                <p class="sp-pick__item">Wi-Fi on the crossing</p>
+              </div>
+            </figure>
+            <p class="sp-note sp-lesson-note">Need more air under a line? Take the next step on the ruler. 12, then 16, then 24.</p>
+          </div>
+        </article>
+
+        <article class="canvas sp-span">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Whole screen</span>
+            <span class="canvas-tag">content width</span>
+          </div>
+          <div class="canvas-body sp-fit">
+            <div class="sp-switch" role="radiogroup" aria-label="Form width">
+              <input type="radio" name="sp-fill" id="sp-fill-stretch" class="visually-hidden" checked>
+              <label class="sp-opt" for="sp-fill-stretch">Stretch</label>
+              <input type="radio" name="sp-fill" id="sp-fill-fit" class="visually-hidden">
+              <label class="sp-opt" for="sp-fill-fit">Content width</label>
+              <input type="radio" name="sp-fill" id="sp-fill-cols" class="visually-hidden">
+              <label class="sp-opt" for="sp-fill-cols">Columns</label>
+              <input type="radio" name="sp-fill" id="sp-fill-phone" class="visually-hidden">
+              <label class="sp-opt" for="sp-fill-phone">400px canvas</label>
+            </div>
+            <div class="sp-browser">
+              <div class="sp-browser__chrome" aria-hidden="true">
+                <span></span><span></span><span></span>
+                <i>Night return</i>
+              </div>
+              <div class="sp-browser__nav">Tickets</div>
+              <div class="sp-fill">
+                <div class="sp-fill__note">
+                  <strong>Window seat</strong>
+                  <p>The ramp is on the port side. The note takes the spare width. The form stays the width that is easy to check.</p>
+                </div>
+                <div class="sp-fill__form">
+                  <p class="sp-fill__kicker">1 sailing</p>
+                  <p class="sp-fill__name">Celestial Star</p>
+                  <p class="sp-fill__meta">Upper deck · Window</p>
+                  <p class="sp-fill__price">$48.00</p>
+                  <div class="sp-fill__code">
+                    <label class="visually-hidden" for="sp-discount">Discount code</label>
+                    <input id="sp-discount" type="text" name="code" placeholder="Discount code" autocomplete="off" enterkeyhint="done">
+                    <button type="button">Apply</button>
+                  </div>
+                  <dl class="sp-fill__rows">
+                    <div><dt>Subtotal</dt><dd>$48.00</dd></div>
+                    <div><dt>Tax</dt><dd>$0.00</dd></div>
+                    <div><dt>Total</dt><dd>HKD $48.00</dd></div>
+                  </dl>
+                </div>
+              </div>
+            </div>
+            <p class="sp-note sp-lesson-note">The nav can run the full frame. The form stays near 280px. On a wide page, the note sits beside it. Start near 400px, then bring the frame up.</p>
+          </div>
+        </article>
+
+        <article class="canvas sp-span">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Grids</span>
+            <span class="canvas-tag">fixed · max-width</span>
+          </div>
+          <div class="canvas-body sp-fit">
+            <div class="sp-switch" role="radiogroup" aria-label="Sidebar frame">
+              <input type="radio" name="sp-side" id="sp-side-narrow" class="visually-hidden" checked>
+              <label class="sp-opt" for="sp-side-narrow">Narrow frame</label>
+              <input type="radio" name="sp-side" id="sp-side-wide" class="visually-hidden">
+              <label class="sp-opt" for="sp-side-wide">Wide frame</label>
+            </div>
+            <div class="sp-sides">
+              <figure class="sp-fig">
+                <figcaption>
+                  <span class="sp-cap">25% sidebar</span>
+                  <span class="sp-only-narrow">about 60px</span>
+                  <span class="sp-only-wide">grows with the frame</span>
+                </figcaption>
+                <div class="sp-side sp-side--fluid">
+                  <div class="sp-side__nav">
+                    <span>Tonight</span>
+                    <span class="is-on">Sailings</span>
+                    <span>Pier list</span>
+                    <span>Account</span>
+                  </div>
+                  <div class="sp-side__main">
+                    <strong>Celestial Star</strong>
+                    <p>19:10 · Central to TST</p>
+                  </div>
+                </div>
+              </figure>
+              <figure class="sp-fig">
+                <figcaption>
+                  <span class="sp-cap">Fixed sidebar</span>
+                  <span>120px</span>
+                </figcaption>
+                <div class="sp-side sp-side--fixed">
+                  <div class="sp-side__nav">
+                    <span>Tonight</span>
+                    <span class="is-on">Sailings</span>
+                    <span>Pier list</span>
+                    <span>Account</span>
+                  </div>
+                  <div class="sp-side__main">
+                    <strong>Celestial Star</strong>
+                    <p>19:10 · Central to TST</p>
+                  </div>
+                </div>
+              </figure>
+            </div>
+            <p class="sp-note sp-lesson-note">Give the sidebar a fixed width sized for its labels. The main column takes the rest, and can keep its own grid inside.</p>
+            <div class="sp-ba">
+              <figure class="sp-fig">
+                <figcaption>
+                  <span class="sp-cap">Column count</span>
+                  <span>span changes with the frame</span>
+                </figcaption>
+                <div class="sp-vp-row">
+                  <div class="sp-vp sp-vp--lg">
+                    <span class="sp-vp__label">Wide · 6/12</span>
+                    <div class="sp-vp__screen"><div class="sp-vp__card sp-vp__card--cols">Pass</div></div>
+                    <div class="sp-vp__meter" aria-hidden="true"><i></i></div>
+                  </div>
+                  <div class="sp-vp sp-vp--md">
+                    <span class="sp-vp__label">Mid · 10/12</span>
+                    <div class="sp-vp__screen"><div class="sp-vp__card sp-vp__card--cols">Pass</div></div>
+                    <div class="sp-vp__meter" aria-hidden="true"><i></i></div>
+                  </div>
+                  <div class="sp-vp sp-vp--sm">
+                    <span class="sp-vp__label">Small</span>
+                    <div class="sp-vp__screen"><div class="sp-vp__card sp-vp__card--cols">Pass</div></div>
+                    <div class="sp-vp__meter" aria-hidden="true"><i></i></div>
+                  </div>
+                </div>
+              </figure>
+              <figure class="sp-fig">
+                <figcaption>
+                  <span class="sp-cap">Max width</span>
+                  <span>shrinks only when it has to</span>
+                </figcaption>
+                <div class="sp-vp-row">
+                  <div class="sp-vp sp-vp--lg">
+                    <span class="sp-vp__label">Wide</span>
+                    <div class="sp-vp__screen"><div class="sp-vp__card sp-vp__card--max">Pass</div></div>
+                    <div class="sp-vp__meter sp-vp__meter--max" aria-hidden="true"><i></i></div>
+                  </div>
+                  <div class="sp-vp sp-vp--md">
+                    <span class="sp-vp__label">Mid</span>
+                    <div class="sp-vp__screen"><div class="sp-vp__card sp-vp__card--max">Pass</div></div>
+                    <div class="sp-vp__meter sp-vp__meter--max" aria-hidden="true"><i></i></div>
+                  </div>
+                  <div class="sp-vp sp-vp--sm">
+                    <span class="sp-vp__label">Small</span>
+                    <div class="sp-vp__screen"><div class="sp-vp__card sp-vp__card--max">Pass</div></div>
+                    <div class="sp-vp__meter sp-vp__meter--max" aria-hidden="true"><i></i></div>
+                  </div>
+                </div>
+              </figure>
+            </div>
+            <p class="sp-note sp-lesson-note">The mid frame is narrower, and its column-count card is wider. Max-width holds the card until the frame is smaller than the card.</p>
+          </div>
+        </article>
+
+        <article class="canvas sp-span">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Relative size</span>
+            <span class="canvas-tag">type · padding</span>
+          </div>
+          <div class="canvas-body sp-fit">
+            <div class="sp-check">
+              <input type="checkbox" id="sp-type-sm" class="visually-hidden">
+              <label class="sp-opt" for="sp-type-sm"><span class="is-off">Small screen</span><span class="is-on">Desktop size</span></label>
+            </div>
+            <div class="sp-ba">
+              <figure class="sp-fig">
+                <figcaption>
+                  <span class="sp-cap">2.5em headline</span>
+                  <span class="sp-when-lg">body 18 · headline 45</span>
+                  <span class="sp-when-sm">body 14 · headline 35</span>
+                </figcaption>
+                <div class="sp-copy sp-copy--lock">
+                  <p class="sp-copy__title">Night crossing</p>
+                  <p>The ramp drops on the port side. Cabin lights stay low for the harbour.</p>
+                </div>
+              </figure>
+              <figure class="sp-fig">
+                <figcaption>
+                  <span class="sp-cap">Own sizes</span>
+                  <span class="sp-when-lg">body 18 · headline 45</span>
+                  <span class="sp-when-sm">body 14 · headline 22</span>
+                </figcaption>
+                <div class="sp-copy sp-copy--free">
+                  <p class="sp-copy__title">Night crossing</p>
+                  <p>The ramp drops on the port side. Cabin lights stay low for the harbour.</p>
+                </div>
+              </figure>
+            </div>
+            <p class="sp-note sp-lesson-note">On a small screen the body goes to 14px. A 2.5em headline stays 35px. A headline with its own size can sit at 22px.</p>
+            <div class="sp-ba">
+              <figure class="sp-fig">
+                <figcaption>
+                  <span class="sp-cap">Padding in em</span>
+                  <span>same ratio</span>
+                </figcaption>
+                <div class="sp-btns">
+                  <span class="sp-bbtn sp-bbtn--em sp-bbtn--sm" role="img" aria-label="Small button, padding scales with the font">Save</span>
+                  <span class="sp-bbtn sp-bbtn--em sp-bbtn--md" role="img" aria-label="Medium button, padding scales with the font">Save</span>
+                  <span class="sp-bbtn sp-bbtn--em sp-bbtn--lg" role="img" aria-label="Large button, padding scales with the font">Save</span>
+                </div>
+              </figure>
+              <figure class="sp-fig">
+                <figcaption>
+                  <span class="sp-cap">Padding tuned</span>
+                  <span>4 · 8 · 16</span>
+                </figcaption>
+                <div class="sp-btns">
+                  <span class="sp-bbtn sp-bbtn--tune sp-bbtn--sm" role="img" aria-label="Small button, padding 4 by 8">Save</span>
+                  <span class="sp-bbtn sp-bbtn--tune sp-bbtn--md" role="img" aria-label="Medium button, padding 8 by 16">Save</span>
+                  <span class="sp-bbtn sp-bbtn--tune sp-bbtn--lg" role="img" aria-label="Large button, padding 16 by 32">Save</span>
+                </div>
+              </figure>
+            </div>
+            <p class="sp-note sp-lesson-note">Em padding zooms one button. Tuned padding is tighter on the small one and more generous on the large one.</p>
+          </div>
+        </article>
+
+        <article class="canvas sp-span">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Groups</span>
+            <span class="canvas-tag">around, then within</span>
+          </div>
+          <div class="canvas-body sp-fit">
+            <div class="sp-amb">
+              <figure class="sp-fig">
+                <figcaption>
+                  <span class="sp-cap">Form</span>
+                  <span>equal gaps</span>
+                </figcaption>
+                <div class="sp-formpair">
+                  <p class="sp-label">Name</p>
+                  <span class="sp-gap" style="--gap: var(--s-16)" data-label="16" aria-hidden="true"></span>
+                  <div class="sp-input">Morning guest</div>
+                  <span class="sp-gap" style="--gap: var(--s-16)" data-label="16" aria-hidden="true"></span>
+                  <p class="sp-label">Pier</p>
+                  <span class="sp-gap" style="--gap: var(--s-16)" data-label="16" aria-hidden="true"></span>
+                  <div class="sp-input">Central</div>
+                </div>
+              </figure>
+              <figure class="sp-fig">
+                <figcaption>
+                  <span class="sp-cap">Form</span>
+                  <span>8 inside · 24 around</span>
+                </figcaption>
+                <div class="sp-formpair">
+                  <p class="sp-label">Name</p>
+                  <span class="sp-gap" style="--gap: var(--s-8)" data-label="8" aria-hidden="true"></span>
+                  <div class="sp-input">Morning guest</div>
+                  <span class="sp-gap" style="--gap: var(--s-24)" data-label="24" aria-hidden="true"></span>
+                  <p class="sp-label">Pier</p>
+                  <span class="sp-gap" style="--gap: var(--s-8)" data-label="8" aria-hidden="true"></span>
+                  <div class="sp-input">Central</div>
+                </div>
+              </figure>
+              <figure class="sp-fig">
+                <figcaption>
+                  <span class="sp-cap">Heading</span>
+                  <span>16 above and below</span>
+                </figcaption>
+                <div class="sp-prose">
+                  <p>The last sailing back is 23:00.</p>
+                  <span class="sp-gap" style="--gap: var(--s-16)" data-label="16" aria-hidden="true"></span>
+                  <p class="sp-prose__h">Monday sailing</p>
+                  <span class="sp-gap" style="--gap: var(--s-16)" data-label="16" aria-hidden="true"></span>
+                  <p>She checks the ramp note before she leaves the pier.</p>
+                </div>
+              </figure>
+              <figure class="sp-fig">
+                <figcaption>
+                  <span class="sp-cap">Heading</span>
+                  <span>32 above · 8 below</span>
+                </figcaption>
+                <div class="sp-prose">
+                  <p>The last sailing back is 23:00.</p>
+                  <span class="sp-gap" style="--gap: var(--s-32)" data-label="32" aria-hidden="true"></span>
+                  <p class="sp-prose__h">Monday sailing</p>
+                  <span class="sp-gap" style="--gap: var(--s-8)" data-label="8" aria-hidden="true"></span>
+                  <p>She checks the ramp note before she leaves the pier.</p>
+                </div>
+              </figure>
+              <figure class="sp-fig">
+                <figcaption>
+                  <span class="sp-cap">List</span>
+                  <span>gap matches the line</span>
+                </figcaption>
+                <ul class="sp-bullets sp-bullets--flat">
+                  <li>Window seat on the port side of the cabin</li>
+                  <li>Heated lounge on the upper deck, open for the night sailing</li>
+                  <li>Wi-Fi for the crossing</li>
+                </ul>
+              </figure>
+              <figure class="sp-fig">
+                <figcaption>
+                  <span class="sp-cap">List</span>
+                  <span>16 between items</span>
+                </figcaption>
+                <ul class="sp-bullets sp-bullets--grouped">
+                  <li>Window seat on the port side of the cabin</li>
+                  <li>Heated lounge on the upper deck, open for the night sailing</li>
+                  <li>Wi-Fi for the crossing</li>
+                </ul>
+              </figure>
+              <figure class="sp-fig">
+                <figcaption>
+                  <span class="sp-cap">Row</span>
+                  <span>12 everywhere</span>
+                </figcaption>
+                <div class="sp-hrow sp-hrow--even">
+                  <span class="sp-hcluster">
+                    <svg class="sp-hico" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 1.25a4.25 4.25 0 0 0-4.25 4.25c0 3.15 4.25 9.25 4.25 9.25s4.25-6.1 4.25-9.25A4.25 4.25 0 0 0 8 1.25Zm0 5.75a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z"/></svg>
+                    <span>Central</span>
+                  </span>
+                  <span class="sp-gap sp-gap--x" style="--gap: var(--s-12)" data-label="12" aria-hidden="true"></span>
+                  <span class="sp-hcluster">
+                    <svg class="sp-hico" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="5.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.5V8l2.25 1.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    <span>19:10</span>
+                  </span>
+                  <span class="sp-gap sp-gap--x" style="--gap: var(--s-12)" data-label="12" aria-hidden="true"></span>
+                  <span class="sp-hcluster">
+                    <svg class="sp-hico" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="2" y="4" width="12" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2 7h12" stroke="currentColor" stroke-width="1.5"/></svg>
+                    <span>$48</span>
+                  </span>
+                </div>
+              </figure>
+              <figure class="sp-fig">
+                <figcaption>
+                  <span class="sp-cap">Row</span>
+                  <span>4 inside · 24 around</span>
+                </figcaption>
+                <div class="sp-hrow sp-hrow--set">
+                  <span class="sp-hcluster">
+                    <svg class="sp-hico" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 1.25a4.25 4.25 0 0 0-4.25 4.25c0 3.15 4.25 9.25 4.25 9.25s4.25-6.1 4.25-9.25A4.25 4.25 0 0 0 8 1.25Zm0 5.75a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z"/></svg>
+                    <span>Central</span>
+                  </span>
+                  <span class="sp-gap sp-gap--x" style="--gap: var(--s-24)" data-label="24" aria-hidden="true"></span>
+                  <span class="sp-hcluster">
+                    <svg class="sp-hico" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="5.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.5V8l2.25 1.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    <span>19:10</span>
+                  </span>
+                  <span class="sp-gap sp-gap--x" style="--gap: var(--s-24)" data-label="24" aria-hidden="true"></span>
+                  <span class="sp-hcluster">
+                    <svg class="sp-hico" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="2" y="4" width="12" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2 7h12" stroke="currentColor" stroke-width="1.5"/></svg>
+                    <span>$48</span>
+                  </span>
+                </div>
+              </figure>
+            </div>
+            <p class="sp-note sp-lesson-note">When space is what connects a group, leave more of it around the group than inside. Same for a heading, a list, and a horizontal cluster.</p>
           </div>
         </article>
 
