@@ -220,6 +220,8 @@
 .sec-fab.is-open .sec-fab__item:nth-child(6) { transition-delay: 0.22s; }
 .sec-fab.is-open .sec-fab__item:nth-child(7) { transition-delay: 0.26s; }
 .sec-fab.is-open .sec-fab__item:nth-child(8) { transition-delay: 0.3s; }
+.sec-fab.is-open .sec-fab__item:nth-child(9) { transition-delay: 0.34s; }
+.sec-fab.is-open .sec-fab__item:nth-child(10) { transition-delay: 0.38s; }
 
 .sec-fab__item:hover {
   background: #fff;

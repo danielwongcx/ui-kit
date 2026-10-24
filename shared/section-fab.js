@@ -15,6 +15,7 @@
     { id: 'glow-border', label: 'Glow border' },
     { id: 'folder', label: 'Folder' },
     { id: 'spacing', label: 'Spacing' },
+    { id: 'hierarchy', label: 'Hierarchy' },
     { id: 'color-combos', label: 'Color combos' }
   ];
 

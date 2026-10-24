@@ -6,7 +6,7 @@ Rules for AI agents editing this repository.
 
 Multi-page **static** UI kit published on GitHub Pages from the `main` branch root:
 
-- Gallery: https://danielwongcx.github.io/ui-kit/ (`index.html`, mirrored by `ui-combo.html`) — Digits · Buttons · Cards · Palettes · Select · Glow border · Folder · Spacing · Color combos; keep index unchanged when adding other pages. Color combos (`#color-combos`) is on `index.html` only.
+- Gallery: https://danielwongcx.github.io/ui-kit/ (`index.html`, mirrored by `ui-combo.html`) — Digits · Buttons · Cards · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos; keep index unchanged when adding other pages. Color combos (`#color-combos`) is on `index.html` only. Hierarchy (`#hierarchy`) owns visual rank, including the harbour ladder. Spacing links there and stays on the scale.
 - Digest: https://danielwongcx.github.io/ui-kit/digest.html
 - Taste: https://danielwongcx.github.io/ui-kit/taste.html (`taste.html`) — motion / app-data / buttons+ / states / forms / cards+ patterns from taste-skill study
 - Learn Piano 101: https://danielwongcx.github.io/ui-kit/learn-piano-101.html (`learn-piano-101.html`) — full-viewport beginner piano film; click starts the visual GSAP timeline. GSAP and the motion runtime live in `vendor/` (no CDN, no soundtrack).
