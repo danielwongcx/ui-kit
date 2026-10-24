@@ -12,7 +12,8 @@
     { id: 'learn-piano-101', label: 'Piano', href: 'learn-piano-101.html' },
     { id: 'ascii-sharks', label: 'ASCII', href: 'ascii-sharks.html' },
     { id: 'ferry', label: 'Ferry', href: 'ferry.html' },
-    { id: 'mtr', label: 'MTR', href: 'mtr.html' }
+    { id: 'mtr', label: 'MTR', href: 'mtr.html' },
+    { id: 'one-prompt', label: 'One prompt', href: 'one-prompt.html' }
   ];
 
   function activePageId() {

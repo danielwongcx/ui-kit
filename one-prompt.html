@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>One prompt · ui-kit</title>
+  <meta name="description" content="What viral one-prompt Opus motion videos leave out: a brief, a rig, and a long review. Plain-language notes from seeco’s X article." />
+  <script>
+    /* Match the gallery page shell before paint. Palettes change --page only. */
+    (function () {
+      try {
+        document.documentElement.classList.add('js');
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.documentElement.setAttribute('data-motion', 'reduce');
+        }
+        var id = localStorage.getItem('ui-kit-palette') || 'forest';
+        var pages = {
+          forest: '#f5f1ee', navy: '#eef2f6', terracotta: '#faf3ef',
+          plum: '#f6f1f8', ocean: '#eef6f6', amber: '#faf6ee',
+          slate: '#f0f1f3', rosewood: '#f8f1f3', olive: '#f4f3ea',
+          ink: '#ececf0'
+        };
+        document.documentElement.setAttribute('data-theme', id);
+        document.documentElement.style.setProperty('--page', pages[id] || pages.forest);
+      } catch (e) {}
+    })();
+  </script>
+  <style>
+    :root {
+      --page: #ececf0;
+      --canvas: #ffffff;
+      --ink: #1c1c22;
+      --muted: #6b6b76;
+      --line: #e4e4ea;
+      --accent: #5b5bf0;
+      --brand: #1e6851;
+      --spring: linear(
+        0, 0.006, 0.025, 0.07, 0.14, 0.25, 0.4, 0.55, 0.7, 0.82,
+        0.92, 0.99, 1.04, 1.08, 1.09, 1.07, 1.04, 1.02, 1.005, 1
+      );
+      --spring-dur: 0.75s;
+      --nav-h: 52px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--site-header-h, 56px) + var(--nav-h) + 16px);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      background: var(--page);
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .lib-nav {
+      position: sticky;
+      top: var(--site-header-h, 56px);
+      z-index: 40;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0 1.25rem;
+      background: color-mix(in srgb, var(--page) 88%, #fff);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .lib-brand {
+      font-size: 11px;
+      font-weight: 650;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .lib-links {
+      display: flex;
+      gap: 0.15rem;
+      margin-left: auto;
+      overflow-x: auto;
+    }
+
+    .lib-links a {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.45rem 0.7rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .lib-links a:hover { color: var(--ink); background: var(--canvas); }
+
+    .lib-links a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .lib {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+    }
+
+    .hero {
+      display: grid;
+      gap: 1.35rem;
+      align-items: center;
+      margin: 0 0 2.75rem;
+    }
+
+    @media (min-width: 840px) {
+      .hero { grid-template-columns: 1fr 1.05fr; gap: 2rem; }
+    }
+
+    h1 {
+      margin: 0 0 0.55rem;
+      font-size: clamp(1.9rem, 4vw, 2.5rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+    }
+
+    .lede {
+      margin: 0;
+      max-width: 34rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .by {
+      margin: 0.85rem 0 0;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    a {
+      color: var(--accent);
+      text-underline-offset: 0.16em;
+    }
+
+    a:hover { color: var(--ink); }
+
+    a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    .rise {
+      transition: transform var(--spring-dur) var(--spring), opacity 0.45s ease;
+    }
+
+    .js .hero:not(.is-in) .rise {
+      opacity: 0;
+      transform: translateY(14px) scale(0.97);
+    }
+
+    .hero.is-in .rise:nth-child(2) { transition-delay: 0.08s; }
+
+    /* —— seek(t) stage —— */
+    .canvas {
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+      overflow: hidden;
+    }
+
+    .canvas-chrome {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid var(--line);
+      background: #fafafa;
+    }
+
+    .canvas-name,
+    .canvas-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+
+    .canvas-name { color: #3a3a44; }
+    .canvas-tag { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+    .stage-body { padding: 1rem 1rem 0.9rem; }
+
+    .screen {
+      height: 148px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: color-mix(in srgb, var(--page) 55%, #fff);
+      display: grid;
+      place-items: center;
+    }
+
+    .shape {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 18px;
+      border: 2px solid var(--accent);
+      background: transparent;
+      transition:
+        width var(--spring-dur) var(--spring),
+        height var(--spring-dur) var(--spring),
+        border-radius var(--spring-dur) var(--spring),
+        background 0.35s ease,
+        border-color 0.35s ease;
+    }
+
+    .shape[data-state="is-pill"] {
+      width: 78px;
+      height: 28px;
+      border-radius: 14px;
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .shape[data-state="is-card"] {
+      width: 96px;
+      height: 42px;
+      border-radius: 8px;
+      background: var(--canvas);
+    }
+
+    .shape[data-state="is-arc"] {
+      width: 44px;
+      height: 44px;
+      border-radius: 22px;
+      border-color: transparent;
+      background: transparent;
+    }
+
+    .shape[data-state="is-check"] {
+      width: 36px;
+      height: 36px;
+      border-radius: 18px;
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .shape[data-state="is-chart"] {
+      width: 86px;
+      height: 42px;
+      border-radius: 8px;
+      background: var(--canvas);
+    }
+
+    .g { pointer-events: none; }
+    .g-line,
+    .g-arc,
+    .g-check,
+    .g-bars { display: none; }
+
+    .shape[data-state="is-card"] .g-line { display: block; }
+    .shape[data-state="is-arc"] .g-arc { display: block; }
+    .shape[data-state="is-check"] .g-check { display: block; }
+    .shape[data-state="is-chart"] .g-bars { display: flex; }
+
+    .g-line {
+      width: 58px;
+      height: 4px;
+      border-radius: 99px;
+      background: var(--accent);
+    }
+
+    .g-arc {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(from -90deg, var(--accent) 0 250deg, color-mix(in srgb, var(--accent) 18%, #fff) 0);
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px));
+      mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px));
+    }
+
+    .g-check { width: 20px; height: 20px; }
+
+    .g-bars {
+      align-items: flex-end;
+      gap: 4px;
+      height: 18px;
+    }
+
+    .g-bars i {
+      display: block;
+      width: 5px;
+      border-radius: 1px;
+      background: var(--accent);
+    }
+
+    .g-bars i:nth-child(1) { height: 7px; }
+    .g-bars i:nth-child(2) { height: 12px; }
+    .g-bars i:nth-child(3) { height: 17px; }
+
+    .rail-wrap { margin: 0.9rem 0 0; padding: 0 6px; }
+
+    .rail {
+      position: relative;
+      height: 2px;
+      border-radius: 99px;
+      background: var(--line);
+    }
+
+    .playhead {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 12px;
+      height: 12px;
+      border-radius: 99px;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
+      transform: translate(-50%, -50%);
+    }
+
+    .ticks {
+      display: flex;
+      justify-content: space-between;
+      margin: 0.4rem 0 0;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .stage-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    .clock {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+      color: #3a3a44;
+    }
+
+    .btn {
+      margin-left: auto;
+      min-height: 44px;
+      padding: 0.4rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      color: var(--ink);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    .btn:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .caption {
+      margin: 0.85rem 0 0;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    /* —— sections —— */
+    .sec { margin: 0 0 2.85rem; scroll-margin-top: calc(var(--site-header-h, 56px) + var(--nav-h) + 12px); }
+
+    .sec-head { margin: 0 0 1rem; }
+
+    .sec-head h2 {
+      margin: 0 0 0.3rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .sec-head p,
+    .quiet {
+      margin: 0;
+      max-width: 40rem;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    .chart-body { padding: 1.15rem 1.15rem 1.2rem; display: flex; flex-direction: column; gap: 0.95rem; }
+
+    .bar-row { display: flex; flex-direction: column; gap: 0.35rem; }
+
+    .bar-label {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      font-size: 0.88rem;
+      font-weight: 650;
+    }
+
+    .bar-label span:last-child {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .track {
+      position: relative;
+      height: 14px;
+      border-radius: 99px;
+      background: color-mix(in srgb, var(--ink) 6%, #fff);
+      overflow: hidden;
+    }
+
+    .fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      transform-origin: left center;
+      transition: transform 1.05s var(--spring);
+    }
+
+    .fill.prompt {
+      background: color-mix(in srgb, var(--accent) 58%, #fff);
+      transform: scaleX(0.1);
+    }
+
+    .fill.setup {
+      background: var(--accent);
+      transform: scaleX(0.9);
+      transition-delay: 0.08s;
+    }
+
+    .js .split-visual:not(.is-in) .fill { transform: scaleX(0); }
+
+    .facts {
+      list-style: none;
+      margin: 0.85rem 0 0;
+      padding: 0;
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    @media (min-width: 700px) {
+      .facts { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .fact {
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+      padding: 1rem 1.05rem 0.95rem;
+      transition: transform var(--spring-dur) var(--spring), opacity 0.45s ease;
+    }
+
+    .fact b {
+      display: block;
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .fact span {
+      display: block;
+      margin-top: 0.4rem;
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.35;
+    }
+
+    .js .split-visual:not(.is-in) .fact {
+      opacity: 0;
+      transform: translateY(12px) scale(0.96);
+    }
+
+    .split-visual.is-in .fact:nth-child(2) { transition-delay: 0.08s; }
+    .split-visual.is-in .fact:nth-child(3) { transition-delay: 0.16s; }
+
+    .quiet { margin-top: 0.9rem; }
+
+    /* —— eight pieces —— */
+    .flow {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+
+    @media (min-width: 640px) {
+      .flow { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (min-width: 900px) {
+      .flow { grid-template-columns: 1fr 1fr 1fr 1fr; }
+    }
+
+    .step {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      min-height: 52px;
+      padding: 0.55rem 0.7rem;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--canvas);
+      cursor: pointer;
+      transition:
+        transform var(--spring-dur) var(--spring),
+        border-color 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease;
+    }
+
+    .step input {
+      position: absolute;
+      inset: 0;
+      margin: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .step:hover { border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); }
+
+    .step:focus-within {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .step:has(input:checked) {
+      transform: translateY(-4px);
+      border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+      background: color-mix(in srgb, var(--accent) 6%, #fff);
+      box-shadow: 0 8px 18px -14px color-mix(in srgb, var(--accent) 70%, transparent);
+    }
+
+    .num {
+      width: 1.65rem;
+      height: 1.65rem;
+      border-radius: 99px;
+      display: grid;
+      place-items: center;
+      flex: none;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      transform: scale(0.92);
+      transition: transform var(--spring-dur) var(--spring), background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .step:has(input:checked) .num {
+      transform: scale(1);
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      animation: step-pulse 1.8s ease-out infinite;
+    }
+
+    @keyframes step-pulse {
+      0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 42%, transparent); }
+      70% { box-shadow: 0 0 0 8px transparent; }
+      100% { box-shadow: 0 0 0 0 transparent; }
+    }
+
+    .name {
+      font-size: 0.84rem;
+      font-weight: 650;
+      letter-spacing: -0.015em;
+      line-height: 1.25;
+    }
+
+    .meter {
+      margin: 0.85rem 0 0;
+      height: 4px;
+      border-radius: 99px;
+      background: color-mix(in srgb, var(--ink) 7%, #fff);
+      overflow: hidden;
+    }
+
+    .meter span {
+      display: block;
+      height: 100%;
+      width: 100%;
+      border-radius: inherit;
+      background: var(--accent);
+      transform-origin: left center;
+      transform: scaleX(0.125);
+      transition: transform var(--spring-dur) var(--spring);
+    }
+
+    .flow-block:has(#p2:checked) .meter span { transform: scaleX(0.25); }
+    .flow-block:has(#p3:checked) .meter span { transform: scaleX(0.375); }
+    .flow-block:has(#p4:checked) .meter span { transform: scaleX(0.5); }
+    .flow-block:has(#p5:checked) .meter span { transform: scaleX(0.625); }
+    .flow-block:has(#p6:checked) .meter span { transform: scaleX(0.75); }
+    .flow-block:has(#p7:checked) .meter span { transform: scaleX(0.875); }
+    .flow-block:has(#p8:checked) .meter span { transform: scaleX(1); }
+
+    .notes {
+      margin-top: 0.75rem;
+      min-height: 4.4rem;
+      padding: 0.95rem 1.05rem;
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+      display: flex;
+      align-items: center;
+    }
+
+    .notes p {
+      display: none;
+      margin: 0;
+      font-size: 1.02rem;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+      line-height: 1.35;
+    }
+
+    .flow-block:has(#p1:checked) .n1,
+    .flow-block:has(#p2:checked) .n2,
+    .flow-block:has(#p3:checked) .n3,
+    .flow-block:has(#p4:checked) .n4,
+    .flow-block:has(#p5:checked) .n5,
+    .flow-block:has(#p6:checked) .n6,
+    .flow-block:has(#p7:checked) .n7,
+    .flow-block:has(#p8:checked) .n8 { display: block; }
+
+    .flow-controls { display: flex; justify-content: flex-end; margin-top: 0.7rem; }
+
+    /* —— table —— */
+    .table-wrap {
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+      overflow: hidden;
+    }
+
+    .studio {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .studio th,
+    .studio td {
+      text-align: left;
+      vertical-align: top;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.88rem;
+      line-height: 1.4;
+      font-weight: 450;
+    }
+
+    .studio thead th {
+      font-size: 0.68rem;
+      font-weight: 650;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: #fafafa;
+    }
+
+    .studio tbody th {
+      font-weight: 650;
+      width: 22%;
+    }
+
+    .studio tr:last-child th,
+    .studio tr:last-child td { border-bottom: 0; }
+
+    .close {
+      margin-top: 1rem;
+      padding: 1.2rem 1.25rem;
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--accent);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+    }
+
+    .close p {
+      margin: 0;
+      max-width: 22em;
+      font-size: clamp(1.15rem, 2.4vw, 1.4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.25;
+    }
+
+    .lib-foot {
+      margin-top: 0.5rem;
+      padding-top: 1.4rem;
+      border-top: 1px solid var(--line);
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .lib-foot p { margin: 0; }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 680px) {
+      .studio thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+      }
+
+      .table-wrap {
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+      }
+
+      .studio,
+      .studio tbody,
+      .studio tr,
+      .studio th,
+      .studio td { display: block; width: auto; }
+
+      .studio tr {
+        background: var(--canvas);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        box-shadow: 0 1px 2px #00000008;
+        padding: 0.85rem 1rem 0.35rem;
+      }
+
+      .studio tbody th,
+      .studio td {
+        border-bottom: 0;
+        padding: 0 0 0.7rem;
+      }
+
+      .studio tbody th {
+        font-size: 1rem;
+        padding-bottom: 0.55rem;
+      }
+
+      .studio td::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 0.15rem;
+        font-size: 0.68rem;
+        font-weight: 650;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+
+      .js .hero:not(.is-in) .rise,
+      .js .split-visual:not(.is-in) .fact {
+        opacity: 1;
+        transform: none;
+      }
+
+      .js .split-visual:not(.is-in) .fill.prompt { transform: scaleX(0.1); }
+      .js .split-visual:not(.is-in) .fill.setup { transform: scaleX(0.9); }
+
+      .rise,
+      .fill,
+      .fact,
+      .step,
+      .num,
+      .meter span,
+      .shape {
+        transition: none !important;
+        animation: none !important;
+      }
+
+      .step:has(input:checked) .num { animation: none; }
+    }
+  </style>
+  <link rel="stylesheet" href="shared/site-header.css" />
+</head>
+<body data-page="one-prompt">
+  <nav class="lib-nav" aria-label="Page sections">
+    <div class="lib-brand">One prompt</div>
+    <div class="lib-links">
+      <a href="#split">Split</a>
+      <a href="#pieces">Pieces</a>
+      <a href="#studio">Studio</a>
+    </div>
+  </nav>
+
+  <main class="lib">
+    <header class="hero" id="top">
+      <div class="hero-copy rise">
+        <h1>One prompt hides a studio.</h1>
+        <p class="lede">Viral clips said “one prompt.” The best ones hid a brief, references, a renderer, and hours of review.</p>
+        <p class="by">seeco on <a href="https://x.com/seeconvm/status/2106096193235259564" target="_blank" rel="noopener noreferrer">X</a></p>
+      </div>
+
+      <div class="canvas rise" id="stage">
+        <div class="canvas-chrome">
+          <span class="canvas-name">seek(t)</span>
+          <span class="canvas-tag" id="frame-read">0 / 900</span>
+        </div>
+        <div class="stage-body">
+          <div class="screen">
+            <div class="shape" id="shape" data-state="is-ring">
+              <span class="g g-line"></span>
+              <span class="g g-arc"></span>
+              <svg class="g g-check" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 12.5 10 17.5 19 7.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="g g-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+            </div>
+          </div>
+          <div class="rail-wrap">
+            <div class="rail" id="rail">
+              <span class="playhead" id="playhead"></span>
+            </div>
+            <div class="ticks" aria-hidden="true">
+              <span>0s</span><span>5s</span><span>10s</span><span>15s</span>
+            </div>
+          </div>
+          <div class="stage-row">
+            <span class="clock" id="t-read">t 0.0</span>
+            <button type="button" class="btn" id="seek-play" aria-pressed="true" aria-label="Pause the frame clock">Pause</button>
+          </div>
+          <p class="caption">A browser paints one moment, then the next. Fifteen seconds at 60 frames a second is 900 frames.</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="sec" id="split">
+      <div class="sec-head">
+        <h2>The prompt is about a tenth.</h2>
+        <p>The words start the film. The setup does the rest.</p>
+      </div>
+
+      <div class="split-visual" id="split-visual">
+        <div class="canvas">
+          <div class="chart-body">
+            <div class="bar-row">
+              <div class="bar-label"><span>Prompt</span><span>~10%</span></div>
+              <div class="track"><span class="fill prompt"></span></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label"><span>Setup</span><span>~90%</span></div>
+              <div class="track"><span class="fill setup"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <ul class="facts">
+          <li class="fact"><b>30</b><span>words, in the short ones</span></li>
+          <li class="fact"><b>~9,500</b><span>characters in a strong brief</span></li>
+          <li class="fact"><b>~12</b><span>hours, when a run went overnight</span></li>
+        </ul>
+      </div>
+      <p class="quiet">The one-shots people shared used a high effort setting, xhigh or max, not the everyday medium one.</p>
+    </section>
+
+    <section class="sec" id="pieces">
+      <div class="sec-head">
+        <h2>Eight pieces. One studio.</h2>
+        <p>Build them in this order.</p>
+      </div>
+
+      <div class="flow-block" id="flow-block">
+        <div class="flow" role="radiogroup" aria-label="Eight pieces of the studio">
+          <label class="step">
+            <input type="radio" name="piece" id="p1" checked />
+            <span class="num" aria-hidden="true">1</span>
+            <span class="name">Frame function</span>
+            <span class="visually-hidden">The model writes a program. A browser paints each frame.</span>
+          </label>
+          <label class="step">
+            <input type="radio" name="piece" id="p2" />
+            <span class="num" aria-hidden="true">2</span>
+            <span class="name">The rig</span>
+            <span class="visually-hidden">An agent, ffmpeg, and a browser, so it can see and hear its own work.</span>
+          </label>
+          <label class="step">
+            <input type="radio" name="piece" id="p3" />
+            <span class="num" aria-hidden="true">3</span>
+            <span class="name">The brief</span>
+            <span class="visually-hidden">A production doc, not a vibe.</span>
+          </label>
+          <label class="step">
+            <input type="radio" name="piece" id="p4" />
+            <span class="num" aria-hidden="true">4</span>
+            <span class="name">The reference</span>
+            <span class="visually-hidden">Borrow a look, or you get the default gradient title.</span>
+          </label>
+          <label class="step">
+            <input type="radio" name="piece" id="p5" />
+            <span class="num" aria-hidden="true">5</span>
+            <span class="name">State lists</span>
+            <span class="visually-hidden">One shape that morphs through the story.</span>
+          </label>
+          <label class="step">
+            <input type="radio" name="piece" id="p6" />
+            <span class="num" aria-hidden="true">6</span>
+            <span class="name">Springs &amp; sound</span>
+            <span class="visually-hidden">Motion with weight. Sound on the same clock.</span>
+          </label>
+          <label class="step">
+            <input type="radio" name="piece" id="p7" />
+            <span class="num" aria-hidden="true">7</span>
+            <span class="name">The critic</span>
+            <span class="visually-hidden">Lay the frames out, score them, and fix the worst three.</span>
+          </label>
+          <label class="step">
+            <input type="radio" name="piece" id="p8" />
+            <span class="num" aria-hidden="true">8</span>
+            <span class="name">The skill</span>
+            <span class="visually-hidden">Pack the pipeline. The next film is one command.</span>
+          </label>
+        </div>
+        <div class="meter" aria-hidden="true"><span></span></div>
+        <div class="notes" aria-hidden="true">
+          <p class="n1">The model writes a program. A browser paints each frame.</p>
+          <p class="n2">An agent, ffmpeg, and a browser, so it can see and hear its own work.</p>
+          <p class="n3">A production doc, not a vibe.</p>
+          <p class="n4">Borrow a look, or you get the default gradient title.</p>
+          <p class="n5">One shape that morphs through the story.</p>
+          <p class="n6">Motion with weight. Sound on the same clock.</p>
+          <p class="n7">Lay the frames out, score them, and fix the worst three.</p>
+          <p class="n8">Pack the pipeline. The next film is one command.</p>
+        </div>
+        <div class="flow-controls">
+          <button type="button" class="btn" id="flow-play" aria-pressed="true" aria-label="Pause the studio steps">Pause</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="studio">
+      <div class="sec-head">
+        <h2>The whole studio.</h2>
+        <p>What breaks, and what to put back.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table class="studio">
+          <caption class="visually-hidden">Eight studio pieces, what fails without each one, and what to do instead.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Piece</th>
+              <th scope="col">Without it</th>
+              <th scope="col">Fix</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Frame function</th>
+              <td data-label="Without it">A small edit means painting the whole film again.</td>
+              <td data-label="Fix">Paint any second on its own.</td>
+            </tr>
+            <tr>
+              <th scope="row">The rig</th>
+              <td data-label="Without it">The model never sees or hears the film.</td>
+              <td data-label="Fix">An agent, a browser, and ffmpeg.</td>
+            </tr>
+            <tr>
+              <th scope="row">The brief</th>
+              <td data-label="Without it">Safe defaults fill every open choice.</td>
+              <td data-label="Fix">Write the production doc.</td>
+            </tr>
+            <tr>
+              <th scope="row">The reference</th>
+              <td data-label="Without it">A centered title lands on a gradient.</td>
+              <td data-label="Fix">Borrow a look. Keep your own subject.</td>
+            </tr>
+            <tr>
+              <th scope="row">State lists</th>
+              <td data-label="Without it">Effects, with no story holding them.</td>
+              <td data-label="Fix">One shape. Each beat has a job.</td>
+            </tr>
+            <tr>
+              <th scope="row">Springs &amp; sound</th>
+              <td data-label="Without it">Motion feels weightless, and the sound drifts.</td>
+              <td data-label="Fix">Give the motion weight. Use one clock.</td>
+            </tr>
+            <tr>
+              <th scope="row">The critic</th>
+              <td data-label="Without it">The first pass is the one that ships.</td>
+              <td data-label="Fix">Score the sheet. Fix the worst three. Continue until every score is 8 or higher.</td>
+            </tr>
+            <tr>
+              <th scope="row">The skill</th>
+              <td data-label="Without it">Every film starts from an empty folder.</td>
+              <td data-label="Fix">The next film is one command.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <aside class="close">
+        <p>Which piece of your setup would fail the contact sheet test first?</p>
+      </aside>
+    </section>
+
+    <footer class="lib-foot">
+      <p>Source: <a href="https://x.com/seeconvm/status/2106096193235259564" target="_blank" rel="noopener noreferrer">Opus 5.5 Motion Design</a> by seeco (<a href="https://x.com/seeconvm" target="_blank" rel="noopener noreferrer">@seeconvm</a>). The numbers on this page come from that article.</p>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var reduced = document.documentElement.getAttribute('data-motion') === 'reduce';
+      var hero = document.querySelector('.hero');
+      var chart = document.getElementById('split-visual');
+
+      function revealHero() {
+        if (hero) hero.classList.add('is-in');
+      }
+
+      if (reduced) {
+        revealHero();
+        if (chart) chart.classList.add('is-in');
+      } else {
+        requestAnimationFrame(function () {
+          requestAnimationFrame(revealHero);
+        });
+        if (chart && 'IntersectionObserver' in window) {
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (!entry.isIntersecting) return;
+              chart.classList.add('is-in');
+              io.disconnect();
+            });
+          }, { threshold: 0.28 });
+          io.observe(chart);
+        } else if (chart) {
+          chart.classList.add('is-in');
+        }
+      }
+
+      var DUR = 15;
+      var FPS = 60;
+      var shape = document.getElementById('shape');
+      var playhead = document.getElementById('playhead');
+      var tRead = document.getElementById('t-read');
+      var frameRead = document.getElementById('frame-read');
+      var seekBtn = document.getElementById('seek-play');
+      var beats = [0, 2, 5, 9, 11, 13];
+      var states = ['is-ring', 'is-pill', 'is-card', 'is-arc', 'is-check', 'is-chart'];
+      var t = 0;
+      var seekPlaying = !reduced;
+      var last = 0;
+      var seekRaf = 0;
+
+      function paintSeek(time) {
+        var idx = 0;
+        for (var i = 0; i < beats.length; i++) {
+          if (time >= beats[i]) idx = i;
+        }
+        if (shape.getAttribute('data-state') !== states[idx]) {
+          shape.setAttribute('data-state', states[idx]);
+        }
+        playhead.style.left = ((time / DUR) * 100) + '%';
+        tRead.textContent = 't ' + time.toFixed(1);
+        var frame = Math.min(900, Math.round(time * FPS));
+        frameRead.textContent = frame + ' / 900';
+      }
+
+      function seekFrame(now) {
+        if (!seekPlaying) return;
+        if (!last) last = now;
+        var dt = Math.min(0.05, (now - last) / 1000);
+        last = now;
+        t += dt;
+        if (t >= DUR) t = 0;
+        paintSeek(t);
+        seekRaf = requestAnimationFrame(seekFrame);
+      }
+
+      function setSeekPlaying(next) {
+        seekPlaying = next;
+        seekBtn.setAttribute('aria-pressed', next ? 'true' : 'false');
+        seekBtn.textContent = next ? 'Pause' : 'Play';
+        seekBtn.setAttribute('aria-label', next ? 'Pause the frame clock' : 'Play the frame clock');
+        if (next) {
+          last = 0;
+          seekRaf = requestAnimationFrame(seekFrame);
+        } else if (seekRaf) {
+          cancelAnimationFrame(seekRaf);
+          seekRaf = 0;
+        }
+      }
+
+      paintSeek(0);
+      setSeekPlaying(seekPlaying);
+
+      seekBtn.addEventListener('click', function () {
+        setSeekPlaying(!seekPlaying);
+      });
+
+      var radios = Array.prototype.slice.call(document.querySelectorAll('input[name="piece"]'));
+      var flowBtn = document.getElementById('flow-play');
+      var flowIndex = 0;
+      var flowTimer = 0;
+      var flowPlaying = !reduced;
+      var fromAuto = false;
+
+      function selectPiece(index) {
+        flowIndex = (index + radios.length) % radios.length;
+        fromAuto = true;
+        radios[flowIndex].checked = true;
+        fromAuto = false;
+      }
+
+      function stopFlow() {
+        if (flowTimer) {
+          clearInterval(flowTimer);
+          flowTimer = 0;
+        }
+      }
+
+      function setFlowPlaying(next) {
+        flowPlaying = next;
+        flowBtn.setAttribute('aria-pressed', next ? 'true' : 'false');
+        flowBtn.textContent = next ? 'Pause' : 'Play';
+        flowBtn.setAttribute('aria-label', next ? 'Pause the studio steps' : 'Play the studio steps');
+        stopFlow();
+        if (next) {
+          flowTimer = setInterval(function () {
+            selectPiece(flowIndex + 1);
+          }, 2800);
+        }
+      }
+
+      radios.forEach(function (radio, index) {
+        radio.addEventListener('change', function () {
+          if (fromAuto || !radio.checked) return;
+          flowIndex = index;
+          setFlowPlaying(false);
+        });
+      });
+
+      flowBtn.addEventListener('click', function () {
+        setFlowPlaying(!flowPlaying);
+      });
+
+      setFlowPlaying(flowPlaying);
+
+      var seekWas = false;
+      var flowWas = false;
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) {
+          seekWas = seekPlaying;
+          flowWas = flowPlaying;
+          if (seekPlaying) setSeekPlaying(false);
+          if (flowPlaying) setFlowPlaying(false);
+        } else {
+          if (seekWas) setSeekPlaying(true);
+          if (flowWas) setFlowPlaying(true);
+        }
+      });
+    })();
+  </script>
+  <script src="shared/site-header.js?v=2" defer></script>
+</body>
+</html>
