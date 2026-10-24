@@ -13,7 +13,8 @@ Multi-page **static** UI kit published on GitHub Pages from the `main` branch ro
 - ASCII: https://danielwongcx.github.io/ui-kit/ascii-sharks.html (`ascii-sharks.html`) — full-viewport scenes. A corner control switches **Sharks** (stackedlol ocean), **Train** (ASCII Magic viaduct steam train, halftone dots on black), and **HRTD** (original “made with 💕 by HRTD” line). Only the active scene runs. The last scene is stored in `localStorage` (`ascii-scene`); `?scene=sharks`, `?scene=train`, or `?scene=hrtd` overrides it for that visit. `?scene=ferry` and `?scene=mtr` redirect to their own pages. Sharks keep the Light / Dark palette (`ascii-sharks-theme`, `?theme=light`). The theme control hides on Train and HRTD. Engines: `vendor/ascii-sharks/ocean.js` (port of [stackedlol/ascii-sharks](https://github.com/stackedlol/ascii-sharks)), `vendor/ascii-magic/` ([ascii-magic-art](https://github.com/kailashsr38/ascii-magic-art) v1.0.2, MIT; no CDN), and `vendor/ascii-hrtd/made.js`. Optional `?sharks=thresher,hammerhead,mako,nurse`.
 - Ferry: https://danielwongcx.github.io/ui-kit/ferry.html (`ferry.html`) — one full-viewport page. Original night harbour crossing on the same 192×108 halftone-dots grid and 15fps stage as the viaduct train (`vendor/ascii-ferry/harbour.js`). The vessel is Star Ferry Celestial Star: red hull, green promenade, cream cabin. Night only, no theme toggle.
 - MTR: https://danielwongcx.github.io/ui-kit/mtr.html (`mtr.html`) — one full-viewport page. Original night metro on that same stage (`vendor/ascii-mtr/metro.js`): a KCR first-generation EMU, yellow cab and silver body with a thin red stripe, crosses an elevated guideway above the harbour. Night only, no theme toggle.
-- One prompt: https://danielwongcx.github.io/ui-kit/one-prompt.html (`one-prompt.html`) — plain-language page on seeco’s (@seeconvm) X article about viral “one-prompt” Opus motion videos. Spring-timed hero, a prompt-vs-setup chart, an eight-piece studio diagram, and the piece / without it / fix table. Numbers are the article’s. No build step.
+- One prompt: https://danielwongcx.github.io/ui-kit/one-prompt.html (`one-prompt.html`) — Explainer. Plain-language page on seeco’s (@seeconvm) X article about viral “one-prompt” Opus motion videos. Spring-timed hero, a prompt-vs-setup chart, an eight-piece studio diagram, and the piece / without it / fix table. Numbers are the article’s. No build step.
+- Motion studio: https://danielwongcx.github.io/ui-kit/motion-studio.html (`motion-studio.html`) — Explainer. Plain-language page on Movez’s (@0xMovez) X article, a 12-step course for turning a one-line motion prompt into a studio. Light seek(t) hero, a prompt-vs-harness chart, a four-part step diagram, and a without-it / fix table. Numbers are the article’s. No build step.
 
 No build step. Plain HTML / CSS / JS.
 
@@ -27,11 +28,27 @@ Every HTML page **MUST**:
 
 Page links live **ONLY** in `shared/site-header.js` → `PAGE_LINKS`.
 
+`PAGE_LINKS` is the top-level nav, in order. Each item is either a page `{ id, label, href }` or a category `{ id, label, children }`. Children use the same page shape. A page is listed once: top-level **or** under a category, never both.
+
+Top-level pages: Gallery, Digest, Taste, Piano, ASCII, Ferry, MTR.
+
+**Explainer** (desktop dropdown, mobile group):
+
+- One prompt → `one-prompt.html`
+- Motion studio → `motion-studio.html`
+
 When you add a new page:
 
 1. Create the HTML file
-2. Append `{ id, label, href }` to `PAGE_LINKS` (relative hrefs only: `name.html`)
+2. Append a top-level item, or append a child to the category it belongs to (relative hrefs only: `name.html`)
 3. Wire the shared CSS/JS + `data-page` as above
+4. If `site-header.js` or `site-header.css` changed, bump the `?v=` query on every page that loads them
+
+Category behavior, owned by the shared header:
+
+- Desktop: the category is a button (`aria-expanded`, `aria-controls`). Click, hover on a fine pointer, or Arrow Down / Arrow Up opens the links. Escape closes and returns focus to the button. Arrow keys, Home, and End move inside the list. The current page sets `aria-current="page"` on the child and `aria-current="true"` plus `.is-active` on the category button.
+- Mobile panel: the category is a label with its child links listed under it. The label and the current child both take the active style.
+- Do not list One prompt (or any explainer) again as a top-level link.
 
 **Never** invent a one-off top nav, hardcode `https://danielwongcx.github.io/ui-kit/…` for internal page links, or duplicate header markup in each file. The JS injects the sticky header.
 

@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Motion studio · ui-kit</title>
+  <meta name="description" content="Twelve steps that turn a one-line motion prompt into a studio. Plain-language notes from Movez’s X article." />
+  <script>
+    /* Match the gallery page shell before paint. Palettes change --page only. */
+    (function () {
+      try {
+        document.documentElement.classList.add('js');
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.documentElement.setAttribute('data-motion', 'reduce');
+        }
+        var id = localStorage.getItem('ui-kit-palette') || 'forest';
+        var pages = {
+          forest: '#f5f1ee', navy: '#eef2f6', terracotta: '#faf3ef',
+          plum: '#f6f1f8', ocean: '#eef6f6', amber: '#faf6ee',
+          slate: '#f0f1f3', rosewood: '#f8f1f3', olive: '#f4f3ea',
+          ink: '#ececf0'
+        };
+        document.documentElement.setAttribute('data-theme', id);
+        document.documentElement.style.setProperty('--page', pages[id] || pages.forest);
+      } catch (e) {}
+    })();
+  </script>
+  <style>
+    :root {
+      --page: #ececf0;
+      --canvas: #ffffff;
+      --ink: #1c1c22;
+      --muted: #6b6b76;
+      --line: #e4e4ea;
+      --accent: #5b5bf0;
+      --brand: #1e6851;
+      --spring: linear(
+        0, 0.006, 0.025, 0.07, 0.14, 0.25, 0.4, 0.55, 0.7, 0.82,
+        0.92, 0.99, 1.04, 1.08, 1.09, 1.07, 1.04, 1.02, 1.005, 1
+      );
+      --spring-dur: 0.75s;
+      --nav-h: 52px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--site-header-h, 56px) + var(--nav-h) + 16px);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      background: var(--page);
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .lib-nav {
+      position: sticky;
+      top: var(--site-header-h, 56px);
+      z-index: 40;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0 1.25rem;
+      background: color-mix(in srgb, var(--page) 88%, #fff);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .lib-brand {
+      font-size: 11px;
+      font-weight: 650;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .lib-links {
+      display: flex;
+      gap: 0.15rem;
+      margin-left: auto;
+      overflow-x: auto;
+    }
+
+    .lib-links a {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.45rem 0.7rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .lib-links a:hover { color: var(--ink); background: var(--canvas); }
+
+    .lib-links a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .lib {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+    }
+
+    .hero {
+      display: grid;
+      gap: 1.35rem;
+      align-items: center;
+      margin: 0 0 2.75rem;
+    }
+
+    @media (min-width: 840px) {
+      .hero { grid-template-columns: 1fr 1.05fr; gap: 2rem; }
+    }
+
+    h1 {
+      margin: 0 0 0.55rem;
+      font-size: clamp(1.9rem, 4vw, 2.5rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+    }
+
+    .lede {
+      margin: 0;
+      max-width: 34rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .by {
+      margin: 0.85rem 0 0;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    a {
+      color: var(--accent);
+      text-underline-offset: 0.16em;
+    }
+
+    a:hover { color: var(--ink); }
+
+    a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    .rise {
+      transition: transform var(--spring-dur) var(--spring), opacity 0.45s ease;
+    }
+
+    .js .hero:not(.is-in) .rise {
+      opacity: 0;
+      transform: translateY(14px) scale(0.97);
+    }
+
+    .hero.is-in .rise:nth-child(2) { transition-delay: 0.08s; }
+
+    .canvas {
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+      overflow: hidden;
+    }
+
+    .canvas-chrome {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid var(--line);
+      background: #fafafa;
+    }
+
+    .canvas-name,
+    .canvas-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+
+    .canvas-name { color: #3a3a44; }
+    .canvas-tag { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+    .stage-body { padding: 1rem 1rem 0.9rem; }
+
+    .screen {
+      position: relative;
+      height: 148px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: color-mix(in srgb, var(--page) 55%, #fff);
+      overflow: hidden;
+    }
+
+    .lane {
+      position: absolute;
+      left: 10%;
+      right: 10%;
+      top: 46%;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .mark,
+    .ghost,
+    .block {
+      position: absolute;
+      top: 46%;
+      transform: translate(-50%, -50%);
+    }
+
+    .mark {
+      left: 78%;
+      width: 1px;
+      height: 36px;
+      background: color-mix(in srgb, var(--accent) 55%, var(--line));
+    }
+
+    .ghost {
+      left: 16%;
+      width: 16px;
+      height: 16px;
+      border-radius: 99px;
+      border: 2px solid color-mix(in srgb, var(--ink) 32%, transparent);
+      background: transparent;
+    }
+
+    .block {
+      left: 16%;
+      width: 22px;
+      height: 22px;
+      border-radius: 7px;
+      background: var(--accent);
+      box-shadow: 0 8px 16px -10px color-mix(in srgb, var(--accent) 80%, transparent);
+    }
+
+    .sheet {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.4rem;
+      margin-top: 0.75rem;
+    }
+
+    .cell {
+      position: relative;
+      height: 44px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: color-mix(in srgb, var(--page) 55%, #fff);
+      overflow: hidden;
+    }
+
+    .cell.is-now {
+      border-color: var(--accent);
+      box-shadow: inset 0 0 0 1px var(--accent);
+    }
+
+    .cell i {
+      position: absolute;
+      top: 46%;
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      background: var(--accent);
+      transform: translate(-50%, -50%);
+    }
+
+    .stage-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    .btn {
+      margin-left: auto;
+      min-height: 44px;
+      padding: 0.4rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      color: var(--ink);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    .btn:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .caption {
+      margin: 0.85rem 0 0;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    .sec { margin: 0 0 2.85rem; scroll-margin-top: calc(var(--site-header-h, 56px) + var(--nav-h) + 12px); }
+
+    .sec-head { margin: 0 0 1rem; }
+
+    .sec-head h2 {
+      margin: 0 0 0.3rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .sec-head p,
+    .quiet {
+      margin: 0;
+      max-width: 40rem;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    .chart-body { padding: 1.15rem 1.15rem 1.2rem; display: flex; flex-direction: column; gap: 0.95rem; }
+
+    .bar-row { display: flex; flex-direction: column; gap: 0.35rem; }
+
+    .bar-label {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      font-size: 0.88rem;
+      font-weight: 650;
+    }
+
+    .bar-label span:last-child {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .track {
+      position: relative;
+      height: 14px;
+      border-radius: 99px;
+      background: color-mix(in srgb, var(--ink) 6%, #fff);
+      overflow: hidden;
+    }
+
+    .fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      transform-origin: left center;
+      transition: transform 1.05s var(--spring);
+    }
+
+    .fill.prompt {
+      background: color-mix(in srgb, var(--accent) 58%, #fff);
+      transform: scaleX(0.1);
+    }
+
+    .fill.setup {
+      background: var(--accent);
+      transform: scaleX(0.9);
+      transition-delay: 0.08s;
+    }
+
+    .js .split-visual:not(.is-in) .fill { transform: scaleX(0); }
+
+    .facts {
+      list-style: none;
+      margin: 0.85rem 0 0;
+      padding: 0;
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    @media (min-width: 700px) {
+      .facts { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .fact {
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+      padding: 1rem 1.05rem 0.95rem;
+      transition: transform var(--spring-dur) var(--spring), opacity 0.45s ease;
+    }
+
+    .fact b {
+      display: block;
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .fact span {
+      display: block;
+      margin-top: 0.4rem;
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.35;
+    }
+
+    .js .split-visual:not(.is-in) .fact {
+      opacity: 0;
+      transform: translateY(12px) scale(0.96);
+    }
+
+    .split-visual.is-in .fact:nth-child(2) { transition-delay: 0.08s; }
+    .split-visual.is-in .fact:nth-child(3) { transition-delay: 0.16s; }
+
+    .quiet { margin-top: 0.9rem; }
+
+    .map {
+      display: grid;
+      gap: 0.65rem;
+    }
+
+    @media (min-width: 720px) {
+      .map { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (min-width: 980px) {
+      .map { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .part {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      padding: 0.8rem 0.7rem 0.7rem;
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+      transition: border-color 0.3s ease, background 0.3s ease;
+    }
+
+    .part:has(input:checked) {
+      border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+      background: color-mix(in srgb, var(--accent) 4%, #fff);
+    }
+
+    .part-head { margin: 0 0 0.15rem; padding: 0 0.15rem; }
+
+    .kicker {
+      margin: 0 0 0.15rem;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .part h3 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+
+    .step {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-height: 44px;
+      padding: 0.4rem 0.55rem;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--canvas);
+      cursor: pointer;
+      transition:
+        transform var(--spring-dur) var(--spring),
+        border-color 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease;
+    }
+
+    .step input {
+      position: absolute;
+      inset: 0;
+      margin: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .step:hover { border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); }
+
+    .step:focus-within {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .step:has(input:checked) {
+      transform: translateY(-3px);
+      border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+      background: color-mix(in srgb, var(--accent) 7%, #fff);
+      box-shadow: 0 8px 18px -14px color-mix(in srgb, var(--accent) 70%, transparent);
+    }
+
+    .num {
+      width: 1.85rem;
+      height: 1.85rem;
+      border-radius: 99px;
+      display: grid;
+      place-items: center;
+      flex: none;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      transform: scale(0.92);
+      transition: transform var(--spring-dur) var(--spring), background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .step:has(input:checked) .num {
+      transform: scale(1);
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      animation: step-pulse 1.8s ease-out infinite;
+    }
+
+    @keyframes step-pulse {
+      0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 42%, transparent); }
+      70% { box-shadow: 0 0 0 8px transparent; }
+      100% { box-shadow: 0 0 0 0 transparent; }
+    }
+
+    .name {
+      font-size: 0.84rem;
+      font-weight: 650;
+      letter-spacing: -0.015em;
+      line-height: 1.25;
+    }
+
+    .meter {
+      margin: 0.85rem 0 0;
+      height: 4px;
+      border-radius: 99px;
+      background: color-mix(in srgb, var(--ink) 7%, #fff);
+      overflow: hidden;
+    }
+
+    .meter span {
+      display: block;
+      height: 100%;
+      width: 100%;
+      border-radius: inherit;
+      background: var(--accent);
+      transform-origin: left center;
+      transform: scaleX(calc(1 / 12));
+      transition: transform var(--spring-dur) var(--spring);
+    }
+
+    .flow-block:has(#s2:checked) .meter span { transform: scaleX(calc(2 / 12)); }
+    .flow-block:has(#s3:checked) .meter span { transform: scaleX(calc(3 / 12)); }
+    .flow-block:has(#s4:checked) .meter span { transform: scaleX(calc(4 / 12)); }
+    .flow-block:has(#s5:checked) .meter span { transform: scaleX(calc(5 / 12)); }
+    .flow-block:has(#s6:checked) .meter span { transform: scaleX(calc(6 / 12)); }
+    .flow-block:has(#s7:checked) .meter span { transform: scaleX(calc(7 / 12)); }
+    .flow-block:has(#s8:checked) .meter span { transform: scaleX(calc(8 / 12)); }
+    .flow-block:has(#s9:checked) .meter span { transform: scaleX(calc(9 / 12)); }
+    .flow-block:has(#s10:checked) .meter span { transform: scaleX(calc(10 / 12)); }
+    .flow-block:has(#s11:checked) .meter span { transform: scaleX(calc(11 / 12)); }
+    .flow-block:has(#s12:checked) .meter span { transform: scaleX(1); }
+
+    .notes {
+      margin-top: 0.75rem;
+      min-height: 4.4rem;
+      padding: 0.95rem 1.05rem;
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+      display: flex;
+      align-items: center;
+    }
+
+    .notes p {
+      display: none;
+      margin: 0;
+      font-size: 1.02rem;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+      line-height: 1.35;
+    }
+
+    .flow-block:has(#s1:checked) .n1,
+    .flow-block:has(#s2:checked) .n2,
+    .flow-block:has(#s3:checked) .n3,
+    .flow-block:has(#s4:checked) .n4,
+    .flow-block:has(#s5:checked) .n5,
+    .flow-block:has(#s6:checked) .n6,
+    .flow-block:has(#s7:checked) .n7,
+    .flow-block:has(#s8:checked) .n8,
+    .flow-block:has(#s9:checked) .n9,
+    .flow-block:has(#s10:checked) .n10,
+    .flow-block:has(#s11:checked) .n11,
+    .flow-block:has(#s12:checked) .n12 { display: block; }
+
+    .flow-controls { display: flex; justify-content: flex-end; margin-top: 0.7rem; }
+
+    .table-wrap {
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+      overflow: hidden;
+    }
+
+    .studio {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .studio th,
+    .studio td {
+      text-align: left;
+      vertical-align: top;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.88rem;
+      line-height: 1.4;
+      font-weight: 450;
+    }
+
+    .studio thead th {
+      font-size: 0.68rem;
+      font-weight: 650;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: #fafafa;
+    }
+
+    .studio tbody th {
+      font-weight: 650;
+      width: 22%;
+    }
+
+    .studio tr:last-child th,
+    .studio tr:last-child td { border-bottom: 0; }
+
+    .close {
+      margin-top: 1rem;
+      padding: 1.2rem 1.25rem;
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--accent);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+    }
+
+    .close p {
+      margin: 0;
+      max-width: 28em;
+      font-size: clamp(1.15rem, 2.4vw, 1.35rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.3;
+    }
+
+    .lib-foot {
+      margin-top: 0.5rem;
+      padding-top: 1.4rem;
+      border-top: 1px solid var(--line);
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .lib-foot p { margin: 0; }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 680px) {
+      .studio thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+      }
+
+      .table-wrap {
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+      }
+
+      .studio,
+      .studio tbody,
+      .studio tr,
+      .studio th,
+      .studio td { display: block; width: auto; }
+
+      .studio tr {
+        background: var(--canvas);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        box-shadow: 0 1px 2px #00000008;
+        padding: 0.85rem 1rem 0.35rem;
+      }
+
+      .studio tbody th,
+      .studio td {
+        border-bottom: 0;
+        padding: 0 0 0.7rem;
+      }
+
+      .studio tbody th {
+        font-size: 1rem;
+        padding-bottom: 0.55rem;
+      }
+
+      .studio td::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 0.15rem;
+        font-size: 0.68rem;
+        font-weight: 650;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+
+      .js .hero:not(.is-in) .rise,
+      .js .split-visual:not(.is-in) .fact {
+        opacity: 1;
+        transform: none;
+      }
+
+      .js .split-visual:not(.is-in) .fill.prompt { transform: scaleX(0.1); }
+      .js .split-visual:not(.is-in) .fill.setup { transform: scaleX(0.9); }
+
+      .rise,
+      .fill,
+      .fact,
+      .step,
+      .num,
+      .meter span {
+        transition: none !important;
+        animation: none !important;
+      }
+
+      .step:has(input:checked) .num { animation: none; }
+    }
+  </style>
+  <link rel="stylesheet" href="shared/site-header.css?v=4" />
+</head>
+<body data-page="motion-studio">
+  <nav class="lib-nav" aria-label="Page sections">
+    <div class="lib-brand">Motion studio</div>
+    <div class="lib-links">
+      <a href="#harness">Harness</a>
+      <a href="#steps">Steps</a>
+      <a href="#studio">Studio</a>
+    </div>
+  </nav>
+
+  <main class="lib">
+    <header class="hero" id="top">
+      <div class="hero-copy rise">
+        <h1>Most first tries look the same.</h1>
+        <p class="lede">Centered type on a gradient, everything fading in. Twelve steps turn that into a studio.</p>
+        <p class="by">Movez on <a href="https://x.com/0xMovez/article/2104216919033192746" target="_blank" rel="noopener noreferrer">X</a></p>
+      </div>
+
+      <div class="canvas rise" id="stage" role="group" aria-label="Frame preview" aria-describedby="stage-caption">
+        <div class="canvas-chrome">
+          <span class="canvas-name">seek(t)</span>
+          <span class="canvas-tag" id="t-read">t 0.0</span>
+        </div>
+        <div class="stage-body">
+          <div class="screen" aria-hidden="true">
+            <span class="lane"></span>
+            <span class="mark" id="mark"></span>
+            <span class="ghost" id="ghost"></span>
+            <span class="block" id="block"></span>
+          </div>
+          <div class="sheet" id="sheet" role="img" aria-label="Six frames of the block on its way to the mark.">
+            <div class="cell" data-t="0.22"><i></i></div>
+            <div class="cell" data-t="0.38"><i></i></div>
+            <div class="cell" data-t="0.55"><i></i></div>
+            <div class="cell" data-t="0.78"><i></i></div>
+            <div class="cell" data-t="1.1"><i></i></div>
+            <div class="cell" data-t="1.7"><i></i></div>
+          </div>
+          <div class="stage-row">
+            <button type="button" class="btn" id="seek-play" aria-pressed="true" aria-label="Pause the frame clock">Pause</button>
+          </div>
+          <p class="caption" id="stage-caption">The ring keeps an even pace. The block arrives first, passes the mark a hair, and settles. Same t, same frame, every run.</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="sec" id="harness">
+      <div class="sec-head">
+        <h2>The prompt is about a tenth.</h2>
+        <p>The words start the film. The harness does the rest.</p>
+      </div>
+
+      <div class="split-visual" id="split-visual">
+        <div class="canvas">
+          <div class="chart-body">
+            <div class="bar-row">
+              <div class="bar-label"><span>Prompt</span><span>~10%</span></div>
+              <div class="track"><span class="fill prompt"></span></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label"><span>Harness</span><span>~90%</span></div>
+              <div class="track"><span class="fill setup"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <ul class="facts">
+          <li class="fact"><b>12</b><span>steps, from a one-liner to a skill</span></li>
+          <li class="fact"><b>900</b><span>frames, 15 seconds at 60 fps</span></li>
+          <li class="fact"><b>8+</b><span>every score, before the full render</span></li>
+        </ul>
+      </div>
+      <p class="quiet">About ten minutes to install: an agent, ffmpeg, a browser, and a rules file. New films in the course used xhigh or max. Medium is for fixes.</p>
+    </section>
+
+    <section class="sec" id="steps">
+      <div class="sec-head">
+        <h2>Twelve steps.</h2>
+        <p>Four parts, in order.</p>
+      </div>
+
+      <div class="flow-block" id="flow-block">
+        <div class="map" role="radiogroup" aria-label="Twelve steps">
+          <section class="part">
+            <header class="part-head">
+              <p class="kicker">Part 1</p>
+              <h3>What’s happening</h3>
+            </header>
+            <label class="step">
+              <input type="radio" name="step" id="s1" checked />
+              <span class="num" aria-hidden="true">1</span>
+              <span class="name">Pixels</span>
+              <span class="visually-hidden">The model writes a program. A browser and ffmpeg turn it into frames.</span>
+            </label>
+            <label class="step">
+              <input type="radio" name="step" id="s2" />
+              <span class="num" aria-hidden="true">2</span>
+              <span class="name">Setup</span>
+              <span class="visually-hidden">An agent, ffmpeg, and a browser. One rules file for every film.</span>
+            </label>
+          </section>
+
+          <section class="part">
+            <header class="part-head">
+              <p class="kicker">Part 2</p>
+              <h3>Prompt like a director</h3>
+            </header>
+            <label class="step">
+              <input type="radio" name="step" id="s3" />
+              <span class="num" aria-hidden="true">3</span>
+              <span class="name">One-liner</span>
+              <span class="visually-hidden">A showreel sentence. It tests the engine, not the idea.</span>
+            </label>
+            <label class="step">
+              <input type="radio" name="step" id="s4" />
+              <span class="num" aria-hidden="true">4</span>
+              <span class="name">Brand</span>
+              <span class="visually-hidden">Aim it at a real product: the logo, the screens, the colors.</span>
+            </label>
+            <label class="step">
+              <input type="radio" name="step" id="s5" />
+              <span class="num" aria-hidden="true">5</span>
+              <span class="name">Reference</span>
+              <span class="visually-hidden">Name a look, or hand it a frame. Otherwise you get the gradient.</span>
+            </label>
+            <label class="step">
+              <input type="radio" name="step" id="s6" />
+              <span class="num" aria-hidden="true">6</span>
+              <span class="name">Spec</span>
+              <span class="visually-hidden">Write the states, beat by beat. Not a vibe.</span>
+            </label>
+          </section>
+
+          <section class="part">
+            <header class="part-head">
+              <p class="kicker">Part 3</p>
+              <h3>Build the engine</h3>
+            </header>
+            <label class="step">
+              <input type="radio" name="step" id="s7" />
+              <span class="num" aria-hidden="true">7</span>
+              <span class="name">Engine</span>
+              <span class="visually-hidden">seek(t) paints any moment. The render just walks the clock.</span>
+            </label>
+            <label class="step">
+              <input type="radio" name="step" id="s8" />
+              <span class="num" aria-hidden="true">8</span>
+              <span class="name">Springs</span>
+              <span class="visually-hidden">Snappy, default, heavy, playful. Add a spring for each change.</span>
+            </label>
+            <label class="step">
+              <input type="radio" name="step" id="s9" />
+              <span class="num" aria-hidden="true">9</span>
+              <span class="name">Sound</span>
+              <span class="visually-hidden">Measure a track, or write one. Hits land on that grid.</span>
+            </label>
+          </section>
+
+          <section class="part">
+            <header class="part-head">
+              <p class="kicker">Part 4</p>
+              <h3>From one clip to a studio</h3>
+            </header>
+            <label class="step">
+              <input type="radio" name="step" id="s10" />
+              <span class="num" aria-hidden="true">10</span>
+              <span class="name">Overnight</span>
+              <span class="visually-hidden">A director brief, and a gate between each pass.</span>
+            </label>
+            <label class="step">
+              <input type="radio" name="step" id="s11" />
+              <span class="num" aria-hidden="true">11</span>
+              <span class="name">Critique</span>
+              <span class="visually-hidden">A contact sheet. Fix the worst three. Stop at 8 or higher.</span>
+            </label>
+            <label class="step">
+              <input type="radio" name="step" id="s12" />
+              <span class="num" aria-hidden="true">12</span>
+              <span class="name">Ship</span>
+              <span class="visually-hidden">One skill. Three formats, from the same timeline.</span>
+            </label>
+          </section>
+        </div>
+        <div class="meter" aria-hidden="true"><span></span></div>
+        <div class="notes" aria-hidden="true">
+          <p class="n1">The model writes a program. A browser and ffmpeg turn it into frames.</p>
+          <p class="n2">An agent, ffmpeg, and a browser. One rules file for every film.</p>
+          <p class="n3">A showreel sentence. It tests the engine, not the idea.</p>
+          <p class="n4">Aim it at a real product: the logo, the screens, the colors.</p>
+          <p class="n5">Name a look, or hand it a frame. Otherwise you get the gradient.</p>
+          <p class="n6">Write the states, beat by beat. Not a vibe.</p>
+          <p class="n7">seek(t) paints any moment. The render just walks the clock.</p>
+          <p class="n8">Snappy, default, heavy, playful. Add a spring for each change.</p>
+          <p class="n9">Measure a track, or write one. Hits land on that grid.</p>
+          <p class="n10">A director brief, and a gate between each pass.</p>
+          <p class="n11">A contact sheet. Fix the worst three. Stop at 8 or higher.</p>
+          <p class="n12">One skill. Three formats, from the same timeline.</p>
+        </div>
+        <div class="flow-controls">
+          <button type="button" class="btn" id="flow-play" aria-pressed="true" aria-label="Pause the studio steps">Pause</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="studio">
+      <div class="sec-head">
+        <h2>Where it breaks.</h2>
+        <p>And what to put back.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table class="studio">
+          <caption class="visually-hidden">Six studio pieces, what fails without each one, and what to do instead.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Piece</th>
+              <th scope="col">Without it</th>
+              <th scope="col">Fix</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Reference</th>
+              <td data-label="Without it">Centered type on a gradient.</td>
+              <td data-label="Fix">Hand it a frame. Keep your subject.</td>
+            </tr>
+            <tr>
+              <th scope="row">Spec</th>
+              <td data-label="Without it">A mood, and nothing to check it against.</td>
+              <td data-label="Fix">Write the states, in order.</td>
+            </tr>
+            <tr>
+              <th scope="row">Engine</th>
+              <td data-label="Without it">The model cannot write an MP4.</td>
+              <td data-label="Fix">Paint any moment from the clock, then render.</td>
+            </tr>
+            <tr>
+              <th scope="row">Springs</th>
+              <td data-label="Without it">The move eases, then stops dead.</td>
+              <td data-label="Fix">Give it mass. One spring per change.</td>
+            </tr>
+            <tr>
+              <th scope="row">Sound</th>
+              <td data-label="Without it">Music glued on after the picture.</td>
+              <td data-label="Fix">Cuts and effects on one beat grid.</td>
+            </tr>
+            <tr>
+              <th scope="row">Critique</th>
+              <td data-label="Without it">The first pass is the one you post.</td>
+              <td data-label="Fix">Contact sheet. Worst three. Scores of 8+.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <aside class="close">
+        <p>The prompt is about a tenth. The harness is the studio. The critique loop is the step people skip.</p>
+      </aside>
+    </section>
+
+    <footer class="lib-foot">
+      <p>Source: <a href="https://x.com/0xMovez/article/2104216919033192746" target="_blank" rel="noopener noreferrer">How to build motion design studio with Opus 5.5</a> by Movez (<a href="https://x.com/0xMovez" target="_blank" rel="noopener noreferrer">@0xMovez</a>). <a href="https://movez.substack.com" target="_blank" rel="noopener noreferrer">Substack</a>. The numbers on this page come from that article.</p>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var reduced = document.documentElement.getAttribute('data-motion') === 'reduce';
+      var hero = document.querySelector('.hero');
+      var chart = document.getElementById('split-visual');
+
+      function revealHero() {
+        if (hero) hero.classList.add('is-in');
+      }
+
+      if (reduced) {
+        revealHero();
+        if (chart) chart.classList.add('is-in');
+      } else {
+        requestAnimationFrame(function () {
+          requestAnimationFrame(revealHero);
+        });
+        if (chart && 'IntersectionObserver' in window) {
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (!entry.isIntersecting) return;
+              chart.classList.add('is-in');
+              io.disconnect();
+            });
+          }, { threshold: 0.28 });
+          io.observe(chart);
+        } else if (chart) {
+          chart.classList.add('is-in');
+        }
+      }
+
+      // Kinetic-title spring from the course (stiffness 220, damping 22).
+      // The ring is an even pace beside it, so the mass is visible.
+      var DUR = 2.6;
+      var T0 = 0.22;
+      var LINEAR = 0.85;
+      var START = 16;
+      var END = 78;
+
+      function spring(time, k, d) {
+        if (time <= 0) return 0;
+        var w0 = Math.sqrt(k);
+        var z = d / (2 * w0);
+        if (z < 1) {
+          var wd = w0 * Math.sqrt(1 - z * z);
+          return 1 - Math.exp(-z * w0 * time) * (Math.cos(wd * time) + (z * w0 / wd) * Math.sin(wd * time));
+        }
+        return 1 - Math.exp(-w0 * time) * (1 + w0 * time);
+      }
+
+      function springPos(time) {
+        return START + (END - START) * spring(time - T0, 220, 22);
+      }
+
+      function linearPos(time) {
+        var u = (time - T0) / LINEAR;
+        if (u < 0) u = 0;
+        if (u > 1) u = 1;
+        return START + (END - START) * u;
+      }
+
+      var block = document.getElementById('block');
+      var ghost = document.getElementById('ghost');
+      var tRead = document.getElementById('t-read');
+      var seekBtn = document.getElementById('seek-play');
+      var cells = Array.prototype.slice.call(document.querySelectorAll('.cell'));
+      var t = 0;
+      var seekPlaying = !reduced;
+      var last = 0;
+      var seekRaf = 0;
+
+      cells.forEach(function (cell) {
+        var dot = cell.querySelector('i');
+        dot.style.left = springPos(Number(cell.getAttribute('data-t'))) + '%';
+      });
+
+      function paintSeek(time) {
+        block.style.left = springPos(time) + '%';
+        ghost.style.left = linearPos(time) + '%';
+        tRead.textContent = 't ' + time.toFixed(1);
+        var best = -1;
+        cells.forEach(function (cell, i) {
+          if (time + 0.001 >= Number(cell.getAttribute('data-t'))) best = i;
+          cell.classList.remove('is-now');
+        });
+        if (best >= 0) cells[best].classList.add('is-now');
+      }
+
+      function seekFrame(now) {
+        if (!seekPlaying) return;
+        if (!last) last = now;
+        var dt = Math.min(0.05, (now - last) / 1000);
+        last = now;
+        t += dt;
+        if (t >= DUR) t = 0;
+        paintSeek(t);
+        seekRaf = requestAnimationFrame(seekFrame);
+      }
+
+      function setSeekPlaying(next) {
+        seekPlaying = next;
+        seekBtn.setAttribute('aria-pressed', next ? 'true' : 'false');
+        seekBtn.textContent = next ? 'Pause' : 'Play';
+        seekBtn.setAttribute('aria-label', next ? 'Pause the frame clock' : 'Play the frame clock');
+        if (next) {
+          last = 0;
+          seekRaf = requestAnimationFrame(seekFrame);
+        } else if (seekRaf) {
+          cancelAnimationFrame(seekRaf);
+          seekRaf = 0;
+        }
+      }
+
+      paintSeek(reduced ? 1.7 : 0);
+      setSeekPlaying(seekPlaying);
+
+      seekBtn.addEventListener('click', function () {
+        setSeekPlaying(!seekPlaying);
+      });
+
+      var radios = Array.prototype.slice.call(document.querySelectorAll('input[name="step"]'));
+      var flowBtn = document.getElementById('flow-play');
+      var flowIndex = 0;
+      var flowTimer = 0;
+      var flowPlaying = !reduced;
+      var fromAuto = false;
+
+      function selectPiece(index) {
+        flowIndex = (index + radios.length) % radios.length;
+        fromAuto = true;
+        radios[flowIndex].checked = true;
+        fromAuto = false;
+      }
+
+      function stopFlow() {
+        if (flowTimer) {
+          clearInterval(flowTimer);
+          flowTimer = 0;
+        }
+      }
+
+      function setFlowPlaying(next) {
+        flowPlaying = next;
+        flowBtn.setAttribute('aria-pressed', next ? 'true' : 'false');
+        flowBtn.textContent = next ? 'Pause' : 'Play';
+        flowBtn.setAttribute('aria-label', next ? 'Pause the studio steps' : 'Play the studio steps');
+        stopFlow();
+        if (next) {
+          flowTimer = setInterval(function () {
+            selectPiece(flowIndex + 1);
+          }, 2400);
+        }
+      }
+
+      radios.forEach(function (radio, index) {
+        radio.addEventListener('change', function () {
+          if (fromAuto || !radio.checked) return;
+          flowIndex = index;
+          setFlowPlaying(false);
+        });
+        radio.addEventListener('focus', function () {
+          if (fromAuto) return;
+          flowIndex = index;
+          setFlowPlaying(false);
+        });
+      });
+
+      flowBtn.addEventListener('click', function () {
+        setFlowPlaying(!flowPlaying);
+      });
+
+      setFlowPlaying(flowPlaying);
+
+      var seekWas = false;
+      var flowWas = false;
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) {
+          seekWas = seekPlaying;
+          flowWas = flowPlaying;
+          if (seekPlaying) setSeekPlaying(false);
+          if (flowPlaying) setFlowPlaying(false);
+        } else {
+          if (seekWas) setSeekPlaying(true);
+          if (flowWas) setFlowPlaying(true);
+        }
+      });
+    })();
+  </script>
+  <script src="shared/site-header.js?v=4" defer></script>
+</body>
+</html>
