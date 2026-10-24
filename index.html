@@ -2336,6 +2336,145 @@
       padding: 2.25rem 1.5rem 2.5rem;
     }
 
+    .gfolder-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.55rem 0.85rem;
+      margin: 0 0 1.15rem;
+    }
+
+    .gfolder-slider-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      min-height: 36px;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #f7f7f9;
+      color: var(--ink);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .gfolder-slider-wrap:hover {
+      background: #fff;
+      border-color: #cfcfd8;
+    }
+
+    .gfolder-range {
+      width: 7.25rem;
+      margin: 0;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .gfolder-range:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    .gfolder-val {
+      min-width: 2.35rem;
+      text-align: right;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-variant-numeric: tabular-nums;
+      color: var(--muted);
+    }
+
+    .gfolder-toggles {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .gfolder-toggle {
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.42rem;
+      min-height: 36px;
+      margin: 0;
+      border: 1px solid var(--line);
+      background: #f7f7f9;
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.35rem 0.75rem 0.35rem 0.55rem;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    .gfolder-toggle:hover {
+      background: #fff;
+      border-color: #cfcfd8;
+    }
+
+    .gfolder-toggle:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .gfolder-toggle.is-on {
+      background: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent);
+    }
+
+    .gfolder-check {
+      width: 0.85rem;
+      height: 0.85rem;
+      border-radius: 4px;
+      border: 1.5px solid #b8b8c4;
+      background: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .gfolder-toggle.is-on .gfolder-check {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .gfolder-check svg {
+      width: 0.6rem;
+      height: 0.6rem;
+      stroke: #fff;
+      stroke-width: 2.4;
+      fill: none;
+      opacity: 0;
+    }
+
+    .gfolder-toggle.is-on .gfolder-check svg {
+      opacity: 1;
+    }
+
+    .gfolder-pocket {
+      opacity: calc(1 - var(--gfolder-transparency, 0.22));
+      transition: opacity 0.12s ease;
+    }
+
+    .gfolder-updated-by,
+    .gfolder-update-time {
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    #folder[data-show-updated-by="false"] .gfolder-updated-by,
+    #folder[data-show-update-time="false"] .gfolder-update-time {
+      opacity: 0;
+      transform: scale(0.94);
+      pointer-events: none;
+    }
+
     .gfolder-showcase {
       width: 100%;
       max-width: 400px;
@@ -2437,6 +2576,9 @@
         transform: none;
       }
       .gfolder-card,
+      .gfolder-pocket,
+      .gfolder-updated-by,
+      .gfolder-update-time,
       .gfolder-svg .gfolder-paper-left,
       .gfolder-svg .gfolder-paper-right {
         transition: none;
@@ -4473,12 +4615,54 @@
     </section>
 
     <!-- ===================== FOLDER ===================== -->
-    <section class="sec" id="folder">
+    <section class="sec" id="folder" data-show-updated-by="true" data-show-update-time="true">
       <div class="sec-head">
         <h2>Folder</h2>
         <p>
           Frosted teal glass pocket with a raised right plateau, subsurface paper refraction, dog-eared sheets, overlapping member avatars, and status pill.
         </p>
+      </div>
+
+      <div class="gfolder-controls" role="group" aria-label="Folder card options">
+        <label class="gfolder-slider-wrap" for="gfolder-transparency">
+          <span>Transparency</span>
+          <input
+            type="range"
+            id="gfolder-transparency"
+            class="gfolder-range"
+            min="0"
+            max="85"
+            step="1"
+            value="22"
+          />
+          <output id="gfolder-transparency-val" class="gfolder-val" for="gfolder-transparency">22%</output>
+        </label>
+
+        <div class="gfolder-toggles" role="group" aria-label="Pocket metadata">
+          <button
+            type="button"
+            class="gfolder-toggle is-on"
+            data-gfolder-toggle="update-time"
+            aria-pressed="true"
+          >
+            <span class="gfolder-check" aria-hidden="true">
+              <svg viewBox="0 0 12 12"><path d="M2.2 6.2 4.8 8.8 9.8 3.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </span>
+            <span>Update time</span>
+          </button>
+
+          <button
+            type="button"
+            class="gfolder-toggle is-on"
+            data-gfolder-toggle="updated-by"
+            aria-pressed="true"
+          >
+            <span class="gfolder-check" aria-hidden="true">
+              <svg viewBox="0 0 12 12"><path d="M2.2 6.2 4.8 8.8 9.8 3.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </span>
+            <span>Updated by</span>
+          </button>
+        </div>
       </div>
 
       <div class="sec-grid">
@@ -4695,7 +4879,7 @@
                       </g>
                     </g>
 
-                    <g clip-path="url(#gf-pocket-clip)">
+                    <g class="gfolder-pocket" clip-path="url(#gf-pocket-clip)">
                       <use href="#gf-pocket-shape" fill="url(#gf-pocket-base-grad)" />
 
                       <g filter="url(#gf-glass-frost-blur)">
@@ -4793,7 +4977,7 @@
                       fill="none"
                     />
 
-                    <g>
+                    <g class="gfolder-updated-by">
                       <circle
                         cx="80"
                         cy="186"
@@ -4836,7 +5020,7 @@
                       >A</text>
                     </g>
 
-                    <g>
+                    <g class="gfolder-update-time">
                       <rect
                         x="180"
                         y="166"
@@ -5404,6 +5588,60 @@
       try { saved = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
       if (saved && saved.id === 'custom' && saved.hex) chooseCustom(saved.hex, false);
       else if (saved && PRESETS[saved.id]) choosePreset(saved.id, false);
+    })();
+  </script>
+  <script>
+    (function () {
+      var root = document.getElementById('folder');
+      var slider = document.getElementById('gfolder-transparency');
+      var valOut = document.getElementById('gfolder-transparency-val');
+      if (!root || !slider) return;
+
+      var card = root.querySelector('.gfolder-card');
+      var svg = root.querySelector('.gfolder-svg');
+      var toggles = Array.prototype.slice.call(root.querySelectorAll('[data-gfolder-toggle]'));
+
+      function syncAria() {
+        var showTime = root.getAttribute('data-show-update-time') !== 'false';
+        var showBy = root.getAttribute('data-show-updated-by') !== 'false';
+        if (card) {
+          var cardParts = ['Onboarding folder, 15 files, 3 subfolders'];
+          if (showTime) cardParts.push('updated 2 hours ago');
+          if (showBy) cardParts.push('updated by M and A');
+          card.setAttribute('aria-label', cardParts.join(', '));
+        }
+        if (svg) {
+          var svgParts = ['Frosted teal glass folder containing two dog-eared documents'];
+          if (showBy) svgParts.push('M and A member avatars');
+          if (showTime) svgParts.push('Updated 2h badge');
+          svg.setAttribute('aria-label', svgParts.join(', '));
+        }
+      }
+
+      function applyTransparency(pct) {
+        var clamped = Math.max(0, Math.min(85, Number(pct) || 0));
+        root.style.setProperty('--gfolder-transparency', (clamped / 100).toFixed(2));
+        if (valOut) valOut.textContent = Math.round(clamped) + '%';
+      }
+
+      slider.addEventListener('input', function () {
+        applyTransparency(slider.value);
+      });
+
+      toggles.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var kind = btn.getAttribute('data-gfolder-toggle');
+          var attr = kind === 'updated-by' ? 'data-show-updated-by' : 'data-show-update-time';
+          var next = root.getAttribute(attr) === 'false';
+          root.setAttribute(attr, next ? 'true' : 'false');
+          btn.classList.toggle('is-on', next);
+          btn.setAttribute('aria-pressed', next ? 'true' : 'false');
+          syncAria();
+        });
+      });
+
+      applyTransparency(slider.value);
+      syncAria();
     })();
   </script>
   <script src="shared/site-header.js?v=4" defer></script>
