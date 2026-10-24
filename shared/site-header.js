@@ -16,6 +16,7 @@
     { id: 'ascii-sharks', label: 'ASCII', href: 'ascii-sharks.html' },
     { id: 'ferry', label: 'Ferry', href: 'ferry.html' },
     { id: 'mtr', label: 'MTR', href: 'mtr.html' },
+    { id: 'folder', label: 'Folder', href: 'folder.html' },
     {
       id: 'explainer',
       label: 'Explainer',
