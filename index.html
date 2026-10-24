@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>UI Library · Digits · Buttons · Cards · Palettes · Select · Glow · Combos</title>
+  <title>UI Library · Digits · Buttons · Cards · Palettes · Select · Glow · Folder · Combos</title>
   <script>
     /* Apply saved page shell and glow stops before paint */
     (function () {
@@ -2330,6 +2330,102 @@
       outline-color: #1c1b19;
     }
 
+    /* —— Glass folder card —— */
+    .canvas-body.gfolder-stage {
+      background: #fbfbfc;
+      padding: 2.25rem 1.5rem 2.5rem;
+    }
+
+    .gfolder-showcase {
+      width: 100%;
+      max-width: 400px;
+      text-align: left;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .gfolder-heading {
+      margin: 0 0 20px 2px;
+      font-size: 1.95rem;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      color: #18191b;
+    }
+
+    .gfolder-card {
+      position: relative;
+      width: 100%;
+      border-radius: 30px;
+      padding: 16px 24px 40px;
+      background: linear-gradient(180deg, #f2f3f4 0%, #ecedf0 54%, #e2e3e6 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.85),
+        0 12px 32px rgba(15, 18, 22, 0.04);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .gfolder-card:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.92),
+        0 20px 44px rgba(15, 18, 22, 0.065);
+    }
+
+    .gfolder-graphic {
+      width: 100%;
+      max-width: 368px;
+      margin: 0 auto 6px;
+      display: block;
+    }
+
+    .gfolder-svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      overflow: visible;
+    }
+
+    .gfolder-svg .gfolder-paper-left,
+    .gfolder-svg .gfolder-paper-right {
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      transform-box: fill-box;
+      transform-origin: center bottom;
+    }
+
+    .gfolder-card:hover .gfolder-svg .gfolder-paper-left {
+      transform: translateY(-4px) rotate(-1.2deg);
+    }
+
+    .gfolder-card:hover .gfolder-svg .gfolder-paper-right {
+      transform: translateY(-5px) rotate(1.2deg);
+    }
+
+    .gfolder-meta {
+      text-align: center;
+      margin-top: 2px;
+    }
+
+    .gfolder-title {
+      margin: 0 0 8px;
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      color: #16181a;
+    }
+
+    .gfolder-subtitle {
+      margin: 0;
+      font-size: 1.02rem;
+      font-weight: 400;
+      letter-spacing: -0.012em;
+      line-height: 1.35;
+      color: #76787d;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       .digit-stack { transition: none; }
@@ -2338,6 +2434,16 @@
         animation: none;
       }
       .glow-card--btn:active {
+        transform: none;
+      }
+      .gfolder-card,
+      .gfolder-svg .gfolder-paper-left,
+      .gfolder-svg .gfolder-paper-right {
+        transition: none;
+      }
+      .gfolder-card:hover,
+      .gfolder-card:hover .gfolder-svg .gfolder-paper-left,
+      .gfolder-card:hover .gfolder-svg .gfolder-paper-right {
         transform: none;
       }
     }
@@ -2533,6 +2639,7 @@
       <a href="#palettes">Palettes</a>
       <a href="#select">Select</a>
       <a href="#glow-border">Glow border</a>
+      <a href="#folder">Folder</a>
       <a href="#color-combos">Color combos</a>
     </div>
   </nav>
@@ -2541,14 +2648,15 @@
     <header class="lib-hero">
       <h1>Component gallery</h1>
       <p>
-        Self-contained demos: Digits · Buttons · Cards · Palettes · Select · Glow border · Color combos.
+        Self-contained demos: Digits · Buttons · Cards · Palettes · Select · Glow border · Folder · Color combos.
         Digit scroll with a natural <code>linear()</code> spring (~10%
         overshoot), hard-coded glow CTAs (violet / teal / slate), nested-radius
         cards, ten page-shell colour palettes you can switch, twenty reference
         colour pairings, six reciprocal color combos, a native
         CSS-customizable <code>&lt;select&gt;</code>
-        (<code>appearance: base-select</code>), and a pure-CSS rotating glow
-        border (<code>@property</code> angle + <code>conic-gradient</code>).
+        (<code>appearance: base-select</code>), a pure-CSS rotating glow
+        border (<code>@property</code> angle + <code>conic-gradient</code>),
+        and a frosted SVG glass folder card.
       </p>
     </header>
 
@@ -4364,6 +4472,408 @@
       </div>
     </section>
 
+    <!-- ===================== FOLDER ===================== -->
+    <section class="sec" id="folder">
+      <div class="sec-head">
+        <h2>Folder</h2>
+        <p>
+          Frosted teal glass pocket with a raised right plateau, subsurface paper refraction, dog-eared sheets, overlapping member avatars, and status pill.
+        </p>
+      </div>
+
+      <div class="sec-grid">
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">GlassFolder / onboarding</span>
+            <span class="canvas-tag">SVG · frosted glass</span>
+          </div>
+          <div class="canvas-body gfolder-stage">
+            <div class="gfolder-showcase">
+              <h3 class="gfolder-heading">Folders</h3>
+
+              <div class="gfolder-card" role="group" aria-label="Onboarding folder, 15 files, 3 subfolders, updated 2 hours ago">
+                <div class="gfolder-graphic">
+                  <svg
+                    class="gfolder-svg"
+                    viewBox="0 0 368 254"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    role="img"
+                    aria-label="Frosted teal glass folder containing two dog-eared documents, M and A member avatars, and Updated 2h badge"
+                  >
+                    <defs>
+                      <filter id="gf-drop-shadow" x="12" y="150" width="348" height="102" filterUnits="userSpaceOnUse">
+                        <feGaussianBlur stdDeviation="14" />
+                      </filter>
+
+                      <filter id="gf-paper-shadow-left" x="-20%" y="-15%" width="140%" height="140%">
+                        <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#141a1e" flood-opacity="0.12" />
+                      </filter>
+
+                      <filter id="gf-paper-shadow-right" x="-25%" y="-15%" width="145%" height="145%">
+                        <feDropShadow dx="-4" dy="4" stdDeviation="5.5" flood-color="#141a1e" flood-opacity="0.13" />
+                        <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#141a1e" flood-opacity="0.06" />
+                      </filter>
+
+                      <filter id="gf-ear-shadow" x="-40%" y="-30%" width="180%" height="185%">
+                        <feDropShadow dx="-3" dy="4.5" stdDeviation="3.5" flood-color="#181d24" flood-opacity="0.12" />
+                      </filter>
+
+                      <filter id="gf-glass-frost-blur" x="-25%" y="-25%" width="150%" height="150%">
+                        <feGaussianBlur stdDeviation="14" />
+                      </filter>
+
+                      <filter id="gf-glass-soft-ridge" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="8" />
+                      </filter>
+
+                      <filter id="gf-avatar-shadow" x="-25%" y="-25%" width="150%" height="150%">
+                        <feDropShadow dx="-1.5" dy="1.5" stdDeviation="2.2" flood-color="#162224" flood-opacity="0.26" />
+                      </filter>
+
+                      <linearGradient id="gf-back-plate-grad" x1="184" y1="58" x2="184" y2="176" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#31393c" />
+                        <stop offset="100%" stop-color="#23292c" />
+                      </linearGradient>
+
+                      <linearGradient id="gf-paper-grad-left" x1="12" y1="0" x2="120" y2="152" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#ffffff" />
+                        <stop offset="62%" stop-color="#fafbfc" />
+                        <stop offset="100%" stop-color="#eff0f3" />
+                      </linearGradient>
+
+                      <linearGradient id="gf-paper-grad-right" x1="10" y1="0" x2="124" y2="154" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#ffffff" />
+                        <stop offset="58%" stop-color="#fbfcfd" />
+                        <stop offset="100%" stop-color="#eeeff2" />
+                      </linearGradient>
+
+                      <linearGradient id="gf-ear-flap-grad" x1="96" y1="2" x2="118" y2="34" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#f5f6f8" />
+                        <stop offset="50%" stop-color="#ffffff" />
+                        <stop offset="100%" stop-color="#eceef2" />
+                      </linearGradient>
+
+                      <linearGradient id="gf-pocket-base-grad" x1="184" y1="92" x2="184" y2="230" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#bfd8d7" />
+                        <stop offset="38%" stop-color="#89a8a8" />
+                        <stop offset="75%" stop-color="#4b6467" />
+                        <stop offset="100%" stop-color="#324648" />
+                      </linearGradient>
+
+                      <linearGradient id="gf-pocket-rim-grad" x1="36" y1="108" x2="332" y2="108" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.32" />
+                        <stop offset="10%" stop-color="#f3fbfb" stop-opacity="0.76" />
+                        <stop offset="44%" stop-color="#ffffff" stop-opacity="0.88" />
+                        <stop offset="80%" stop-color="#f2fbfb" stop-opacity="0.8" />
+                        <stop offset="94%" stop-color="#d8ebeb" stop-opacity="0.54" />
+                        <stop offset="100%" stop-color="#ffffff" stop-opacity="0.2" />
+                      </linearGradient>
+
+                      <linearGradient id="gf-avatar-m-grad" x1="60" y1="164" x2="100" y2="208" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#5d538e" stop-opacity="0.88" />
+                        <stop offset="100%" stop-color="#484070" stop-opacity="0.92" />
+                      </linearGradient>
+
+                      <linearGradient id="gf-avatar-a-grad" x1="88" y1="164" x2="130" y2="208" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#65807b" stop-opacity="0.92" />
+                        <stop offset="100%" stop-color="#506864" stop-opacity="0.95" />
+                      </linearGradient>
+
+                      <linearGradient id="gf-badge-grad" x1="241" y1="165" x2="241" y2="207" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#8c9e9f" stop-opacity="0.52" />
+                        <stop offset="100%" stop-color="#6a7c7e" stop-opacity="0.46" />
+                      </linearGradient>
+
+                      <path
+                        id="gf-pocket-shape"
+                        d="M 56 114
+                           H 138
+                           C 151 114, 158 94, 174 94
+                           H 308
+                           C 321 94, 330 103, 329.2 116
+                           L 324.5 201
+                           C 323.6 216, 311.5 227, 296.5 227
+                           H 71.5
+                           C 56.5 227, 44.4 216, 43.5 201
+                           L 38.8 135
+                           C 38 123, 45.5 114, 56 114 Z"
+                      />
+
+                      <clipPath id="gf-pocket-clip">
+                        <use href="#gf-pocket-shape" />
+                      </clipPath>
+                    </defs>
+
+                    <ellipse
+                      cx="188"
+                      cy="226"
+                      rx="134"
+                      ry="14"
+                      fill="#1c282b"
+                      fill-opacity="0.16"
+                      filter="url(#gf-drop-shadow)"
+                    />
+
+                    <path
+                      d="M 45 78
+                         C 45 68, 53 60, 63 60
+                         H 178
+                         L 195 73
+                         H 303
+                         C 313 73, 321 81, 321 91
+                         V 190
+                         H 45
+                         Z"
+                      fill="url(#gf-back-plate-grad)"
+                    />
+
+                    <g class="gfolder-paper-left">
+                      <g transform="translate(57, 27) rotate(-11.2)" filter="url(#gf-paper-shadow-left)">
+                        <path
+                          d="M 11 0
+                             H 96
+                             C 98.5 0, 100.5 1, 102.5 3
+                             L 128 28.5
+                             C 130 30.5, 131 32.5, 131 35.5
+                             V 142
+                             C 131 148, 126 153, 120 153
+                             H 11
+                             C 5 153, 0 148, 0 142
+                             V 11
+                             C 0 5, 5 0, 11 0 Z"
+                          fill="url(#gf-paper-grad-left)"
+                        />
+                        <rect x="17" y="25" width="60" height="6.5" rx="3.25" fill="#b9bac5" />
+                        <rect x="17" y="39" width="76" height="6" rx="3" fill="#dcdddf" />
+                        <rect x="17" y="52" width="52" height="6" rx="3" fill="#e1e2e6" />
+                        <rect x="76" y="52" width="18" height="6" rx="3" fill="#e2e3e7" />
+
+                        <path
+                          d="M 96 0
+                             C 96.8 9, 97.5 18, 97.5 25
+                             C 97.5 30.2, 100.2 32.8, 105.5 32.8
+                             L 131 32.2
+                             Z"
+                          fill="url(#gf-ear-flap-grad)"
+                          filter="url(#gf-ear-shadow)"
+                        />
+                      </g>
+                    </g>
+
+                    <g class="gfolder-paper-right">
+                      <g transform="translate(175, 19) rotate(8.5)" filter="url(#gf-paper-shadow-right)">
+                        <path
+                          d="M 11 0
+                             H 98
+                             C 100.5 0, 102.5 1, 104.5 3
+                             L 130 28.5
+                             C 132 30.5, 133 32.5, 133 35.5
+                             V 144
+                             C 133 150, 128 155, 122 155
+                             H 11
+                             C 5 155, 0 150, 0 144
+                             V 11
+                             C 0 5, 5 0, 11 0 Z"
+                          fill="url(#gf-paper-grad-right)"
+                        />
+                        <rect x="17" y="24" width="58" height="6.5" rx="3.25" fill="#b9bac5" />
+                        <rect x="17" y="38" width="74" height="6" rx="3" fill="#dcdddf" />
+                        <rect x="17" y="51" width="54" height="6" rx="3" fill="#e0e1e5" />
+                        <rect x="17" y="64" width="46" height="6" rx="3" fill="#e2e3e7" />
+                        <rect x="70" y="64" width="16" height="6" rx="3" fill="#e3e4e8" />
+
+                        <path
+                          d="M 98 0
+                             C 98.8 9, 99.5 18, 99.5 25
+                             C 99.5 30.2, 102.2 32.8, 107.5 32.8
+                             L 133 32.2
+                             Z"
+                          fill="url(#gf-ear-flap-grad)"
+                          filter="url(#gf-ear-shadow)"
+                        />
+                      </g>
+                    </g>
+
+                    <g clip-path="url(#gf-pocket-clip)">
+                      <use href="#gf-pocket-shape" fill="url(#gf-pocket-base-grad)" />
+
+                      <g filter="url(#gf-glass-frost-blur)">
+                        <rect
+                          x="64"
+                          y="74"
+                          width="114"
+                          height="80"
+                          rx="16"
+                          transform="rotate(-10 121 114)"
+                          fill="#e6f4f3"
+                          fill-opacity="0.74"
+                        />
+                        <rect
+                          x="158"
+                          y="70"
+                          width="136"
+                          height="86"
+                          rx="16"
+                          transform="rotate(8 226 113)"
+                          fill="#e2f2f1"
+                          fill-opacity="0.85"
+                        />
+
+                        <ellipse
+                          cx="136"
+                          cy="194"
+                          rx="94"
+                          ry="42"
+                          transform="rotate(7 136 194)"
+                          fill="#233336"
+                          fill-opacity="0.84"
+                        />
+
+                        <ellipse
+                          cx="310"
+                          cy="176"
+                          rx="36"
+                          ry="58"
+                          transform="rotate(12 310 176)"
+                          fill="#2d4245"
+                          fill-opacity="0.78"
+                        />
+
+                        <ellipse
+                          cx="46"
+                          cy="168"
+                          rx="24"
+                          ry="44"
+                          fill="#445c5f"
+                          fill-opacity="0.56"
+                        />
+                      </g>
+
+                      <path
+                        d="M 280 94 L 308 94 L 232 182 L 196 175 Z"
+                        fill="#ebf8f7"
+                        fill-opacity="0.32"
+                        filter="url(#gf-glass-soft-ridge)"
+                      />
+
+                      <path
+                        d="M 39 126
+                           C 42 116, 48 114, 56 114
+                           H 138
+                           C 151 114, 158 94, 174 94
+                           H 308
+                           C 319 94, 327 101, 329 112"
+                        stroke="#f2fbfb"
+                        stroke-width="5"
+                        stroke-opacity="0.34"
+                        fill="none"
+                        filter="url(#gf-glass-soft-ridge)"
+                      />
+                    </g>
+
+                    <use
+                      href="#gf-pocket-shape"
+                      stroke="#ffffff"
+                      stroke-opacity="0.16"
+                      stroke-width="1.2"
+                      fill="none"
+                    />
+
+                    <path
+                      d="M 39.5 133
+                         C 39.2 122.5, 46.5 114.6, 56 114.6
+                         H 138
+                         C 151 114.6, 158 94.6, 174 94.6
+                         H 308
+                         C 320.2 94.6, 328.6 102.8, 328.6 115"
+                      stroke="url(#gf-pocket-rim-grad)"
+                      stroke-width="1.6"
+                      stroke-linecap="round"
+                      fill="none"
+                    />
+
+                    <g>
+                      <circle
+                        cx="80"
+                        cy="186"
+                        r="22"
+                        fill="url(#gf-avatar-m-grad)"
+                        stroke="#9a8ed4"
+                        stroke-opacity="0.44"
+                        stroke-width="1.25"
+                      />
+                      <text
+                        x="78"
+                        y="186.5"
+                        text-anchor="middle"
+                        dominant-baseline="central"
+                        fill="#ebe6ff"
+                        font-size="14.5"
+                        font-weight="500"
+                        letter-spacing="0.01em"
+                      >M</text>
+
+                      <circle
+                        cx="109"
+                        cy="186"
+                        r="22"
+                        fill="url(#gf-avatar-a-grad)"
+                        stroke="#a6c2bc"
+                        stroke-opacity="0.4"
+                        stroke-width="1.25"
+                        filter="url(#gf-avatar-shadow)"
+                      />
+                      <text
+                        x="109"
+                        y="186.5"
+                        text-anchor="middle"
+                        dominant-baseline="central"
+                        fill="#68eea7"
+                        font-size="14.5"
+                        font-weight="500"
+                        letter-spacing="0.01em"
+                      >A</text>
+                    </g>
+
+                    <g>
+                      <rect
+                        x="180"
+                        y="166"
+                        width="124"
+                        height="40"
+                        rx="20"
+                        fill="url(#gf-badge-grad)"
+                        stroke="#ffffff"
+                        stroke-opacity="0.17"
+                        stroke-width="1.1"
+                      />
+                      <text
+                        x="242"
+                        y="186.5"
+                        text-anchor="middle"
+                        dominant-baseline="central"
+                        fill="#eef4f4"
+                        fill-opacity="0.9"
+                        font-size="14.5"
+                        font-weight="400"
+                        letter-spacing="-0.01em"
+                      >Updated 2h</text>
+                    </g>
+                  </svg>
+                </div>
+
+                <div class="gfolder-meta">
+                  <p class="gfolder-title">Onboarding</p>
+                  <p class="gfolder-subtitle">15 files · 3 subfolders</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <!-- ===================== COLOR COMBOS ===================== -->
     <section class="sec" id="color-combos">
       <div class="sec-head">
@@ -4516,10 +5026,10 @@
     </section>
 
     <footer class="lib-foot">
-      Digits · Buttons · Cards · Palettes · Select · Glow border · Color combos. Digit-scroll <code>lh</code> + natural
+      Digits · Buttons · Cards · Palettes · Select · Glow border · Folder · Color combos. Digit-scroll <code>lh</code> + natural
       <code>linear()</code> spring (~10% overshoot) · hard-coded glow buttons
       (violet / teal / slate) · nested radius · page-shell palettes · colour pairings · color combos · native
-      <code>appearance: base-select</code> · rotating <code>conic-gradient</code> rim. No CDN.
+      <code>appearance: base-select</code> · rotating <code>conic-gradient</code> rim · SVG glass folder. No CDN.
       Prefers-reduced-motion disables the spring and holds the glow border still.
     </footer>
   </div>

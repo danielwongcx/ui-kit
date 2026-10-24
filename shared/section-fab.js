@@ -13,6 +13,7 @@
     { id: 'palettes', label: 'Palettes' },
     { id: 'select', label: 'Select' },
     { id: 'glow-border', label: 'Glow border' },
+    { id: 'folder', label: 'Folder' },
     { id: 'color-combos', label: 'Color combos' }
   ];
 
