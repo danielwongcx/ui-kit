@@ -14,7 +14,6 @@ Multi-page **static** UI kit published on GitHub Pages from the `main` branch ro
 - Ferry: https://danielwongcx.github.io/ui-kit/ferry.html (`ferry.html`) — one full-viewport page. Original night harbour crossing on the same 192×108 halftone-dots grid and 15fps stage as the viaduct train (`vendor/ascii-ferry/harbour.js`). The vessel is Star Ferry Celestial Star: red hull, green promenade, cream cabin. Night only, no theme toggle.
 - MTR: https://danielwongcx.github.io/ui-kit/mtr.html (`mtr.html`) — one full-viewport page. Original night metro on that same stage (`vendor/ascii-mtr/metro.js`): a KCR first-generation EMU, yellow cab and silver body with a thin red stripe, crosses an elevated guideway above the harbour. Night only, no theme toggle.
 - One prompt: https://danielwongcx.github.io/ui-kit/one-prompt.html (`one-prompt.html`) — plain-language page on seeco’s (@seeconvm) X article about viral “one-prompt” Opus motion videos. Spring-timed hero, a prompt-vs-setup chart, an eight-piece studio diagram, and the piece / without it / fix table. Numbers are the article’s. No build step.
-- Folder: https://danielwongcx.github.io/ui-kit/folder.html (`folder.html`) — pure CSS + SVG glass folder card
 
 No build step. Plain HTML / CSS / JS.
 
