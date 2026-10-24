@@ -13,8 +13,10 @@ Static component gallery and digest catalog for Daniel Wong — served from GitH
 | ASCII | https://danielwongcx.github.io/ui-kit/ascii-sharks.html |
 | Ferry | https://danielwongcx.github.io/ui-kit/ferry.html |
 | MTR | https://danielwongcx.github.io/ui-kit/mtr.html |
+| One prompt | https://danielwongcx.github.io/ui-kit/one-prompt.html |
+| Motion studio | https://danielwongcx.github.io/ui-kit/motion-studio.html |
 
-Local mirrors: `index.html`, `digest.html`, `taste.html`, `learn-piano-101.html`, `ascii-sharks.html`, `ferry.html`, and `mtr.html`. `ui-combo.html` mirrors the gallery without the Color combos section.
+Local mirrors: `index.html`, `digest.html`, `taste.html`, `learn-piano-101.html`, `ascii-sharks.html`, `ferry.html`, `mtr.html`, `one-prompt.html`, and `motion-studio.html`. `ui-combo.html` mirrors the gallery without the Color combos section. One prompt and Motion studio sit under the Explainer category in the site header.
 
 Gallery sections: Digits, Buttons, Cards, Palettes, Select (native `appearance: base-select`), Glow border (pure-CSS `@property` angle + rotating `conic-gradient` rim), Folder (frosted SVG glass folder card), and Color combos (six reciprocal two-colour posters on `index.html`; click a hex to copy it — they do not recolour the page). Palettes holds ten page-shell themes plus twenty reference colour pairings (name, four swatches, mood; click a swatch to copy the hex — pairings do not recolour the page). Index stays the original gallery.
 
@@ -22,12 +24,12 @@ Taste sections: Motion, App/Data, Buttons+, States, Forms, Cards+, Taste palette
 
 ## Shared chrome
 
-- **Site header** (`shared/site-header.css` + `shared/site-header.js`) — sticky, mobile hamburger, page links (Gallery · Digest · Taste · Piano · ASCII · Ferry · MTR). Every page must load it; see `AGENTS.md`.
+- **Site header** (`shared/site-header.css` + `shared/site-header.js`) — sticky, mobile hamburger. Top-level links: Gallery · Digest · Taste · Piano · ASCII · Ferry · MTR. **Explainer** is a category (One prompt, Motion studio): a dropdown on desktop, a labeled group in the mobile panel. Every page must load it; see `AGENTS.md`.
 - **Section FAB** (`shared/section-fab.*`) — gallery + taste. Collapsible sections + floating speed-dial (page-specific section map).
 
 ## Agents
 
-Read **[AGENTS.md](./AGENTS.md)** before adding or editing pages. Page links are registered only in `PAGE_LINKS`; do not invent a one-off nav.
+Read **[AGENTS.md](./AGENTS.md)** before adding or editing pages. Page links are registered only in `PAGE_LINKS`. A page is either top-level or inside a category such as Explainer, never both. Do not invent a one-off nav.
 
 ## Notes
 

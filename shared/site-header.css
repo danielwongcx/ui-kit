@@ -1,4 +1,4 @@
-/* Shared site header — page links only (Gallery · Digest). Calm fintech glass bar. */
+/* Shared site header — top-level pages plus categories (Explainer). */
 :root {
   --site-header-h: 56px;
   --site-ink: #1c1c22;
@@ -14,6 +14,7 @@
   top: 0;
   z-index: 50;
   height: var(--site-header-h);
+  overflow: visible;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -69,9 +70,89 @@
   box-shadow: 0 0 0 1px var(--site-line);
 }
 
-.site-header__link:focus-visible {
+.site-header__link:focus-visible,
+.site-header__menu-btn:focus-visible {
   outline: 2px solid var(--site-accent);
   outline-offset: 2px;
+}
+
+.site-header__menu {
+  position: relative;
+}
+
+.site-header__menu-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: inherit;
+}
+
+.site-header__caret {
+  width: 0;
+  height: 0;
+  border-left: 3.5px solid transparent;
+  border-right: 3.5px solid transparent;
+  border-top: 4px solid currentColor;
+  transform: translateY(1px);
+  transition: transform 0.18s ease;
+}
+
+.site-header__menu.is-open .site-header__caret {
+  transform: translateY(1px) rotate(180deg);
+}
+
+.site-header__menu.is-open .site-header__menu-btn {
+  color: var(--site-ink);
+  background: var(--site-pill);
+}
+
+.site-header__flyout {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 5;
+  min-width: 100%;
+  padding-top: 8px;
+}
+
+.site-header__flyout-card {
+  --site-ink: #1c1c22;
+  --site-muted: #6b6b76;
+  --site-accent: #1e6851;
+  --site-pill: #f3f1ee;
+  --site-line: rgba(28, 28, 34, 0.1);
+  min-width: 11.75rem;
+  padding: 0.35rem;
+  background: #fff;
+  color: var(--site-ink);
+  border: 1px solid var(--site-line);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px -22px rgba(28, 28, 34, 0.45);
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.site-header__flyout-card .site-header__link {
+  display: block;
+  border-radius: 9px;
+  padding: 0.65rem 0.85rem;
+}
+
+.site-header__flyout-card .site-header__link:hover {
+  background: var(--site-pill);
+}
+
+.site-header__flyout-card .site-header__link.is-active {
+  color: var(--site-ink);
+  background: color-mix(in srgb, var(--site-accent) 12%, #fff);
+  box-shadow: none;
 }
 
 .site-header__toggle {
@@ -184,10 +265,41 @@
     border-radius: 12px;
     font-size: 13px;
   }
+
+  .site-header__group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    margin-top: 0.35rem;
+    padding-top: 0.45rem;
+    border-top: 1px solid var(--site-line);
+  }
+
+  .site-header__group-label {
+    margin: 0;
+    padding: 0.4rem 0.9rem 0.15rem;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--site-muted);
+  }
+
+  .site-header__group-label.is-active {
+    color: var(--site-accent);
+  }
+
+  .site-header__group-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding-left: 0.55rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .site-header__link,
+  .site-header__caret,
   .site-header__burger,
   .site-header__burger::before,
   .site-header__burger::after,
