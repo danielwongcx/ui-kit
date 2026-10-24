@@ -2461,6 +2461,26 @@
       transition: opacity 0.12s ease;
     }
 
+    .gfolder-back-dark,
+    .gfolder-back-teal {
+      transition: opacity 0.18s ease;
+    }
+
+    .gfolder-back-teal {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #folder[data-teal-back="true"] .gfolder-back-dark {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #folder[data-teal-back="true"] .gfolder-back-teal {
+      opacity: calc(1 - var(--gfolder-transparency, 0.22) * 0.65);
+      pointer-events: auto;
+    }
+
     .gfolder-updated-by,
     .gfolder-update-time {
       transition: opacity 0.18s ease, transform 0.18s ease;
@@ -2577,6 +2597,8 @@
       }
       .gfolder-card,
       .gfolder-pocket,
+      .gfolder-back-dark,
+      .gfolder-back-teal,
       .gfolder-updated-by,
       .gfolder-update-time,
       .gfolder-svg .gfolder-paper-left,
@@ -4615,7 +4637,7 @@
     </section>
 
     <!-- ===================== FOLDER ===================== -->
-    <section class="sec" id="folder" data-show-updated-by="true" data-show-update-time="true">
+    <section class="sec" id="folder" data-show-updated-by="true" data-show-update-time="true" data-teal-back="false">
       <div class="sec-head">
         <h2>Folder</h2>
         <p>
@@ -4661,6 +4683,18 @@
               <svg viewBox="0 0 12 12"><path d="M2.2 6.2 4.8 8.8 9.8 3.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
             </span>
             <span>Updated by</span>
+          </button>
+
+          <button
+            type="button"
+            class="gfolder-toggle"
+            data-gfolder-toggle="teal-back"
+            aria-pressed="false"
+          >
+            <span class="gfolder-check" aria-hidden="true">
+              <svg viewBox="0 0 12 12"><path d="M2.2 6.2 4.8 8.8 9.8 3.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </span>
+            <span>Frosted teal back</span>
           </button>
         </div>
       </div>
@@ -4715,9 +4749,16 @@
                         <feDropShadow dx="-1.5" dy="1.5" stdDeviation="2.2" flood-color="#162224" flood-opacity="0.26" />
                       </filter>
 
-                      <linearGradient id="gf-back-plate-grad" x1="184" y1="58" x2="184" y2="176" gradientUnits="userSpaceOnUse">
+                      <linearGradient id="gf-back-plate-grad" x1="184" y1="58" x2="184" y2="227" gradientUnits="userSpaceOnUse">
                         <stop offset="0%" stop-color="#31393c" />
                         <stop offset="100%" stop-color="#23292c" />
+                      </linearGradient>
+
+                      <linearGradient id="gf-back-teal-grad" x1="184" y1="58" x2="184" y2="227" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#a8cbc9" />
+                        <stop offset="36%" stop-color="#769a9b" />
+                        <stop offset="74%" stop-color="#435d60" />
+                        <stop offset="100%" stop-color="#2d4143" />
                       </linearGradient>
 
                       <linearGradient id="gf-paper-grad-left" x1="12" y1="0" x2="120" y2="152" gradientUnits="userSpaceOnUse">
@@ -4784,33 +4825,113 @@
                            C 38 123, 45.5 114, 56 114 Z"
                       />
 
+                      <path
+                        id="gf-back-plate-shape"
+                        d="M 45 78
+                           C 45 68, 53 60, 63 60
+                           H 178
+                           L 195 73
+                           H 303
+                           C 313 73, 321 81, 321 91
+                           L 324.5 201
+                           C 323.6 216, 311.5 227, 296.5 227
+                           H 71.5
+                           C 56.5 227, 44.4 216, 43.5 201
+                           Z"
+                      />
+
+                      <clipPath id="gf-back-plate-clip">
+                        <use href="#gf-back-plate-shape" />
+                      </clipPath>
+
+                      <clipPath id="gf-shadow-outside-clip">
+                        <path
+                          d="M 0 201
+                             H 43.5
+                             C 44.4 216, 56.5 227, 71.5 227
+                             H 296.5
+                             C 311.5 227, 323.6 216, 324.5 201
+                             H 368
+                             V 254
+                             H 0
+                             Z"
+                        />
+                      </clipPath>
+
                       <clipPath id="gf-pocket-clip">
                         <use href="#gf-pocket-shape" />
                       </clipPath>
                     </defs>
 
-                    <ellipse
-                      cx="188"
-                      cy="226"
-                      rx="134"
-                      ry="14"
-                      fill="#1c282b"
-                      fill-opacity="0.16"
-                      filter="url(#gf-drop-shadow)"
-                    />
+                    <g clip-path="url(#gf-shadow-outside-clip)">
+                      <ellipse
+                        cx="188"
+                        cy="226"
+                        rx="134"
+                        ry="14"
+                        fill="#1c282b"
+                        fill-opacity="0.16"
+                        filter="url(#gf-drop-shadow)"
+                      />
+                    </g>
 
-                    <path
-                      d="M 45 78
-                         C 45 68, 53 60, 63 60
-                         H 178
-                         L 195 73
-                         H 303
-                         C 313 73, 321 81, 321 91
-                         V 190
-                         H 45
-                         Z"
+                    <use
+                      class="gfolder-back-dark"
+                      href="#gf-back-plate-shape"
                       fill="url(#gf-back-plate-grad)"
                     />
+
+                    <g class="gfolder-back-teal">
+                      <g clip-path="url(#gf-back-plate-clip)">
+                        <use href="#gf-back-plate-shape" fill="url(#gf-back-teal-grad)" />
+                        <g filter="url(#gf-glass-frost-blur)">
+                          <ellipse
+                            cx="118"
+                            cy="76"
+                            rx="78"
+                            ry="26"
+                            fill="#dff2f1"
+                            fill-opacity="0.58"
+                          />
+                          <ellipse
+                            cx="256"
+                            cy="88"
+                            rx="64"
+                            ry="24"
+                            fill="#d0ebe9"
+                            fill-opacity="0.45"
+                          />
+                          <ellipse
+                            cx="184"
+                            cy="204"
+                            rx="136"
+                            ry="36"
+                            fill="#233538"
+                            fill-opacity="0.64"
+                          />
+                        </g>
+                      </g>
+                      <use
+                        href="#gf-back-plate-shape"
+                        stroke="#ffffff"
+                        stroke-opacity="0.28"
+                        stroke-width="1.15"
+                        fill="none"
+                      />
+                      <path
+                        d="M 45.5 96
+                           V 78
+                           C 45.5 68.5, 53.4 60.6, 63 60.6
+                           H 178
+                           L 195 73.6
+                           H 303
+                           C 312.6 73.6, 320.5 81.4, 320.5 91"
+                        stroke="url(#gf-pocket-rim-grad)"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        fill="none"
+                      />
+                    </g>
 
                     <g class="gfolder-paper-left">
                       <g transform="translate(57, 27) rotate(-11.2)" filter="url(#gf-paper-shadow-left)">
@@ -5604,14 +5725,20 @@
       function syncAria() {
         var showTime = root.getAttribute('data-show-update-time') !== 'false';
         var showBy = root.getAttribute('data-show-updated-by') !== 'false';
+        var tealBack = root.getAttribute('data-teal-back') === 'true';
         if (card) {
           var cardParts = ['Onboarding folder, 15 files, 3 subfolders'];
+          if (tealBack) cardParts.push('frosted teal glass back');
           if (showTime) cardParts.push('updated 2 hours ago');
           if (showBy) cardParts.push('updated by M and A');
           card.setAttribute('aria-label', cardParts.join(', '));
         }
         if (svg) {
-          var svgParts = ['Frosted teal glass folder containing two dog-eared documents'];
+          var svgParts = [
+            tealBack
+              ? 'Frosted teal glass folder with frosted teal glass back containing two dog-eared documents'
+              : 'Frosted teal glass folder containing two dog-eared documents'
+          ];
           if (showBy) svgParts.push('M and A member avatars');
           if (showTime) svgParts.push('Updated 2h badge');
           svg.setAttribute('aria-label', svgParts.join(', '));
@@ -5628,11 +5755,18 @@
         applyTransparency(slider.value);
       });
 
+      var ATTR_MAP = {
+        'update-time': 'data-show-update-time',
+        'updated-by': 'data-show-updated-by',
+        'teal-back': 'data-teal-back'
+      };
+
       toggles.forEach(function (btn) {
         btn.addEventListener('click', function () {
           var kind = btn.getAttribute('data-gfolder-toggle');
-          var attr = kind === 'updated-by' ? 'data-show-updated-by' : 'data-show-update-time';
-          var next = root.getAttribute(attr) === 'false';
+          var attr = ATTR_MAP[kind];
+          if (!attr) return;
+          var next = root.getAttribute(attr) !== 'true';
           root.setAttribute(attr, next ? 'true' : 'false');
           btn.classList.toggle('is-on', next);
           btn.setAttribute('aria-pressed', next ? 'true' : 'false');
