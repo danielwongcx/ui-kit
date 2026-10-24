@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>UI Library · Digits · Buttons · Cards · Palettes · Select · Glow · Folder · Spacing · Combos</title>
+  <title>UI Library · Digits · Buttons · Cards · Palettes · Select · Glow · Folder · Spacing · Hierarchy · Combos</title>
   <script>
     /* Apply saved page shell and glow stops before paint */
     (function () {
@@ -2835,7 +2835,6 @@
       --inline-sm: var(--s-8);
       --inline-md: var(--s-12);
       --inline-lg: var(--s-16);
-      --sp-secondary: color-mix(in srgb, var(--ink) 62%, var(--muted));
     }
 
     #spacing .sp-span { grid-column: 1 / -1; }
@@ -3136,8 +3135,7 @@
 
     #spacing .sp-split,
     #spacing .sp-compare,
-    #spacing .sp-inline-grid,
-    #spacing .sp-trio {
+    #spacing .sp-inline-grid {
       display: grid;
       gap: var(--stack-lg);
       width: 100%;
@@ -3149,8 +3147,7 @@
     #spacing .sp-section,
     #spacing .sp-field,
     #spacing .sp-frame,
-    #spacing .sp-group,
-    #spacing .sp-case__body {
+    #spacing .sp-group {
       display: flex;
       flex-direction: column;
     }
@@ -3291,67 +3288,38 @@
       background: var(--page);
     }
 
-    #spacing .sp-case {
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: var(--s-8);
-      min-width: 0;
-    }
-
-    #spacing .sp-case figcaption {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 650;
-      line-height: 1.35;
-      color: var(--muted);
-    }
-
-    #spacing .sp-case__body {
-      padding: var(--s-16);
-      border: 1px solid var(--line);
-      border-radius: var(--s-12);
-      background: #fff;
-    }
-
-    #spacing .sp-case p {
-      margin: 0;
-      line-height: 1.35;
-    }
-
-    #spacing .sp-case--flat p,
-    #spacing .sp-case--space p {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--ink);
-    }
-
-    #spacing .sp-case--rank .sp-title {
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: var(--ink);
-    }
-
-    #spacing .sp-case--rank .sp-name,
-    #spacing .sp-case--rank .sp-body {
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--sp-secondary);
-    }
-
-    #spacing .sp-case--rank .sp-meta {
-      font-size: 12px;
-      font-weight: 400;
-      color: var(--muted);
-    }
-
     #spacing .sp-callout {
       margin: var(--s-4) 0 0;
       max-width: 40rem;
       font-size: 13px;
       line-height: 1.45;
       color: var(--ink);
+    }
+
+    #spacing .sp-jump {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      min-height: var(--s-44);
+      margin-top: var(--s-4);
+      padding: 0 var(--s-16);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 650;
+      line-height: 1;
+      text-decoration: none;
+    }
+
+    #spacing .sp-jump:hover {
+      background: color-mix(in srgb, var(--page) 50%, #fff);
+    }
+
+    #spacing .sp-jump:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
     }
 
     @container sp (max-width: 380px) {
@@ -3371,17 +3339,1144 @@
       #spacing .sp-inline-grid { grid-template-columns: 1fr 1fr; }
     }
 
-    @container sp (min-width: 560px) {
-      #spacing .sp-trio { grid-template-columns: 1fr 1fr; }
+
+
+    /* —— Hierarchy ——
+       Ink / muted / soft, two weights, and a few hard-coded specimens
+       (navy band, up/down, faint borders). Shell palettes do not recolor these. */
+    #hierarchy {
+      --hy-ink: var(--ink);
+      --hy-muted: #4d4d59;
+      --hy-soft: var(--muted);
+      --hy-line: var(--line);
+      --hy-card: #fff;
+      --hy-wash: var(--page);
+      --hy-flat: #3e4452;
+      --hy-up: #0f7a45;
+      --hy-down: #b42318;
+      --hy-pop: #2a3eb5;
+      --hy-band: #173f72;
+      --hy-on: #f5f8fc;
+      --hy-on-soft: #b7cce6;
+      --hy-on-grey: #b7b9be;
+      --hy-on-fade: rgb(255 255 255 / 0.5);
+      --hy-w-body: 400;
+      --hy-w-ui: 500;
+      --hy-w-em: 700;
+      --hy-size-title: 16px;
+      --hy-size-body: 14px;
+      --hy-size-meta: 12px;
+      --hy-radius: 12px;
+      --hy-gap-sm: 8px;
+      --hy-gap-lg: 24px;
+      --hy-border-faint: #d7d7e2;
+      --hy-border-soft: #b9b9c6;
+      --hy-side: #e4e7f1;
+      --hy-side-line: #cfd3e2;
     }
 
-    @container sp (min-width: 820px) {
-      #spacing .sp-trio { grid-template-columns: 1fr 1fr 1fr; }
+    #hierarchy .hy-credit {
+      margin-top: 0.35rem;
+      font-size: 0.72rem;
     }
 
+    #hierarchy .hy-span { grid-column: 1 / -1; }
+    #hierarchy .sec-grid > * { min-width: 0; }
+
+    #hierarchy .canvas-body.hy-fit {
+      align-items: stretch;
+      justify-content: flex-start;
+      min-height: 0;
+      padding: 16px;
+      gap: 12px;
+      container-type: inline-size;
+      container-name: hy;
+    }
+
+    #hierarchy .hy-pair,
+    #hierarchy .hy-trio,
+    #hierarchy .hy-quad,
+    #hierarchy .hy-split {
+      display: grid;
+      gap: 16px;
+      width: 100%;
+      align-items: start;
+    }
+
+    #hierarchy .hy-fig {
+      margin: 0;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    #hierarchy .hy-fig > figcaption,
+    #hierarchy .hy-cap {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px 8px;
+      margin: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 650;
+      line-height: 1.35;
+      color: var(--hy-soft);
+    }
+
+    #hierarchy .hy-cap {
+      color: var(--hy-ink);
+      font-weight: 700;
+    }
+
+    #hierarchy .hy-tags {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    #hierarchy .hy-tags span {
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: var(--hy-wash);
+      color: var(--hy-muted);
+      font-weight: 600;
+    }
+
+    #hierarchy .hy-check {
+      display: flex;
+      align-items: center;
+    }
+
+    #hierarchy .hy-check--end { justify-content: flex-end; }
+
+    #hierarchy .hy-ladder,
+    #hierarchy .hy-quiet {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+    }
+
+    #hierarchy .hy-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 16px;
+      border: 1px solid var(--hy-line);
+      border-radius: 999px;
+      background: var(--hy-card);
+      color: var(--hy-ink);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 650;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    #hierarchy .hy-toggle:hover {
+      background: color-mix(in srgb, var(--hy-wash) 55%, #fff);
+    }
+
+    #hierarchy .hy-check input:focus-visible + .hy-toggle {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    #hierarchy .hy-toggle .is-on { display: none; }
+
+    #hierarchy .hy-check:has(input:checked) .hy-toggle {
+      background: color-mix(in srgb, var(--accent) 12%, #fff);
+      border-color: color-mix(in srgb, var(--accent) 35%, var(--hy-line));
+      color: #3b3bd4;
+    }
+
+    #hierarchy .hy-check:has(input:checked) .hy-toggle .is-off { display: none; }
+    #hierarchy .hy-check:has(input:checked) .hy-toggle .is-on { display: inline; }
+
+    #hierarchy .hy-check:has(input:checked) .hy-toggle:hover {
+      background: color-mix(in srgb, var(--accent) 18%, #fff);
+    }
+
+    /* Harbour ladder */
+    #hierarchy .hy-case__body,
+    #hierarchy .hy-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #hierarchy .hy-case__body {
+      padding: 16px;
+      border: 1px solid var(--hy-line);
+      border-radius: var(--hy-radius);
+      background: var(--hy-card);
+    }
+
+    #hierarchy .hy-case p {
+      margin: 0;
+      line-height: 1.35;
+    }
+
+    #hierarchy .hy-case--flat p,
+    #hierarchy .hy-case--space p {
+      font-size: 13px;
+      font-weight: var(--hy-w-ui);
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-case--rank .hy-title {
+      font-size: var(--hy-size-title);
+      font-weight: var(--hy-w-em);
+      letter-spacing: -0.02em;
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-case--rank .hy-name {
+      font-size: var(--hy-size-body);
+      font-weight: 600;
+      color: var(--hy-muted);
+    }
+
+    #hierarchy .hy-case--rank .hy-body {
+      font-size: 13px;
+      font-weight: var(--hy-w-body);
+      color: var(--hy-soft);
+    }
+
+    #hierarchy .hy-case--rank .hy-meta {
+      font-size: var(--hy-size-meta);
+      font-weight: var(--hy-w-body);
+      color: var(--hy-soft);
+    }
+
+    #hierarchy .hy-gap {
+      display: block;
+      flex: none;
+      width: 100%;
+      height: var(--gap);
+      pointer-events: none;
+    }
+
+    #hierarchy .hy-ladder:has(#hy-gaps:checked) .hy-gap {
+      position: relative;
+      z-index: 1;
+      background: color-mix(in srgb, var(--accent) 18%, transparent);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 32%, transparent);
+      border-radius: 2px;
+    }
+
+    #hierarchy .hy-ladder:has(#hy-gaps:checked) .hy-gap::after {
+      content: attr(data-label);
+      position: absolute;
+      z-index: 1;
+      left: 8px;
+      top: 50%;
+      translate: 0 -50%;
+      padding: 2px 4px;
+      border-radius: 4px;
+      background: #fff;
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 28%, #fff);
+      color: #2a2a9a;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    /* Not all equal */
+    #hierarchy .hy-ledger {
+      min-width: 0;
+      padding: 12px 14px 8px;
+      border: 1px solid var(--hy-line);
+      border-radius: var(--hy-radius);
+      background: var(--hy-card);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #hierarchy .hy-ledger__nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 28px;
+    }
+
+    #hierarchy .hy-mark {
+      display: block;
+      width: 16px;
+      height: 16px;
+      flex: none;
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-navlink {
+      font-size: 12px;
+      font-weight: var(--hy-w-ui);
+      line-height: 1.2;
+      color: var(--hy-soft);
+    }
+
+    #hierarchy .hy-navlink.is-on {
+      color: var(--hy-ink);
+      font-weight: 650;
+    }
+
+    #hierarchy .hy-ledger__title {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    #hierarchy .hy-h,
+    #hierarchy .hy-date,
+    #hierarchy .hy-k,
+    #hierarchy .hy-v,
+    #hierarchy .hy-d {
+      margin: 0;
+    }
+
+    #hierarchy .hy-h {
+      font-size: 15px;
+      font-weight: var(--hy-w-em);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-date {
+      font-size: var(--hy-size-meta);
+      font-weight: var(--hy-w-body);
+      color: var(--hy-soft);
+    }
+
+    #hierarchy .hy-stats {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr 0.8fr;
+      gap: 8px;
+      padding: 8px 0;
+      border-top: 1px solid var(--hy-line);
+      border-bottom: 1px solid var(--hy-line);
+    }
+
+    #hierarchy .hy-k {
+      font-size: 11px;
+      font-weight: var(--hy-w-ui);
+      line-height: 1.3;
+      color: var(--hy-soft);
+    }
+
+    #hierarchy .hy-v {
+      margin-top: 2px;
+      font-size: 13px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-stats > div { min-width: 0; }
+
+    #hierarchy .hy-stats > div:first-child .hy-v {
+      font-size: 18px;
+      font-weight: var(--hy-w-em);
+    }
+
+    #hierarchy .hy-d {
+      margin-top: 2px;
+      font-size: 12px;
+      font-weight: var(--hy-w-ui);
+      font-variant-numeric: tabular-nums;
+      line-height: 1.3;
+      color: var(--hy-soft);
+    }
+
+    #hierarchy .hy-d.is-up { color: var(--hy-up); }
+
+    #hierarchy .hy-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-variant-numeric: tabular-nums;
+    }
+
+    #hierarchy .hy-table th,
+    #hierarchy .hy-table td {
+      padding: 5px 0;
+      text-align: left;
+      vertical-align: baseline;
+    }
+
+    #hierarchy .hy-table th {
+      font-size: 11px;
+      font-weight: var(--hy-w-ui);
+      color: var(--hy-soft);
+    }
+
+    #hierarchy .hy-table td {
+      border-top: 1px solid var(--hy-line);
+      font-size: 13px;
+      font-weight: var(--hy-w-ui);
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-table td:first-child { font-weight: 600; }
+
+    #hierarchy .hy-table th:nth-child(n + 2),
+    #hierarchy .hy-table td:nth-child(n + 2) {
+      text-align: right;
+      color: var(--hy-muted);
+      font-weight: var(--hy-w-ui);
+    }
+
+    #hierarchy .hy-ledger--flat .hy-mark { color: var(--hy-flat); }
+
+    #hierarchy .hy-ledger--flat .hy-h,
+    #hierarchy .hy-ledger--flat .hy-date,
+    #hierarchy .hy-ledger--flat .hy-k,
+    #hierarchy .hy-ledger--flat .hy-v,
+    #hierarchy .hy-ledger--flat .hy-d,
+    #hierarchy .hy-ledger--flat .hy-navlink,
+    #hierarchy .hy-ledger--flat .hy-table th,
+    #hierarchy .hy-ledger--flat .hy-table td {
+      font-size: 12px;
+      font-weight: var(--hy-w-ui);
+      letter-spacing: 0;
+      color: var(--hy-flat);
+    }
+
+    #hierarchy .hy-ledger--flat .hy-stats > div:first-child .hy-v,
+    #hierarchy .hy-ledger--flat .hy-d.is-up,
+    #hierarchy .hy-ledger--flat .hy-navlink.is-on,
+    #hierarchy .hy-ledger--flat .hy-table td:first-child,
+    #hierarchy .hy-ledger--flat .hy-table th:nth-child(n + 2),
+    #hierarchy .hy-ledger--flat .hy-table td:nth-child(n + 2) {
+      font-size: 12px;
+      font-weight: var(--hy-w-ui);
+      color: var(--hy-flat);
+    }
+
+    /* Size, weight, colour */
+    #hierarchy .hy-tour {
+      display: grid;
+      grid-template-columns: 88px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid var(--hy-line);
+      border-radius: var(--hy-radius);
+      background: var(--hy-card);
+    }
+
+    #hierarchy .hy-photo {
+      width: 88px;
+      height: 88px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    #hierarchy .hy-photo svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    #hierarchy .hy-tour__copy {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    #hierarchy .hy-tour__title,
+    #hierarchy .hy-tour__body,
+    #hierarchy .hy-tour__price,
+    #hierarchy .hy-tour__meta,
+    #hierarchy .hy-tour__note {
+      margin: 0;
+    }
+
+    #hierarchy .hy-tour--size .hy-tour__title {
+      font-size: 26px;
+      font-weight: var(--hy-w-body);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-tour--size .hy-tour__body {
+      font-size: 15px;
+      font-weight: var(--hy-w-body);
+      line-height: 1.35;
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-tour--size .hy-tour__price {
+      font-size: 22px;
+      font-weight: var(--hy-w-body);
+      line-height: 1.15;
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-tour--size .hy-tour__meta {
+      font-size: 11px;
+      font-weight: var(--hy-w-body);
+      line-height: 1.3;
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-tour--size .hy-tour__note {
+      font-size: 10px;
+      font-weight: var(--hy-w-body);
+      line-height: 1.3;
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-tour--rank .hy-tour__title {
+      font-size: 18px;
+      font-weight: var(--hy-w-em);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-tour--rank .hy-tour__body {
+      font-size: var(--hy-size-body);
+      font-weight: var(--hy-w-body);
+      line-height: 1.4;
+      color: var(--hy-muted);
+    }
+
+    #hierarchy .hy-tour--rank .hy-tour__price {
+      font-size: var(--hy-size-title);
+      font-weight: var(--hy-w-em);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-tour--rank .hy-tour__meta {
+      font-size: 13px;
+      font-weight: var(--hy-w-ui);
+      line-height: 1.35;
+      color: var(--hy-muted);
+    }
+
+    #hierarchy .hy-tour--rank .hy-tour__note {
+      font-size: 13px;
+      font-weight: var(--hy-w-body);
+      line-height: 1.35;
+      color: var(--hy-soft);
+    }
+
+    #hierarchy .hy-cta {
+      align-self: flex-start;
+      margin-top: 6px;
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
+      padding: 0 14px;
+      border-radius: 8px;
+      background: var(--hy-ink);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    #hierarchy .hy-ramp {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 14px;
+      margin: 4px 0 0;
+      padding: 0;
+    }
+
+    #hierarchy .hy-ramp li {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 28px;
+      font-size: 13px;
+      line-height: 1.2;
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 99px;
+      flex: none;
+    }
+
+    #hierarchy .hy-swatch--ink { background: var(--hy-ink); }
+    #hierarchy .hy-swatch--muted { background: var(--hy-muted); }
+    #hierarchy .hy-swatch--soft { background: var(--hy-soft); }
+
+    #hierarchy .is-ink { color: var(--hy-ink); font-weight: var(--hy-w-em); }
+    #hierarchy .is-muted { color: var(--hy-muted); font-weight: var(--hy-w-ui); }
+    #hierarchy .is-soft { color: var(--hy-soft); font-weight: var(--hy-w-body); }
+    #hierarchy .is-body { font-weight: var(--hy-w-body); }
+    #hierarchy .is-em { font-weight: var(--hy-w-em); }
+
+    #hierarchy .hy-thin {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+    }
+
+    #hierarchy .hy-thin p {
+      margin: 0;
+      padding: 10px 12px;
+      border: 1px solid var(--hy-line);
+      border-radius: 10px;
+      background: var(--hy-card);
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    #hierarchy .hy-thin .is-thin {
+      font-weight: 300;
+      font-family: Cantarell, ui-sans-serif, system-ui, sans-serif;
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-thin .is-quiet {
+      font-weight: var(--hy-w-ui);
+      color: var(--hy-soft);
+    }
+
+    /* Coloured ground */
+    #hierarchy .hy-band {
+      min-height: 92px;
+      padding: 14px;
+      border-radius: 10px;
+      background-color: var(--hy-band);
+      background-image: repeating-linear-gradient(
+        -14deg,
+        transparent 0 8px,
+        rgb(255 255 255 / 0.08) 8px 10px
+      );
+    }
+
+    #hierarchy .hy-band__title,
+    #hierarchy .hy-band__sub {
+      margin: 0;
+    }
+
+    #hierarchy .hy-band__title {
+      font-size: 15px;
+      font-weight: var(--hy-w-em);
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      color: var(--hy-on);
+    }
+
+    #hierarchy .hy-band__sub {
+      margin-top: 4px;
+      font-size: 13px;
+      font-weight: var(--hy-w-ui);
+      line-height: 1.35;
+    }
+
+    #hierarchy .hy-band--grey .hy-band__sub { color: var(--hy-on-grey); }
+    #hierarchy .hy-band--fade .hy-band__sub { color: var(--hy-on-fade); }
+    #hierarchy .hy-band--hue .hy-band__sub { color: var(--hy-on-soft); }
+
+    /* De-emphasize */
+    #hierarchy .hy-stage {
+      display: grid;
+      grid-template-columns: 7.4rem minmax(0, 1fr);
+      gap: 10px;
+      min-height: 176px;
+    }
+
+    #hierarchy .hy-stage__side {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 8px;
+      border: 1px solid var(--hy-side-line);
+      border-radius: 10px;
+      background: var(--hy-side);
+    }
+
+    #hierarchy .hy-navi {
+      display: flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0 8px;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.2;
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-navi.is-current {
+      background: #fff;
+      color: var(--hy-pop);
+    }
+
+    #hierarchy .hy-stage__main {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+      min-width: 0;
+      padding: 14px;
+      border: 1px solid var(--hy-line);
+      border-radius: 10px;
+      background: var(--hy-card);
+    }
+
+    #hierarchy .hy-stage__k,
+    #hierarchy .hy-stage__title,
+    #hierarchy .hy-stage__meta {
+      margin: 0;
+    }
+
+    #hierarchy .hy-stage__k {
+      font-size: 12px;
+      font-weight: var(--hy-w-ui);
+      color: var(--hy-soft);
+    }
+
+    #hierarchy .hy-stage__title {
+      font-size: 16px;
+      font-weight: var(--hy-w-em);
+      letter-spacing: -0.02em;
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-stage__meta {
+      font-size: 13px;
+      font-weight: var(--hy-w-body);
+      color: var(--hy-soft);
+    }
+
+    #hierarchy .hy-quiet:has(#hy-quiet:checked) .hy-stage__side {
+      background: transparent;
+      border-color: transparent;
+      padding-left: 0;
+    }
+
+    #hierarchy .hy-quiet:has(#hy-quiet:checked) .hy-navi {
+      color: var(--hy-soft);
+      font-weight: var(--hy-w-ui);
+    }
+
+    #hierarchy .hy-quiet:has(#hy-quiet:checked) .hy-navi.is-current {
+      background: transparent;
+      color: var(--hy-ink);
+      font-weight: var(--hy-w-em);
+    }
+
+    /* Labels */
+    #hierarchy .hy-specimen {
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid var(--hy-line);
+      border-radius: var(--hy-radius);
+      background: var(--hy-card);
+    }
+
+    #hierarchy .hy-dl {
+      margin: 0;
+    }
+
+    #hierarchy .hy-dl div {
+      display: grid;
+      grid-template-columns: 4.6rem minmax(0, 1fr);
+      gap: 8px;
+      padding: 6px 0;
+      border-top: 1px solid var(--hy-line);
+    }
+
+    #hierarchy .hy-dl div:first-child { border-top: 0; padding-top: 0; }
+    #hierarchy .hy-dl div:last-child { padding-bottom: 0; }
+
+    #hierarchy .hy-dl dt,
+    #hierarchy .hy-dl dd {
+      margin: 0;
+      min-width: 0;
+    }
+
+    #hierarchy .hy-dl--flat dt,
+    #hierarchy .hy-dl--flat dd {
+      font-size: 13px;
+      font-weight: var(--hy-w-ui);
+      line-height: 1.35;
+      color: var(--hy-flat);
+    }
+
+    #hierarchy .hy-dl dd {
+      overflow-wrap: anywhere;
+    }
+
+    #hierarchy .hy-bare {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    #hierarchy .hy-bare li {
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    #hierarchy .hy-bare .is-mail,
+    #hierarchy .hy-bare .is-phone {
+      font-size: 14px;
+      font-weight: var(--hy-w-body);
+      color: var(--hy-soft);
+      overflow-wrap: anywhere;
+    }
+
+    #hierarchy .hy-bare .is-fare {
+      font-size: 20px;
+      font-weight: var(--hy-w-em);
+      letter-spacing: -0.03em;
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-eq,
+    #hierarchy .hy-fold {
+      margin: 0;
+      line-height: 1.35;
+    }
+
+    #hierarchy .hy-eq {
+      font-size: 13px;
+      font-weight: var(--hy-w-ui);
+      color: var(--hy-flat);
+    }
+
+    #hierarchy .hy-fold {
+      margin-top: 8px;
+      font-size: 14px;
+      font-weight: var(--hy-w-body);
+      color: var(--hy-soft);
+    }
+
+    #hierarchy .hy-fold strong {
+      font-weight: var(--hy-w-em);
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-fold + .hy-eq { margin-top: 12px; }
+
+    #hierarchy .hy-spec {
+      display: grid;
+      gap: 12px;
+    }
+
+    #hierarchy .hy-spec__mode,
+    #hierarchy .hy-spec__k,
+    #hierarchy .hy-spec__v {
+      margin: 0;
+    }
+
+    #hierarchy .hy-spec__mode {
+      margin-bottom: 4px;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 650;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: var(--hy-soft);
+    }
+
+    #hierarchy .hy-spec__k {
+      font-size: 11px;
+      font-weight: var(--hy-w-ui);
+      color: var(--hy-soft);
+    }
+
+    #hierarchy .hy-spec__v {
+      margin-top: 2px;
+      font-size: 18px;
+      font-weight: var(--hy-w-em);
+      letter-spacing: -0.03em;
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-spec__k.is-word {
+      font-size: 14px;
+      font-weight: var(--hy-w-em);
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-spec__v.is-soft {
+      font-size: 14px;
+      font-weight: var(--hy-w-ui);
+      letter-spacing: 0;
+      color: var(--hy-muted);
+    }
+
+    /* Heading level vs visual rank */
+    #hierarchy .hy-doc {
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid var(--hy-line);
+      border-radius: var(--hy-radius);
+      background: var(--hy-wash);
+    }
+
+    #hierarchy .hy-role {
+      display: inline-flex;
+      align-items: center;
+      min-height: 18px;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 650;
+      color: var(--hy-soft);
+    }
+
+    #hierarchy .hy-doc__title {
+      margin: 4px 0 0;
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-doc--display .hy-doc__title {
+      font-size: 28px;
+      font-weight: var(--hy-w-em);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+    }
+
+    #hierarchy .hy-doc--label .hy-doc__title {
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--hy-soft);
+    }
+
+    #hierarchy .hy-doc__card {
+      margin-top: 10px;
+      padding: 12px;
+      border: 1px solid var(--hy-line);
+      border-radius: 8px;
+      background: var(--hy-card);
+    }
+
+    #hierarchy .hy-doc__k,
+    #hierarchy .hy-doc__name,
+    #hierarchy .hy-doc__hint {
+      margin: 0;
+    }
+
+    #hierarchy .hy-doc__k {
+      font-size: 11px;
+      font-weight: var(--hy-w-ui);
+      color: var(--hy-soft);
+    }
+
+    #hierarchy .hy-doc__name {
+      margin-top: 2px;
+      font-size: 16px;
+      font-weight: var(--hy-w-em);
+      letter-spacing: -0.02em;
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-doc__hint {
+      margin-top: 2px;
+      font-size: 13px;
+      font-weight: var(--hy-w-body);
+      color: var(--hy-soft);
+    }
+
+    /* Weight and contrast */
+    #hierarchy .hy-ico-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 36px;
+    }
+
+    #hierarchy .hy-ico {
+      display: block;
+      width: 18px;
+      height: 18px;
+      flex: none;
+    }
+
+    #hierarchy .hy-ico-row.is-heavy .hy-ico { color: var(--hy-ink); }
+
+    #hierarchy .hy-ico-row.is-heavy span {
+      font-size: 14px;
+      font-weight: var(--hy-w-body);
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-ico-row.is-balanced .hy-ico { color: var(--hy-soft); }
+
+    #hierarchy .hy-ico-row.is-balanced span {
+      font-size: 14px;
+      font-weight: var(--hy-w-ui);
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-boxes {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    #hierarchy .hy-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 64px;
+      border-radius: 10px;
+      background: var(--hy-card);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-box--faint { border: 1px solid var(--hy-border-faint); }
+    #hierarchy .hy-box--ink { border: 1px solid var(--hy-ink); }
+    #hierarchy .hy-box--soft { border: 2px solid var(--hy-border-soft); }
+
+    #hierarchy .hy-boxes figcaption {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 650;
+      color: var(--hy-soft);
+    }
+
+    #hierarchy .hy-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Actions */
+    #hierarchy .hy-btns {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #hierarchy .hy-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 36px;
+      padding: 0 12px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    #hierarchy .hy-btns--same .hy-btn {
+      background: var(--hy-ink);
+      border-color: var(--hy-ink);
+      color: #fff;
+    }
+
+    #hierarchy .hy-btns--same .is-alert {
+      background: var(--hy-down);
+      border-color: var(--hy-down);
+    }
+
+    #hierarchy .hy-btn--primary {
+      background: var(--hy-ink);
+      border-color: var(--hy-ink);
+      color: #fff;
+    }
+
+    #hierarchy .hy-btn--ghost {
+      background: var(--hy-card);
+      border-color: var(--hy-line);
+      color: var(--hy-ink);
+    }
+
+    #hierarchy .hy-btn--link {
+      background: transparent;
+      color: var(--hy-muted);
+      font-weight: var(--hy-w-ui);
+    }
+
+    #hierarchy .hy-btn--quiet-danger {
+      background: transparent;
+      color: var(--hy-down);
+      font-weight: var(--hy-w-ui);
+    }
+
+    #hierarchy .hy-btn--danger {
+      background: var(--hy-down);
+      border-color: var(--hy-down);
+      color: #fff;
+    }
+
+    #hierarchy .hy-confirm__ask { display: none; }
+
+    #hierarchy .hy-fig:has(#hy-confirm:checked) .hy-confirm__rest { display: none; }
+
+    #hierarchy .hy-fig:has(#hy-confirm:checked) .hy-confirm__ask {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    #hierarchy .hy-ask {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--hy-ink);
+    }
+
+    @container hy (min-width: 520px) {
+      #hierarchy .hy-thin { grid-template-columns: 1fr 1fr; }
+      #hierarchy .hy-split { grid-template-columns: 1fr 1fr; }
+    }
+
+    @container hy (min-width: 560px) {
+      #hierarchy .hy-trio { grid-template-columns: 1fr 1fr; }
+    }
+
+    @container hy (min-width: 640px) {
+      #hierarchy .hy-pair { grid-template-columns: 1fr 1fr; }
+      #hierarchy .hy-quad { grid-template-columns: 1fr 1fr; }
+    }
+
+    @container hy (min-width: 820px) {
+      #hierarchy .hy-trio { grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+    @container hy (min-width: 880px) {
+      #hierarchy .hy-quad { grid-template-columns: 1fr 1fr 1fr 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #hierarchy .hy-navi,
+      #hierarchy .hy-stage__side,
+      #hierarchy .hy-toggle {
+        transition: none;
+      }
+    }
 </style>
   <link rel="stylesheet" href="shared/site-header.css?v=4" />
-  <link rel="stylesheet" href="shared/section-fab.css" />
+  <link rel="stylesheet" href="shared/section-fab.css?v=3" />
 </head>
 <body data-page="gallery">
   <nav class="lib-nav" aria-label="Library sections">
@@ -3395,6 +4490,7 @@
       <a href="#glow-border">Glow border</a>
       <a href="#folder">Folder</a>
       <a href="#spacing">Spacing</a>
+      <a href="#hierarchy">Hierarchy</a>
       <a href="#color-combos">Color combos</a>
     </div>
   </nav>
@@ -3403,7 +4499,7 @@
     <header class="lib-hero">
       <h1>Component gallery</h1>
       <p>
-        Self-contained demos: Digits · Buttons · Cards · Palettes · Select · Glow border · Folder · Spacing · Color combos.
+        Self-contained demos: Digits · Buttons · Cards · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos.
         Digit scroll with a natural <code>linear()</code> spring (~10%
         overshoot), hard-coded glow CTAs (violet / teal / slate), nested-radius
         cards, ten page-shell colour palettes you can switch, twenty reference
@@ -5774,7 +6870,7 @@
     <section class="sec" id="spacing">
       <div class="sec-head">
         <h2>Spacing</h2>
-        <p>One 4px scale. Space, muted colour, and weight decide what you read first.</p>
+        <p>One 4px scale. More space around a group than inside it.</p>
       </div>
 
       <div class="sec-grid two">
@@ -6095,55 +7191,546 @@
           </div>
         </article>
 
-        <article class="canvas sp-span">
+                <article class="canvas sp-span">
           <div class="canvas-chrome">
-            <span class="canvas-name">Hierarchy</span>
-            <span class="canvas-tag">space · colour · weight</span>
+            <span class="canvas-name">Rank</span>
+            <span class="canvas-tag">colour · weight</span>
           </div>
           <div class="canvas-body sp-fit">
-            <div class="sp-trio">
-              <figure class="sp-case sp-case--flat">
-                <figcaption>Flat · hard to scan</figcaption>
-                <div class="sp-case__body">
-                  <p class="sp-title">Harbour notes</p>
-                  <span class="sp-gap" style="--gap: var(--stack-sm)" data-label="8" aria-hidden="true"></span>
-                  <p class="sp-name">Star Ferry</p>
-                  <span class="sp-gap" style="--gap: var(--stack-sm)" data-label="8" aria-hidden="true"></span>
-                  <p class="sp-body">Night crossing from Central.</p>
-                  <span class="sp-gap" style="--gap: var(--stack-sm)" data-label="8" aria-hidden="true"></span>
-                  <p class="sp-meta">Updated today</p>
+            <p class="sp-callout">Space groups related lines. Colour and weight decide which line you read first.</p>
+            <a class="sp-jump" href="#hierarchy">Open Hierarchy</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+
+    <!-- ===================== HIERARCHY ===================== -->
+    <section class="sec" id="hierarchy">
+      <div class="sec-head">
+        <h2>Hierarchy</h2>
+        <p>What you read first. Space groups it. Colour and weight rank it.</p>
+        <p class="hy-credit">Ideas adapted from Refactoring UI (Adam Wathan &amp; Steve Schoger).</p>
+      </div>
+
+      <div class="sec-grid two">
+        <article class="canvas hy-span">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Harbour ladder</span>
+            <span class="canvas-tag">space · colour · weight</span>
+          </div>
+          <div class="canvas-body hy-fit">
+            <div class="hy-ladder">
+              <div class="hy-check hy-check--end">
+                <input type="checkbox" id="hy-gaps" class="visually-hidden" />
+                <label for="hy-gaps" class="hy-toggle"><span class="is-off">Show gaps</span><span class="is-on">Hide gaps</span></label>
+              </div>
+              <div class="hy-trio">
+                <figure class="hy-fig hy-case hy-case--flat">
+                  <figcaption>
+                    <span class="hy-cap">Before</span>
+                    <span class="hy-tags"><span>gap 8</span><span>weight 500</span><span>one colour</span></span>
+                  </figcaption>
+                  <div class="hy-case__body">
+                    <p class="hy-title">Harbour notes</p>
+                    <span class="hy-gap" style="--gap: var(--hy-gap-sm)" data-label="8" aria-hidden="true"></span>
+                    <p class="hy-name">Star Ferry</p>
+                    <span class="hy-gap" style="--gap: var(--hy-gap-sm)" data-label="8" aria-hidden="true"></span>
+                    <p class="hy-body">Night crossing from Central.</p>
+                    <span class="hy-gap" style="--gap: var(--hy-gap-sm)" data-label="8" aria-hidden="true"></span>
+                    <p class="hy-meta">Updated today</p>
+                  </div>
+                </figure>
+                <figure class="hy-fig hy-case hy-case--space">
+                  <figcaption>
+                    <span class="hy-cap">Spacing only</span>
+                    <span class="hy-tags"><span>24 / 8</span><span>weight 500</span><span>one colour</span></span>
+                  </figcaption>
+                  <div class="hy-case__body">
+                    <p class="hy-title">Harbour notes</p>
+                    <span class="hy-gap" style="--gap: var(--hy-gap-lg)" data-label="24" aria-hidden="true"></span>
+                    <div class="hy-group">
+                      <p class="hy-name">Star Ferry</p>
+                      <span class="hy-gap" style="--gap: var(--hy-gap-sm)" data-label="8" aria-hidden="true"></span>
+                      <p class="hy-body">Night crossing from Central.</p>
+                    </div>
+                    <span class="hy-gap" style="--gap: var(--hy-gap-lg)" data-label="24" aria-hidden="true"></span>
+                    <p class="hy-meta">Updated today</p>
+                  </div>
+                </figure>
+                <figure class="hy-fig hy-case hy-case--rank">
+                  <figcaption>
+                    <span class="hy-cap">Spacing, colour, weight</span>
+                    <span class="hy-tags"><span>24 / 8</span><span>700 / 400</span><span>ink · muted · soft</span></span>
+                  </figcaption>
+                  <div class="hy-case__body">
+                    <p class="hy-title">Harbour notes</p>
+                    <span class="hy-gap" style="--gap: var(--hy-gap-lg)" data-label="24" aria-hidden="true"></span>
+                    <div class="hy-group">
+                      <p class="hy-name">Star Ferry</p>
+                      <span class="hy-gap" style="--gap: var(--hy-gap-sm)" data-label="8" aria-hidden="true"></span>
+                      <p class="hy-body">Night crossing from Central.</p>
+                    </div>
+                    <span class="hy-gap" style="--gap: var(--hy-gap-lg)" data-label="24" aria-hidden="true"></span>
+                    <p class="hy-meta">Updated today</p>
+                  </div>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="canvas hy-span">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Not all equal</span>
+            <span class="canvas-tag">same layout</span>
+          </div>
+          <div class="canvas-body hy-fit">
+            <div class="hy-pair">
+              <figure class="hy-fig">
+                <figcaption><span class="hy-cap">Competing</span></figcaption>
+                <div class="hy-ledger hy-ledger--flat">
+                  <div class="hy-ledger__nav">
+                    <svg class="hy-mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect width="16" height="16" rx="4" fill="currentColor"/><path d="M3 10.2 6 7.4l2 1.7L11.2 5.2 13 6.8V12H3v-1.8z" fill="#fff"/></svg>
+                    <span class="hy-navlink is-on">Overview</span>
+                    <span class="hy-navlink">Orders</span>
+                    <span class="hy-navlink">Transfers</span>
+                  </div>
+                  <div class="hy-ledger__title">
+                    <p class="hy-h">Overview</p>
+                    <p class="hy-date">As of today</p>
+                  </div>
+                  <div class="hy-stats">
+                    <div>
+                      <p class="hy-k">Total</p>
+                      <p class="hy-v">$2,480</p>
+                      <p class="hy-d is-up">+$86</p>
+                    </div>
+                    <div>
+                      <p class="hy-k">Tickets</p>
+                      <p class="hy-v">$1,960</p>
+                      <p class="hy-d is-up">+$64</p>
+                    </div>
+                    <div>
+                      <p class="hy-k">Cash</p>
+                      <p class="hy-v">$520</p>
+                      <p class="hy-d">Pier 7</p>
+                    </div>
+                  </div>
+                  <table class="hy-table">
+                    <caption class="visually-hidden">Holdings, equal emphasis</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Qty</th>
+                        <th scope="col">Value</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Night return</td>
+                        <td>2</td>
+                        <td>$86</td>
+                      </tr>
+                      <tr>
+                        <td>Day single</td>
+                        <td>4</td>
+                        <td>$48</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </figure>
-              <figure class="sp-case sp-case--space">
-                <figcaption>Spacing · groups appear</figcaption>
-                <div class="sp-case__body">
-                  <p class="sp-title">Harbour notes</p>
-                  <span class="sp-gap" style="--gap: var(--stack-xl)" data-label="24" aria-hidden="true"></span>
-                  <div class="sp-group">
-                    <p class="sp-name">Star Ferry</p>
-                    <span class="sp-gap" style="--gap: var(--stack-sm)" data-label="8" aria-hidden="true"></span>
-                    <p class="sp-body">Night crossing from Central.</p>
+              <figure class="hy-fig">
+                <figcaption><span class="hy-cap">Ranked</span></figcaption>
+                <div class="hy-ledger hy-ledger--rank">
+                  <div class="hy-ledger__nav">
+                    <svg class="hy-mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect width="16" height="16" rx="4" fill="currentColor"/><path d="M3 10.2 6 7.4l2 1.7L11.2 5.2 13 6.8V12H3v-1.8z" fill="#fff"/></svg>
+                    <span class="hy-navlink is-on">Overview</span>
+                    <span class="hy-navlink">Orders</span>
+                    <span class="hy-navlink">Transfers</span>
                   </div>
-                  <span class="sp-gap" style="--gap: var(--stack-xl)" data-label="24" aria-hidden="true"></span>
-                  <p class="sp-meta">Updated today</p>
-                </div>
-              </figure>
-              <figure class="sp-case sp-case--rank">
-                <figcaption>Space + type · clear</figcaption>
-                <div class="sp-case__body">
-                  <p class="sp-title">Harbour notes</p>
-                  <span class="sp-gap" style="--gap: var(--stack-xl)" data-label="24" aria-hidden="true"></span>
-                  <div class="sp-group">
-                    <p class="sp-name">Star Ferry</p>
-                    <span class="sp-gap" style="--gap: var(--stack-sm)" data-label="8" aria-hidden="true"></span>
-                    <p class="sp-body">Night crossing from Central.</p>
+                  <div class="hy-ledger__title">
+                    <p class="hy-h">Overview</p>
+                    <p class="hy-date">As of today</p>
                   </div>
-                  <span class="sp-gap" style="--gap: var(--stack-xl)" data-label="24" aria-hidden="true"></span>
-                  <p class="sp-meta">Updated today</p>
+                  <div class="hy-stats">
+                    <div>
+                      <p class="hy-k">Total</p>
+                      <p class="hy-v">$2,480</p>
+                      <p class="hy-d is-up">+$86</p>
+                    </div>
+                    <div>
+                      <p class="hy-k">Tickets</p>
+                      <p class="hy-v">$1,960</p>
+                      <p class="hy-d is-up">+$64</p>
+                    </div>
+                    <div>
+                      <p class="hy-k">Cash</p>
+                      <p class="hy-v">$520</p>
+                      <p class="hy-d">Pier 7</p>
+                    </div>
+                  </div>
+                  <table class="hy-table">
+                    <caption class="visually-hidden">Holdings, ranked</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Qty</th>
+                        <th scope="col">Value</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Night return</td>
+                        <td>2</td>
+                        <td>$86</td>
+                      </tr>
+                      <tr>
+                        <td>Day single</td>
+                        <td>4</td>
+                        <td>$48</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </figure>
             </div>
-            <p class="sp-callout">Outer space over inner space, ink against muted colour, and weight. Not more borders.</p>
+          </div>
+        </article>
+
+        <article class="canvas hy-span">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Size isn't everything</span>
+            <span class="canvas-tag">weight · colour</span>
+          </div>
+          <div class="canvas-body hy-fit">
+            <div class="hy-pair">
+              <figure class="hy-fig">
+                <figcaption><span class="hy-cap">Size only</span></figcaption>
+                <article class="hy-tour hy-tour--size">
+                  <div class="hy-photo" aria-hidden="true">
+                    <svg viewBox="0 0 96 96" focusable="false">
+                      <rect width="96" height="58" fill="#c5d7ea"/>
+                      <rect y="58" width="96" height="38" fill="#173f72"/>
+                      <g fill="#1c2430">
+                        <rect x="8" y="34" width="14" height="28"/>
+                        <rect x="24" y="22" width="16" height="40"/>
+                        <rect x="42" y="38" width="12" height="24"/>
+                        <rect x="56" y="26" width="18" height="36"/>
+                      </g>
+                      <g fill="#f4ead8">
+                        <rect x="11" y="40" width="3" height="3"/><rect x="16" y="40" width="3" height="3"/>
+                        <rect x="11" y="46" width="3" height="3"/><rect x="16" y="46" width="3" height="3"/>
+                        <rect x="28" y="30" width="3" height="3"/><rect x="33" y="30" width="3" height="3"/>
+                        <rect x="60" y="34" width="3" height="3"/><rect x="66" y="34" width="3" height="3"/>
+                        <rect x="60" y="40" width="3" height="3"/><rect x="66" y="40" width="3" height="3"/>
+                      </g>
+                      <rect x="6" y="70" width="34" height="8" rx="1" fill="#c4493a"/>
+                      <rect x="6" y="64" width="26" height="7" fill="#efe2c6"/>
+                      <rect x="32" y="66" width="5" height="12" fill="#1f7a4a"/>
+                    </svg>
+                  </div>
+                  <div class="hy-tour__copy">
+                    <p class="hy-tour__title">Night walk</p>
+                    <p class="hy-tour__body">Piers, neon, and the crossing.</p>
+                    <p class="hy-tour__price">$48 per person</p>
+                    <p class="hy-tour__meta">36 reviews</p>
+                    <p class="hy-tour__note">Fare depends on the sailing.</p>
+                    <span class="hy-cta">Book</span>
+                  </div>
+                </article>
+              </figure>
+              <figure class="hy-fig">
+                <figcaption><span class="hy-cap">Weight and colour</span></figcaption>
+                <article class="hy-tour hy-tour--rank">
+                  <div class="hy-photo" aria-hidden="true">
+                    <svg viewBox="0 0 96 96" focusable="false">
+                      <rect width="96" height="58" fill="#c5d7ea"/>
+                      <rect y="58" width="96" height="38" fill="#173f72"/>
+                      <g fill="#1c2430">
+                        <rect x="8" y="34" width="14" height="28"/>
+                        <rect x="24" y="22" width="16" height="40"/>
+                        <rect x="42" y="38" width="12" height="24"/>
+                        <rect x="56" y="26" width="18" height="36"/>
+                      </g>
+                      <g fill="#f4ead8">
+                        <rect x="11" y="40" width="3" height="3"/><rect x="16" y="40" width="3" height="3"/>
+                        <rect x="11" y="46" width="3" height="3"/><rect x="16" y="46" width="3" height="3"/>
+                        <rect x="28" y="30" width="3" height="3"/><rect x="33" y="30" width="3" height="3"/>
+                        <rect x="60" y="34" width="3" height="3"/><rect x="66" y="34" width="3" height="3"/>
+                        <rect x="60" y="40" width="3" height="3"/><rect x="66" y="40" width="3" height="3"/>
+                      </g>
+                      <rect x="6" y="70" width="34" height="8" rx="1" fill="#c4493a"/>
+                      <rect x="6" y="64" width="26" height="7" fill="#efe2c6"/>
+                      <rect x="32" y="66" width="5" height="12" fill="#1f7a4a"/>
+                    </svg>
+                  </div>
+                  <div class="hy-tour__copy">
+                    <p class="hy-tour__title">Night walk</p>
+                    <p class="hy-tour__body">Piers, neon, and the crossing.</p>
+                    <p class="hy-tour__price">$48 per person</p>
+                    <p class="hy-tour__meta">36 reviews</p>
+                    <p class="hy-tour__note">Fare depends on the sailing.</p>
+                    <span class="hy-cta">Book</span>
+                  </div>
+                </article>
+              </figure>
+            </div>
+            <ul class="hy-ramp" aria-label="Text colours and weights">
+              <li><span class="hy-swatch hy-swatch--ink" aria-hidden="true"></span><span class="is-ink">Ink</span></li>
+              <li><span class="hy-swatch hy-swatch--muted" aria-hidden="true"></span><span class="is-muted">Muted</span></li>
+              <li><span class="hy-swatch hy-swatch--soft" aria-hidden="true"></span><span class="is-soft">Soft</span></li>
+              <li><span class="is-body">400–500 body</span></li>
+              <li><span class="is-em">600–700 emphasis</span></li>
+            </ul>
+            <div class="hy-thin">
+              <figure class="hy-fig">
+                <figcaption><span class="hy-cap">Weight 300</span></figcaption>
+                <p class="is-thin">Too thin for UI body text.</p>
+              </figure>
+              <figure class="hy-fig">
+                <figcaption><span class="hy-cap">Softer colour</span></figcaption>
+                <p class="is-quiet">Same size. Easier to read.</p>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">On a colour</span>
+            <span class="canvas-tag">same hue</span>
+          </div>
+          <div class="canvas-body hy-fit">
+            <figure class="hy-fig">
+              <figcaption><span class="hy-cap">Grey · wrong hue</span></figcaption>
+              <div class="hy-band hy-band--grey">
+                <p class="hy-band__title">Night crossing</p>
+                <p class="hy-band__sub">Central · 19:10</p>
+              </div>
+            </figure>
+            <figure class="hy-fig">
+              <figcaption><span class="hy-cap">50% white · washed</span></figcaption>
+              <div class="hy-band hy-band--fade">
+                <p class="hy-band__title">Night crossing</p>
+                <p class="hy-band__sub">Central · 19:10</p>
+              </div>
+            </figure>
+            <figure class="hy-fig">
+              <figcaption><span class="hy-cap">Same hue · clear</span></figcaption>
+              <div class="hy-band hy-band--hue">
+                <p class="hy-band__title">Night crossing</p>
+                <p class="hy-band__sub">Central · 19:10</p>
+              </div>
+            </figure>
+          </div>
+        </article>
+
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">De-emphasize</span>
+            <span class="canvas-tag">quiet the rest</span>
+          </div>
+          <div class="canvas-body hy-fit">
+            <div class="hy-quiet">
+              <div class="hy-check hy-check--end">
+                <input type="checkbox" id="hy-quiet" class="visually-hidden" />
+                <label for="hy-quiet" class="hy-toggle"><span class="is-off">Quiet the rest</span><span class="is-on">Show the noise</span></label>
+              </div>
+              <div class="hy-stage">
+                <div class="hy-stage__side">
+                  <span class="hy-navi is-current" aria-current="page">Tonight</span>
+                  <span class="hy-navi">Schedule</span>
+                  <span class="hy-navi">Piers</span>
+                  <span class="hy-navi">Account</span>
+                </div>
+                <div class="hy-stage__main">
+                  <p class="hy-stage__k">Crossing</p>
+                  <p class="hy-stage__title">Celestial Star</p>
+                  <p class="hy-stage__meta">19:10 · Central to TST</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="canvas hy-span">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Labels</span>
+            <span class="canvas-tag">last resort</span>
+          </div>
+          <div class="canvas-body hy-fit">
+            <div class="hy-quad">
+              <figure class="hy-fig">
+                <figcaption><span class="hy-cap">Label wall</span></figcaption>
+                <div class="hy-specimen">
+                  <dl class="hy-dl hy-dl--flat">
+                    <div><dt>Email</dt><dd>ada@ferry.hk</dd></div>
+                    <div><dt>Phone</dt><dd>+852 5555 0142</dd></div>
+                    <div><dt>Fare</dt><dd>$48</dd></div>
+                  </dl>
+                </div>
+              </figure>
+              <figure class="hy-fig">
+                <figcaption><span class="hy-cap">Value is enough</span></figcaption>
+                <div class="hy-specimen">
+                  <ul class="hy-bare">
+                    <li class="is-fare">$48</li>
+                    <li class="is-mail">ada@ferry.hk</li>
+                    <li class="is-phone">+852 5555 0142</li>
+                  </ul>
+                </div>
+              </figure>
+              <figure class="hy-fig">
+                <figcaption><span class="hy-cap">Fold the label in</span></figcaption>
+                <div class="hy-specimen">
+                  <p class="hy-eq">In stock · 12</p>
+                  <p class="hy-fold"><strong>12</strong> seats left</p>
+                  <p class="hy-eq">Seats · 3</p>
+                  <p class="hy-fold"><strong>3</strong> seats together</p>
+                </div>
+              </figure>
+              <figure class="hy-fig">
+                <figcaption><span class="hy-cap">When a label stays</span></figcaption>
+                <div class="hy-specimen">
+                  <div class="hy-spec">
+                    <div>
+                      <p class="hy-spec__mode">Data first</p>
+                      <p class="hy-spec__k">Balance</p>
+                      <p class="hy-spec__v">$2,480</p>
+                    </div>
+                    <div>
+                      <p class="hy-spec__mode">Scan the word</p>
+                      <p class="hy-spec__k is-word">Beam</p>
+                      <p class="hy-spec__v is-soft">8.1 m</p>
+                    </div>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Heading level</span>
+            <span class="canvas-tag">visual rank</span>
+          </div>
+          <div class="canvas-body hy-fit">
+            <div class="hy-split">
+              <figure class="hy-fig">
+                <figcaption><span class="hy-cap">Display size</span></figcaption>
+                <div class="hy-doc hy-doc--display">
+                  <span class="hy-role">heading</span>
+                  <p class="hy-doc__title">Manage account</p>
+                  <div class="hy-doc__card">
+                    <p class="hy-doc__k">Profile</p>
+                    <p class="hy-doc__name">Ada Chen</p>
+                    <p class="hy-doc__hint">Shown on your pier pass</p>
+                  </div>
+                </div>
+              </figure>
+              <figure class="hy-fig">
+                <figcaption><span class="hy-cap">Label size</span></figcaption>
+                <div class="hy-doc hy-doc--label">
+                  <span class="hy-role">heading</span>
+                  <p class="hy-doc__title">Manage account</p>
+                  <div class="hy-doc__card">
+                    <p class="hy-doc__k">Profile</p>
+                    <p class="hy-doc__name">Ada Chen</p>
+                    <p class="hy-doc__hint">Shown on your pier pass</p>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Weight and contrast</span>
+            <span class="canvas-tag">balance both</span>
+          </div>
+          <div class="canvas-body hy-fit">
+            <div class="hy-stack">
+              <div class="hy-split">
+                <figure class="hy-fig">
+                  <figcaption><span class="hy-cap">Icon wins</span></figcaption>
+                  <div class="hy-specimen">
+                    <div class="hy-ico-row is-heavy">
+                      <svg class="hy-ico" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 1.25a4.25 4.25 0 0 0-4.25 4.25c0 3.15 4.25 9.25 4.25 9.25s4.25-6.1 4.25-9.25A4.25 4.25 0 0 0 8 1.25Zm0 5.75a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z"/></svg>
+                      <span>Central pier</span>
+                    </div>
+                  </div>
+                </figure>
+                <figure class="hy-fig">
+                  <figcaption><span class="hy-cap">Balanced</span></figcaption>
+                  <div class="hy-specimen">
+                    <div class="hy-ico-row is-balanced">
+                      <svg class="hy-ico" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 1.25a4.25 4.25 0 0 0-4.25 4.25c0 3.15 4.25 9.25 4.25 9.25s4.25-6.1 4.25-9.25A4.25 4.25 0 0 0 8 1.25Zm0 5.75a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z"/></svg>
+                      <span>Central pier</span>
+                    </div>
+                  </div>
+                </figure>
+              </div>
+              <div class="hy-boxes">
+                <figure class="hy-fig">
+                  <div class="hy-box hy-box--faint"><span>Tonight</span></div>
+                  <figcaption>1px faint</figcaption>
+                </figure>
+                <figure class="hy-fig">
+                  <div class="hy-box hy-box--ink"><span>Tonight</span></div>
+                  <figcaption>1px ink</figcaption>
+                </figure>
+                <figure class="hy-fig">
+                  <div class="hy-box hy-box--soft"><span>Tonight</span></div>
+                  <figcaption>2px soft</figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="canvas hy-span">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Actions</span>
+            <span class="canvas-tag">one primary</span>
+          </div>
+          <div class="canvas-body hy-fit">
+            <div class="hy-pair">
+              <figure class="hy-fig">
+                <figcaption><span class="hy-cap">Equal weight</span></figcaption>
+                <div class="hy-btns hy-btns--same">
+                  <span class="hy-btn">Save</span>
+                  <span class="hy-btn">Preview</span>
+                  <span class="hy-btn">Cancel</span>
+                  <span class="hy-btn is-alert">Delete</span>
+                </div>
+              </figure>
+              <figure class="hy-fig">
+                <figcaption><span class="hy-cap">By importance</span></figcaption>
+                <div class="hy-check">
+                  <input type="checkbox" id="hy-confirm" class="visually-hidden" />
+                  <label for="hy-confirm" class="hy-toggle"><span class="is-off">Show confirm</span><span class="is-on">Hide confirm</span></label>
+                </div>
+                <div class="hy-confirm__rest">
+                  <div class="hy-btns">
+                    <span class="hy-btn hy-btn--primary">Save</span>
+                    <span class="hy-btn hy-btn--ghost">Preview</span>
+                    <span class="hy-btn hy-btn--link">Cancel</span>
+                    <span class="hy-btn hy-btn--quiet-danger">Delete</span>
+                  </div>
+                </div>
+                <div class="hy-confirm__ask">
+                  <p class="hy-ask">Delete this account?</p>
+                  <div class="hy-btns">
+                    <span class="hy-btn hy-btn--ghost">Keep</span>
+                    <span class="hy-btn hy-btn--danger">Delete</span>
+                  </div>
+                </div>
+              </figure>
+            </div>
           </div>
         </article>
       </div>
@@ -6302,7 +7889,7 @@
     </section>
 
     <footer class="lib-foot">
-      Digits · Buttons · Cards · Palettes · Select · Glow border · Folder · Spacing · Color combos. Digit-scroll <code>lh</code> + natural
+      Digits · Buttons · Cards · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos. Digit-scroll <code>lh</code> + natural
       <code>linear()</code> spring (~10% overshoot) · hard-coded glow buttons
       (violet / teal / slate) · nested radius · page-shell palettes · colour pairings · color combos · native
       <code>appearance: base-select</code> · rotating <code>conic-gradient</code> rim · SVG glass folder. No CDN.
@@ -6750,6 +8337,6 @@
     })();
   </script>
   <script src="shared/site-header.js?v=4" defer></script>
-  <script src="shared/section-fab.js?v=2" defer></script>
+  <script src="shared/section-fab.js?v=3" defer></script>
 </body>
 </html>
