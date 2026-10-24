@@ -14,6 +14,7 @@
     { id: 'select', label: 'Select' },
     { id: 'glow-border', label: 'Glow border' },
     { id: 'folder', label: 'Folder' },
+    { id: 'spacing', label: 'Spacing' },
     { id: 'color-combos', label: 'Color combos' }
   ];
 
