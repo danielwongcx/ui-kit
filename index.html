@@ -124,12 +124,46 @@
       outline-offset: 2px;
     }
 
-    @media (max-width: 720px) {
+    @media (max-width: 767px) {
       .lib-nav {
-        display: none;
+        display: flex;
+        height: auto;
+        min-height: 52px;
+        padding: 6px 12px;
+        gap: 8px;
+        background: color-mix(in srgb, var(--page) 62%, transparent);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
       }
+
+      .lib-brand { display: none; }
+
+      .lib-links {
+        margin-left: 0;
+        width: 100%;
+        gap: 6px;
+        scroll-snap-type: x proximity;
+      }
+
+      .lib-links a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        padding: 0 14px;
+        scroll-snap-align: start;
+        background: color-mix(in srgb, #fff 55%, transparent);
+      }
+
+      .lib-links a.is-current {
+        color: var(--ink);
+        background: #fff;
+        box-shadow: 0 0 0 1px var(--line);
+      }
+
+      .lib-links a:active { transform: scale(0.97); }
+
       html {
-        scroll-padding-top: calc(var(--site-header-h, 56px) + 16px);
+        scroll-padding-top: calc(var(--site-header-h, 56px) + 108px);
       }
     }
 
@@ -5506,6 +5540,247 @@
         transition: none;
       }
     }
+
+    /* Mobile browse for Spacing and Hierarchy. Desktop rules above stay in place. */
+    .lesson-jump,
+    #spacing .sp-scrub { display: none; }
+
+    @media (max-width: 767px) {
+      #spacing .sec-head h2,
+      #hierarchy .sec-head h2 {
+        font-size: clamp(1.35rem, 5vw, 1.65rem);
+        line-height: 1.08;
+        letter-spacing: -0.02em;
+      }
+
+      #spacing .sec-head p,
+      #hierarchy .sec-head p {
+        font-size: 0.9375rem;
+        line-height: 1.5;
+        letter-spacing: 0;
+      }
+
+      #spacing .lesson-jump,
+      #hierarchy .lesson-jump {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin: 0 0 12px;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x proximity;
+        background: color-mix(in srgb, var(--page) 72%, transparent);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+      }
+
+      #spacing .lesson-jump.is-fixed,
+      #hierarchy .lesson-jump.is-fixed {
+        position: fixed;
+        z-index: 35;
+        left: 0;
+        right: 0;
+        top: calc(var(--site-header-h, 56px) + 52px);
+        margin: 0;
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      #spacing .lesson-jump a,
+      #hierarchy .lesson-jump a,
+      #spacing .lesson-jump button,
+      #hierarchy .lesson-jump button {
+        display: inline-flex;
+        align-items: center;
+        flex: none;
+        min-height: 44px;
+        padding: 0 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: color-mix(in srgb, #fff 70%, transparent);
+        color: var(--ink);
+        font: inherit;
+        font-size: 0.75rem;
+        font-weight: 650;
+        letter-spacing: 0.02em;
+        line-height: 1;
+        text-decoration: none;
+        white-space: nowrap;
+        scroll-snap-align: start;
+        cursor: pointer;
+        transition: transform 0.18s cubic-bezier(0.22, 1.15, 0.36, 1), background 0.18s ease;
+      }
+
+      #spacing .lesson-jump a.is-current,
+      #hierarchy .lesson-jump a.is-current {
+        background: #fff;
+        box-shadow: 0 0 0 1px var(--ink);
+      }
+
+      #spacing .lesson-jump a:active,
+      #hierarchy .lesson-jump a:active,
+      #spacing .lesson-jump button:active,
+      #hierarchy .lesson-jump button:active,
+      #spacing .sp-opt:active,
+      #spacing .sp-gaps:active,
+      #hierarchy .hy-toggle:active {
+        transform: scale(0.97);
+      }
+
+      #spacing .sp-ba,
+      #spacing .sp-compare,
+      #spacing .sp-split,
+      #hierarchy .hy-pair,
+      #hierarchy .hy-trio,
+      #hierarchy .hy-quad,
+      #hierarchy .hy-split {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        gap: 12px;
+        width: 100%;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x mandatory;
+        scroll-padding-inline: 2px;
+        padding-bottom: 8px;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      #spacing .sp-ba > *,
+      #spacing .sp-compare > *,
+      #spacing .sp-split > *,
+      #hierarchy .hy-pair > *,
+      #hierarchy .hy-trio > *,
+      #hierarchy .hy-quad > *,
+      #hierarchy .hy-split > * {
+        flex: 0 0 88%;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+        min-width: 0;
+      }
+
+      #spacing:has(#sp-side-wide:checked) .sp-fig {
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        -webkit-overflow-scrolling: touch;
+        mask-image: linear-gradient(90deg, #000 0%, #000 78%, transparent);
+      }
+
+      #spacing:has(#sp-side-wide:checked) .sp-side {
+        width: 440px;
+        max-width: none;
+      }
+
+      #hierarchy .hy-ledger--flat .hy-stats,
+      #hierarchy .hy-ledger--rank .hy-stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      #hierarchy .hy-ledger--rank .hy-stats > div:first-child {
+        grid-column: 1 / -1;
+      }
+
+      #hierarchy .hy-ledger--rank .hy-stats > div:first-child .hy-v {
+        font-size: clamp(1.65rem, 6vw, 2rem);
+        line-height: 1.08;
+        letter-spacing: -0.02em;
+      }
+
+      #spacing .sp-alias li {
+        grid-template-columns: minmax(0, 7.2rem) minmax(0, 1fr);
+      }
+
+      #spacing .sp-scrub {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        min-height: 44px;
+        margin: 0 0 8px;
+        font-family: var(--mono);
+        font-size: 0.75rem;
+        font-weight: 650;
+        letter-spacing: 0.02em;
+      }
+
+      #spacing .sp-scrub input {
+        flex: 1 1 auto;
+        min-width: 0;
+        min-height: 44px;
+        accent-color: var(--accent);
+      }
+
+      #spacing .sp-scrub output {
+        min-width: 3.2rem;
+        font-variant-numeric: tabular-nums;
+        text-align: right;
+      }
+
+      #spacing .sp-step.is-hot .sp-step__px { color: var(--accent); font-weight: 700; }
+      #spacing .sp-step.is-hot .sp-step__bar { background: var(--accent); }
+
+      #spacing .sp-board td,
+      #spacing .sp-board th,
+      #spacing .sp-auth__top,
+      #spacing .sp-fill__rows div,
+      #hierarchy .hy-ledger__nav {
+        min-width: 0;
+      }
+
+      #spacing .sp-board td:first-child,
+      #spacing .sp-board th:first-child,
+      #spacing .sp-board td:last-child,
+      #spacing .sp-board th:last-child,
+      #spacing .sp-auth__top,
+      #hierarchy .hy-ledger__nav {
+        white-space: normal;
+        flex-wrap: wrap;
+      }
+
+      #spacing .sp-board,
+      #hierarchy .hy-v,
+      #hierarchy .hy-d,
+      #hierarchy .hy-table {
+        font-variant-numeric: tabular-nums;
+      }
+
+      #hierarchy .hy-btns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+        gap: 8px;
+      }
+
+      #hierarchy .hy-btn {
+        width: 100%;
+        min-height: 44px;
+      }
+
+      #spacing [id],
+      #hierarchy [id] {
+        scroll-margin-top: calc(var(--site-header-h, 56px) + 120px);
+      }
+
+      #spacing .sp-vp-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        overflow: visible;
+        scroll-snap-type: none;
+      }
+    }
+
+    @media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+      .lib-links a,
+      .lesson-jump a,
+      .lesson-jump button,
+      #spacing .sp-opt,
+      #spacing .sp-gaps,
+      #hierarchy .hy-toggle {
+        transition: none;
+        transform: none;
+      }
+    }
 </style>
   <link rel="stylesheet" href="shared/site-header.css?v=6" />
   <link rel="stylesheet" href="shared/section-fab.css?v=3" />
@@ -7949,14 +8224,29 @@
         <p class="sp-credit">Ideas adapted from Refactoring UI (Adam Wathan &amp; Steve Schoger).</p>
       </div>
 
+      <nav class="lesson-jump" aria-label="Spacing lessons">
+        <a href="#spacing">Top</a>
+        <a href="#sp-scale">Scale</a>
+        <a href="#sp-aliases">Aliases</a>
+        <a href="#sp-space">White space</a>
+        <a href="#sp-grids">Grids</a>
+        <a href="#sp-groups">Groups</a>
+        <button type="button" data-collapse>Collapse</button>
+      </nav>
+
       <div class="sec-grid two">
-        <article class="canvas sp-span">
+        <article class="canvas sp-span" id="sp-scale">
           <div class="canvas-chrome">
             <span class="canvas-name">Scale</span>
             <span class="canvas-tag">4px base · 0–96</span>
           </div>
           <div class="canvas-body sp-fit">
             <p class="sp-legend"><span class="sp-legend__swatch" aria-hidden="true"></span>Working set 4 · 8 · 12 · 16 · 24 · 32 · 48 · 64</p>
+            <label class="sp-scrub" for="sp-scrub">
+              <span>Scale</span>
+              <input type="range" id="sp-scrub" min="0" max="7" step="1" value="3" aria-valuetext="16 pixels" />
+              <output id="sp-scrub-val" for="sp-scrub">16px</output>
+            </label>
             <ul class="sp-scale">
               <li class="sp-step" style="--step: 0" aria-label="0 pixels">
                 <span class="sp-step__px">0</span>
@@ -8046,7 +8336,7 @@
           </div>
         </article>
 
-          <article class="canvas">
+          <article class="canvas" id="sp-aliases">
             <div class="canvas-chrome">
               <span class="canvas-name">Aliases</span>
               <span class="canvas-tag">true px</span>
@@ -8267,7 +8557,7 @@
           </div>
         </article>
 
-        <article class="canvas sp-span">
+        <article class="canvas sp-span" id="sp-space">
           <div class="canvas-chrome">
             <span class="canvas-name">White space</span>
             <span class="canvas-tag">start generous</span>
@@ -8523,7 +8813,7 @@
           </div>
         </article>
 
-        <article class="canvas sp-span">
+        <article class="canvas sp-span" id="sp-grids">
           <div class="canvas-chrome">
             <span class="canvas-name">Grids</span>
             <span class="canvas-tag">fixed · max-width</span>
@@ -8690,7 +8980,7 @@
           </div>
         </article>
 
-        <article class="canvas sp-span">
+        <article class="canvas sp-span" id="sp-groups">
           <div class="canvas-chrome">
             <span class="canvas-name">Groups</span>
             <span class="canvas-tag">around, then within</span>
@@ -8846,8 +9136,17 @@
         <p class="hy-credit">Ideas adapted from Refactoring UI (Adam Wathan &amp; Steve Schoger).</p>
       </div>
 
+      <nav class="lesson-jump" aria-label="Hierarchy lessons">
+        <a href="#hierarchy">Top</a>
+        <a href="#hy-ladder">Ladder</a>
+        <a href="#hy-equal">Equal weight</a>
+        <a href="#hy-colour">On a colour</a>
+        <a href="#hy-actions">Actions</a>
+        <button type="button" data-collapse>Collapse</button>
+      </nav>
+
       <div class="sec-grid two">
-        <article class="canvas hy-span">
+        <article class="canvas hy-span" id="hy-ladder">
           <div class="canvas-chrome">
             <span class="canvas-name">Harbour ladder</span>
             <span class="canvas-tag">space · colour · weight</span>
@@ -8913,7 +9212,7 @@
           </div>
         </article>
 
-        <article class="canvas hy-span">
+        <article class="canvas hy-span" id="hy-equal">
           <div class="canvas-chrome">
             <span class="canvas-name">Not all equal</span>
             <span class="canvas-tag">same layout</span>
@@ -9130,7 +9429,7 @@
           </div>
         </article>
 
-        <article class="canvas">
+        <article class="canvas" id="hy-colour">
           <div class="canvas-chrome">
             <span class="canvas-name">On a colour</span>
             <span class="canvas-tag">same hue</span>
@@ -9325,7 +9624,7 @@
           </div>
         </article>
 
-        <article class="canvas hy-span">
+        <article class="canvas hy-span" id="hy-actions">
           <div class="canvas-chrome">
             <span class="canvas-name">Actions</span>
             <span class="canvas-tag">one primary</span>
@@ -10092,6 +10391,109 @@
 
       applyTransparency(slider.value);
       applyColor('teal');
+    })();
+  </script>
+  <script>
+    (function () {
+      var reduce = false;
+      try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+      var narrowQuery = window.matchMedia('(max-width: 767px)');
+
+      var navItems = Array.prototype.slice.call(document.querySelectorAll('.lib-links a[href^="#"]')).map(function (a) {
+        return { a: a, sec: document.getElementById(a.getAttribute('href').slice(1)) };
+      }).filter(function (item) { return item.sec; });
+
+      function markNav() {
+        if (!navItems.length) return;
+        var line = window.scrollY + Math.min(window.innerHeight * 0.42, 280);
+        var current = navItems[0];
+        navItems.forEach(function (item) {
+          if (item.sec.offsetTop <= line) current = item;
+        });
+        navItems.forEach(function (item) {
+          var on = item === current;
+          item.a.classList.toggle('is-current', on);
+          if (on) item.a.setAttribute('aria-current', 'location');
+          else item.a.removeAttribute('aria-current');
+        });
+        if (current && narrowQuery.matches) {
+          var bar = current.a.parentElement;
+          var left = current.a.offsetLeft - 12;
+          if (Math.abs(bar.scrollLeft - left) > 48) {
+            bar.scrollTo({ left: Math.max(0, left), behavior: reduce ? 'auto' : 'smooth' });
+          }
+        }
+      }
+
+      Array.prototype.forEach.call(document.querySelectorAll('.lesson-jump'), function (bar) {
+        var sec = bar.closest('.sec');
+        var spacer = document.createElement('div');
+        spacer.hidden = true;
+        bar.after(spacer);
+        var links = Array.prototype.slice.call(bar.querySelectorAll('a[href^="#"]'));
+        bar._place = function () {
+          if (!narrowQuery.matches || sec.classList.contains('is-collapsed')) {
+            bar.classList.remove('is-fixed');
+            spacer.hidden = true;
+            return;
+          }
+          var rect = sec.getBoundingClientRect();
+          var stick = 56 + 52;
+          var pin = rect.top < stick && rect.bottom > stick + 80;
+          bar.classList.toggle('is-fixed', pin);
+          spacer.hidden = !pin;
+          if (pin) spacer.style.height = bar.offsetHeight + 'px';
+          var current = null;
+          links.forEach(function (a) {
+            var el = document.getElementById(a.getAttribute('href').slice(1));
+            if (el && el.getBoundingClientRect().top <= stick + 36) current = a;
+          });
+          links.forEach(function (a) {
+            var on = a === current;
+            a.classList.toggle('is-current', on);
+            if (on) a.setAttribute('aria-current', 'location');
+            else a.removeAttribute('aria-current');
+          });
+        };
+        var collapse = bar.querySelector('[data-collapse]');
+        if (collapse) {
+          collapse.addEventListener('click', function () {
+            var toggle = sec.querySelector('.sec-toggle');
+            if (toggle) toggle.click();
+            bar._place();
+          });
+        }
+      });
+
+      var steps = [4, 8, 12, 16, 24, 32, 48, 64];
+      var scrub = document.getElementById('sp-scrub');
+      var scrubOut = document.getElementById('sp-scrub-val');
+      if (scrub) {
+        function paintScrub() {
+          var px = steps[Number(scrub.value)] || 16;
+          if (scrubOut) scrubOut.textContent = px + 'px';
+          scrub.setAttribute('aria-valuetext', px + ' pixels');
+          Array.prototype.forEach.call(document.querySelectorAll('#spacing .sp-step'), function (li) {
+            li.classList.toggle('is-hot', li.style.getPropertyValue('--step').trim() === String(px));
+          });
+        }
+        scrub.addEventListener('input', function () {
+          paintScrub();
+          var hot = document.querySelector('#spacing .sp-step.is-hot');
+          if (hot && narrowQuery.matches) hot.scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
+        });
+        paintScrub();
+      }
+
+      function onScroll() {
+        markNav();
+        Array.prototype.forEach.call(document.querySelectorAll('.lesson-jump'), function (bar) {
+          if (bar._place) bar._place();
+        });
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      onScroll();
     })();
   </script>
   <script src="shared/site-header.js?v=7" defer></script>
