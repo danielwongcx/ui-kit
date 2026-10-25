@@ -2456,6 +2456,64 @@
       opacity: 1;
     }
 
+    .gfolder-colors {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.45rem;
+      flex-basis: 100%;
+    }
+
+    .gfolder-swatch {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      min-height: 36px;
+      margin: 0;
+      padding: 0.35rem 0.75rem 0.35rem 0.45rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #f7f7f9;
+      color: var(--ink);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .gfolder-swatch:hover {
+      background: #fff;
+      border-color: #cfcfd8;
+    }
+
+    .gfolder-swatch:has(input:checked) {
+      background: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent);
+    }
+
+    .gfolder-swatch:has(input:focus-visible) {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .gfolder-swatch input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: 0;
+      opacity: 0;
+    }
+
+    .gfolder-chip {
+      width: 0.95rem;
+      height: 0.95rem;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: var(--chip);
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.16);
+    }
+
     .gfolder-pocket {
       opacity: calc(1 - var(--gfolder-transparency, 0.22));
       transition: opacity 0.12s ease;
@@ -7123,11 +7181,44 @@
       <div class="sec-head">
         <h2>Folder</h2>
         <p>
-          Frosted teal glass pocket with a raised right plateau, subsurface paper refraction, dog-eared sheets, overlapping member avatars, and status pill.
+          Frosted glass pocket with a raised right plateau, subsurface paper refraction, dog-eared sheets, overlapping member avatars, and status pill.
         </p>
       </div>
 
       <div class="gfolder-controls" role="group" aria-label="Folder card options">
+        <div class="gfolder-colors" role="radiogroup" aria-label="Glass color">
+          <label class="gfolder-swatch">
+            <input type="radio" name="gfolder-color" value="teal" checked />
+            <span class="gfolder-chip" style="--chip:#4b6467"></span>
+            Teal
+          </label>
+          <label class="gfolder-swatch">
+            <input type="radio" name="gfolder-color" value="ice" />
+            <span class="gfolder-chip" style="--chip:#5d7c90"></span>
+            Ice
+          </label>
+          <label class="gfolder-swatch">
+            <input type="radio" name="gfolder-color" value="smoke" />
+            <span class="gfolder-chip" style="--chip:#6a6c74"></span>
+            Smoke
+          </label>
+          <label class="gfolder-swatch">
+            <input type="radio" name="gfolder-color" value="amber" />
+            <span class="gfolder-chip" style="--chip:#a86b32"></span>
+            Amber
+          </label>
+          <label class="gfolder-swatch">
+            <input type="radio" name="gfolder-color" value="rose" />
+            <span class="gfolder-chip" style="--chip:#a85a70"></span>
+            Rose
+          </label>
+          <label class="gfolder-swatch">
+            <input type="radio" name="gfolder-color" value="indigo" />
+            <span class="gfolder-chip" style="--chip:#5c5e98"></span>
+            Indigo
+          </label>
+        </div>
+
         <label class="gfolder-slider-wrap" for="gfolder-transparency">
           <span>Transparency</span>
           <input
@@ -7176,7 +7267,7 @@
             <span class="gfolder-check" aria-hidden="true">
               <svg viewBox="0 0 12 12"><path d="M2.2 6.2 4.8 8.8 9.8 3.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
             </span>
-            <span>Frosted teal back</span>
+            <span>Frosted back</span>
           </button>
         </div>
       </div>
@@ -7270,10 +7361,10 @@
 
                       <linearGradient id="gf-pocket-rim-grad" x1="36" y1="108" x2="332" y2="108" gradientUnits="userSpaceOnUse">
                         <stop offset="0%" stop-color="#ffffff" stop-opacity="0.32" />
-                        <stop offset="10%" stop-color="#f3fbfb" stop-opacity="0.76" />
+                        <stop class="gf-rim-tint" offset="10%" stop-color="#f3fbfb" stop-opacity="0.76" />
                         <stop offset="44%" stop-color="#ffffff" stop-opacity="0.88" />
-                        <stop offset="80%" stop-color="#f2fbfb" stop-opacity="0.8" />
-                        <stop offset="94%" stop-color="#d8ebeb" stop-opacity="0.54" />
+                        <stop class="gf-rim-tint" offset="80%" stop-color="#f2fbfb" stop-opacity="0.8" />
+                        <stop class="gf-rim-tint" offset="94%" stop-color="#d8ebeb" stop-opacity="0.54" />
                         <stop offset="100%" stop-color="#ffffff" stop-opacity="0.2" />
                       </linearGradient>
 
@@ -7372,6 +7463,7 @@
                             cy="76"
                             rx="78"
                             ry="26"
+                            data-gf-fill="back-a"
                             fill="#dff2f1"
                             fill-opacity="0.58"
                           />
@@ -7380,6 +7472,7 @@
                             cy="88"
                             rx="64"
                             ry="24"
+                            data-gf-fill="back-b"
                             fill="#d0ebe9"
                             fill-opacity="0.45"
                           />
@@ -7388,6 +7481,7 @@
                             cy="204"
                             rx="136"
                             ry="36"
+                            data-gf-fill="back-c"
                             fill="#233538"
                             fill-opacity="0.64"
                           />
@@ -7493,6 +7587,7 @@
                           height="80"
                           rx="16"
                           transform="rotate(-10 121 114)"
+                          data-gf-fill="frost-a"
                           fill="#e6f4f3"
                           fill-opacity="0.74"
                         />
@@ -7503,6 +7598,7 @@
                           height="86"
                           rx="16"
                           transform="rotate(8 226 113)"
+                          data-gf-fill="frost-b"
                           fill="#e2f2f1"
                           fill-opacity="0.85"
                         />
@@ -7513,6 +7609,7 @@
                           rx="94"
                           ry="42"
                           transform="rotate(7 136 194)"
+                          data-gf-fill="shade-a"
                           fill="#233336"
                           fill-opacity="0.84"
                         />
@@ -7523,6 +7620,7 @@
                           rx="36"
                           ry="58"
                           transform="rotate(12 310 176)"
+                          data-gf-fill="shade-b"
                           fill="#2d4245"
                           fill-opacity="0.78"
                         />
@@ -7532,6 +7630,7 @@
                           cy="168"
                           rx="24"
                           ry="44"
+                          data-gf-fill="shade-c"
                           fill="#445c5f"
                           fill-opacity="0.56"
                         />
@@ -7539,6 +7638,7 @@
 
                       <path
                         d="M 280 94 L 308 94 L 232 182 L 196 175 Z"
+                        data-gf-fill="ridge"
                         fill="#ebf8f7"
                         fill-opacity="0.32"
                         filter="url(#gf-glass-soft-ridge)"
@@ -7551,6 +7651,7 @@
                            C 151 114, 158 94, 174 94
                            H 308
                            C 319 94, 327 101, 329 112"
+                        data-gf-fill="lip"
                         stroke="#f2fbfb"
                         stroke-width="5"
                         stroke-opacity="0.34"
@@ -9436,23 +9537,142 @@
       var card = root.querySelector('.gfolder-card');
       var svg = root.querySelector('.gfolder-svg');
       var toggles = Array.prototype.slice.call(root.querySelectorAll('[data-gfolder-toggle]'));
+      var colorInputs = Array.prototype.slice.call(root.querySelectorAll('input[name="gfolder-color"]'));
+      var colorLabel = 'Teal';
+
+      var COLORS = {
+        teal: {
+          name: 'Teal',
+          pocket: ['#bfd8d7', '#89a8a8', '#4b6467', '#324648'],
+          back: ['#a8cbc9', '#769a9b', '#435d60', '#2d4143'],
+          rim: ['#f3fbfb', '#f2fbfb', '#d8ebeb'],
+          frost: ['#e6f4f3', '#e2f2f1'],
+          shade: ['#233336', '#2d4245', '#445c5f'],
+          ridge: '#ebf8f7',
+          lip: '#f2fbfb',
+          backFrost: ['#dff2f1', '#d0ebe9', '#233538'],
+          badge: ['#8c9e9f', '#6a7c7e']
+        },
+        ice: {
+          name: 'Ice',
+          pocket: ['#d5e4ee', '#9bb4c6', '#5d7c90', '#3a5160'],
+          back: ['#c5d7e4', '#8aa6b8', '#4e6a7c', '#334858'],
+          rim: ['#f4f8fb', '#eef5f8', '#d5e4ee'],
+          frost: ['#f3f8fb', '#e7f1f6'],
+          shade: ['#24323c', '#2e4250', '#4a6270'],
+          ridge: '#f4f9fc',
+          lip: '#f7fbfd',
+          backFrost: ['#eef6fa', '#dceaf2', '#243440'],
+          badge: ['#8ea6b6', '#6d8798']
+        },
+        smoke: {
+          name: 'Smoke',
+          pocket: ['#d8d9de', '#a4a6ae', '#6a6c74', '#43454c'],
+          back: ['#c8c9cf', '#8e9098', '#585a62', '#36383e'],
+          rim: ['#f5f5f7', '#eeeef1', '#d9dade'],
+          frost: ['#f4f5f7', '#e8e9ed'],
+          shade: ['#2a2c31', '#35373d', '#52545c'],
+          ridge: '#f7f7f9',
+          lip: '#f6f6f8',
+          backFrost: ['#eeeef2', '#e0e1e6', '#2c2e33'],
+          badge: ['#9a9ca4', '#787a82']
+        },
+        amber: {
+          name: 'Amber',
+          pocket: ['#f0ddc4', '#d4a56a', '#a86b32', '#6b4120'],
+          back: ['#e8cba6', '#c48a45', '#8d5524', '#5a3416'],
+          rim: ['#fff6ec', '#fbebd8', '#f0d7b4'],
+          frost: ['#fff6ea', '#fbe8d0'],
+          shade: ['#3a2616', '#4a321c', '#6b4a28'],
+          ridge: '#fff8ef',
+          lip: '#fff9f2',
+          backFrost: ['#fff3e4', '#f6e0c4', '#3d2818'],
+          badge: ['#c4a078', '#a07c50']
+        },
+        rose: {
+          name: 'Rose',
+          pocket: ['#f0d4dc', '#d492a4', '#a85a70', '#6b3344'],
+          back: ['#e8c0cc', '#c47890', '#8d455c', '#5a2c3a'],
+          rim: ['#fff4f6', '#fbe6eb', '#f0d0d8'],
+          frost: ['#fff3f6', '#fbe4ea'],
+          shade: ['#3a222a', '#4a2c36', '#6b4450'],
+          ridge: '#fff6f8',
+          lip: '#fff7f9',
+          backFrost: ['#fff0f3', '#f6dce3', '#3d242c'],
+          badge: ['#c498a6', '#a07084']
+        },
+        indigo: {
+          name: 'Indigo',
+          pocket: ['#d6d7ee', '#9a9cc8', '#5c5e98', '#383a64'],
+          back: ['#c6c8e4', '#8486b4', '#4c4e84', '#2e3058'],
+          rim: ['#f4f4fb', '#ececf8', '#d4d6ee'],
+          frost: ['#f4f4fb', '#e8e8f6'],
+          shade: ['#26283c', '#323450', '#4a4c70'],
+          ridge: '#f6f6fc',
+          lip: '#f7f7fd',
+          backFrost: ['#f0f0fa', '#e0e2f4', '#282a40'],
+          badge: ['#989aba', '#7476a0']
+        }
+      };
+
+      function paintStops(id, colors) {
+        var grad = document.getElementById(id);
+        if (!grad) return;
+        var stops = grad.querySelectorAll('stop');
+        for (var i = 0; i < colors.length && i < stops.length; i++) {
+          stops[i].setAttribute('stop-color', colors[i]);
+        }
+      }
+
+      function paintFill(key, color, attr) {
+        var el = svg && svg.querySelector('[data-gf-fill="' + key + '"]');
+        if (el) el.setAttribute(attr || 'fill', color);
+      }
+
+      function applyColor(id) {
+        var palette = COLORS[id];
+        if (!palette) return;
+        colorLabel = palette.name;
+        paintStops('gf-pocket-base-grad', palette.pocket);
+        paintStops('gf-back-teal-grad', palette.back);
+        paintStops('gf-badge-grad', palette.badge);
+        var rim = document.querySelectorAll('#gf-pocket-rim-grad .gf-rim-tint');
+        for (var i = 0; i < palette.rim.length && i < rim.length; i++) {
+          rim[i].setAttribute('stop-color', palette.rim[i]);
+        }
+        paintFill('frost-a', palette.frost[0]);
+        paintFill('frost-b', palette.frost[1]);
+        paintFill('shade-a', palette.shade[0]);
+        paintFill('shade-b', palette.shade[1]);
+        paintFill('shade-c', palette.shade[2]);
+        paintFill('ridge', palette.ridge);
+        paintFill('lip', palette.lip, 'stroke');
+        paintFill('back-a', palette.backFrost[0]);
+        paintFill('back-b', palette.backFrost[1]);
+        paintFill('back-c', palette.backFrost[2]);
+        colorInputs.forEach(function (input) {
+          input.checked = input.value === id;
+        });
+        syncAria();
+      }
 
       function syncAria() {
         var showTime = root.getAttribute('data-show-update-time') !== 'false';
         var showBy = root.getAttribute('data-show-updated-by') !== 'false';
-        var tealBack = root.getAttribute('data-teal-back') === 'true';
+        var glassBack = root.getAttribute('data-teal-back') === 'true';
+        var glass = colorLabel.toLowerCase();
         if (card) {
           var cardParts = ['Onboarding folder, 15 files, 3 subfolders'];
-          if (tealBack) cardParts.push('frosted teal glass back');
+          if (glassBack) cardParts.push('frosted ' + glass + ' glass back');
           if (showTime) cardParts.push('updated 2 hours ago');
           if (showBy) cardParts.push('updated by M and A');
           card.setAttribute('aria-label', cardParts.join(', '));
         }
         if (svg) {
           var svgParts = [
-            tealBack
-              ? 'Frosted teal glass folder with frosted teal glass back containing two dog-eared documents'
-              : 'Frosted teal glass folder containing two dog-eared documents'
+            glassBack
+              ? 'Frosted ' + glass + ' glass folder with frosted ' + glass + ' glass back containing two dog-eared documents'
+              : 'Frosted ' + glass + ' glass folder containing two dog-eared documents'
           ];
           if (showBy) svgParts.push('M and A member avatars');
           if (showTime) svgParts.push('Updated 2h badge');
@@ -9489,8 +9709,14 @@
         });
       });
 
+      colorInputs.forEach(function (input) {
+        input.addEventListener('change', function () {
+          if (input.checked) applyColor(input.value);
+        });
+      });
+
       applyTransparency(slider.value);
-      syncAria();
+      applyColor('teal');
     })();
   </script>
   <script src="shared/site-header.js?v=6" defer></script>
