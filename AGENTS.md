@@ -9,6 +9,7 @@ Multi-page **static** UI kit published on GitHub Pages from the `main` branch ro
 - Gallery: https://danielwongcx.github.io/ui-kit/ (`index.html`, mirrored by `ui-combo.html`) — Digits · Buttons · Cards · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos; keep index unchanged when adding other pages. Color combos (`#color-combos`) is on `index.html` only. Hierarchy (`#hierarchy`) owns visual rank, including the harbour ladder. Spacing links there and stays on the scale.
 - Digest: https://danielwongcx.github.io/ui-kit/digest.html
 - Taste: https://danielwongcx.github.io/ui-kit/taste.html (`taste.html`) — motion / app-data / buttons+ / states / forms / cards+ patterns from taste-skill study
+- Refactor UI: https://danielwongcx.github.io/ui-kit/refactor-ui.html (`refactor-ui.html`) — interactive handbook of the Refactoring UI framework: nine parts, short original lessons, and live before/after demos. Inspired by Adam Wathan and Steve Schoger; not the book.
 - Learn Piano 101: https://danielwongcx.github.io/ui-kit/learn-piano-101.html (`learn-piano-101.html`) — full-viewport beginner piano film; click starts the visual GSAP timeline. GSAP and the motion runtime live in `vendor/` (no CDN, no soundtrack).
 - ASCII: https://danielwongcx.github.io/ui-kit/ascii-sharks.html (`ascii-sharks.html`) — full-viewport scenes. A corner control switches **Sharks** (stackedlol ocean), **Train** (ASCII Magic viaduct steam train, halftone dots on black), and **HRTD** (original “made with 💕 by HRTD” line). Only the active scene runs. The last scene is stored in `localStorage` (`ascii-scene`); `?scene=sharks`, `?scene=train`, or `?scene=hrtd` overrides it for that visit. `?scene=ferry` and `?scene=mtr` redirect to their own pages. Sharks keep the Light / Dark palette (`ascii-sharks-theme`, `?theme=light`). The theme control hides on Train and HRTD. Engines: `vendor/ascii-sharks/ocean.js` (port of [stackedlol/ascii-sharks](https://github.com/stackedlol/ascii-sharks)), `vendor/ascii-magic/` ([ascii-magic-art](https://github.com/kailashsr38/ascii-magic-art) v1.0.2, MIT; no CDN), and `vendor/ascii-hrtd/made.js`. Optional `?sharks=thresher,hammerhead,mako,nurse`.
 - Ferry: https://danielwongcx.github.io/ui-kit/ferry.html (`ferry.html`) — one full-viewport page. Original night harbour crossing on the same 192×108 halftone-dots grid and 15fps stage as the viaduct train (`vendor/ascii-ferry/harbour.js`). The vessel is Star Ferry Celestial Star: red hull, green promenade, cream cabin. Night only, no theme toggle.
@@ -30,7 +31,7 @@ Page links live **ONLY** in `shared/site-header.js` → `PAGE_LINKS`.
 
 `PAGE_LINKS` is the top-level nav, in order. Each item is either a page `{ id, label, href }` or a category `{ id, label, children }`. Children use the same page shape. A page is listed once: top-level **or** under a category, never both.
 
-Top-level pages: Gallery, Digest, Taste, Piano, ASCII, Ferry, MTR, Folder, Folders.
+Top-level pages: Gallery, Digest, Taste, Refactor UI, Piano, ASCII, Ferry, MTR.
 
 **Explainer** (desktop dropdown, mobile group):
 

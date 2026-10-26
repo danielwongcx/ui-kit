@@ -12,6 +12,7 @@
     { id: 'gallery', label: 'Gallery', href: 'index.html' },
     { id: 'digest', label: 'Digest', href: 'digest.html' },
     { id: 'taste', label: 'Taste', href: 'taste.html' },
+    { id: 'refactor-ui', label: 'Refactor UI', href: 'refactor-ui.html' },
     { id: 'learn-piano-101', label: 'Piano', href: 'learn-piano-101.html' },
     { id: 'ascii-sharks', label: 'ASCII', href: 'ascii-sharks.html' },
     { id: 'ferry', label: 'Ferry', href: 'ferry.html' },
