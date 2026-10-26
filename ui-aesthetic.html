@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="zh-Hant">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -426,18 +426,13 @@
       list-style: none;
       margin: 0;
       padding: 0;
-      counter-reset: principle;
       display: flex;
       flex-direction: column;
       gap: 0.6rem;
     }
 
     .principles > li {
-      counter-increment: principle;
-      display: grid;
-      grid-template-columns: auto minmax(0, 1fr);
-      gap: 0.35rem 0.75rem;
-      align-items: start;
+      min-width: 0;
       padding: 0.95rem 1.05rem;
       background: var(--canvas);
       border: 1px solid var(--line);
@@ -445,43 +440,37 @@
       box-shadow: 0 1px 2px #00000008;
     }
 
-    .principles > li::before {
-      content: counter(principle);
-      grid-row: 1 / -1;
-      width: 1.65rem;
-      height: 1.65rem;
-      border-radius: 99px;
-      display: grid;
-      place-items: center;
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--muted);
-      border: 1px solid var(--line);
-      background: var(--canvas);
-    }
-
     .principles h3 {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
       margin: 0;
+      min-width: 0;
       font-size: 0.98rem;
       font-weight: 700;
       letter-spacing: -0.02em;
       line-height: 1.35;
     }
 
+    .principles h3 .num { flex: none; margin-top: 0.05rem; }
+
+    .principles h3 .pname {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .principles > li > p,
+    .principles > li > ul {
+      margin: 0.45rem 0 0;
+    }
+
     .principles p,
-    .principles li {
-      margin: 0;
+    .principles ul li {
       font-size: 0.9rem;
       line-height: 1.55;
     }
 
-    .principles p { margin-top: 0.28rem; }
-
-    .principles ul {
-      margin: 0.4rem 0 0;
-      padding-left: 1.15rem;
-    }
+    .principles ul { padding-left: 1.15rem; }
 
     .principles ul li + li { margin-top: 0.22rem; }
 
@@ -517,46 +506,46 @@
   <nav class="lib-nav" aria-label="Page sections">
     <div class="lib-brand">UI aesthetic</div>
     <div class="lib-links">
-      <a href="#skills">实测</a>
-      <a href="#choose">怎么选</a>
-      <a href="#generated">生图</a>
-      <a href="#principles">原则</a>
+      <a href="#skills">實測</a>
+      <a href="#choose">怎麼選</a>
+      <a href="#generated">生圖</a>
+      <a href="#principles">原則</a>
     </div>
   </nav>
 
   <main class="lib">
     <header class="hero" id="top">
       <div class="hero-copy rise">
-        <h1>画过10,000+张 UI 高保真，我的设计审美心得（1）：8 条原则 + 5 个常用 AI 设计 Skill</h1>
-        <p class="lede">我做了 10 年 UI/UX 设计，前前后后画了上万张高保真。AI 做出来的页面，常常一眼就能认出来：紫蓝渐变、居中排版、卡片套卡片。工具变了，判断没变。</p>
+        <h1>畫過10,000+張 UI 高保真，我的設計審美心得（1）：8 條原則 + 5 個常用 AI 設計 Skill</h1>
+        <p class="lede">我做了 10 年 UI/UX 設計，前前後後畫了上萬張高保真。AI 做出來的頁面，常常一眼就能認出來：紫藍漸變、居中排版、卡片套卡片。工具變了，判斷沒變。</p>
         <p class="by">Xian | 弦 on <a href="https://x.com/Xian0063/article/2114306504778256445" target="_blank" rel="noopener noreferrer">X</a></p>
       </div>
 
       <figure class="canvas rise cover">
-        <img src="assets/ui-aesthetic/01.jpg" width="1983" height="793" alt="设计审美心得。深色封面上的标题，旁边是画笔和色块。" decoding="async" />
+        <img src="assets/ui-aesthetic/01.jpg" width="1983" height="793" alt="設計審美心得。深色封面上的標題，旁邊是畫筆和色塊。" decoding="async" />
       </figure>
     </header>
 
     <section class="sec" id="skills">
       <div class="sec-head">
-        <h2>5 个设计 Skill 实测</h2>
-        <p>挑了 GitHub 上星数最多的 5 个，每个都配上使用场景。演示是按各 Skill 官方 README 描述的工作方式复刻的，用来说明能力，不是 Skill 的真实运行结果。</p>
+        <h2>5 個設計 Skill 實測</h2>
+        <p>挑了 GitHub 上星數最多的 5 個，每個都配上使用場景。演示是按各 Skill 官方 README 描述的工作方式復刻的，用來說明能力，不是 Skill 的真實運行結果。</p>
       </div>
 
       <div class="shots">
         <figure class="shot">
           <div class="canvas">
-            <img src="assets/ui-aesthetic/02.jpg" width="2296" height="1116" alt="五个设计 Skill 总览：UI UX Pro Max 适合不知道用什么风格；Taste Skill 适合要原创感；Impeccable 适合已有项目、想逐块打磨；Emil Kowalski Skills 适合补动效和细节；Hallmark 适合改版旧站、怕改坏功能。" decoding="async" loading="lazy" />
+            <img src="assets/ui-aesthetic/02.jpg" width="2296" height="1116" alt="五個設計 Skill 總覽：UI UX Pro Max 適合不知道用什麼風格；Taste Skill 適合要原創感；Impeccable 適合已有項目、想逐塊打磨；Emil Kowalski Skills 適合補動效和細節；Hallmark 適合改版舊站、怕改壞功能。" decoding="async" loading="lazy" />
           </div>
         </figure>
         <figure class="shot">
           <div class="canvas">
-            <img src="assets/ui-aesthetic/03.png" width="1052" height="438" alt="五个 Skill 怎么分工：UI UX Pro Max 定风格，Taste Skill 找原创，Impeccable 修现有，Emil 补动效，Hallmark 守上线。" decoding="async" loading="lazy" />
+            <img src="assets/ui-aesthetic/03.png" width="1052" height="438" alt="五個 Skill 怎麼分工：UI UX Pro Max 定風格，Taste Skill 找原創，Impeccable 修現有，Emil 補動效，Hallmark 守上線。" decoding="async" loading="lazy" />
           </div>
         </figure>
       </div>
 
-      <nav class="jumps" aria-label="五个 Skill">
+      <nav class="jumps" aria-label="五個 Skill">
         <a href="#skill-pro-max">UI UX Pro Max</a>
         <a href="#skill-taste">Taste Skill</a>
         <a href="#skill-impeccable">Impeccable</a>
@@ -567,40 +556,40 @@
       <article class="skill canvas" id="skill-pro-max">
         <header class="skill-head">
           <h3><span class="num">1</span> UI UX Pro Max</h3>
-          <p class="skill-line">一句话需求，自动配出整套设计系统</p>
+          <p class="skill-line">一句話需求，自動配出整套設計系統</p>
         </header>
         <div class="skill-body">
           <div class="field">
             <h4>能力</h4>
-            <p>内置 192 条行业规则、79 种风格、192 套配色、74 组字体搭配、34 种落地页结构，支持 22 种技术栈。</p>
+            <p>內置 192 條行業規則、79 種風格、192 套配色、74 組字體搭配、34 種落地頁結構，支持 22 種技術棧。</p>
           </div>
           <div class="field">
             <h4>演示</h4>
-            <p>同一句「帮我做个落地页」，换成三个行业。它先匹配行业，再选出页面结构、风格、配色和字体，列出要避免的做法和交付前检查清单，最后才写页面。</p>
+            <p>同一句「幫我做個落地頁」，換成三個行業。它先匹配行業，再選出頁面結構、風格、配色和字體，列出要避免的做法和交付前檢查清單，最後才寫頁面。</p>
             <div class="shots">
               <figure class="shot">
                 <div class="canvas">
-                  <img src="assets/ui-aesthetic/04.jpg" width="2296" height="2176" alt="山间温泉 SPA：柔和阴影、粉色和鼠尾草绿、衬线字体，安静高级。" decoding="async" loading="lazy" />
+                  <img src="assets/ui-aesthetic/04.jpg" width="2296" height="2176" alt="山間溫泉 SPA：柔和陰影、粉色和鼠尾草綠、襯線字體，安靜高級。" decoding="async" loading="lazy" />
                 </div>
-                <figcaption>山间温泉 SPA：柔和阴影、粉色和鼠尾草绿、衬线字体，安静高级。</figcaption>
+                <figcaption>山間溫泉 SPA：柔和陰影、粉色和鼠尾草綠、襯線字體，安靜高級。</figcaption>
               </figure>
               <figure class="shot">
                 <div class="canvas">
-                  <img src="assets/ui-aesthetic/05.jpg" width="3200" height="1664" alt="同一句话换成三个行业：温泉 SPA 是柔和的 Soft UI，记账 App 是 Bento 数据风，少儿编程课是黏土风。" decoding="async" loading="lazy" />
+                  <img src="assets/ui-aesthetic/05.jpg" width="3200" height="1664" alt="同一句話換成三個行業：溫泉 SPA 是柔和的 Soft UI，記賬 App 是 Bento 數據風，少兒編程課是黏土風。" decoding="async" loading="lazy" />
                 </div>
-                <figcaption>同一句话换成三个行业：温泉 SPA 是柔和的 Soft UI，记账 App 是 Bento 数据风，少儿编程课是黏土风。</figcaption>
+                <figcaption>同一句話換成三個行業：溫泉 SPA 是柔和的 Soft UI，記賬 App 是 Bento 數據風，少兒編程課是黏土風。</figcaption>
               </figure>
             </div>
           </div>
           <div class="field">
-            <h4>怎么用</h4>
+            <h4>怎麼用</h4>
             <pre><code>npm install -g ui-ux-pro-max-cli</code></pre>
             <pre><code>uipro init --ai claude</code></pre>
-            <p>装好后直接提需求，它会自动触发：「帮我给山间温泉 SPA 做一个落地页，目标客户是周末来放松的白领」。</p>
+            <p>裝好後直接提需求，它會自動觸發：「幫我給山間溫泉 SPA 做一個落地頁，目標客戶是週末來放鬆的白領」。</p>
           </div>
           <div class="field">
-            <h4>适合</h4>
-            <p>不知道该用什么风格，想要稳妥、专业、符合行业习惯的结果。</p>
+            <h4>適合</h4>
+            <p>不知道該用什麼風格，想要穩妥、專業、符合行業習慣的結果。</p>
           </div>
         </div>
       </article>
@@ -608,39 +597,39 @@
       <article class="skill canvas" id="skill-taste">
         <header class="skill-head">
           <h3><span class="num">2</span> Taste Skill</h3>
-          <p class="skill-line">先定方向，再做出原创感</p>
+          <p class="skill-line">先定方向，再做出原創感</p>
         </header>
         <div class="skill-body">
           <div class="field">
             <h4>能力</h4>
-            <p>基于 247 个精选网站的研究，提炼出 20 个设计方向。它先从你的素材里找出「只有你有的东西」，发 3 个方向给你挑，用开放图库的真图搭页面，最后在浏览器里按 3 种宽度截图自查，最多返工 3 轮。</p>
+            <p>基於 247 個精選網站的研究，提煉出 20 個設計方向。它先從你的素材裡找出「只有你有的東西」，發 3 個方向給你挑，用開放圖庫的真圖搭頁面，最後在瀏覽器裡按 3 種寬度截圖自查，最多返工 3 輪。</p>
           </div>
           <div class="field">
             <h4>演示</h4>
-            <p>给老城区咖啡烘焙坊「慢烘」做官网。店主以前是排字工，于是有了「活字印刷」方向：整个官网排成一张铅印的豆单。</p>
+            <p>給老城區咖啡烘焙坊「慢烘」做官網。店主以前是排字工，於是有了「活字印刷」方向：整個官網排成一張鉛印的豆單。</p>
             <div class="shots">
               <figure class="shot">
                 <div class="canvas">
-                  <img src="assets/ui-aesthetic/06.jpg" width="2296" height="2246" alt="活字印刷方向，右边是三轮浏览器自查的记录。" decoding="async" loading="lazy" />
+                  <img src="assets/ui-aesthetic/06.jpg" width="2296" height="2246" alt="活字印刷方向，右邊是三輪瀏覽器自查的記錄。" decoding="async" loading="lazy" />
                 </div>
-                <figcaption>活字印刷方向，右边是三轮浏览器自查的记录。</figcaption>
+                <figcaption>活字印刷方向，右邊是三輪瀏覽器自查的記錄。</figcaption>
               </figure>
               <figure class="shot">
                 <div class="canvas">
-                  <img src="assets/ui-aesthetic/07.jpg" width="3200" height="1390" alt="同一家店的三个方向：活字印刷、档案卡片、烘焙日志。" decoding="async" loading="lazy" />
+                  <img src="assets/ui-aesthetic/07.jpg" width="3200" height="1390" alt="同一家店的三個方向：活字印刷、檔案卡片、烘焙日誌。" decoding="async" loading="lazy" />
                 </div>
-                <figcaption>同一家店的三个方向：活字印刷、档案卡片、烘焙日志。</figcaption>
+                <figcaption>同一家店的三個方向：活字印刷、檔案卡片、烘焙日誌。</figcaption>
               </figure>
             </div>
           </div>
           <div class="field">
-            <h4>怎么用</h4>
+            <h4>怎麼用</h4>
             <pre><code>npx skills add https://github.com/Leonxlnx/taste-skill --skill "design-taste-frontend"</code></pre>
-            <p>需求里多给你独有的素材：「用 taste skill 给咖啡烘焙坊『慢烘』做官网。店主以前是排字工，店在鼓楼西巷 37 号，每周四烘豆。」</p>
+            <p>需求裡多給你獨有的素材：「用 taste skill 給咖啡烘焙坊『慢烘』做官網。店主以前是排字工，店在鼓樓西巷 37 號，每週四烘豆。」</p>
           </div>
           <div class="field">
-            <h4>适合</h4>
-            <p>官网、品牌页、作品集。<strong>注意</strong>：跑一次要 30–45 分钟，需要 Node 22+ 和 Chrome。</p>
+            <h4>適合</h4>
+            <p>官網、品牌頁、作品集。<strong>注意</strong>：跑一次要 30–45 分鐘，需要 Node 22+ 和 Chrome。</p>
           </div>
         </div>
       </article>
@@ -648,39 +637,39 @@
       <article class="skill canvas" id="skill-impeccable">
         <header class="skill-head">
           <h3><span class="num">3</span> Impeccable</h3>
-          <p class="skill-line">用命令把页面一块块修好</p>
+          <p class="skill-line">用命令把頁面一塊塊修好</p>
         </header>
         <div class="skill-body">
           <div class="field">
             <h4>能力</h4>
-            <p>24 个设计命令，加 62 条不靠大模型的 AI 味检测规则。先用 init 把产品定位写进 PRODUCT.md，之后每条命令都会参考它。</p>
+            <p>24 個設計命令，加 62 條不靠大模型的 AI 味檢測規則。先用 init 把產品定位寫進 PRODUCT.md，之後每條命令都會參考它。</p>
           </div>
           <div class="field">
             <h4>演示</h4>
-            <p>一个 AI 默认生成的白板产品首页。先运行 /impeccable audit，标出 7 处问题。</p>
+            <p>一個 AI 默認生成的白板產品首頁。先運行 /impeccable audit，標出 7 處問題。</p>
             <div class="shots">
               <figure class="shot">
                 <div class="canvas">
-                  <img src="assets/ui-aesthetic/08.jpg" width="2296" height="1930" alt="修改前：紫蓝渐变、卡片套卡片、emoji 图标、全部居中，检测出 7 处 AI 味。" decoding="async" loading="lazy" />
+                  <img src="assets/ui-aesthetic/08.jpg" width="2296" height="1930" alt="修改前：紫藍漸變、卡片套卡片、emoji 圖標、全部居中，檢測出 7 處 AI 味。" decoding="async" loading="lazy" />
                 </div>
-                <figcaption>修改前：紫蓝渐变、卡片套卡片、emoji 图标、全部居中，检测出 7 处 AI 味。</figcaption>
+                <figcaption>修改前：紫藍漸變、卡片套卡片、emoji 圖標、全部居中，檢測出 7 處 AI 味。</figcaption>
               </figure>
               <figure class="shot">
                 <div class="canvas">
-                  <img src="assets/ui-aesthetic/09.jpg" width="3200" height="1638" alt="依次运行 typeset、colorize、layout、quieter、polish 之后，检测结果为 0。" decoding="async" loading="lazy" />
+                  <img src="assets/ui-aesthetic/09.jpg" width="3200" height="1638" alt="依次運行 typeset、colorize、layout、quieter、polish 之後，檢測結果為 0。" decoding="async" loading="lazy" />
                 </div>
-                <figcaption>依次运行 typeset、colorize、layout、quieter、polish 之后，检测结果为 0。</figcaption>
+                <figcaption>依次運行 typeset、colorize、layout、quieter、polish 之後，檢測結果為 0。</figcaption>
               </figure>
             </div>
           </div>
           <div class="field">
-            <h4>怎么用</h4>
+            <h4>怎麼用</h4>
             <pre><code>npx impeccable install</code></pre>
-            <p>每个项目先运行 /impeccable init，之后按「命令 + 范围」使用：/impeccable audit landing、/impeccable polish settings。</p>
+            <p>每個項目先運行 /impeccable init，之後按「命令 + 範圍」使用：/impeccable audit landing、/impeccable polish settings。</p>
           </div>
           <div class="field">
-            <h4>适合</h4>
-            <p>已有项目，想逐块打磨。<strong>注意</strong>：它不替你定方向，往大胆还是克制的方向调，要你自己判断。</p>
+            <h4>適合</h4>
+            <p>已有項目，想逐塊打磨。<strong>注意</strong>：它不替你定方向，往大膽還是克制的方向調，要你自己判斷。</p>
           </div>
         </div>
       </article>
@@ -688,44 +677,44 @@
       <article class="skill canvas" id="skill-emil">
         <header class="skill-head">
           <h3><span class="num">4</span> Emil Kowalski Skills</h3>
-          <p class="skill-line">动效和细节的手感</p>
+          <p class="skill-line">動效和細節的手感</p>
         </header>
         <div class="skill-body">
           <div class="field">
             <h4>能力</h4>
-            <p>作者曾在 Vercel、Linear 工作，也是 Sonner 的作者。15 个小 Skill，专门管 AI 最容易做错的细节。</p>
+            <p>作者曾在 Vercel、Linear 工作，也是 Sonner 的作者。15 個小 Skill，專門管 AI 最容易做錯的細節。</p>
           </div>
           <div class="field">
             <h4>演示</h4>
-            <p>笔记 App 里的四个小交互，左边是 AI 默认写法，右边按 Emil 的规则。</p>
+            <p>筆記 App 裡的四個小交互，左邊是 AI 默認寫法，右邊按 Emil 的規則。</p>
             <div class="shots">
               <figure class="shot">
                 <div class="canvas">
-                  <img src="assets/ui-aesthetic/10.jpg" width="2296" height="2096" alt="笔记 App 交互对照，左为 AI 默认、右按 Emil 的规则：进场用 ease-out，下拉菜单从 0.96 开始缩放，按钮按下缩到 0.97。" decoding="async" loading="lazy" />
+                  <img src="assets/ui-aesthetic/10.jpg" width="2296" height="2096" alt="筆記 App 交互對照，左為 AI 默認、右按 Emil 的規則：進場用 ease-out，下拉菜單從 0.96 開始縮放，按鈕按下縮到 0.97。" decoding="async" loading="lazy" />
                 </div>
               </figure>
               <figure class="shot">
                 <div class="canvas">
-                  <img src="assets/ui-aesthetic/11.jpg" width="2296" height="1340" alt="笔记 App 细节对照：长名字截断、大数字缩写，提示叠成一摞，不把内容挤下去。" decoding="async" loading="lazy" />
+                  <img src="assets/ui-aesthetic/11.jpg" width="2296" height="1340" alt="筆記 App 細節對照：長名字截斷、大數字縮寫，提示疊成一摞，不把內容擠下去。" decoding="async" loading="lazy" />
                 </div>
               </figure>
             </div>
             <ul>
-              <li>进场动画用 ease-out，不用 ease-in，一开始就有反应，感觉更快。</li>
-              <li>下拉菜单从按钮的位置长出来，从 0.96 开始缩放，而不是从 0。</li>
-              <li>按钮按下缩到 0.97，有手感。</li>
-              <li>提示叠成一摞，不把内容挤下去。</li>
-              <li>长名字截断，大数字缩写，不把卡片撑破。</li>
+              <li>進場動畫用 ease-out，不用 ease-in，一開始就有反應，感覺更快。</li>
+              <li>下拉菜單從按鈕的位置長出來，從 0.96 開始縮放，而不是從 0。</li>
+              <li>按鈕按下縮到 0.97，有手感。</li>
+              <li>提示疊成一摞，不把內容擠下去。</li>
+              <li>長名字截斷，大數字縮寫，不把卡片撐破。</li>
             </ul>
           </div>
           <div class="field">
-            <h4>怎么用</h4>
+            <h4>怎麼用</h4>
             <pre><code>npx skills@latest add emilkowalski/skills</code></pre>
-            <p>按名字调用：「用 review-animations 检查这个下拉菜单」「用 break-ui 拿极端数据测一下用户卡片」。</p>
+            <p>按名字調用：「用 review-animations 檢查這個下拉菜單」「用 break-ui 拿極端數據測一下用戶卡片」。</p>
           </div>
           <div class="field">
-            <h4>适合</h4>
-            <p>叠加在其他 Skill 上，专门补动效和细节。</p>
+            <h4>適合</h4>
+            <p>疊加在其他 Skill 上，專門補動效和細節。</p>
           </div>
         </div>
       </article>
@@ -733,45 +722,45 @@
       <article class="skill canvas" id="skill-hallmark">
         <header class="skill-head">
           <h3><span class="num">5</span> Hallmark</h3>
-          <p class="skill-line">不过检查不能上线</p>
+          <p class="skill-line">不過檢查不能上線</p>
         </header>
         <div class="skill-body">
           <div class="field">
             <h4>能力</h4>
-            <p>48 种主题材质，页面围绕用户要做的事来排。sloplint 分三级检查：Floor 不过不能上线，Reflex 是模型的惯性，Finish 是细节。改版时核对链接、表单、事件一个不少。</p>
+            <p>48 種主題材質，頁面圍繞用戶要做的事來排。sloplint 分三級檢查：Floor 不過不能上線，Reflex 是模型的慣性，Finish 是細節。改版時核對鏈接、表單、事件一個不少。</p>
           </div>
           <div class="field">
             <h4>演示</h4>
-            <p>预约制茶室「一盏」的预约页。页面的任务是订位子，所以预约卡放在首屏。</p>
+            <p>預約制茶室「一盞」的預約頁。頁面的任務是訂位子，所以預約卡放在首屏。</p>
             <div class="shots">
               <figure class="shot">
                 <div class="canvas">
-                  <img src="assets/ui-aesthetic/12.jpg" width="2296" height="1946" alt="Atelier 主题，13 项检查全部通过。" decoding="async" loading="lazy" />
+                  <img src="assets/ui-aesthetic/12.jpg" width="2296" height="1946" alt="Atelier 主題，13 項檢查全部通過。" decoding="async" loading="lazy" />
                 </div>
-                <figcaption>Atelier 主题，13 项检查全部通过。</figcaption>
+                <figcaption>Atelier 主題，13 項檢查全部通過。</figcaption>
               </figure>
               <figure class="shot">
                 <div class="canvas">
-                  <img src="assets/ui-aesthetic/13.jpg" width="3200" height="1514" alt="同一个预约页换三种主题材质：内容和功能不变，只换质感。" decoding="async" loading="lazy" />
+                  <img src="assets/ui-aesthetic/13.jpg" width="3200" height="1514" alt="同一個預約頁換三種主題材質：內容和功能不變，只換質感。" decoding="async" loading="lazy" />
                 </div>
-                <figcaption>同一个预约页换三种主题材质：内容和功能不变，只换质感。</figcaption>
+                <figcaption>同一個預約頁換三種主題材質：內容和功能不變，只換質感。</figcaption>
               </figure>
               <figure class="shot">
                 <div class="canvas">
-                  <img src="assets/ui-aesthetic/14.jpg" width="2296" height="2312" alt="打开「AI 默认版」对照：编造的「10,000+ 满意客户」、标题上的英文小标签、单独染色的一个字、结尾的订阅框，全部被拦下，结论是不能上线。" decoding="async" loading="lazy" />
+                  <img src="assets/ui-aesthetic/14.jpg" width="2296" height="2312" alt="打開「AI 默認版」對照：編造的「10,000+ 滿意客戶」、標題上的英文小標籤、單獨染色的一個字、結尾的訂閱框，全部被攔下，結論是不能上線。" decoding="async" loading="lazy" />
                 </div>
-                <figcaption>打开「AI 默认版」对照：编造的「10,000+ 满意客户」、标题上的英文小标签、单独染色的一个字、结尾的订阅框，全部被拦下，结论是不能上线。</figcaption>
+                <figcaption>打開「AI 默認版」對照：編造的「10,000+ 滿意客戶」、標題上的英文小標籤、單獨染色的一個字、結尾的訂閱框，全部被攔下，結論是不能上線。</figcaption>
               </figure>
             </div>
           </div>
           <div class="field">
-            <h4>怎么用</h4>
+            <h4>怎麼用</h4>
             <pre><code>npx skills add nutlope/hallmark -g</code></pre>
-            <p>新做一页：/hallmark 给预约制茶室做预约页；改版旧页面：/hallmark redesign ./src/app；只检查不改：/hallmark audit ./index.html。</p>
+            <p>新做一頁：/hallmark 給預約制茶室做預約頁；改版舊頁面：/hallmark redesign ./src/app；只檢查不改：/hallmark audit ./index.html。</p>
           </div>
           <div class="field">
-            <h4>适合</h4>
-            <p>落地页、预约页、商店页，以及有风险的改版。</p>
+            <h4>適合</h4>
+            <p>落地頁、預約頁、商店頁，以及有風險的改版。</p>
           </div>
         </div>
       </article>
@@ -779,23 +768,23 @@
 
     <section class="sec" id="choose">
       <div class="sec-head">
-        <h2>怎么选</h2>
+        <h2>怎麼選</h2>
       </div>
       <ul class="chooser canvas">
         <li>
-          <span class="when">不知道用什么风格</span>
+          <span class="when">不知道用什麼風格</span>
           <span class="then"><span class="arrow" aria-hidden="true">→ </span><a href="#skill-pro-max">UI UX Pro Max</a></span>
         </li>
         <li>
-          <span class="when">想要原创感</span>
+          <span class="when">想要原創感</span>
           <span class="then"><span class="arrow" aria-hidden="true">→ </span><a href="#skill-taste">Taste Skill</a></span>
         </li>
         <li>
-          <span class="when">已有项目，想逐块打磨</span>
+          <span class="when">已有項目，想逐塊打磨</span>
           <span class="then"><span class="arrow" aria-hidden="true">→ </span><a href="#skill-impeccable">Impeccable</a>，再配上 <a href="#skill-emil">Emil</a></span>
         </li>
         <li>
-          <span class="when">改版旧站，怕改坏功能</span>
+          <span class="when">改版舊站，怕改壞功能</span>
           <span class="then"><span class="arrow" aria-hidden="true">→ </span><a href="#skill-hallmark">Hallmark</a></span>
         </li>
       </ul>
@@ -803,14 +792,14 @@
 
     <section class="sec" id="generated">
       <div class="sec-head">
-        <h2>AI 生图对比</h2>
-        <p>演示页面里有 8 张图不是代码画的，是生成的，用在 UI UX Pro Max 和 Hallmark 两个演示里。</p>
+        <h2>AI 生圖對比</h2>
+        <p>演示頁面裡有 8 張圖不是代碼畫的，是生成的，用在 UI UX Pro Max 和 Hallmark 兩個演示裡。</p>
       </div>
-      <p class="quiet">流程是这样的：AI 先看页面，判断哪里缺图，写好提示词；我用 Codex / GPT 生成；再交回给 AI 压缩、嵌进页面，并按图调整排版。</p>
+      <p class="quiet">流程是這樣的：AI 先看頁面，判斷哪裡缺圖，寫好提示詞；我用 Codex / GPT 生成；再交回給 AI 壓縮、嵌進頁面，並按圖調整排版。</p>
       <div class="shots">
         <figure class="shot">
           <div class="canvas">
-            <img src="assets/ui-aesthetic/15.jpg" width="3200" height="1820" alt="八张图的替换前后：占位换成温泉、记账、少儿编程和茶室的生成图。" decoding="async" loading="lazy" />
+            <img src="assets/ui-aesthetic/15.jpg" width="3200" height="1820" alt="八張圖的替換前後：佔位換成溫泉、記賬、少兒編程和茶室的生成圖。" decoding="async" loading="lazy" />
           </div>
         </figure>
       </div>
@@ -818,55 +807,55 @@
 
     <section class="sec" id="principles">
       <div class="sec-head">
-        <h2>8 条原则</h2>
-        <p>把上面的过程提炼成可以复用的原则：</p>
+        <h2>8 條原則</h2>
+        <p>把上面的過程提煉成可以複用的原則：</p>
       </div>
       <ol class="principles">
         <li>
-          <h3>从好作品和日常里找需求</h3>
-          <p>多看优秀作品，同时留意自己工作和生活里反复遇到的麻烦，把两边对照起来看。</p>
+          <h3><span class="num">1</span><span class="pname">從好作品和日常裡找需求</span></h3>
+          <p>多看優秀作品，同時留意自己工作和生活裡反覆遇到的麻煩，把兩邊對照起來看。</p>
         </li>
         <li>
-          <h3>先定义，再动手</h3>
-          <p>先写清楚给谁用、解决什么问题、要给人什么感觉。写不清就让 AI 来问你，这一步不让它出设计。</p>
+          <h3><span class="num">2</span><span class="pname">先定義，再動手</span></h3>
+          <p>先寫清楚給誰用、解決什麼問題、要給人什麼感覺。寫不清就讓 AI 來問你，這一步不讓它出設計。</p>
         </li>
         <li>
-          <h3>拆解好设计，不照搬</h3>
-          <p>看到好作品，先说出它好在哪。只学原理，不复制画面。</p>
+          <h3><span class="num">3</span><span class="pname">拆解好設計，不照搬</span></h3>
+          <p>看到好作品，先說出它好在哪。只學原理，不複製畫面。</p>
         </li>
         <li>
-          <h3>用目标给反馈</h3>
-          <p>在截图上标出问题，说清楚想要的效果，具体数值交给 AI。</p>
+          <h3><span class="num">4</span><span class="pname">用目標給反饋</span></h3>
+          <p>在截圖上標出問題，說清楚想要的效果，具體數值交給 AI。</p>
         </li>
         <li>
-          <h3>先出全貌，再逐块改</h3>
+          <h3><span class="num">5</span><span class="pname">先出全貌，再逐塊改</span></h3>
           <ul>
-            <li>先让 AI 出一版完整页面。</li>
-            <li>列出问题，按重要程度排序。</li>
-            <li>每轮只改一处，确认后再改下一处。</li>
+            <li>先讓 AI 出一版完整頁面。</li>
+            <li>列出問題，按重要程度排序。</li>
+            <li>每輪只改一處，確認後再改下一處。</li>
           </ul>
         </li>
         <li>
-          <h3>统一视觉规则</h3>
-          <p>色值、字体、材质先定好，生图提示词里也写明，同一组素材放在一个对话里连续生成。</p>
+          <h3><span class="num">6</span><span class="pname">統一視覺規則</span></h3>
+          <p>色值、字體、材質先定好，生圖提示詞裡也寫明，同一組素材放在一個對話裡連續生成。</p>
         </li>
         <li>
-          <h3>先上线，再优化</h3>
-          <p>不影响核心体验的问题，不阻塞发布。上线后根据真实反馈决定下一步改什么。</p>
+          <h3><span class="num">7</span><span class="pname">先上線，再優化</span></h3>
+          <p>不影響核心體驗的問題，不阻塞發佈。上線後根據真實反饋決定下一步改什麼。</p>
         </li>
         <li>
-          <h3>用反馈分配精力</h3>
+          <h3><span class="num">8</span><span class="pname">用反饋分配精力</span></h3>
           <ul>
-            <li>新想法先做成小 demo 试水。</li>
-            <li>反馈好的持续打磨，反馈差的及时停掉。</li>
-            <li>设计以外的能力也要补上：写介绍、做推广、维护用户。</li>
+            <li>新想法先做成小 demo 試水。</li>
+            <li>反饋好的持續打磨，反饋差的及時停掉。</li>
+            <li>設計以外的能力也要補上：寫介紹、做推廣、維護用戶。</li>
           </ul>
         </li>
       </ol>
     </section>
 
     <footer class="lib-foot">
-      <p>Source: <a href="https://x.com/Xian0063/article/2114306504778256445" target="_blank" rel="noopener noreferrer">画过10,000+张 UI 高保真，我的设计审美心得（1）：8 条原则 + 5 个常用 AI 设计 Skill</a> by Xian | 弦 (<a href="https://x.com/Xian0063" target="_blank" rel="noopener noreferrer">@Xian0063</a>). The numbers, install commands, and pictures on this page come from that article.</p>
+      <p>Source: <a href="https://x.com/Xian0063/article/2114306504778256445" target="_blank" rel="noopener noreferrer">畫過10,000+張 UI 高保真，我的設計審美心得（1）：8 條原則 + 5 個常用 AI 設計 Skill</a> by Xian | 弦 (<a href="https://x.com/Xian0063" target="_blank" rel="noopener noreferrer">@Xian0063</a>). The numbers, install commands, and pictures on this page come from that article.</p>
     </footer>
   </main>
 
