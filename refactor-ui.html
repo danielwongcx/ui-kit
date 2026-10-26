@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Refactor UI · ui-kit</title>
+  <meta name="description" content="An interactive study companion to the Refactoring UI framework: hierarchy, spacing, type, color, depth, images, and finishing touches." />
+  <script>
+    (function () {
+      try {
+        document.documentElement.classList.add('js');
+        var id = localStorage.getItem('ui-kit-palette') || 'forest';
+        var pages = {
+          forest: '#f5f1ee', navy: '#eef2f6', terracotta: '#faf3ef',
+          plum: '#f6f1f8', ocean: '#eef6f6', amber: '#faf6ee',
+          slate: '#f0f1f3', rosewood: '#f8f1f3', olive: '#f4f3ea',
+          ink: '#ececf0'
+        };
+        document.documentElement.setAttribute('data-theme', id);
+        document.documentElement.style.setProperty('--page', pages[id] || pages.forest);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="shared/site-header.css?v=6" />
+  <link rel="stylesheet" href="shared/refactor-ui.css?v=1" />
+</head>
+<body data-page="refactor-ui">
+  <input type="checkbox" id="toc-toggle" class="sr" />
+  <label class="toc-bar" for="toc-toggle" aria-controls="toc">
+    <span class="toc-bar__k">Parts</span>
+    <span class="toc-bar__current" id="toc-current">Starting from scratch</span>
+  </label>
+
+  <div class="shell">
+    <nav class="toc" id="toc" aria-label="Parts">
+      <p class="toc__label" aria-hidden="true">Parts</p>
+      <a href="#part-start"><span>01</span> Starting from scratch</a>
+      <a href="#part-hierarchy"><span>02</span> Hierarchy is everything</a>
+      <a href="#part-layout"><span>03</span> Layout and spacing</a>
+      <a href="#part-text"><span>04</span> Designing text</a>
+      <a href="#part-color"><span>05</span> Working with color</a>
+      <a href="#part-depth"><span>06</span> Creating depth</a>
+      <a href="#part-images"><span>07</span> Working with images</a>
+      <a href="#part-finish"><span>08</span> Finishing touches</a>
+      <a href="#part-level"><span>09</span> Leveling up</a>
+    </nav>
+
+    <main class="main" id="content">
+      <header class="hero">
+        <div>
+          <h1>Refactor UI</h1>
+          <p class="lede">Nine parts from the public framework. Each chapter is a decision you can see: flip before and after, or move a control, and keep the rule.</p>
+          <p class="credit">Inspired by <a href="https://refactoringui.com/" target="_blank" rel="noopener noreferrer"><cite>Refactoring UI</cite></a> by Adam Wathan and Steve Schoger. A personal study companion, not the book.</p>
+        </div>
+        <div class="hero__preview" aria-hidden="true">
+          <div class="ticket">
+            <p class="ticket__kicker">Tonight</p>
+            <p class="ticket__title">Central → TST</p>
+            <p class="ticket__meta">Last ferry 23:30</p>
+            <div class="ticket__row">
+              <span class="ticket__price">HK$42</span>
+              <span class="btn">Buy ticket</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="part" id="part-start" data-title="Starting from scratch">
+        <h2><span>01</span> Starting from scratch</h2>
+        <p class="dek">Draw the feature before the frame, in broad strokes, and stop when the screen can ship.</p>
+
+        <article class="lesson" id="ru-feature">
+          <h3>Start with a feature, not a layout</h3>
+          <p class="tip">Draw the fields and the one action someone came for before you place a logo, a nav, or a footer. The frame can wait until the feature has a shape.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare start with a feature">
+              <label class="seg"><input type="radio" name="v-feature" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-feature" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="chrome">
+                    <div class="chrome__bar"><i class="dot"></i><span>Sailings</span><span>Piers</span><span>Passes</span></div>
+                    <div class="chrome__hero">Welcome aboard</div>
+                    <div class="chrome__hole"></div>
+                    <div class="chrome__foot"><span>© Pier</span><span>Help</span></div>
+                  </div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="stack">
+                    <label class="field">From <span class="box"></span></label>
+                    <label class="field">To <span class="box"></span></label>
+                    <label class="field">When <span class="box"></span></label>
+                    <span class="btn btn--block">Search sailings</span>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-detail">
+          <h3>Detail comes later</h3>
+          <p class="tip">Early screens only need boxes, weight, and space. Icons, shadows, and a typeface are how you finish a decision, not how you find one. Stay in grey until the order of the page is obvious.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare detail comes later">
+              <label class="seg"><input type="radio" name="v-detail" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-detail" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="noisy">
+                    <h4>Find a ferry</h4>
+                    <div class="icon-row" aria-hidden="true"><i></i><i></i><i></i></div>
+                    <div class="stack">
+                      <span class="box"></span>
+                      <span class="box"></span>
+                      <span class="btn">Go</span>
+                    </div>
+                  </div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="wire stack">
+                    <h4>Find a ferry</h4>
+                    <label class="field">From <span class="box"></span></label>
+                    <label class="field">To <span class="box"></span></label>
+                    <span class="btn btn--block">Search sailings</span>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-scope">
+          <h3>Don’t design too much</h3>
+          <p class="tip">If you cannot ship attachments, rewards, or sharing this week, leave them off the screen. A control that does nothing teaches people the product is unfinished.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare don’t design too much">
+              <label class="seg"><input type="radio" name="v-scope" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-scope" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body stack">
+                  <label class="field">Route <span class="box"></span></label>
+                  <span class="btn btn--block">Search</span>
+                  <p class="soon">Attach a file — coming soon</p>
+                  <p class="soon">Share this search · Earn pier points</p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body stack">
+                  <label class="field">Route <span class="box"></span></label>
+                  <span class="btn btn--block">Search</span>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-personality">
+          <h3>Choose a personality</h3>
+          <p class="tip">Font, color, corner radius, and the voice of the button are the personality. Pick one family and keep every control in it. Square and fully round do not belong on the same card.</p>
+          <div class="stage stage--live">
+            <div class="persona">
+              <div class="persona__switch" role="radiogroup" aria-label="Personality">
+                <label class="pill"><input type="radio" class="sr" name="persona" value="formal" /> Formal</label>
+                <label class="pill"><input type="radio" class="sr" name="persona" value="neutral" checked /> Neutral</label>
+                <label class="pill"><input type="radio" class="sr" name="persona" value="playful" /> Playful</label>
+              </div>
+              <div class="persona__card">
+                <h4>
+                  <span class="only-formal">Evening service</span>
+                  <span class="only-neutral">Night ferry</span>
+                  <span class="only-playful">Hop on tonight</span>
+                </h4>
+                <p>
+                  <span class="only-formal">A reserved seat on the late crossing.</span>
+                  <span class="only-neutral">Central to Tsim Sha Tsui.</span>
+                  <span class="only-playful">Last boat’s the good one.</span>
+                </p>
+                <span class="persona__field"></span>
+                <span class="btn">
+                  <span class="only-formal">Purchase</span>
+                  <span class="only-neutral">Buy ticket</span>
+                  <span class="only-playful">Grab a seat</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-choices">
+          <h3>Limit your choices</h3>
+          <p class="tip">A short scale with obvious steps beats a picker full of near-duplicates. Decide the steps once, then choose the neighbor that is clearly bigger or smaller. If two sizes feel the same, drop one.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare limit your choices">
+              <label class="seg"><input type="radio" name="v-choices" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-choices" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body fussy">
+                  <p>Harbour notes</p>
+                  <p>Central to TST, last sailing 23:30.</p>
+                  <p>Gate B · return fare</p>
+                  <span class="btn">Buy</span>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body choices">
+                  <div class="choice__scale" role="radiogroup" aria-label="Type scale steps">
+                    <label class="pill"><input type="radio" class="sr" name="step" value="12" /> 12</label>
+                    <label class="pill"><input type="radio" class="sr" name="step" value="14" /> 14</label>
+                    <label class="pill"><input type="radio" class="sr" name="step" value="16" /> 16</label>
+                    <label class="pill"><input type="radio" class="sr" name="step" value="20" checked /> 20</label>
+                    <label class="pill"><input type="radio" class="sr" name="step" value="24" /> 24</label>
+                    <label class="pill"><input type="radio" class="sr" name="step" value="32" /> 32</label>
+                  </div>
+                  <p class="choice__sample">Harbour notes</p>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="part" id="part-hierarchy" data-title="Hierarchy is everything">
+        <h2><span>02</span> Hierarchy is everything</h2>
+        <p class="dek">Rank what people should see first. Weight and color do more of that work than raw size.</p>
+
+        <article class="lesson" id="ru-equal">
+          <h3>Not all elements are equal</h3>
+          <p class="tip">A screen where every number wears the same weight reads as a wall. Give one figure the lead, and let the others sit back as support.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare not all elements are equal">
+              <label class="seg"><input type="radio" name="v-equal" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-equal" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body rank rank--flat">
+                  <p>Overview</p>
+                  <div class="rank__stats">
+                    <div><span>Total </span><b>$2,480</b></div>
+                    <div><span>Tickets </span><b>$1,960</b></div>
+                    <div><span>Cash </span><b>$520</b></div>
+                  </div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body rank rank--on">
+                  <p class="kicker">Overview</p>
+                  <div class="rank__stats">
+                    <div><span>Total</span><b>$2,480</b></div>
+                    <div><span>Tickets</span><b>$1,960</b></div>
+                    <div><span>Cash</span><b>$520</b></div>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-size">
+          <h3>Size isn’t everything</h3>
+          <p class="tip">A huge title and a tiny subtitle make the page feel thin and hard to read. Two weights, around 400 and 700, plus a darker and a quieter color, carry most UI hierarchy without a size jump.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare size isn’t everything">
+              <label class="seg"><input type="radio" name="v-size" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-size" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body sized sized--bad">
+                  <p class="t">Central → TST</p>
+                  <p class="s">Tonight · last ferry 23:30 · gate B</p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body sized sized--good">
+                  <p class="t">Central → TST</p>
+                  <p class="s">Tonight · last ferry 23:30 · gate B</p>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-grey">
+          <h3>Don’t use grey text on colored backgrounds</h3>
+          <p class="tip">Grey on a green fill looks muddy because the hue clashes, not because the words are secondary. Keep the background’s hue and lift the lightness until the line is quiet but still readable.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare grey text on color">
+              <label class="seg"><input type="radio" name="v-grey" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-grey" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="banner banner--grey">
+                    <strong>Night pass</strong>
+                    <span>Valid until the last ferry</span>
+                  </div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="banner banner--hue">
+                    <strong>Night pass</strong>
+                    <span>Valid until the last ferry</span>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-deemphasize">
+          <h3>Emphasize by de-emphasizing</h3>
+          <p class="tip">When the current item still will not stand out, quiet the competitors. Lighter color and a normal weight on the rest does more than another loud color on the one you care about.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare emphasize by de-emphasizing">
+              <label class="seg"><input type="radio" name="v-de" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-de" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="tabs tabs--loud">
+                    <span class="is-on">Sailings</span><span>Piers</span><span>Passes</span><span>Account</span>
+                  </div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="tabs tabs--quiet">
+                    <span class="is-on">Sailings</span><span>Piers</span><span>Passes</span><span>Account</span>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-labels">
+          <h3>Labels are a last resort</h3>
+          <p class="tip">An email, a phone number, and a price usually explain themselves. Drop the label when the format is enough, and let the name carry more weight than the role under it.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare labels are a last resort">
+              <label class="seg"><input type="radio" name="v-labels" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-labels" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <dl class="kv">
+                    <div><dt>Name</dt><dd>Mina Cheung</dd></div>
+                    <div><dt>Email</dt><dd>mina@pier.example</dd></div>
+                    <div><dt>Phone</dt><dd>5123 4410</dd></div>
+                    <div><dt>Role</dt><dd>Night desk</dd></div>
+                  </dl>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="idcard">
+                    <strong>Mina Cheung</strong>
+                    <span>mina@pier.example</span>
+                    <span>5123 4410</span>
+                    <span class="role">Night desk</span>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-doc">
+          <h3>Separate visual hierarchy from document hierarchy</h3>
+          <p class="tip">A heading can be a small label. The outline decides which element is the section title. Size, weight, and color decide what a person reads first.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare visual and document hierarchy">
+              <label class="seg"><input type="radio" name="v-doc" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-doc" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body doc doc--big">
+                  <h4>Account</h4>
+                  <p class="who">Mina Cheung</p>
+                  <p class="meta">Pier 7 · Night pass</p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body doc doc--rank">
+                  <h4>Account</h4>
+                  <p class="who">Mina Cheung</p>
+                  <p class="meta">Pier 7 · Night pass</p>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-weight">
+          <h3>Balance weight and contrast</h3>
+          <p class="tip">A heavy icon in pure black outweighs the word beside it. Soften the icon, or thicken a light border, until the two carry similar visual weight. Contrast and area trade off.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare weight and contrast">
+              <label class="seg"><input type="radio" name="v-weight" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-weight" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="balance balance--heavy">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 4h10l4 4v12H5V4zm8 1.5V9h3.5L13 5.5zM8 13h8v1.6H8V13zm0 3.2h6V18H8v-1.8z"/></svg>
+                    <span>Export</span>
+                  </div>
+                  <div class="frame-line frame-line--ink">Night notes</div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="balance balance--soft">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 4h10l4 4v12H5V4zm8 1.5V9h3.5L13 5.5zM8 13h8v1.6H8V13zm0 3.2h6V18H8v-1.8z"/></svg>
+                    <span>Export</span>
+                  </div>
+                  <div class="frame-line frame-line--soft">Night notes</div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-semantics">
+          <h3>Semantics are secondary</h3>
+          <p class="tip">One solid primary, a quieter secondary, and text for the rest. Destructive red belongs on the action when that action is the point, as in a confirm step, not on every screen that happens to contain it.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare action semantics">
+              <label class="seg"><input type="radio" name="v-sem" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-sem" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body acts">
+                  <span class="btn btn--danger">Delete account</span>
+                  <span class="btn btn--quiet">Save</span>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="acts">
+                    <span class="btn">Save</span>
+                    <span class="btn btn--quiet">Delete</span>
+                  </div>
+                  <div class="dialog">
+                    <p>Delete this pass?</p>
+                    <div class="acts">
+                      <span class="btn btn--danger">Delete</span>
+                      <span class="btn btn--quiet">Cancel</span>
+                    </div>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="part" id="part-layout" data-title="Layout and spacing">
+        <h2><span>03</span> Layout and spacing</h2>
+        <p class="dek">Start with more space than you need, then pull every gap from one scale.</p>
+
+        <article class="lesson" id="ru-space">
+          <h3>Start with too much white space</h3>
+          <p class="tip">Cramped layouts rarely loosen themselves. Begin past the comfortable amount, then drag space back until the group feels held together. Dense UI is a choice you make on purpose.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare white space">
+              <label class="seg"><input type="radio" name="v-space" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-space" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="room-card room--tight">
+                    <strong>Central → TST</strong>
+                    <span>Tonight · 23:30</span>
+                    <span class="btn">Buy ticket</span>
+                  </div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <label class="slider">Space
+                    <input type="range" min="8" max="40" value="32" data-target="room-card" data-prop="--pad" data-suffix="px" aria-valuemin="8" aria-valuemax="40" />
+                    <output>32px</output>
+                  </label>
+                  <div class="room-card" id="room-card">
+                    <strong>Central → TST</strong>
+                    <span>Tonight · 23:30</span>
+                    <span class="btn">Buy ticket</span>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-system">
+          <h3>Establish a spacing and sizing system</h3>
+          <p class="tip">Pick a scale and stop inventing pixels. Steps should be far enough apart that the next one is an obvious choice, not a one-pixel argument. A useful set: 4, 8, 12, 16, 24, 32, 48, 64.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare a spacing system">
+              <label class="seg"><input type="radio" name="v-system" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-system" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <ul class="scale scale--mess">
+                    <li style="--n:10"><span>10</span><i></i></li>
+                    <li style="--n:13"><span>13</span><i></i></li>
+                    <li style="--n:15"><span>15</span><i></i></li>
+                    <li style="--n:18"><span>18</span><i></i></li>
+                    <li style="--n:21"><span>21</span><i></i></li>
+                    <li style="--n:27"><span>27</span><i></i></li>
+                    <li style="--n:33"><span>33</span><i></i></li>
+                  </ul>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <ul class="scale scale--sys">
+                    <li style="--n:4"><span>4</span><i></i></li>
+                    <li style="--n:8"><span>8</span><i></i></li>
+                    <li style="--n:12"><span>12</span><i></i></li>
+                    <li style="--n:16"><span>16</span><i></i></li>
+                    <li style="--n:24"><span>24</span><i></i></li>
+                    <li style="--n:32"><span>32</span><i></i></li>
+                    <li style="--n:48"><span>48</span><i></i></li>
+                  </ul>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-width">
+          <h3>You don’t have to fill the whole screen</h3>
+          <p class="tip">Give a form the width it needs and leave the rest empty. A wide monitor is not a reason to stretch a two-field search across the desk. Shrink the canvas when a small UI feels lost.</p>
+          <div class="stage stage--pair stage--stack">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare filling the screen">
+              <label class="seg"><input type="radio" name="v-width" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-width" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="screen">
+                    <div class="screen__form screen__form--full">
+                      <strong>Search sailings</strong>
+                      <span class="box"></span>
+                      <span class="btn">Search</span>
+                    </div>
+                  </div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="screen">
+                    <div class="screen__form screen__form--fit">
+                      <strong>Search sailings</strong>
+                      <span class="box"></span>
+                      <span class="btn">Search</span>
+                    </div>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-grids">
+          <h3>Grids are overrated</h3>
+          <p class="tip">A sidebar wants a fixed width, not a percentage that grows with the monitor and collapses on a phone. Let the main column flex. Use a grid when the content is actually a grid.</p>
+          <div class="stage stage--pair stage--stack">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare fluid grids">
+              <label class="seg"><input type="radio" name="v-grids" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-grids" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="appframe appframe--fluid">
+                    <aside><strong>Sailings</strong><span>Piers</span><span>Passes</span><span>Account</span></aside>
+                    <div class="appframe__main"><strong>Tonight</strong><p>Central to TST · gate B</p></div>
+                  </div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="appframe appframe--fixed">
+                    <aside><strong>Sailings</strong><span>Piers</span><span>Passes</span><span>Account</span></aside>
+                    <div class="appframe__main"><strong>Tonight</strong><p>Central to TST · gate B</p></div>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-relative">
+          <h3>Relative sizing doesn’t scale</h3>
+          <p class="tip">Padding tied to the font size balloons when the heading grows. Choose type from the type scale and spacing from the spacing scale. They are allowed to change on their own.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare relative sizing">
+              <label class="seg"><input type="radio" name="v-rel" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-rel" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body rel rel--em">
+                  <p>Night ferry</p>
+                  <span class="btn">Buy</span>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body rel rel--px stack">
+                  <p>Night ferry</p>
+                  <span class="btn">Buy</span>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-groups">
+          <h3>Avoid ambiguous spacing</h3>
+          <p class="tip">Space inside a group stays smaller than space between groups. Equal gaps make unrelated lines look like one list. Turn the gaps on if you want the numbers.</p>
+          <div class="stage stage--pair gaps">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare group spacing">
+              <label class="seg"><input type="radio" name="v-groups" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-groups" value="after" /> After</label>
+            </div>
+            <label class="gap-toggle"><input type="checkbox" /> Show gaps</label>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body groups">
+                  <p>Central</p>
+                  <div class="spacer" style="--g:12" data-gap="12"></div>
+                  <p class="meta">Gate B</p>
+                  <div class="spacer" style="--g:12" data-gap="12"></div>
+                  <p>Tsim Sha Tsui</p>
+                  <div class="spacer" style="--g:12" data-gap="12"></div>
+                  <p class="meta">Gate 3</p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body groups">
+                  <p>Central</p>
+                  <div class="spacer" style="--g:4" data-gap="4"></div>
+                  <p class="meta">Gate B</p>
+                  <div class="spacer" style="--g:24" data-gap="24"></div>
+                  <p>Tsim Sha Tsui</p>
+                  <div class="spacer" style="--g:4" data-gap="4"></div>
+                  <p class="meta">Gate 3</p>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="part" id="part-text" data-title="Designing text">
+        <h2><span>04</span> Designing text</h2>
+        <p class="dek">A type scale, a comfortable measure, and alignment that follows how the line is read.</p>
+
+        <article class="lesson" id="ru-type-scale">
+          <h3>Establish a type scale</h3>
+          <p class="tip">Hand-pick a handful of sizes and ignore the ones in between. Nested ems drift off the scale. Use px or rem from the list: 12, 14, 16, 18, 20, 24, 30, 36.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare a type scale">
+              <label class="seg"><input type="radio" name="v-type" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-type" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body specimen">
+                  <span style="font-size:13px">Harbour 13</span>
+                  <span style="font-size:15px">Harbour 15</span>
+                  <span style="font-size:16px">Harbour 16</span>
+                  <span style="font-size:17px">Harbour 17</span>
+                  <span style="font-size:19px">Harbour 19</span>
+                  <span style="font-size:21px">Harbour 21</span>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body specimen">
+                  <span style="font-size:12px">Harbour 12</span>
+                  <span style="font-size:14px">Harbour 14</span>
+                  <span style="font-size:16px">Harbour 16</span>
+                  <span style="font-size:20px">Harbour 20</span>
+                  <span style="font-size:24px">Harbour 24</span>
+                  <span style="font-size:32px">Harbour 32</span>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-fonts">
+          <h3>Use good fonts</h3>
+          <p class="tip">UI text wants a face with several weights and a comfortable body size. A mono or display face can label a chart. It should not carry the paragraph. Stay at 400 or heavier for interface copy.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare fonts">
+              <label class="seg"><input type="radio" name="v-fonts" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-fonts" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <p class="font-bad">Night crossing from Central to Tsim Sha Tsui. Buy a return before the last bell.</p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <p class="font-good">Night crossing from Central to Tsim Sha Tsui. <strong>Buy a return</strong> before the last bell.</p>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-measure">
+          <h3>Keep your line length in check</h3>
+          <p class="tip">Body lines sit best around 45 to 75 characters. On a wide column, cap the paragraph even if the card beside it is wider. The slider starts in that range. Push it and the return sweep gets harder to find.</p>
+          <div class="stage stage--pair stage--stack">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare line length">
+              <label class="seg"><input type="radio" name="v-measure" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-measure" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <p class="measure-full">A night crossing is easier to read when the line holds a comfortable measure. Stretch it across the whole desk and the eye works to find the next line. A phone already narrows the column. A desktop will not, unless you do.</p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <label class="slider">Characters
+                    <input type="range" min="35" max="100" value="66" data-target="measure-copy" data-prop="--ch" data-suffix="" />
+                    <output>66</output>
+                  </label>
+                  <p class="measure-copy" id="measure-copy">A night crossing is easier to read when the line holds a comfortable measure. Stretch it across the whole desk and the eye works to find the next line. A phone already narrows the column. A desktop will not, unless you do.</p>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-baseline">
+          <h3>Baseline, not center</h3>
+          <p class="tip">Mixed sizes in one line should share a baseline. Vertical centering makes the small currency mark float beside the price instead of sitting on the same line.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare baseline alignment">
+              <label class="seg"><input type="radio" name="v-base" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-base" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body"><p class="money money--center"><span>HK$</span><span class="n">42</span></p></div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body"><p class="money money--base"><span>HK$</span><span class="n">42</span></p></div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-leading">
+          <h3>Line-height is proportional</h3>
+          <p class="tip">Large headlines can sit near a line-height of 1. Long, smaller text needs more air, closer to 1.5 or above. One leading for both makes the title float and the paragraph feel off.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare line-height">
+              <label class="seg"><input type="radio" name="v-lead" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-lead" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body lh lh--same">
+                  <p class="h">Night crossing</p>
+                  <p class="b">The same leading on the headline and the paragraph gives the title too much air and does not help the longer line.</p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body lh lh--fit">
+                  <p class="h">Night crossing</p>
+                  <p class="b">The headline tightens. The paragraph keeps enough leading that a wrapped line is easy to track.</p>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-links">
+          <h3>Not every link needs a color</h3>
+          <p class="tip">A primary link can be the body color at a heavier weight. Ancillary links can wait for hover. Saving blue for the actions that are actually links keeps the paragraph from turning into a map of underlines.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare link color">
+              <label class="seg"><input type="radio" name="v-links" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-links" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <p class="prose prose--loud">The <a href="#ru-links">night return</a> leaves Central at 23:10.</p>
+                  <p class="prose prose--loud"><a href="#ru-links">Fare table</a></p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <p class="prose prose--quiet">The <a href="#ru-links">night return</a> leaves Central at 23:10.</p>
+                  <p class="prose prose--quiet"><a class="anc" href="#ru-links">Fare table</a></p>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-align">
+          <h3>Align with readability in mind</h3>
+          <p class="tip">Left-align anything long enough to wrap. Center a short title if you want, not a paragraph. In a table, text stays left and numbers sit on the right so the digits line up.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare alignment">
+              <label class="seg"><input type="radio" name="v-align" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-align" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <p class="prose center-copy">Night return from Central. The line is centered, so each wrap starts in a different place.</p>
+                  <table class="sheet">
+                    <caption class="sr">Fares, all left aligned</caption>
+                    <thead><tr><th scope="col">Fare</th><th scope="col">Qty</th><th scope="col">HK$</th></tr></thead>
+                    <tbody>
+                      <tr><td>Night return</td><td>2</td><td>86</td></tr>
+                      <tr><td>Day single</td><td>14</td><td>168</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <p class="prose">Night return from Central. The line is left aligned, so the eye finds the next row.</p>
+                  <table class="sheet sheet--read">
+                    <caption class="sr">Fares, numbers right aligned</caption>
+                    <thead><tr><th scope="col">Fare</th><th scope="col">Qty</th><th scope="col">HK$</th></tr></thead>
+                    <tbody>
+                      <tr><td>Night return</td><td>2</td><td>86</td></tr>
+                      <tr><td>Day single</td><td>14</td><td>168</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-tracking">
+          <h3>Use letter-spacing effectively</h3>
+          <p class="tip">Tighten tracking on a large headline set in a body face. Open it on a short all-caps label. The same spacing on both makes the title feel stretched and the label feel cramped.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare letter-spacing">
+              <label class="seg"><input type="radio" name="v-track" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-track" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <p class="display display--loose">Night crossing</p>
+                  <p class="kicker-label kicker-label--tight">PIER SEVEN</p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <p class="display display--tight">Night crossing</p>
+                  <p class="kicker-label kicker-label--open">PIER SEVEN</p>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="part" id="part-color" data-title="Working with color">
+        <h2><span>05</span> Working with color</h2>
+        <p class="dek">Build ramps you can name. Add color after hierarchy already works in grey.</p>
+
+        <article class="lesson" id="ru-hsl">
+          <h3>Ditch hex for HSL</h3>
+          <p class="tip">Hue, saturation, and lightness are the knobs you actually turn. Hex changes all three at once, so a lighter green is a guess. Move one slider and read both notations.</p>
+          <div class="stage stage--live" id="hsl-demo">
+            <div class="hsl">
+              <div class="hsl__swatch" role="img" aria-label="Color swatch"></div>
+              <label>Hue <input type="range" min="0" max="360" value="160" data-hsl="h" /></label>
+              <label>Saturation <input type="range" min="0" max="100" value="54" data-hsl="s" /></label>
+              <label>Lightness <input type="range" min="0" max="100" value="28" data-hsl="l" /></label>
+              <p class="hsl__read">hsl(160 54% 28%) <span>#216e54</span></p>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-many">
+          <h3>You need more colors than you think</h3>
+          <p class="tip">Five swatches run out on the second screen. You want a run of greys, a run of the brand, and small ramps for success, warning, and danger. Most of the UI is the grey ramp.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare palette size">
+              <label class="seg"><input type="radio" name="v-many" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-many" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body swatch-row">
+                  <div class="chip"><i style="--c:#111"></i>Ink</div>
+                  <div class="chip"><i style="--c:#fff; box-shadow:inset 0 0 0 1px #e4e0d8"></i>White</div>
+                  <div class="chip"><i style="--c:#2563eb"></i>Blue</div>
+                  <div class="chip"><i style="--c:#dc2626"></i>Red</div>
+                  <div class="chip"><i style="--c:#16a34a"></i>Green</div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <p class="ramp-name">Grey</p>
+                  <div class="ramp ramp--8" aria-hidden="true">
+                    <i style="--c:#f4f6f8"></i><i style="--c:#e3e9ee"></i><i style="--c:#c5d0da"></i><i style="--c:#96a4b2"></i><i style="--c:#66788a"></i><i style="--c:#44566a"></i><i style="--c:#2c3b4d"></i><i style="--c:#17212d"></i>
+                  </div>
+                  <p class="ramp-name">Brand</p>
+                  <div class="ramp ramp--7" aria-hidden="true">
+                    <i style="--c:#e7f6f0"></i><i style="--c:#c9eadc"></i><i style="--c:#8fd4b6"></i><i style="--c:#3eae7e"></i><i style="--c:#1e6851"></i><i style="--c:#14543f"></i><i style="--c:#0d3b2c"></i>
+                  </div>
+                  <div class="sem">
+                    <span><i style="--c:#137a45"></i>Success</span>
+                    <span><i style="--c:#b86e00"></i>Warning</span>
+                    <span><i style="--c:#b42318"></i>Danger</span>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-shades">
+          <h3>Define your shades up front</h3>
+          <p class="tip">Lightening a hex by hand produces three greens nobody can tell apart. Name the stops first, then assign the button, the badge, and the text from that ramp. Do not mint a new green for a hover.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare defined shades">
+              <label class="seg"><input type="radio" name="v-shades" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-shades" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body blobs">
+                  <div class="blob"><i style="--c:#63b892"></i>#63b892</div>
+                  <div class="blob"><i style="--c:#6ec29a"></i>#6ec29a</div>
+                  <div class="blob"><i style="--c:#78c9a2"></i>#78c9a2</div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body shades">
+                  <div class="ramp" aria-hidden="true">
+                    <i style="background:var(--c100)"></i>
+                    <i style="background:var(--c200)"></i>
+                    <i style="background:var(--c300)"></i>
+                    <i style="background:var(--c400)"></i>
+                    <i style="background:var(--c500)"></i>
+                    <i style="background:var(--c600)"></i>
+                    <i style="background:var(--c700)"></i>
+                    <i style="background:var(--c800)"></i>
+                    <i style="background:var(--c900)"></i>
+                  </div>
+                  <div class="shade-row">
+                    <span class="btn shade-btn">Buy ticket</span>
+                    <span class="badge">Night pass</span>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-sat">
+          <h3>Don’t let lightness kill your saturation</h3>
+          <p class="tip">A tint at the same saturation as the middle stop turns chalky, and a shade turns muddy. As lightness moves away from the middle, raise saturation a little so the ramp still looks like the same color.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare saturation in a ramp">
+              <label class="seg"><input type="radio" name="v-sat" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-sat" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="ramp" aria-label="Flat saturation ramp">
+                    <i style="--c:hsl(152 16% 94%)"></i>
+                    <i style="--c:hsl(152 16% 84%)"></i>
+                    <i style="--c:hsl(152 16% 72%)"></i>
+                    <i style="--c:hsl(152 16% 58%)"></i>
+                    <i style="--c:hsl(152 16% 42%)"></i>
+                    <i style="--c:hsl(152 16% 34%)"></i>
+                    <i style="--c:hsl(152 16% 26%)"></i>
+                    <i style="--c:hsl(152 16% 18%)"></i>
+                    <i style="--c:hsl(152 16% 12%)"></i>
+                  </div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="ramp" aria-label="Saturation raised away from the middle">
+                    <i style="--c:hsl(164 42% 94%)"></i>
+                    <i style="--c:hsl(160 44% 84%)"></i>
+                    <i style="--c:hsl(156 40% 70%)"></i>
+                    <i style="--c:hsl(154 42% 54%)"></i>
+                    <i style="--c:hsl(152 46% 40%)"></i>
+                    <i style="--c:hsl(148 52% 32%)"></i>
+                    <i style="--c:hsl(144 58% 26%)"></i>
+                    <i style="--c:hsl(140 64% 18%)"></i>
+                    <i style="--c:hsl(136 70% 13%)"></i>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-greys">
+          <h3>Greys don’t have to be grey</h3>
+          <p class="tip">Pure grey feels sterile next to a warm page or a cool brand. Tint the whole ramp a few degrees toward blue or toward amber, and use that tint everywhere so the neutrals belong to the product.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare grey temperature">
+              <label class="seg"><input type="radio" name="v-greys" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-greys" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body temps">
+                  <div class="temp-card">
+                    <strong>Night pass</strong>
+                    <span>Valid on the last ferry</span>
+                    <div class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+                  </div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body temps">
+                  <div class="temp__switch" role="radiogroup" aria-label="Grey temperature">
+                    <label class="pill"><input type="radio" class="sr" name="temp" value="pure" /> Neutral</label>
+                    <label class="pill"><input type="radio" class="sr" name="temp" value="cool" checked /> Cool</label>
+                    <label class="pill"><input type="radio" class="sr" name="temp" value="warm" /> Warm</label>
+                  </div>
+                  <div class="temp-card">
+                    <strong>Night pass</strong>
+                    <span>Valid on the last ferry</span>
+                    <div class="bars" aria-hidden="true"><i></i><i></i><i></i></div>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-access">
+          <h3>Accessible doesn’t have to mean ugly</h3>
+          <p class="tip">White text on a near-black green passes contrast and still feels heavy. Flip it: dark text on a light tint of the same hue, and keep the solid color for the button. You meet the ratio without painting the whole card in the darkest stop.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare accessible color">
+              <label class="seg"><input type="radio" name="v-access" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-access" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="block block--heavy">
+                    <strong>Night pass</strong>
+                    <span>Valid until 23:30</span>
+                    <span class="btn">Buy</span>
+                  </div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="block block--light">
+                    <strong>Night pass</strong>
+                    <span>Valid until 23:30</span>
+                    <span class="btn">Buy</span>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-alone">
+          <h3>Don’t rely on color alone</h3>
+          <p class="tip">Red and green are not a status system if the words or icons are missing. Pair the hue with a label and a mark so the state still reads in grey, and for people who do not see that hue difference.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare color as the only signal">
+              <label class="seg"><input type="radio" name="v-alone" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-alone" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <p class="status"><span class="ok">Paid</span><span class="no">Due</span></p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <p class="status status--good">
+                    <span class="ok"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M6.2 11.2 3.4 8.4l1.1-1.1 1.7 1.7 5.3-5.3 1.1 1.1z"/></svg>Paid</span>
+                    <span class="no"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 2.2a5.8 5.8 0 1 0 0 11.6A5.8 5.8 0 0 0 8 2.2zM7.3 4.8h1.4v3.3l2.2 1.3-.7 1.1-2.9-1.7V4.8z"/></svg>Due</span>
+                  </p>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="part" id="part-depth" data-title="Creating depth">
+        <h2><span>06</span> Creating depth</h2>
+        <p class="dek">Light comes from above. Shadows mean elevation, and flat UI can still be layered.</p>
+
+        <article class="lesson" id="ru-light">
+          <h3>Emulate a light source</h3>
+          <p class="tip">Treat the top edge as the lit one. A raised control gets a lighter top and a shadow underneath. A highlight along the bottom reads as light from below the desk, which makes the control feel sunk or fake.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare light direction">
+              <label class="seg"><input type="radio" name="v-light" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-light" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body pane__body--board"><div class="center"><span class="light light--below">Buy ticket</span></div></div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body pane__body--board"><div class="center"><span class="light light--above">Buy ticket</span></div></div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-elevation">
+          <h3>Use shadows to convey elevation</h3>
+          <p class="tip">One dramatic shadow on every surface makes nothing feel closer. Keep about five levels: a tight shadow for buttons, a little more for cards, more again for menus, and the widest for a modal.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare elevation">
+              <label class="seg"><input type="radio" name="v-elev" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-elev" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body pane__body--board">
+                  <div class="elevs elev--same">
+                    <div class="elev"><div class="elev__card"></div>Button</div>
+                    <div class="elev"><div class="elev__card"></div>Card</div>
+                    <div class="elev"><div class="elev__card"></div>Menu</div>
+                    <div class="elev"><div class="elev__card"></div>Modal</div>
+                    <div class="elev"><div class="elev__card"></div>Overlay</div>
+                  </div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body pane__body--board">
+                  <div class="elevs">
+                    <div class="elev"><div class="elev__card" style="--s:0 1px 1px rgba(28,28,34,.08), 0 1px 2px rgba(28,28,34,.06)"></div>Button</div>
+                    <div class="elev"><div class="elev__card" style="--s:0 1px 2px rgba(28,28,34,.06), 0 6px 10px rgba(28,28,34,.06)"></div>Card</div>
+                    <div class="elev"><div class="elev__card" style="--s:0 2px 4px rgba(28,28,34,.06), 0 12px 20px rgba(28,28,34,.08)"></div>Menu</div>
+                    <div class="elev"><div class="elev__card" style="--s:0 4px 8px rgba(28,28,34,.05), 0 18px 32px rgba(28,28,34,.12)"></div>Modal</div>
+                    <div class="elev"><div class="elev__card" style="--s:0 8px 12px rgba(28,28,34,.06), 0 24px 40px rgba(28,28,34,.16)"></div>Overlay</div>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-two">
+          <h3>Shadows can have two parts</h3>
+          <p class="tip">A single soft shadow looks like a blur stuck to the card. Pair a tight, darker shadow for the contact edge with a larger, lighter one for the ambient lift. At higher elevation, let the tight shadow fade.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare two-part shadows">
+              <label class="seg"><input type="radio" name="v-two" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-two" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body pane__body--board"><div class="shadow-card shadow-card--one">Night pass</div></div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body pane__body--board"><div class="shadow-card shadow-card--two">Night pass</div></div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-flat">
+          <h3>Even flat designs can have depth</h3>
+          <p class="tip">Without a blur you can still separate layers: a lighter surface on a darker page, or a solid offset shadow. Same-white on same-white needs a border to exist. The surface shift does that job.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare flat depth">
+              <label class="seg"><input type="radio" name="v-flat" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-flat" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body flat-board">
+                  <div class="flat-card"><strong>Central</strong><span>18 min</span></div>
+                  <div class="flat-card"><strong>TST</strong><span>24 min</span></div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body pane__body--board flat-board">
+                  <div class="flat-card"><strong>Central</strong><span>18 min</span></div>
+                  <div class="flat-card flat-card--offset"><strong>TST</strong><span>24 min</span></div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-overlap">
+          <h3>Overlap elements to create layers</h3>
+          <p class="tip">When two regions touch at an edge, they read as stacked boxes. Pull an avatar across that edge and the page becomes two layers. Overlap is depth without a shadow.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare overlap">
+              <label class="seg"><input type="radio" name="v-over" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-over" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="layer layer--split">
+                    <div class="avatar" aria-hidden="true"></div>
+                    <div class="band" aria-hidden="true"></div>
+                    <p class="who">Mina Cheung</p>
+                  </div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="layer layer--over">
+                    <div class="band" aria-hidden="true"></div>
+                    <div class="avatar" aria-hidden="true"></div>
+                    <p class="who">Mina Cheung</p>
+                    <p class="meta">Night desk</p>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="part" id="part-images" data-title="Working with images">
+        <h2><span>07</span> Working with images</h2>
+        <p class="dek">Photos, icons, and uploads are layout. Treat their size and contrast as part of the design.</p>
+
+        <article class="lesson" id="ru-photos">
+          <h3>Use good photos</h3>
+          <p class="tip">A flash and a tilted horizon will not be fixed by a filter later. Pick a frame with a clear subject and a simple background, or draw a simple scene. Do not plan to swap in a phone picture at the end.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare photo quality">
+              <label class="seg"><input type="radio" name="v-photos" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-photos" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body"><div class="photo photo--snap" role="img" aria-label="Overexposed snapshot with a tilted horizon"></div></div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="photo photo--set" role="img" aria-label="Night harbour with a small ferry">
+                    <span class="cabin"></span>
+                    <span class="boat"></span>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-contrast">
+          <h3>Text needs consistent contrast</h3>
+          <p class="tip">White type on the bright part of a photo fails as soon as the image changes. Put the words on a steady scrim, or in a band you control, so the contrast does not depend on one lucky crop.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare text on images">
+              <label class="seg"><input type="radio" name="v-contrast" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-contrast" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="photo photo--set poster poster--raw">
+                    <span class="cabin"></span><span class="boat"></span>
+                    <p class="poster__copy"><strong>Night crossing</strong><span>Central to TST</span></p>
+                  </div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="photo photo--set poster poster--safe">
+                    <span class="cabin"></span><span class="boat"></span>
+                    <p class="poster__copy"><strong>Night crossing</strong><span>Central to TST</span></p>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-intended">
+          <h3>Everything has an intended size</h3>
+          <p class="tip">A 16-pixel icon blown up is a stack of blocks. A dense screenshot shrunk to a thumbnail is dust. Draw the icon for the size you show, and crop a screenshot to the part someone should actually read.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare intended size">
+              <label class="seg"><input type="radio" name="v-intended" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-intended" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="icon-line">
+                    <svg class="chunk" viewBox="0 0 8 8" width="64" height="64" aria-hidden="true" shape-rendering="crispEdges">
+                      <rect x="1" y="2" width="6" height="4" fill="#1c1c22"/>
+                      <rect x="2" y="3" width="4" height="1" fill="#fff"/>
+                      <rect x="1" y="1" width="1" height="1" fill="#1c1c22"/>
+                      <rect x="3" y="1" width="1" height="1" fill="#1c1c22"/>
+                      <rect x="5" y="1" width="1" height="1" fill="#1c1c22"/>
+                      <rect x="2" y="6" width="1" height="1" fill="#1c1c22"/>
+                      <rect x="5" y="6" width="1" height="1" fill="#1c1c22"/>
+                    </svg>
+                    Scaled-up icon
+                  </div>
+                  <div class="shot shot--shrink" aria-hidden="true">
+                    <div class="shot__ui">
+                      <p>Overview · Piers · Passes · Account · Export</p>
+                      <strong>$2,480</strong>
+                      <p>Tickets $1,960 · Cash $520 · Gate B · 23:30</p>
+                      <p>Night return 2 · Day single 14 · Child 6 · Staff 1</p>
+                      <p>Central 18 min · TST 24 min · Hung Hom 31 min</p>
+                    </div>
+                  </div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="icon-line">
+                    <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="6" width="16" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M4 10h16" stroke="currentColor" stroke-width="1.75"/></svg>
+                    Drawn at 24px
+                  </div>
+                  <div class="shot shot--crop">
+                    <strong>$2,480</strong>
+                    <span>Tickets this week</span>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-uploads">
+          <h3>Beware user-uploaded content</h3>
+          <p class="tip">People upload wide banners and tall crops. Give every image the same frame, cover the frame, and add a faint inner shadow so a white photo does not bleed into a white card.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare user uploads">
+              <label class="seg"><input type="radio" name="v-uploads" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-uploads" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body"><div class="uploads uploads--raw" aria-hidden="true"><div class="up"></div><div class="up"></div></div></div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body"><div class="uploads uploads--fit" aria-hidden="true"><div class="up"></div><div class="up"></div></div></div>
+              </figure>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="part" id="part-finish" data-title="Finishing touches">
+        <h2><span>08</span> Finishing touches</h2>
+        <p class="dek">Polish the pieces people actually meet: defaults, empty screens, and the borders you can delete.</p>
+
+        <article class="lesson" id="ru-defaults">
+          <h3>Supercharge the defaults</h3>
+          <p class="tip">Bullets, checks, and quotes arrive looking like a document. Restyle the ones people see all the time so they belong to the product. Leave the rare ones alone.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare default controls">
+              <label class="seg"><input type="radio" name="v-defaults" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-defaults" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <ul class="bullets">
+                    <li>Window seat</li>
+                    <li>Night return</li>
+                  </ul>
+                  <label class="check check--native">
+                    <input type="checkbox" checked disabled />
+                    Email the receipt
+                  </label>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <ul class="bullets bullets--rich">
+                    <li>Window seat</li>
+                    <li>Night return</li>
+                  </ul>
+                  <label class="check"><input type="checkbox" checked /> Email the receipt</label>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-accent">
+          <h3>Add color with accent borders</h3>
+          <p class="tip">A full box in brand color is loud. A thick edge on the side, in the hue that matches the message, colors the row without repainting it. Use it on notes, alerts, and highlighted list items.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare accent borders">
+              <label class="seg"><input type="radio" name="v-accent" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-accent" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <p class="note">Gate B is open</p>
+                  <p class="note">Boarding in 12 min</p>
+                  <p class="note">This sailing is full</p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <p class="note note--ok">Gate B is open</p>
+                  <p class="note note--wait">Boarding in 12 min</p>
+                  <p class="note note--stop">This sailing is full</p>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-bg">
+          <h3>Decorate your backgrounds</h3>
+          <p class="tip">A flat grey panel is a placeholder. A quiet dot grid, a tint, or a soft change in the page color gives the region a material. Keep the contrast low so the content stays in front.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare backgrounds">
+              <label class="seg"><input type="radio" name="v-bg" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-bg" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body"><div class="panel panel--flat"><strong>Pier notes</strong><span>Three sailings after dusk.</span></div></div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body"><div class="panel panel--dot"><strong>Pier notes</strong><span>Three sailings after dusk.</span></div></div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-empty">
+          <h3>Don’t overlook empty states</h3>
+          <p class="tip">The first time someone opens a feature, the screen is empty. That view needs a sentence and the action that fills it. Hide filters and tabs that do nothing until there is something to filter.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare empty states">
+              <label class="seg"><input type="radio" name="v-empty" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-empty" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body"><div class="empty empty--bare">No data</div></div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="empty">
+                    <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="14" width="32" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M8 20h32" stroke="currentColor" stroke-width="1.75"/><circle cx="16" cy="28" r="1.5" fill="currentColor"/></svg>
+                    <p>No sailings yet</p>
+                    <span>Add the first crossing and the list will start here.</span>
+                    <span class="btn">Add a sailing</span>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-borders">
+          <h3>Use fewer borders</h3>
+          <p class="tip">A box around every row makes a cage. Separate with space, a background shift, or a single quiet edge. Add a border only when those are not enough.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare borders">
+              <label class="seg"><input type="radio" name="v-borders" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-borders" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="lines">
+                    <div>Tonight</div>
+                    <div>Central → TST</div>
+                    <div>TST → Central</div>
+                  </div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="lines lines--open">
+                    <div>Tonight</div>
+                    <div>Central → TST</div>
+                    <div>TST → Central</div>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="ru-outside">
+          <h3>Think outside the box</h3>
+          <p class="tip">A stock dropdown is a column of labels. If each choice has a time and a price, show those on a selectable card. Combine what a person compares instead of hiding it in a menu.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare stock components">
+              <label class="seg"><input type="radio" name="v-box" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="v-box" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="fake-select">Central <span aria-hidden="true">▾</span></div>
+                  <ul class="plain-menu">
+                    <li>Central</li>
+                    <li>Tsim Sha Tsui</li>
+                    <li>Hung Hom</li>
+                  </ul>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body picks">
+                  <label>
+                    <input type="radio" class="sr" name="pier-pick" checked />
+                    <span class="pick"><span><strong>Central</strong><em>18 min</em></span><b>HK$42</b></span>
+                  </label>
+                  <label>
+                    <input type="radio" class="sr" name="pier-pick" />
+                    <span class="pick"><span><strong>Tsim Sha Tsui</strong><em>24 min</em></span><b>HK$42</b></span>
+                  </label>
+                  <label>
+                    <input type="radio" class="sr" name="pier-pick" />
+                    <span class="pick"><span><strong>Hung Hom</strong><em>31 min</em></span><b>HK$36</b></span>
+                  </label>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="part" id="part-level" data-title="Leveling up">
+        <h2><span>09</span> Leveling up</h2>
+        <p class="dek">Taste is a stack of reviewed decisions. Keep a short loop and the screens you ship get calmer without a new theory each week.</p>
+        <p class="tip">Copy one interface you admire and rebuild the hierarchy in grey before you open a color picker. When something will not pop, quiet a neighbor. When a spacing value is not on the scale, it does not ship. The checks below stay in this browser.</p>
+        <ul class="habits">
+          <li><label><input type="checkbox" data-habit="grey" /> <span>Rebuild one screen you like in grayscale before you add color.</span></label></li>
+          <li><label><input type="checkbox" data-habit="quiet" /> <span>When the main action will not pop, quiet what competes with it.</span></label></li>
+          <li><label><input type="checkbox" data-habit="scale" /> <span>Take the next size from the scale. If two steps look the same, drop one.</span></label></li>
+          <li><label><input type="checkbox" data-habit="labels" /> <span>Cover the labels. If the value still reads, the label can go.</span></label></li>
+          <li><label><input type="checkbox" data-habit="empty" /> <span>Design the empty screen before you call the feature done.</span></label></li>
+          <li><label><input type="checkbox" data-habit="weekly" /> <span>Once a week, copy a decision you would not have made and try it on a real component.</span></label></li>
+        </ul>
+      </section>
+    </main>
+  </div>
+  <script src="shared/refactor-ui.js?v=1" defer></script>
+  <script src="shared/site-header.js?v=8" defer></script>
+</body>
+</html>
