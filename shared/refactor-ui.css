@@ -215,6 +215,34 @@ button:focus-visible {
 
 .credit a { font-weight: 650; }
 
+.dl {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-top: 1.05rem;
+  min-height: 44px;
+  padding: 0 1rem;
+  border-radius: 10px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.92rem;
+  font-weight: 680;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  text-decoration: none;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.dl:hover { background: #111114; }
+
+.dl svg { flex: none; }
+
+@media (max-width: 480px) {
+  .dl { width: 100%; }
+}
+
 .ticket {
   background: var(--canvas);
   border: 1px solid var(--line);
