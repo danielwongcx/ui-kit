@@ -21,7 +21,8 @@
       label: 'Explainer',
       children: [
         { id: 'one-prompt', label: 'One prompt', href: 'one-prompt.html' },
-        { id: 'motion-studio', label: 'Motion studio', href: 'motion-studio.html' }
+        { id: 'motion-studio', label: 'Motion studio', href: 'motion-studio.html' },
+        { id: 'ui-aesthetic', label: 'UI aesthetic', href: 'ui-aesthetic.html' }
       ]
     }
   ];

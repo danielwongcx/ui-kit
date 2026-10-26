@@ -15,6 +15,7 @@ Multi-page **static** UI kit published on GitHub Pages from the `main` branch ro
 - MTR: https://danielwongcx.github.io/ui-kit/mtr.html (`mtr.html`) — one full-viewport page. Original night metro on that same stage (`vendor/ascii-mtr/metro.js`): a KCR first-generation EMU, yellow cab and silver body with a thin red stripe, crosses an elevated guideway above the harbour. Night only, no theme toggle.
 - One prompt: https://danielwongcx.github.io/ui-kit/one-prompt.html (`one-prompt.html`) — Explainer. Plain-language page on seeco’s (@seeconvm) X article about viral “one-prompt” Opus motion videos. Spring-timed hero, a prompt-vs-setup chart, an eight-piece studio diagram, and the piece / without it / fix table. Numbers are the article’s. No build step.
 - Motion studio: https://danielwongcx.github.io/ui-kit/motion-studio.html (`motion-studio.html`) — Explainer. Plain-language page on Movez’s (@0xMovez) X article, a 12-step course for turning a one-line motion prompt into a studio. Light seek(t) hero, a prompt-vs-harness chart, a four-part step diagram, and a without-it / fix table. Numbers are the article’s. No build step.
+- UI aesthetic: https://danielwongcx.github.io/ui-kit/ui-aesthetic.html (`ui-aesthetic.html`) — Explainer. Plain-language page on Xian’s (@Xian0063) X article, eight working principles and five AI design skills, with the article’s 15 images. Numbers and install commands are the article’s. No build step.
 
 No build step. Plain HTML / CSS / JS.
 
@@ -36,6 +37,7 @@ Top-level pages: Gallery, Digest, Taste, Piano, ASCII, Ferry, MTR, Folder, Folde
 
 - One prompt → `one-prompt.html`
 - Motion studio → `motion-studio.html`
+- UI aesthetic → `ui-aesthetic.html`
 
 When you add a new page:
 
