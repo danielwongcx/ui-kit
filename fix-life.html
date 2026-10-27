@@ -1,0 +1,1938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fix your life · ui-kit</title>
+  <meta name="description" content="A plain-language map of Dan Koe’s essay on changing who you are in a day: identity, mind stages, steering, and a one-day protocol." />
+  <script>
+    /* Match the gallery page shell before paint. Palettes change --page only. */
+    (function () {
+      try {
+        document.documentElement.classList.add('js');
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.documentElement.setAttribute('data-motion', 'reduce');
+        }
+        var id = localStorage.getItem('ui-kit-palette') || 'forest';
+        var pages = {
+          forest: '#f5f1ee', navy: '#eef2f6', terracotta: '#faf3ef',
+          plum: '#f6f1f8', ocean: '#eef6f6', amber: '#faf6ee',
+          slate: '#f0f1f3', rosewood: '#f8f1f3', olive: '#f4f3ea',
+          ink: '#ececf0'
+        };
+        document.documentElement.setAttribute('data-theme', id);
+        document.documentElement.style.setProperty('--page', pages[id] || pages.forest);
+      } catch (e) {}
+    })();
+  </script>
+  <style>
+    :root {
+      --page: #ececf0;
+      --canvas: #ffffff;
+      --ink: #1c1c22;
+      --muted: #6b6b76;
+      --line: #e4e4ea;
+      --accent: #5b5bf0;
+      --brand: #1e6851;
+      --spring: linear(
+        0, 0.006, 0.025, 0.07, 0.14, 0.25, 0.4, 0.55, 0.7, 0.82,
+        0.92, 0.99, 1.04, 1.08, 1.09, 1.07, 1.04, 1.02, 1.005, 1
+      );
+      --spring-dur: 0.75s;
+      --nav-h: 52px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--site-header-h, 56px) + var(--nav-h) + 16px);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      background: var(--page);
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .lib-nav {
+      position: sticky;
+      top: var(--site-header-h, 56px);
+      z-index: 40;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0 1.25rem;
+      background: color-mix(in srgb, var(--page) 88%, #fff);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .lib-brand {
+      flex: none;
+      font-size: 11px;
+      font-weight: 650;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .lib-links {
+      display: flex;
+      gap: 0.15rem;
+      margin-left: auto;
+      min-width: 0;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .lib-links.can-scroll {
+      -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+      mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+    }
+
+    .lib-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.45rem 0.7rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .lib-links a:hover,
+    .lib-links a[aria-current="location"] {
+      color: var(--ink);
+      background: var(--canvas);
+    }
+
+    .lib-links a:focus-visible,
+    a:focus-visible,
+    button:focus-visible,
+    summary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .lib {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+    }
+
+    .hero {
+      display: grid;
+      gap: 1.35rem;
+      align-items: center;
+      margin: 0 0 2.75rem;
+    }
+
+    @media (min-width: 840px) {
+      .hero { grid-template-columns: 1fr 1.05fr; gap: 2rem; }
+    }
+
+    h1 {
+      margin: 0 0 0.55rem;
+      font-size: clamp(1.9rem, 4vw, 2.5rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+    }
+
+    .lede {
+      margin: 0;
+      max-width: 34rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .by {
+      margin: 0.85rem 0 0;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    a {
+      color: var(--accent);
+      text-underline-offset: 0.16em;
+    }
+
+    a:hover { color: var(--ink); }
+
+    .rise {
+      transition: transform var(--spring-dur) var(--spring), opacity 0.45s ease;
+    }
+
+    .js .hero:not(.is-in) .rise {
+      opacity: 0;
+      transform: translateY(14px) scale(0.97);
+    }
+
+    .hero.is-in .rise:nth-child(2) { transition-delay: 0.08s; }
+
+    .canvas {
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+    }
+
+    .canvas-chrome {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid var(--line);
+      background: #fafafa;
+    }
+
+    .canvas-name,
+    .canvas-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+
+    .canvas-name { color: #3a3a44; }
+    .canvas-tag { margin-left: auto; color: var(--muted); }
+
+    .stage-body { padding: 0.85rem; }
+
+    .passes {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .passes li {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: color-mix(in srgb, var(--page) 45%, #fff);
+      transition:
+        transform var(--spring-dur) var(--spring),
+        border-color 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease;
+    }
+
+    .passes li.is-on {
+      transform: translateY(-3px);
+      border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+      background: color-mix(in srgb, var(--accent) 7%, #fff);
+      box-shadow: 0 8px 18px -14px color-mix(in srgb, var(--accent) 70%, transparent);
+    }
+
+    .pass-btn {
+      width: 100%;
+      min-height: 44px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.15rem;
+      padding: 0.7rem 0.85rem;
+      border: 0;
+      border-radius: 12px;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .pass-btn b {
+      font-size: 0.92rem;
+      letter-spacing: -0.02em;
+    }
+
+    .pass-btn span {
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 450;
+      line-height: 1.35;
+    }
+
+    .stage-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    .clock {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: #3a3a44;
+    }
+
+    .btn {
+      margin-left: auto;
+      min-height: 44px;
+      padding: 0.4rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      color: var(--ink);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    .btn:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+
+    .sec {
+      margin: 0 0 2.85rem;
+      scroll-margin-top: calc(var(--site-header-h, 56px) + var(--nav-h) + 12px);
+    }
+
+    .sec-head { margin: 0 0 1rem; }
+
+    .sec-head h2 {
+      margin: 0 0 0.3rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .sec-head p,
+    .quiet {
+      margin: 0;
+      max-width: 40rem;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    .prose {
+      margin: 0.9rem 0 0;
+      max-width: 40rem;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .prose p { margin: 0 0 0.75rem; }
+    .prose p:last-child { margin-bottom: 0; }
+
+    .card {
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+    }
+
+    /* —— first vs second order —— */
+    .orders {
+      display: grid;
+      gap: 0.7rem;
+    }
+
+    @media (min-width: 760px) {
+      .orders { grid-template-columns: 1.2fr 0.8fr; align-items: stretch; }
+    }
+
+    .order { padding: 1rem 1.05rem 1rem; }
+
+    .order header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .kicker {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .rank {
+      width: 1.65rem;
+      height: 1.65rem;
+      display: grid;
+      place-items: center;
+      border-radius: 99px;
+      border: 1px solid var(--line);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .order h3 {
+      margin: 0.45rem 0 0.3rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    .order p {
+      margin: 0 0 0.9rem;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.4;
+    }
+
+    .order-pri {
+      border-color: color-mix(in srgb, var(--accent) 48%, var(--line));
+      background: color-mix(in srgb, var(--accent) 6%, #fff);
+    }
+
+    .order-pri .kicker { color: var(--accent); }
+
+    .order-pri .rank {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .weight {
+      height: 12px;
+      border-radius: 99px;
+      background: color-mix(in srgb, var(--ink) 6%, #fff);
+      overflow: hidden;
+    }
+
+    .weight span {
+      display: block;
+      height: 100%;
+      width: 100%;
+      border-radius: inherit;
+      transform-origin: left center;
+      transform: scaleX(var(--w));
+      background: var(--accent);
+      transition: transform 1.05s var(--spring);
+    }
+
+    .order-sec .weight span {
+      background: color-mix(in srgb, var(--accent) 42%, #fff);
+    }
+
+    .js .reveal:not(.is-in) .weight span { transform: scaleX(0); }
+
+    /* —— quotes —— */
+    .quote {
+      margin: 0.95rem 0 0;
+      padding: 0.85rem 1rem;
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 14px 14px 0;
+      box-shadow: 0 1px 2px #00000008;
+    }
+
+    .quote blockquote {
+      margin: 0;
+      font-size: 1.02rem;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+      line-height: 1.35;
+    }
+
+    .quote figcaption {
+      margin-top: 0.35rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* —— hidden aims —— */
+    .table-wrap {
+      margin-top: 0.95rem;
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+      overflow: hidden;
+    }
+
+    table.aim {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .aim th,
+    .aim td {
+      text-align: left;
+      vertical-align: top;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.88rem;
+      line-height: 1.4;
+      font-weight: 450;
+    }
+
+    .aim thead th {
+      font-size: 0.68rem;
+      font-weight: 650;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: #fafafa;
+    }
+
+    .aim tbody th { font-weight: 650; width: 46%; }
+    .aim tr:last-child th,
+    .aim tr:last-child td { border-bottom: 0; }
+
+    /* —— identity cycle —— */
+    .cycle {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .cycle li {
+      display: grid;
+      grid-template-columns: 2rem 1fr;
+      gap: 0.65rem;
+      align-items: center;
+      min-height: 44px;
+      padding: 0.55rem 0.75rem;
+    }
+
+    .lnum {
+      width: 1.7rem;
+      height: 1.7rem;
+      display: grid;
+      place-items: center;
+      border-radius: 99px;
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .lbody { min-width: 0; }
+
+    .lbody b {
+      display: block;
+      font-size: 0.92rem;
+      letter-spacing: -0.02em;
+    }
+
+    .lbody small {
+      display: block;
+      margin-top: 0.12rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.35;
+    }
+
+    .crack {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      margin: 0.15rem 0;
+      padding: 0.45rem 0.85rem;
+      border: 1px dashed color-mix(in srgb, var(--accent) 55%, var(--line));
+      border-radius: 12px;
+      background: color-mix(in srgb, var(--accent) 6%, #fff);
+      color: var(--ink);
+      font-size: 0.84rem;
+      font-weight: 650;
+      letter-spacing: -0.015em;
+      line-height: 1.35;
+    }
+
+    .cycle-return {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      min-height: 44px;
+      margin-top: 0.45rem;
+      padding: 0.55rem 0.85rem;
+      border-radius: 12px;
+      background: var(--ink);
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.86rem;
+      font-weight: 650;
+      letter-spacing: -0.015em;
+    }
+
+    .cycle-return:hover { color: #fff; background: color-mix(in srgb, var(--ink) 85%, var(--accent)); }
+
+    .cycle-return i {
+      font-style: normal;
+      font-size: 1rem;
+    }
+
+    /* —— mind ladder —— */
+    .band-note {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0 0 0.65rem;
+      font-size: 0.8rem;
+      font-weight: 650;
+      color: var(--muted);
+    }
+
+    .band-note i {
+      width: 0.85rem;
+      height: 0.85rem;
+      border-radius: 4px;
+      background: var(--accent);
+      flex: none;
+    }
+
+    .ladder {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .ladder li {
+      display: grid;
+      grid-template-columns: 2rem 1fr;
+      gap: 0.65rem;
+      align-items: center;
+      min-height: 52px;
+      padding: 0.5rem 0.75rem;
+    }
+
+    .ladder li.hot {
+      border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+      background: color-mix(in srgb, var(--accent) 7%, #fff);
+    }
+
+    .ladder li.hot .lnum {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* —— formula + orbit —— */
+    .formula {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.4rem;
+      margin-bottom: 0.95rem;
+    }
+
+    @media (min-width: 720px) {
+      .formula {
+        grid-template-columns: 1fr auto 1fr auto 1fr;
+        align-items: stretch;
+      }
+    }
+
+    .formula article {
+      padding: 0.8rem 0.9rem;
+      min-height: 44px;
+    }
+
+    .formula b {
+      display: block;
+      font-size: 0.95rem;
+      letter-spacing: -0.02em;
+    }
+
+    .formula span {
+      display: block;
+      margin-top: 0.15rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.3;
+    }
+
+    .times {
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-size: 1.1rem;
+      font-weight: 650;
+      min-height: 28px;
+    }
+
+    .orbit-wrap { margin-top: 0.25rem; }
+
+    @media (min-width: 800px) {
+      .orbit-wrap {
+        display: grid;
+        grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
+        gap: 1.25rem;
+        align-items: center;
+      }
+    }
+
+    .orbit {
+      position: relative;
+      width: min(100%, 22rem);
+      margin-inline: auto;
+      aspect-ratio: 1;
+    }
+
+    .orbit svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      color: color-mix(in srgb, var(--accent) 75%, var(--ink));
+    }
+
+    .orbit-core {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .olab {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      max-width: 6.2rem;
+      padding: 0.28rem 0.45rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      box-shadow: 0 1px 2px #00000008;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .olab.g { left: 50%; top: 10%; }
+    .olab.a { left: 80%; top: 34%; }
+    .olab.s { left: 68%; top: 80%; }
+    .olab.c { left: 32%; top: 80%; }
+    .olab.r { left: 20%; top: 34%; }
+
+    .osteps {
+      list-style: none;
+      margin: 0.85rem 0 0;
+      padding: 0;
+    }
+
+    @media (min-width: 800px) {
+      .osteps { margin-top: 0; }
+    }
+
+    .osteps li {
+      display: grid;
+      grid-template-columns: 1.7rem 1fr;
+      gap: 0.55rem;
+      align-items: center;
+      min-height: 44px;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.88rem;
+      line-height: 1.35;
+    }
+
+    .osteps li:last-child { border-bottom: 0; }
+
+    .osteps b { font-weight: 700; }
+    .osteps span { color: var(--muted); }
+
+    .moves {
+      list-style: none;
+      margin: 0.95rem 0 0;
+      padding: 0;
+      counter-reset: mv;
+      display: grid;
+      gap: 0.4rem;
+    }
+
+    @media (min-width: 700px) {
+      .moves { grid-template-columns: 1fr 1fr; }
+    }
+
+    .moves li {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      min-height: 44px;
+      padding: 0.6rem 0.75rem;
+      font-size: 0.86rem;
+      font-weight: 600;
+      line-height: 1.3;
+      letter-spacing: -0.015em;
+    }
+
+    .moves li::before {
+      counter-increment: mv;
+      content: counter(mv);
+      flex: none;
+      width: 1.5rem;
+      height: 1.5rem;
+      display: grid;
+      place-items: center;
+      border-radius: 99px;
+      border: 1px solid var(--line);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    /* —— flip phases —— */
+    .phases {
+      display: grid;
+      gap: 0.45rem;
+    }
+
+    @media (min-width: 800px) {
+      .phases {
+        grid-template-columns: 1fr auto 1fr auto 1fr;
+        align-items: stretch;
+      }
+    }
+
+    .phase { padding: 0.95rem 1rem 1rem; }
+
+    .phase .kicker { display: block; margin-bottom: 0.35rem; }
+
+    .phase h3 {
+      margin: 0 0 0.35rem;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
+
+    .phase p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.4;
+    }
+
+    .phase-1 { border-top: 3px solid color-mix(in srgb, var(--accent) 35%, var(--line)); }
+    .phase-2 { border-top: 3px solid color-mix(in srgb, var(--accent) 65%, var(--line)); }
+    .phase-3 { border-top: 3px solid var(--accent); }
+
+    .js .reveal:not(.is-in) .phase {
+      opacity: 0;
+      transform: translateY(12px) scale(0.98);
+    }
+
+    .phase {
+      transition: transform var(--spring-dur) var(--spring), opacity 0.45s ease;
+    }
+
+    .reveal.is-in .phase:nth-child(3) { transition-delay: 0.08s; }
+    .reveal.is-in .phase:nth-child(5) { transition-delay: 0.16s; }
+
+    .arrow {
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      min-height: 1.5rem;
+    }
+
+    .arrow b {
+      font-weight: 650;
+      font-size: 1.15rem;
+      line-height: 1;
+    }
+
+    @media (max-width: 799px) {
+      .arrow .rt { display: none; }
+    }
+
+    @media (min-width: 800px) {
+      .arrow .dn { display: none; }
+    }
+
+    /* —— protocol —— */
+    .daybar {
+      display: flex;
+      gap: 0.35rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .seg {
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.35rem 0.4rem;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-align: center;
+    }
+
+    .seg.mid {
+      flex: 2.2;
+      background: color-mix(in srgb, var(--accent) 8%, #fff);
+      border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+    }
+
+    .seg:first-child,
+    .seg:last-child { flex: 1.05; }
+
+    .day {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .day > li {
+      display: grid;
+      grid-template-columns: 1.25rem minmax(0, 1fr);
+      gap: 0.7rem;
+    }
+
+    .rail { position: relative; }
+
+    .rail::before {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 18px;
+      bottom: 0;
+      width: 2px;
+      background: var(--line);
+    }
+
+    .day > li:last-child .rail::before { display: none; }
+
+    .rail i {
+      position: relative;
+      z-index: 1;
+      display: block;
+      width: 12px;
+      height: 12px;
+      margin-top: 8px;
+      border-radius: 99px;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
+    }
+
+    .slot { padding-bottom: 0.85rem; min-width: 0; }
+
+    .slot h3 {
+      margin: 0;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .meta {
+      margin: 0.15rem 0 0.4rem;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .slot > p {
+      margin: 0 0 0.55rem;
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: var(--ink);
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--canvas);
+    }
+
+    details summary {
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+      font-size: 0.86rem;
+      font-weight: 650;
+      list-style: none;
+    }
+
+    details summary::-webkit-details-marker { display: none; }
+
+    details summary::before {
+      content: "";
+      flex: none;
+      width: 0.42rem;
+      height: 0.42rem;
+      margin-left: 0.15rem;
+      border-right: 2px solid var(--ink);
+      border-bottom: 2px solid var(--ink);
+      transform: rotate(-45deg);
+      transition: transform 0.45s var(--spring);
+    }
+
+    details[open] summary::before { transform: rotate(45deg); }
+
+    .themes {
+      padding: 0 0.9rem 0.85rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .themes h4 {
+      margin: 0 0 0.25rem;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .themes ul {
+      margin: 0;
+      padding-left: 1.05rem;
+    }
+
+    .themes li {
+      margin: 0.22rem 0;
+      font-size: 0.84rem;
+      line-height: 1.4;
+    }
+
+    .clocklist {
+      margin: 0;
+      padding: 0 0.9rem 0.8rem 0.9rem;
+      list-style: none;
+    }
+
+    .clocklist li {
+      display: grid;
+      grid-template-columns: 3.4rem minmax(0, 1fr);
+      gap: 0.55rem;
+      align-items: center;
+      min-height: 44px;
+      border-top: 1px solid var(--line);
+      font-size: 0.84rem;
+      line-height: 1.35;
+    }
+
+    .clocklist b {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    /* —— forcefield —— */
+    .force { margin-top: 0.15rem; }
+
+    @media (min-width: 840px) {
+      .force {
+        display: grid;
+        grid-template-columns: minmax(0, 18rem) minmax(0, 1fr);
+        gap: 1.25rem;
+        align-items: center;
+      }
+    }
+
+    .rings {
+      position: relative;
+      width: min(100%, 18.5rem);
+      margin: 0 auto 1rem;
+      aspect-ratio: 1;
+    }
+
+    @media (min-width: 840px) {
+      .rings { margin: 0 auto; }
+    }
+
+    .ring {
+      position: absolute;
+      inset: calc(var(--i) * 7.5%);
+      border-radius: 50%;
+      border: 1px solid color-mix(in srgb, var(--accent) calc(18% + var(--i) * 8%), var(--line));
+      background: color-mix(in srgb, var(--accent) calc(3% + var(--i) * 2.5%), var(--canvas));
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .ring span {
+      margin-top: 0.12rem;
+      padding: 0 0.28rem;
+      border-radius: 99px;
+      background: var(--canvas);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+
+    .ring:last-child {
+      align-items: center;
+    }
+
+    .ring:last-child span { margin-top: 0; }
+
+    .gmap {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .gmap li {
+      padding: 0.7rem 0.85rem 0.75rem;
+      transition: transform var(--spring-dur) var(--spring), border-color 0.3s ease;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .gmap li:hover { transform: translateY(-2px); }
+    }
+
+    .gpair {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .gpair b {
+      font-size: 0.92rem;
+      letter-spacing: -0.02em;
+    }
+
+    .gpair i {
+      flex: none;
+      font-style: normal;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .gmap p {
+      margin: 0.2rem 0 0;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.35;
+    }
+
+    .close {
+      margin-top: 1rem;
+      padding: 1.2rem 1.25rem;
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--accent);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+    }
+
+    .close p {
+      margin: 0;
+      max-width: 26em;
+      font-size: clamp(1.15rem, 2.4vw, 1.4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.25;
+    }
+
+    .lib-foot {
+      margin-top: 0.5rem;
+      padding-top: 1.4rem;
+      border-top: 1px solid var(--line);
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .lib-foot p { margin: 0; }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 680px) {
+      .aim thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+      }
+
+      .table-wrap {
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+      }
+
+      .aim,
+      .aim tbody,
+      .aim tr,
+      .aim th,
+      .aim td { display: block; width: auto; }
+
+      .aim tr {
+        background: var(--canvas);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        box-shadow: 0 1px 2px #00000008;
+        padding: 0.85rem 1rem 0.35rem;
+      }
+
+      .aim tbody th,
+      .aim td {
+        border-bottom: 0;
+        padding: 0 0 0.7rem;
+      }
+
+      .aim tbody th {
+        font-size: 1rem;
+        padding-bottom: 0.45rem;
+      }
+
+      .aim td::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 0.15rem;
+        font-size: 0.68rem;
+        font-weight: 650;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+    }
+
+    @media (max-width: 380px) {
+      .olab { font-size: 0.68rem; padding: 0.22rem 0.35rem; }
+      .olab.a { left: 76%; }
+      .olab.r { left: 24%; }
+      .ring span { font-size: 9px; letter-spacing: 0.02em; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+
+      .js .hero:not(.is-in) .rise,
+      .js .reveal:not(.is-in) .phase,
+      .js .reveal:not(.is-in) .weight span {
+        opacity: 1;
+        transform: none;
+      }
+
+      .js .reveal:not(.is-in) .weight span { transform: scaleX(var(--w)); }
+
+      .rise,
+      .weight span,
+      .phase,
+      .passes li,
+      .gmap li,
+      details summary::before {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="shared/site-header.css?v=6" />
+</head>
+<body data-page="fix-life">
+  <nav class="lib-nav" aria-label="Page sections">
+    <div class="lib-brand">Fix life</div>
+    <div class="lib-links" id="lib-links">
+      <a href="#person">Person</a>
+      <a href="#want">Want</a>
+      <a href="#cycle">Cycle</a>
+      <a href="#mind">Mind</a>
+      <a href="#steer">Steer</a>
+      <a href="#flip">Flip</a>
+      <a href="#protocol">Protocol</a>
+      <a href="#game">Game</a>
+    </div>
+  </nav>
+
+  <main class="lib">
+    <header class="hero" id="top">
+      <div class="hero-copy rise">
+        <h1>Fix your entire life in one day.</h1>
+        <p class="lede">A surface goal changes a few weeks. This is a day for changing the person who picks the next goal.</p>
+        <p class="by">Dan Koe (<a href="https://x.com/thedankoe" target="_blank" rel="noopener noreferrer">@thedankoe</a>) on <a href="https://x.com/thedankoe/status/2010751592346030461" target="_blank" rel="noopener noreferrer">X</a></p>
+      </div>
+
+      <div class="canvas rise" id="stage">
+        <div class="canvas-chrome">
+          <span class="canvas-name">one day</span>
+          <span class="canvas-tag">3 passes</span>
+        </div>
+        <div class="stage-body">
+          <ol class="passes" id="passes">
+            <li class="is-on">
+              <button type="button" class="pass-btn">
+                <b>Morning</b>
+                <span>Dig up the life you are done repeating.</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="pass-btn">
+                <b>Day</b>
+                <span>Catch the aim your hours are already serving.</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="pass-btn">
+                <b>Evening</b>
+                <span>Compress it into a stake, a win, and tomorrow’s moves.</span>
+              </button>
+            </li>
+          </ol>
+          <div class="stage-row">
+            <span class="clock" id="pass-read">Morning</span>
+            <button type="button" class="btn" id="pass-play" aria-pressed="true" aria-label="Pause the day passes">Pause</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="sec" id="person">
+      <div class="sec-head">
+        <h2>Actions follow the person.</h2>
+        <p>Two moves, and they are not equal. Who you are comes first. What you do follows.</p>
+      </div>
+
+      <div class="orders reveal" id="order-diagram">
+        <article class="card order order-pri">
+          <header>
+            <span class="kicker">Primary</span>
+            <span class="rank">1</span>
+          </header>
+          <h3>Change who you are</h3>
+          <p>The lifestyle that creates the result, lived before the result shows up.</p>
+          <div class="weight" aria-hidden="true"><span style="--w: 1"></span></div>
+        </article>
+        <article class="card order order-sec">
+          <header>
+            <span class="kicker">Secondary</span>
+            <span class="rank">2</span>
+          </header>
+          <h3>Change actions</h3>
+          <p>A few disciplined weeks on top of the old person. Then the old person returns.</p>
+          <div class="weight" aria-hidden="true"><span style="--w: 0.34"></span></div>
+        </article>
+      </div>
+
+      <div class="prose">
+        <p>People set a surface goal, hold it briefly, and slide back. The old identity was still in charge. Someone who already lives the result does not grind the core habit. The grind is the old choice: forcing the junk food, forcing the snooze.</p>
+        <p>If you want the outcome, you need the lifestyle that produces it before the outcome arrives. Waiting to “enjoy life again” once the goal is done is a plan to rebound. When the new life pulls harder, habits that do not move you start to feel wrong. The old standards last because you have not looked at where they end.</p>
+      </div>
+    </section>
+
+    <section class="sec" id="want">
+      <div class="sec-head">
+        <h2>You don’t want the thing you named.</h2>
+        <p>Behavior is aimed, including the behavior you call a lack of discipline.</p>
+      </div>
+
+      <figure class="quote">
+        <blockquote>Trust only movement. Life happens at the level of events, not of words.</blockquote>
+        <figcaption>Alfred Adler</figcaption>
+      </figure>
+
+      <div class="table-wrap">
+        <table class="aim">
+          <caption class="visually-hidden">Behaviors and the hidden aim they can serve.</caption>
+          <thead>
+            <tr>
+              <th scope="col">What you do</th>
+              <th scope="col">Hidden aim</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Another evening on the couch</th>
+              <td data-label="Hidden aim">Spend the time. Keep tomorrow from starting.</td>
+            </tr>
+            <tr>
+              <th scope="row">“I’ll start Monday.”</th>
+              <td data-label="Hidden aim">Stay unjudged. A start can fail. A delay cannot.</td>
+            </tr>
+            <tr>
+              <th scope="row">Stay in the job you’ve outgrown</th>
+              <td data-label="Hidden aim">Stay safe. Don’t look like someone who tried and missed.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="prose">
+        <p>A goal is a lens. Point it somewhere and you start noticing what helps. A surface goal that secretly serves a safer aim will lose. Real change is a new point of view, not a louder version of the old one.</p>
+      </div>
+    </section>
+
+    <section class="sec" id="cycle">
+      <div class="sec-head">
+        <h2>Identity is a loop.</h2>
+        <p>Maxwell Maltz’s point: an idea you fully accept can run you the way a hypnotist’s instruction would. You stop voting on it.</p>
+      </div>
+
+      <div class="cycle-block">
+        <ol class="cycle" aria-label="Identity cycle, steps 1 to 6">
+          <li class="card" id="cycle-1">
+            <span class="lnum">1</span>
+            <span class="lbody"><b>Goal</b><small>You want a future.</small></span>
+          </li>
+          <li class="card">
+            <span class="lnum">2</span>
+            <span class="lbody"><b>Lens</b><small>You see through that want.</small></span>
+          </li>
+          <li class="card">
+            <span class="lnum">3</span>
+            <span class="lbody"><b>Notice</b><small>You catch the information that helps it.</small></span>
+          </li>
+          <li class="card">
+            <span class="lnum">4</span>
+            <span class="lbody"><b>Act</b><small>You move, and the world answers.</small></span>
+          </li>
+          <li class="card">
+            <span class="lnum">5</span>
+            <span class="lbody"><b>Condition</b><small>You repeat it until it is automatic.</small></span>
+          </li>
+          <li class="card">
+            <span class="lnum">6</span>
+            <span class="lbody"><b>I am…</b><small>The behavior hardens into a self.</small></span>
+          </li>
+        </ol>
+        <p class="crack">The opening is between “I am” and the defense. Less defense, and the next goals can change.</p>
+        <ol class="cycle" start="7" aria-label="Identity cycle, step 7">
+          <li class="card">
+            <span class="lnum">7</span>
+            <span class="lbody"><b>Defend</b><small>You protect that self so it stays consistent.</small></span>
+          </li>
+        </ol>
+      </div>
+      <a class="cycle-return" href="#cycle-1"><i aria-hidden="true">↺</i> New goals. The lens changes, and the loop runs again.</a>
+
+      <div class="prose">
+        <p>It starts young. Survival first, then fitting the family, who pass on an older picture of a good life. Once the body is safe, people protect the story. A threatened identity feels like a threat to survival, so the role — the professional, the fan, the “not a math person” — defends itself and blocks the move that would change the life.</p>
+      </div>
+    </section>
+
+    <section class="sec" id="mind">
+      <div class="sec-head">
+        <h2>The life you want sits at a level of mind.</h2>
+        <p>Nine stages, compressed from a long research line. Most readers are in the marked band. Each stage fails the same way: it stops fitting.</p>
+      </div>
+
+      <p class="band-note"><i aria-hidden="true"></i> Typical band · stages 4–8</p>
+      <ol class="ladder" aria-label="Nine ego stages from Impulsive to Unitive">
+        <li class="card">
+          <span class="lnum">1</span>
+          <span class="lbody"><b>Impulsive</b><small>The impulse is the action.</small></span>
+        </li>
+        <li class="card">
+          <span class="lnum">2</span>
+          <span class="lbody"><b>Self-Protective</b><small>The world is a threat. Hide, or lie.</small></span>
+        </li>
+        <li class="card">
+          <span class="lnum">3</span>
+          <span class="lbody"><b>Conformist</b><small>You are the group. Its rules are reality.</small></span>
+        </li>
+        <li class="card hot">
+          <span class="lnum">4</span>
+          <span class="lbody"><b>Self-Aware</b><small>The inner life does not match the outside.</small></span>
+        </li>
+        <li class="card hot">
+          <span class="lnum">5</span>
+          <span class="lbody"><b>Conscientious</b><small>Your own principles. You keep the score.</small></span>
+        </li>
+        <li class="card hot">
+          <span class="lnum">6</span>
+          <span class="lbody"><b>Individualist</b><small>Principles bend to context. You hold them loosely.</small></span>
+        </li>
+        <li class="card hot">
+          <span class="lnum">7</span>
+          <span class="lbody"><b>Strategist</b><small>You work with systems, and with your own blind spots.</small></span>
+        </li>
+        <li class="card hot">
+          <span class="lnum">8</span>
+          <span class="lbody"><b>Construct-Aware</b><small>A framework, and an identity, is a useful fiction.</small></span>
+        </li>
+        <li class="card">
+          <span class="lnum">9</span>
+          <span class="lbody"><b>Unitive</b><small>The split between self and life thins out. Presence.</small></span>
+        </li>
+      </ol>
+      <p class="quiet" style="margin-top: 0.8rem">Dan Koe’s Human 3.0 sketch, drawn from Maslow, Loevinger and Cook-Greuter, Spiral Dynamics, and Integral.</p>
+    </section>
+
+    <section class="sec" id="steer">
+      <div class="sec-head">
+        <h2>Intelligence is steering.</h2>
+        <p>Getting what you want, on a long enough clock, by using the gap instead of quitting at it.</p>
+      </div>
+
+      <figure class="quote">
+        <blockquote>The only real test of intelligence is if you get what you want out of life.</blockquote>
+        <figcaption>Naval Ravikant</figcaption>
+      </figure>
+
+      <div class="formula" aria-label="Agency times opportunity times intelligence" style="margin-top: 0.95rem">
+        <article class="card">
+          <b>Agency</b>
+          <span>You actually move.</span>
+        </article>
+        <span class="times" aria-hidden="true">×</span>
+        <article class="card">
+          <b>Opportunity</b>
+          <span>The field is open.</span>
+        </article>
+        <span class="times" aria-hidden="true">×</span>
+        <article class="card">
+          <b>Intelligence</b>
+          <span>You can steer.</span>
+        </article>
+      </div>
+      <p class="quiet">Drive in a closed field yields little. An opening you cannot use yields little too.</p>
+
+      <div class="orbit-wrap">
+        <div class="orbit">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <defs>
+              <marker id="steer-arrow" markerWidth="7" markerHeight="7" refX="3.2" refY="3.5" orient="auto">
+                <path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor" />
+              </marker>
+            </defs>
+            <path d="M50 24 A26 26 0 1 1 46.5 24.4" fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#steer-arrow)" />
+          </svg>
+          <span class="orbit-core">Feedback</span>
+          <span class="olab g">Goal</span>
+          <span class="olab a">Act</span>
+          <span class="olab s">Sense</span>
+          <span class="olab c">Compare</span>
+          <span class="olab r">Act again</span>
+        </div>
+        <ol class="osteps">
+          <li><span class="lnum">1</span><span><b>Goal.</b> A future that decides what you notice.</span></li>
+          <li><span class="lnum">2</span><span><b>Act.</b> One move toward it.</span></li>
+          <li><span class="lnum">3</span><span><b>Sense.</b> An honest read of where you are.</span></li>
+          <li><span class="lnum">4</span><span><b>Compare.</b> The gap. Not a verdict about you.</span></li>
+          <li><span class="lnum">5</span><span><b>Act again.</b> The next move uses the gap.</span></li>
+        </ol>
+      </div>
+
+      <div class="prose">
+        <p>The word under this is cybernetics: the art of steering. A weak loop hits a wall and stops. A strong one gives the problem a longer clock and stacks ideas. You do not jump from a blank page to a finished system. Most goals people carry are assigned — school, a job, an age to retire. That path is famous, and it does not fit.</p>
+      </div>
+
+      <ol class="moves" aria-label="How to aim higher">
+        <li class="card">Reject the assigned path.</li>
+        <li class="card">Step into what you cannot name yet.</li>
+        <li class="card">Set a higher goal, and let it be the lens.</li>
+        <li class="card">Stay with the chaos long enough to learn.</li>
+        <li class="card">Study principles that show up in more than one field.</li>
+        <li class="card">Go deep in several fields, not one groove.</li>
+      </ol>
+    </section>
+
+    <section class="sec" id="flip">
+      <div class="sec-head">
+        <h2>A new life starts in a crack.</h2>
+        <p>The useful stretch comes after you are fed up with not moving. Identity flips in three phases.</p>
+      </div>
+
+      <div class="phases reveal" id="phases">
+        <article class="card phase phase-1">
+          <span class="kicker">1</span>
+          <h3>Dissonance</h3>
+          <p>You don’t belong in the life you are still living. The lack of progress is finally intolerable.</p>
+        </article>
+        <div class="arrow" aria-hidden="true"><b class="dn">↓</b><b class="rt">→</b></div>
+        <article class="card phase phase-2">
+          <span class="kicker">2</span>
+          <h3>Uncertainty</h3>
+          <p>You don’t know what’s next. You experiment, or you drift and call it waiting.</p>
+        </article>
+        <div class="arrow" aria-hidden="true"><b class="dn">↓</b><b class="rt">→</b></div>
+        <article class="card phase phase-3">
+          <span class="kicker">3</span>
+          <h3>Discovery</h3>
+          <p>The picture clears. Years of progress can compress into months, because the lens finally matches the moves.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="sec" id="protocol">
+      <div class="sec-head">
+        <h2>One day, three passes.</h2>
+        <p>Pen and paper. Morning to dig, day to interrupt autopilot, night to compress. Write the morning yourself. Don’t hand it to a model.</p>
+      </div>
+
+      <div class="daybar" role="img" aria-label="The day has three parts: a short morning excavation, interrupts through the day, and an evening synthesis.">
+        <span class="seg">Morning</span>
+        <span class="seg mid">Day</span>
+        <span class="seg">Evening</span>
+      </div>
+
+      <ol class="day">
+        <li>
+          <div class="rail" aria-hidden="true"><i></i></div>
+          <div class="slot">
+            <h3>Morning · excavate</h3>
+            <p class="meta">15–30 min</p>
+            <p>Pain you’ve learned to tolerate, the aim your behavior reveals, an anti-vision, and the smallest vision that would feel natural.</p>
+            <details>
+              <summary>Question themes</summary>
+              <div class="themes">
+                <div>
+                  <h4>Pain</h4>
+                  <ul>
+                    <li>The dull dissatisfaction you have made room for.</li>
+                    <li>Complaints you repeat and never move.</li>
+                    <li>For each, what a watcher would say you actually want.</li>
+                    <li>The truth about this life you would hate to tell someone you respect.</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4>Anti-vision</h4>
+                  <ul>
+                    <li>An ordinary Tuesday in five years if nothing changes.</li>
+                    <li>Ten years on: what you missed, who stopped asking, what people say.</li>
+                    <li>The end, if the safe version never broke the pattern.</li>
+                    <li>Someone who already lives that future, and how it feels to become them.</li>
+                    <li>The “I am the type of person who…” you would have to give up, and the social cost.</li>
+                    <li>The most embarrassing reason you have not changed.</li>
+                    <li>If the behavior is self-protection: what it saves, and what it costs.</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4>Minimum vision</h4>
+                  <ul>
+                    <li>A Tuesday three years out, ignoring whether it is practical.</li>
+                    <li>The “I am…” that would make that Tuesday feel ordinary.</li>
+                    <li>One thing you would do this week as that person.</li>
+                  </ul>
+                </div>
+              </div>
+            </details>
+          </div>
+        </li>
+        <li>
+          <div class="rail" aria-hidden="true"><i></i></div>
+          <div class="slot">
+            <h3>Day · interrupt</h3>
+            <p class="meta">Six checks</p>
+            <p>Phone reminders that ask what the current hour is for: avoidance, the want it implies, direction, the thing you are pretending, protection, and aliveness.</p>
+            <details>
+              <summary>Reminder themes</summary>
+              <ul class="clocklist">
+                <li><b>11:00</b><span>What this hour is helping you avoid.</span></li>
+                <li><b>13:30</b><span>What the last two hours say you want.</span></li>
+                <li><b>15:15</b><span>Toward the life you hate, or the one you want.</span></li>
+                <li><b>17:00</b><span>The important thing you are treating as optional.</span></li>
+                <li><b>19:30</b><span>What today came from protecting an identity.</span></li>
+                <li><b>21:00</b><span>When you felt alive, and when you felt gone.</span></li>
+              </ul>
+            </details>
+          </div>
+        </li>
+        <li>
+          <div class="rail" aria-hidden="true"><i></i></div>
+          <div class="slot">
+            <h3>Evening · synthesize</h3>
+            <p class="meta">Sentences, then lenses</p>
+            <p>Why you are stuck, the actual enemy, one sentence you refuse, one sentence you are building. Then a one-year proof, a one-month condition, and two or three moves for tomorrow.</p>
+            <details>
+              <summary>What to lock</summary>
+              <div class="themes">
+                <div>
+                  <h4>Sentences</h4>
+                  <ul>
+                    <li>The truest reason you have been stuck.</li>
+                    <li>The enemy: an internal pattern or belief, named.</li>
+                    <li>Anti-vision, in one line: the life you will not let this become.</li>
+                    <li>Vision, in one line: what you are building toward.</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4>Lenses</h4>
+                  <ul>
+                    <li>One year: one concrete proof the old pattern broke.</li>
+                    <li>One month: what must be true or that year becomes fiction.</li>
+                    <li>Tomorrow: two or three blocks the person you are becoming would actually do.</li>
+                  </ul>
+                </div>
+              </div>
+            </details>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="sec" id="game">
+      <div class="sec-head">
+        <h2>Turn the aim into a game.</h2>
+        <p>Mihaly Csikszentmihalyi described flow as order in consciousness: attention on one hard thing, the noise gone. A game builds that on purpose. Six rings, outside in, against distraction.</p>
+      </div>
+
+      <div class="force">
+        <div class="rings" aria-hidden="true">
+          <div class="ring" style="--i: 0"><span>Stake</span></div>
+          <div class="ring" style="--i: 1"><span>Win</span></div>
+          <div class="ring" style="--i: 2"><span>Mission</span></div>
+          <div class="ring" style="--i: 3"><span>Boss</span></div>
+          <div class="ring" style="--i: 4"><span>Quests</span></div>
+          <div class="ring" style="--i: 5"><span>Rules</span></div>
+        </div>
+        <ol class="gmap">
+          <li class="card">
+            <span class="gpair"><b>Anti-vision</b><i>Stake</i></span>
+            <p>The life you will not repeat. This is what you lose if you drift.</p>
+          </li>
+          <li class="card">
+            <span class="gpair"><b>Vision</b><i>Win</i></span>
+            <p>The life you are playing toward. It can still change.</p>
+          </li>
+          <li class="card">
+            <span class="gpair"><b>1-year goal</b><i>Mission</i></span>
+            <p>One proof the old pattern broke. The sole priority.</p>
+          </li>
+          <li class="card">
+            <span class="gpair"><b>1-month project</b><i>Boss</i></span>
+            <p>What has to be true in a month, or the year is a wish.</p>
+          </li>
+          <li class="card">
+            <span class="gpair"><b>Daily levers</b><i>Quests</i></span>
+            <p>The few blocks tomorrow that actually move the mission.</p>
+          </li>
+          <li class="card">
+            <span class="gpair"><b>Constraints</b><i>Rules</i></span>
+            <p>What you will not trade away to win faster.</p>
+          </li>
+        </ol>
+      </div>
+
+      <div class="prose">
+        <p>The field gets stronger as you play it. At some point it is not a plan you consult. It is who you are.</p>
+      </div>
+
+      <aside class="close">
+        <p>Which aim ran today — the one you say, or the one your last two hours would prove?</p>
+      </aside>
+    </section>
+
+    <footer class="lib-foot">
+      <p>Source: <a href="https://x.com/thedankoe/status/2010751592346030461" target="_blank" rel="noopener noreferrer">How to fix your entire life in 1 day</a> by Dan Koe (<a href="https://x.com/thedankoe" target="_blank" rel="noopener noreferrer">@thedankoe</a>). This page is a plain-language map of that essay, not the essay. The nine stages are his Human 3.0 sketch, also told in <a href="https://letters.thedankoe.com/p/human-30-a-map-to-reach-the-top-1" target="_blank" rel="noopener noreferrer">Human 3.0</a>.</p>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var reduced = document.documentElement.getAttribute('data-motion') === 'reduce';
+      var hero = document.querySelector('.hero');
+      var reveals = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+
+      function revealHero() {
+        if (hero) hero.classList.add('is-in');
+      }
+
+      if (reduced) {
+        revealHero();
+        reveals.forEach(function (el) { el.classList.add('is-in'); });
+      } else {
+        requestAnimationFrame(function () {
+          requestAnimationFrame(revealHero);
+        });
+        if ('IntersectionObserver' in window) {
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.add('is-in');
+              io.unobserve(entry.target);
+            });
+          }, { threshold: 0.22 });
+          reveals.forEach(function (el) { io.observe(el); });
+        } else {
+          reveals.forEach(function (el) { el.classList.add('is-in'); });
+        }
+      }
+
+      var passes = Array.prototype.slice.call(document.querySelectorAll('#passes li'));
+      var passRead = document.getElementById('pass-read');
+      var passBtn = document.getElementById('pass-play');
+      var passNames = ['Morning', 'Day', 'Evening'];
+      var passIndex = 0;
+      var passTimer = 0;
+      var passPlaying = !reduced;
+
+      function showPass(index) {
+        passIndex = (index + passes.length) % passes.length;
+        passes.forEach(function (el, n) {
+          el.classList.toggle('is-on', n === passIndex);
+        });
+        if (passRead) passRead.textContent = passNames[passIndex];
+      }
+
+      function setPassPlaying(next) {
+        passPlaying = next;
+        passBtn.setAttribute('aria-pressed', next ? 'true' : 'false');
+        passBtn.textContent = next ? 'Pause' : 'Play';
+        passBtn.setAttribute('aria-label', next ? 'Pause the day passes' : 'Play the day passes');
+        if (passTimer) {
+          clearInterval(passTimer);
+          passTimer = 0;
+        }
+        if (next) {
+          passTimer = setInterval(function () {
+            showPass(passIndex + 1);
+          }, 2400);
+        }
+      }
+
+      passes.forEach(function (el, index) {
+        el.querySelector('button').addEventListener('click', function () {
+          showPass(index);
+          setPassPlaying(false);
+        });
+      });
+
+      passBtn.addEventListener('click', function () {
+        setPassPlaying(!passPlaying);
+      });
+
+      showPass(0);
+      setPassPlaying(passPlaying);
+
+      var links = Array.prototype.slice.call(document.querySelectorAll('.lib-links a'));
+      var sections = links.map(function (a) {
+        return document.querySelector(a.getAttribute('href'));
+      }).filter(Boolean);
+      var scroller = document.getElementById('lib-links');
+      var userScrollingNav = false;
+      var navHold = 0;
+
+      function markOverflow() {
+        if (!scroller) return;
+        var more = scroller.scrollWidth - scroller.clientWidth - scroller.scrollLeft > 8;
+        scroller.classList.toggle('can-scroll', more);
+      }
+
+      function holdNav() {
+        userScrollingNav = true;
+        clearTimeout(navHold);
+        navHold = setTimeout(function () { userScrollingNav = false; }, 700);
+      }
+
+      function revealLink(active) {
+        if (!active || userScrollingNav) return;
+        var viewL = scroller.scrollLeft;
+        var viewR = viewL + scroller.clientWidth;
+        var left = active.offsetLeft;
+        var right = left + active.offsetWidth;
+        var next = null;
+        if (left < viewL + 8) next = Math.max(0, left - 12);
+        else if (right > viewR - 12) next = right - scroller.clientWidth + 12;
+        if (next !== null && Math.abs(scroller.scrollLeft - next) > 2) {
+          scroller.scrollTo({ left: next, behavior: reduced ? 'auto' : 'smooth' });
+        }
+      }
+
+      function spy() {
+        var header = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--site-header-h')) || 56;
+        var line = header + 52 + 12;
+        var current = sections[0];
+        sections.forEach(function (sec) {
+          if (sec.getBoundingClientRect().top <= line) current = sec;
+        });
+        var active = null;
+        links.forEach(function (a) {
+          var on = current && a.getAttribute('href') === '#' + current.id;
+          if (on) {
+            a.setAttribute('aria-current', 'location');
+            active = a;
+          } else {
+            a.removeAttribute('aria-current');
+          }
+        });
+        revealLink(active);
+        markOverflow();
+      }
+
+      var spyQueued = false;
+      function queueSpy() {
+        if (spyQueued) return;
+        spyQueued = true;
+        requestAnimationFrame(function () {
+          spyQueued = false;
+          spy();
+        });
+      }
+
+      scroller.addEventListener('scroll', markOverflow, { passive: true });
+      scroller.addEventListener('pointerdown', holdNav);
+      scroller.addEventListener('wheel', holdNav, { passive: true });
+      window.addEventListener('scroll', queueSpy, { passive: true });
+      window.addEventListener('resize', function () {
+        markOverflow();
+        queueSpy();
+      });
+      markOverflow();
+      spy();
+
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) {
+          if (!passPlaying) return;
+          setPassPlaying(false);
+          passBtn.dataset.wasPlaying = '1';
+        } else if (passBtn.dataset.wasPlaying === '1') {
+          delete passBtn.dataset.wasPlaying;
+          setPassPlaying(true);
+        }
+      });
+    })();
+  </script>
+  <script src="shared/site-header.js?v=10" defer></script>
+</body>
+</html>
