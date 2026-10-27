@@ -22,6 +22,19 @@
         };
         document.documentElement.setAttribute('data-theme', id);
         document.documentElement.style.setProperty('--page', pages[id] || pages.forest);
+        var lang = 'en';
+        var queryLang = new URLSearchParams(window.location.search).get('lang');
+        var storedLang = localStorage.getItem('fix-life-lang');
+        if (queryLang === 'zh' || queryLang === 'en') lang = queryLang;
+        else if (storedLang === 'zh' || storedLang === 'en') lang = storedLang;
+        document.documentElement.setAttribute('data-lang', lang);
+        if (lang === 'zh') {
+          document.documentElement.lang = 'zh-Hant-HK';
+          document.documentElement.setAttribute('data-i18n-wait', '');
+          setTimeout(function () {
+            document.documentElement.removeAttribute('data-i18n-wait');
+          }, 4000);
+        }
       } catch (e) {}
     })();
   </script>
@@ -45,6 +58,8 @@
     }
 
     * { box-sizing: border-box; }
+
+    html[data-i18n-wait] body { visibility: hidden; }
 
     html {
       scroll-behavior: smooth;
@@ -84,6 +99,39 @@
       color: var(--muted);
       white-space: nowrap;
     }
+
+    .lang-switch {
+      flex: none;
+      display: inline-flex;
+      align-items: center;
+      padding: 2px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--canvas);
+    }
+
+    .lang-switch button {
+      min-width: 44px;
+      min-height: 44px;
+      padding: 0 0.7rem;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .lang-switch button[aria-pressed="true"] {
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .lang-switch button:hover { color: var(--ink); }
+
+    .lang-switch button[aria-pressed="true"]:hover { color: #fff; }
 
     .lib-links {
       display: flex;
@@ -1251,6 +1299,42 @@
       .olab.a { left: 76%; }
       .olab.r { left: 24%; }
       .ring span { font-size: 9px; letter-spacing: 0.02em; }
+      .lib-nav { padding-left: 0.75rem; padding-right: 0.75rem; gap: 0.45rem; }
+      .lang-switch button { padding: 0 0.55rem; }
+    }
+
+    html[lang="zh-Hant-HK"] body {
+      font-family: "PingFang HK", "PingFang TC", "Noto Sans CJK TC", "Noto Sans TC", "Source Han Sans TC", "Microsoft JhengHei", "WenQuanYi Micro Hei", "Droid Sans Fallback", var(--sans);
+    }
+
+    html[lang="zh-Hant-HK"] h1,
+    html[lang="zh-Hant-HK"] h2,
+    html[lang="zh-Hant-HK"] h3,
+    html[lang="zh-Hant-HK"] h4,
+    html[lang="zh-Hant-HK"] .close p,
+    html[lang="zh-Hant-HK"] .kicker,
+    html[lang="zh-Hant-HK"] .themes h4,
+    html[lang="zh-Hant-HK"] .orbit-core {
+      letter-spacing: 0;
+    }
+
+    html[lang="zh-Hant-HK"] h1 { line-height: 1.3; }
+
+    html[lang="zh-Hant-HK"] .lede,
+    html[lang="zh-Hant-HK"] .sec-head p,
+    html[lang="zh-Hant-HK"] .prose,
+    html[lang="zh-Hant-HK"] .order p,
+    html[lang="zh-Hant-HK"] .phase p,
+    html[lang="zh-Hant-HK"] .lbody small,
+    html[lang="zh-Hant-HK"] .close p {
+      line-height: 1.6;
+    }
+
+    html[lang="zh-Hant-HK"] .themes h4 { font-size: 0.8rem; }
+
+    html[lang="zh-Hant-HK"] .olab {
+      letter-spacing: 0;
+      line-height: 1.25;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -1281,24 +1365,28 @@
 <body data-page="fix-life">
   <nav class="lib-nav" aria-label="Page sections">
     <div class="lib-brand">Fix life</div>
+    <div class="lang-switch" role="group" aria-label="EN / 中文">
+      <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-set-lang="zh" lang="zh-Hant-HK" aria-pressed="false">中文</button>
+    </div>
     <div class="lib-links" id="lib-links">
-      <a href="#person">Person</a>
-      <a href="#want">Want</a>
-      <a href="#cycle">Cycle</a>
-      <a href="#mind">Mind</a>
-      <a href="#steer">Steer</a>
-      <a href="#flip">Flip</a>
-      <a href="#protocol">Protocol</a>
-      <a href="#game">Game</a>
+      <a href="#person" data-i18n="meta-a-001">Person</a>
+      <a href="#want" data-i18n="meta-a-002">Want</a>
+      <a href="#cycle" data-i18n="meta-a-003">Cycle</a>
+      <a href="#mind" data-i18n="meta-a-004">Mind</a>
+      <a href="#steer" data-i18n="meta-a-005">Steer</a>
+      <a href="#flip" data-i18n="meta-a-006">Flip</a>
+      <a href="#protocol" data-i18n="meta-a-007">Protocol</a>
+      <a href="#game" data-i18n="meta-a-008">Game</a>
     </div>
   </nav>
 
   <main class="lib">
     <header class="hero" id="top">
       <div class="hero-copy rise">
-        <h1>Fix your entire life in one day.</h1>
-        <p class="lede">A surface goal changes a few weeks. This is a day for changing the person who picks the next goal.</p>
-        <p class="by">Dan Koe (<a href="https://x.com/thedankoe" target="_blank" rel="noopener noreferrer">@thedankoe</a>) · <a href="https://x.com/thedankoe/status/2010751592346030461" target="_blank" rel="noopener noreferrer">the X post</a></p>
+        <h1 data-i18n="meta-h1-009">Fix your entire life in one day.</h1>
+        <p class="lede" data-i18n="meta-p-010">A surface goal changes a few weeks. This is a day for changing the person who picks the next goal.</p>
+        <p class="by" data-i18n="meta-p-011" data-i18n-mode="byline">Dan Koe (<a href="https://x.com/thedankoe" target="_blank" rel="noopener noreferrer">@thedankoe</a>) · <a href="https://x.com/thedankoe/status/2010751592346030461" target="_blank" rel="noopener noreferrer">the X post</a></p>
       </div>
 
       <div class="canvas rise" id="stage">
@@ -1309,19 +1397,19 @@
         <div class="stage-body">
           <ol class="passes" id="passes">
             <li class="is-on">
-              <button type="button" class="pass-btn">
+              <button type="button" class="pass-btn" data-i18n="meta-button-012" data-i18n-mode="pass">
                 <b>Morning</b>
                 <span>Dig up the life you are done repeating.</span>
               </button>
             </li>
             <li>
-              <button type="button" class="pass-btn">
+              <button type="button" class="pass-btn" data-i18n="meta-button-013" data-i18n-mode="pass">
                 <b>Day</b>
                 <span>Catch the aim your hours are already serving.</span>
               </button>
             </li>
             <li>
-              <button type="button" class="pass-btn">
+              <button type="button" class="pass-btn" data-i18n="meta-button-014" data-i18n-mode="pass">
                 <b>Evening</b>
                 <span>Compress it into a stake, a win, and tomorrow’s moves.</span>
               </button>
@@ -1337,8 +1425,8 @@
 
     <section class="sec" id="person">
       <div class="sec-head">
-        <h2>Actions follow the person.</h2>
-        <p>Two moves, and they are not equal. Who you are comes first. What you do follows.</p>
+        <h2 data-i18n="person-h2-016">Actions follow the person.</h2>
+        <p data-i18n="person-p-017">Two moves, and they are not equal. Who you are comes first. What you do follows.</p>
       </div>
 
       <div class="orders reveal" id="order-diagram">
@@ -1347,8 +1435,8 @@
             <span class="kicker">Primary</span>
             <span class="rank">1</span>
           </header>
-          <h3>Change who you are</h3>
-          <p>The lifestyle that creates the result, lived before the result shows up.</p>
+          <h3 data-i18n="person-h3-018">Change who you are</h3>
+          <p data-i18n="person-p-019">The lifestyle that creates the result, lived before the result shows up.</p>
           <div class="weight" aria-hidden="true"><span style="--w: 1"></span></div>
         </article>
         <article class="card order order-sec">
@@ -1356,27 +1444,27 @@
             <span class="kicker">Secondary</span>
             <span class="rank">2</span>
           </header>
-          <h3>Change actions</h3>
-          <p>A few disciplined weeks on top of the old person. Then the old person returns.</p>
+          <h3 data-i18n="person-h3-020">Change actions</h3>
+          <p data-i18n="person-p-021">A few disciplined weeks on top of the old person. Then the old person returns.</p>
           <div class="weight" aria-hidden="true"><span style="--w: 0.34"></span></div>
         </article>
       </div>
 
       <div class="prose">
-        <p>People set a surface goal, hold it briefly, and slide back. The old identity was still in charge. Someone who already lives the result does not grind the core habit. The grind is the old choice: forcing the junk food, forcing the snooze.</p>
-        <p>If you want the outcome, you need the lifestyle that produces it before the outcome arrives. Waiting to “enjoy life again” once the goal is done is a plan to rebound. When the new life pulls harder, habits that do not move you start to feel wrong. The old standards last because you have not looked at where they end.</p>
+        <p data-i18n="person-p-022">People set a surface goal, hold it briefly, and slide back. The old identity was still in charge. Someone who already lives the result does not grind the core habit. The grind is the old choice: forcing the junk food, forcing the snooze.</p>
+        <p data-i18n="person-p-023">If you want the outcome, you need the lifestyle that produces it before the outcome arrives. Waiting to “enjoy life again” once the goal is done is a plan to rebound. When the new life pulls harder, habits that do not move you start to feel wrong. The old standards last because you have not looked at where they end.</p>
       </div>
     </section>
 
     <section class="sec" id="want">
       <div class="sec-head">
-        <h2>You don’t want the thing you named.</h2>
-        <p>Behavior is aimed, including the behavior you call a lack of discipline.</p>
+        <h2 data-i18n="want-h2-024">You don’t want the thing you named.</h2>
+        <p data-i18n="want-p-025">Behavior is aimed, including the behavior you call a lack of discipline.</p>
       </div>
 
       <figure class="quote">
-        <blockquote>Trust only movement. Life happens at the level of events, not of words.</blockquote>
-        <figcaption>Alfred Adler</figcaption>
+        <blockquote data-i18n="want-blockquote-026">Trust only movement. Life happens at the level of events, not of words.</blockquote>
+        <figcaption data-i18n="want-figcaption-027">Alfred Adler</figcaption>
       </figure>
 
       <div class="table-wrap">
@@ -1384,137 +1472,137 @@
           <caption class="visually-hidden">Behaviors and the hidden aim they can serve.</caption>
           <thead>
             <tr>
-              <th scope="col">What you do</th>
-              <th scope="col">Hidden aim</th>
+              <th scope="col" data-i18n="want-th-028">What you do</th>
+              <th scope="col" data-i18n="want-th-029">Hidden aim</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <th scope="row">Another evening on the couch</th>
-              <td data-label="Hidden aim">Spend the time. Keep tomorrow from starting.</td>
+              <th scope="row" data-i18n="want-th-030">Another evening on the couch</th>
+              <td data-label="Hidden aim" data-i18n="want-td-031">Spend the time. Keep tomorrow from starting.</td>
             </tr>
             <tr>
-              <th scope="row">“I’ll start Monday.”</th>
-              <td data-label="Hidden aim">Stay unjudged. A start can fail. A delay cannot.</td>
+              <th scope="row" data-i18n="want-th-032">“I’ll start Monday.”</th>
+              <td data-label="Hidden aim" data-i18n="want-td-033">Stay unjudged. A start can fail. A delay cannot.</td>
             </tr>
             <tr>
-              <th scope="row">Stay in the job you’ve outgrown</th>
-              <td data-label="Hidden aim">Stay safe. Don’t look like someone who tried and missed.</td>
+              <th scope="row" data-i18n="want-th-034">Stay in the job you’ve outgrown</th>
+              <td data-label="Hidden aim" data-i18n="want-td-035">Stay safe. Don’t look like someone who tried and missed.</td>
             </tr>
           </tbody>
         </table>
       </div>
 
       <div class="prose">
-        <p>A goal is a lens. Point it somewhere and you start noticing what helps. A surface goal that secretly serves a safer aim will lose. Real change is a new point of view, not a louder version of the old one.</p>
+        <p data-i18n="want-p-036">A goal is a lens. Point it somewhere and you start noticing what helps. A surface goal that secretly serves a safer aim will lose. Real change is a new point of view, not a louder version of the old one.</p>
       </div>
     </section>
 
     <section class="sec" id="cycle">
       <div class="sec-head">
-        <h2>Identity is a loop.</h2>
-        <p>Maxwell Maltz’s point: an idea you fully accept can run you the way a hypnotist’s instruction would. You stop voting on it.</p>
+        <h2 data-i18n="cycle-h2-037">Identity is a loop.</h2>
+        <p data-i18n="cycle-p-038">Maxwell Maltz’s point: an idea you fully accept can run you the way a hypnotist’s instruction would. You stop voting on it.</p>
       </div>
 
       <div class="cycle-block">
         <ol class="cycle" aria-label="Identity cycle, steps 1 to 6">
           <li class="card" id="cycle-1">
             <span class="lnum">1</span>
-            <span class="lbody"><b>Goal</b><small>You want a future.</small></span>
+            <span class="lbody"><b>Goal</b><small data-i18n="cycle-small-039">You want a future.</small></span>
           </li>
           <li class="card">
             <span class="lnum">2</span>
-            <span class="lbody"><b>Lens</b><small>You see through that want.</small></span>
+            <span class="lbody"><b>Lens</b><small data-i18n="cycle-small-040">You see through that want.</small></span>
           </li>
           <li class="card">
             <span class="lnum">3</span>
-            <span class="lbody"><b>Notice</b><small>You catch the information that helps it.</small></span>
+            <span class="lbody"><b>Notice</b><small data-i18n="cycle-small-041">You catch the information that helps it.</small></span>
           </li>
           <li class="card">
             <span class="lnum">4</span>
-            <span class="lbody"><b>Act</b><small>You move, and the world answers.</small></span>
+            <span class="lbody"><b>Act</b><small data-i18n="cycle-small-042">You move, and the world answers.</small></span>
           </li>
           <li class="card">
             <span class="lnum">5</span>
-            <span class="lbody"><b>Condition</b><small>You repeat it until it is automatic.</small></span>
+            <span class="lbody"><b>Condition</b><small data-i18n="cycle-small-043">You repeat it until it is automatic.</small></span>
           </li>
           <li class="card">
             <span class="lnum">6</span>
-            <span class="lbody"><b>I am…</b><small>The behavior hardens into a self.</small></span>
+            <span class="lbody"><b>I am…</b><small data-i18n="cycle-small-044">The behavior hardens into a self.</small></span>
           </li>
         </ol>
-        <p class="crack">The opening is between “I am” and the defense. Less defense, and the next goals can change.</p>
+        <p class="crack" data-i18n="cycle-p-045">The opening is between “I am” and the defense. Less defense, and the next goals can change.</p>
         <ol class="cycle" start="7" aria-label="Identity cycle, step 7">
           <li class="card">
             <span class="lnum">7</span>
-            <span class="lbody"><b>Defend</b><small>You protect that self so it stays consistent.</small></span>
+            <span class="lbody"><b>Defend</b><small data-i18n="cycle-small-046">You protect that self so it stays consistent.</small></span>
           </li>
         </ol>
       </div>
-      <a class="cycle-return" href="#cycle-1"><i aria-hidden="true">↺</i> New goals. The lens changes, and the loop runs again.</a>
+      <a class="cycle-return" href="#cycle-1" data-i18n="cycle-a-047" data-i18n-mode="icon-prefix"><i aria-hidden="true">↺</i> New goals. The lens changes, and the loop runs again.</a>
 
       <div class="prose">
-        <p>It starts young. Survival first, then fitting the family, who pass on an older picture of a good life. Once the body is safe, people protect the story. A threatened identity feels like a threat to survival, so the role — the professional, the fan, the “not a math person” — defends itself and blocks the move that would change the life.</p>
+        <p data-i18n="cycle-p-048">It starts young. Survival first, then fitting the family, who pass on an older picture of a good life. Once the body is safe, people protect the story. A threatened identity feels like a threat to survival, so the role — the professional, the fan, the “not a math person” — defends itself and blocks the move that would change the life.</p>
       </div>
     </section>
 
     <section class="sec" id="mind">
       <div class="sec-head">
-        <h2>The life you want sits at a level of mind.</h2>
-        <p>Nine stages, compressed from a long research line. Most readers are in the marked band. Each stage fails the same way: it stops fitting.</p>
+        <h2 data-i18n="mind-h2-049">The life you want sits at a level of mind.</h2>
+        <p data-i18n="mind-p-050">Nine stages, compressed from a long research line. Most readers are in the marked band. Each stage fails the same way: it stops fitting.</p>
       </div>
 
-      <p class="band-note"><i aria-hidden="true"></i> Typical band · stages 4–8</p>
+      <p class="band-note" data-i18n="mind-p-051" data-i18n-mode="after-icon"><i aria-hidden="true"></i><span>Typical band · stages 4–8</span></p>
       <ol class="ladder" aria-label="Nine ego stages from Impulsive to Unitive">
         <li class="card">
           <span class="lnum">1</span>
-          <span class="lbody"><b>Impulsive</b><small>The impulse is the action.</small></span>
+          <span class="lbody"><b>Impulsive</b><small data-i18n="mind-small-052">The impulse is the action.</small></span>
         </li>
         <li class="card">
           <span class="lnum">2</span>
-          <span class="lbody"><b>Self-Protective</b><small>The world is a threat. Hide, or lie.</small></span>
+          <span class="lbody"><b>Self-Protective</b><small data-i18n="mind-small-053">The world is a threat. Hide, or lie.</small></span>
         </li>
         <li class="card">
           <span class="lnum">3</span>
-          <span class="lbody"><b>Conformist</b><small>You are the group. Its rules are reality.</small></span>
+          <span class="lbody"><b>Conformist</b><small data-i18n="mind-small-054">You are the group. Its rules are reality.</small></span>
         </li>
         <li class="card hot">
           <span class="lnum">4</span>
-          <span class="lbody"><b>Self-Aware</b><small>The inner life does not match the outside.</small></span>
+          <span class="lbody"><b>Self-Aware</b><small data-i18n="mind-small-055">The inner life does not match the outside.</small></span>
         </li>
         <li class="card hot">
           <span class="lnum">5</span>
-          <span class="lbody"><b>Conscientious</b><small>Your own principles. You keep the score.</small></span>
+          <span class="lbody"><b>Conscientious</b><small data-i18n="mind-small-056">Your own principles. You keep the score.</small></span>
         </li>
         <li class="card hot">
           <span class="lnum">6</span>
-          <span class="lbody"><b>Individualist</b><small>Principles bend to context. You hold them loosely.</small></span>
+          <span class="lbody"><b>Individualist</b><small data-i18n="mind-small-057">Principles bend to context. You hold them loosely.</small></span>
         </li>
         <li class="card hot">
           <span class="lnum">7</span>
-          <span class="lbody"><b>Strategist</b><small>You work with systems, and with your own blind spots.</small></span>
+          <span class="lbody"><b>Strategist</b><small data-i18n="mind-small-058">You work with systems, and with your own blind spots.</small></span>
         </li>
         <li class="card hot">
           <span class="lnum">8</span>
-          <span class="lbody"><b>Construct-Aware</b><small>A framework, and an identity, is a useful fiction.</small></span>
+          <span class="lbody"><b>Construct-Aware</b><small data-i18n="mind-small-059">A framework, and an identity, is a useful fiction.</small></span>
         </li>
         <li class="card">
           <span class="lnum">9</span>
-          <span class="lbody"><b>Unitive</b><small>The split between self and life thins out. Presence.</small></span>
+          <span class="lbody"><b>Unitive</b><small data-i18n="mind-small-060">The split between self and life thins out. Presence.</small></span>
         </li>
       </ol>
-      <p class="quiet" style="margin-top: 0.8rem">Dan Koe’s Human 3.0 sketch, drawn from Maslow, Loevinger and Cook-Greuter, Spiral Dynamics, and Integral.</p>
+      <p class="quiet" style="margin-top: 0.8rem" data-i18n="mind-p-061">Dan Koe’s Human 3.0 sketch, drawn from Maslow, Loevinger and Cook-Greuter, Spiral Dynamics, and Integral.</p>
     </section>
 
     <section class="sec" id="steer">
       <div class="sec-head">
-        <h2>Intelligence is steering.</h2>
-        <p>Getting what you want, on a long enough clock, by using the gap instead of quitting at it.</p>
+        <h2 data-i18n="steer-h2-062">Intelligence is steering.</h2>
+        <p data-i18n="steer-p-063">Getting what you want, on a long enough clock, by using the gap instead of quitting at it.</p>
       </div>
 
       <figure class="quote">
-        <blockquote>The only real test of intelligence is if you get what you want out of life.</blockquote>
-        <figcaption>Naval Ravikant</figcaption>
+        <blockquote data-i18n="steer-blockquote-064">The only real test of intelligence is if you get what you want out of life.</blockquote>
+        <figcaption data-i18n="steer-figcaption-065">Naval Ravikant</figcaption>
       </figure>
 
       <div class="formula" aria-label="Agency times opportunity times intelligence" style="margin-top: 0.95rem">
@@ -1533,7 +1621,7 @@
           <span>You can steer.</span>
         </article>
       </div>
-      <p class="quiet">Drive in a closed field yields little. An opening you cannot use yields little too.</p>
+      <p class="quiet" data-i18n="steer-p-066">Drive in a closed field yields little. An opening you cannot use yields little too.</p>
 
       <div class="orbit-wrap">
         <div class="orbit">
@@ -1546,111 +1634,111 @@
             <path d="M50 24 A26 26 0 1 1 46.5 24.4" fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#steer-arrow)" />
           </svg>
           <span class="orbit-core">Feedback</span>
-          <span class="olab g">Goal</span>
-          <span class="olab a">Act</span>
-          <span class="olab s">Sense</span>
-          <span class="olab c">Compare</span>
-          <span class="olab r">Act again</span>
+          <span class="olab g" data-i18n-term="steer-li-067">Goal</span>
+          <span class="olab a" data-i18n-term="steer-li-068">Act</span>
+          <span class="olab s" data-i18n-term="steer-li-069">Sense</span>
+          <span class="olab c" data-i18n-term="steer-li-070">Compare</span>
+          <span class="olab r" data-i18n-term="steer-li-071">Act again</span>
         </div>
         <ol class="osteps">
-          <li><span class="lnum">1</span><span><b>Goal.</b> A future that decides what you notice.</span></li>
-          <li><span class="lnum">2</span><span><b>Act.</b> One move toward it.</span></li>
-          <li><span class="lnum">3</span><span><b>Sense.</b> An honest read of where you are.</span></li>
-          <li><span class="lnum">4</span><span><b>Compare.</b> The gap. Not a verdict about you.</span></li>
-          <li><span class="lnum">5</span><span><b>Act again.</b> The next move uses the gap.</span></li>
+          <li data-i18n="steer-li-067" data-i18n-mode="steer"><span class="lnum">1</span><span><b>Goal.</b> A future that decides what you notice.</span></li>
+          <li data-i18n="steer-li-068" data-i18n-mode="steer"><span class="lnum">2</span><span><b>Act.</b> One move toward it.</span></li>
+          <li data-i18n="steer-li-069" data-i18n-mode="steer"><span class="lnum">3</span><span><b>Sense.</b> An honest read of where you are.</span></li>
+          <li data-i18n="steer-li-070" data-i18n-mode="steer"><span class="lnum">4</span><span><b>Compare.</b> The gap. Not a verdict about you.</span></li>
+          <li data-i18n="steer-li-071" data-i18n-mode="steer"><span class="lnum">5</span><span><b>Act again.</b> The next move uses the gap.</span></li>
         </ol>
       </div>
 
       <div class="prose">
-        <p>The word under this is cybernetics: the art of steering. A weak loop hits a wall and stops. A strong one gives the problem a longer clock and stacks ideas. You do not jump from a blank page to a finished system. Most goals people carry are assigned — school, a job, an age to retire. That path is famous, and it does not fit.</p>
+        <p data-i18n="steer-p-072">The word under this is cybernetics: the art of steering. A weak loop hits a wall and stops. A strong one gives the problem a longer clock and stacks ideas. You do not jump from a blank page to a finished system. Most goals people carry are assigned — school, a job, an age to retire. That path is famous, and it does not fit.</p>
       </div>
 
       <ol class="moves" aria-label="How to aim higher">
-        <li class="card">Reject the assigned path.</li>
-        <li class="card">Step into what you cannot name yet.</li>
-        <li class="card">Set a higher goal, and let it be the lens.</li>
-        <li class="card">Stay with the chaos long enough to learn.</li>
-        <li class="card">Study principles that show up in more than one field.</li>
-        <li class="card">Go deep in several fields, not one groove.</li>
+        <li class="card" data-i18n="steer-li-073">Reject the assigned path.</li>
+        <li class="card" data-i18n="steer-li-074">Step into what you cannot name yet.</li>
+        <li class="card" data-i18n="steer-li-075">Set a higher goal, and let it be the lens.</li>
+        <li class="card" data-i18n="steer-li-076">Stay with the chaos long enough to learn.</li>
+        <li class="card" data-i18n="steer-li-077">Study principles that show up in more than one field.</li>
+        <li class="card" data-i18n="steer-li-078">Go deep in several fields, not one groove.</li>
       </ol>
     </section>
 
     <section class="sec" id="flip">
       <div class="sec-head">
-        <h2>A new life starts in a crack.</h2>
-        <p>The useful stretch comes after you are fed up with not moving. Identity flips in three phases.</p>
+        <h2 data-i18n="flip-h2-079">A new life starts in a crack.</h2>
+        <p data-i18n="flip-p-080">The useful stretch comes after you are fed up with not moving. Identity flips in three phases.</p>
       </div>
 
       <div class="phases reveal" id="phases">
         <article class="card phase phase-1">
           <span class="kicker">1</span>
-          <h3>Dissonance</h3>
-          <p>You don’t belong in the life you are still living. The lack of progress is finally intolerable.</p>
+          <h3 data-i18n="flip-h3-081">Dissonance</h3>
+          <p data-i18n="flip-p-082">You don’t belong in the life you are still living. The lack of progress is finally intolerable.</p>
         </article>
         <div class="arrow" aria-hidden="true"><b class="dn">↓</b><b class="rt">→</b></div>
         <article class="card phase phase-2">
           <span class="kicker">2</span>
-          <h3>Uncertainty</h3>
-          <p>You don’t know what’s next. You experiment, or you drift and call it waiting.</p>
+          <h3 data-i18n="flip-h3-083">Uncertainty</h3>
+          <p data-i18n="flip-p-084">You don’t know what’s next. You experiment, or you drift and call it waiting.</p>
         </article>
         <div class="arrow" aria-hidden="true"><b class="dn">↓</b><b class="rt">→</b></div>
         <article class="card phase phase-3">
           <span class="kicker">3</span>
-          <h3>Discovery</h3>
-          <p>The picture clears. Years of progress can compress into months, because the lens finally matches the moves.</p>
+          <h3 data-i18n="flip-h3-085">Discovery</h3>
+          <p data-i18n="flip-p-086">The picture clears. Years of progress can compress into months, because the lens finally matches the moves.</p>
         </article>
       </div>
     </section>
 
     <section class="sec" id="protocol">
       <div class="sec-head">
-        <h2>One day, three passes.</h2>
-        <p>Pen and paper. Morning to dig, day to interrupt autopilot, night to compress. Write the morning yourself. Don’t hand it to a model.</p>
+        <h2 data-i18n="protocol-h2-087">One day, three passes.</h2>
+        <p data-i18n="protocol-p-088">Pen and paper. Morning to dig, day to interrupt autopilot, night to compress. Write the morning yourself. Don’t hand it to a model.</p>
       </div>
 
       <div class="daybar" role="img" aria-label="The day has three parts: a short morning excavation, interrupts through the day, and an evening synthesis.">
-        <span class="seg">Morning</span>
-        <span class="seg mid">Day</span>
-        <span class="seg">Evening</span>
+        <span class="seg" data-i18n-pass="meta-button-012">Morning</span>
+        <span class="seg mid" data-i18n-pass="meta-button-013">Day</span>
+        <span class="seg" data-i18n-pass="meta-button-014">Evening</span>
       </div>
 
       <ol class="day">
         <li>
           <div class="rail" aria-hidden="true"><i></i></div>
           <div class="slot">
-            <h3>Morning · excavate</h3>
-            <p class="meta">15–30 min</p>
-            <p>Pain you’ve learned to tolerate, the aim your behavior reveals, an anti-vision, and the smallest vision that would feel natural.</p>
+            <h3 data-i18n="protocol-h3-089">Morning · excavate</h3>
+            <p class="meta" data-i18n="protocol-p-090">15–30 min</p>
+            <p data-i18n="protocol-p-091">Pain you’ve learned to tolerate, the aim your behavior reveals, an anti-vision, and the smallest vision that would feel natural.</p>
             <details>
-              <summary>Question themes</summary>
+              <summary data-i18n="protocol-summary-092">Question themes</summary>
               <div class="themes">
                 <div>
-                  <h4>Pain</h4>
+                  <h4 data-i18n="protocol-h4-093">Pain</h4>
                   <ul>
-                    <li>The dull dissatisfaction you have made room for.</li>
-                    <li>Complaints you repeat and never move.</li>
-                    <li>For each, what a watcher would say you actually want.</li>
-                    <li>The truth about this life you would hate to tell someone you respect.</li>
+                    <li data-i18n="protocol-li-094">The dull dissatisfaction you have made room for.</li>
+                    <li data-i18n="protocol-li-095">Complaints you repeat and never move.</li>
+                    <li data-i18n="protocol-li-096">For each, what a watcher would say you actually want.</li>
+                    <li data-i18n="protocol-li-097">The truth about this life you would hate to tell someone you respect.</li>
                   </ul>
                 </div>
                 <div>
-                  <h4>Anti-vision</h4>
+                  <h4 data-i18n="protocol-h4-098">Anti-vision</h4>
                   <ul>
-                    <li>An ordinary Tuesday in five years if nothing changes.</li>
-                    <li>Ten years on: what you missed, who stopped asking, what people say.</li>
-                    <li>The end, if the safe version never broke the pattern.</li>
-                    <li>Someone who already lives that future, and how it feels to become them.</li>
-                    <li>The “I am the type of person who…” you would have to give up, and the social cost.</li>
-                    <li>The most embarrassing reason you have not changed.</li>
-                    <li>If the behavior is self-protection: what it saves, and what it costs.</li>
+                    <li data-i18n="protocol-li-099">An ordinary Tuesday in five years if nothing changes.</li>
+                    <li data-i18n="protocol-li-100">Ten years on: what you missed, who stopped asking, what people say.</li>
+                    <li data-i18n="protocol-li-101">The end, if the safe version never broke the pattern.</li>
+                    <li data-i18n="protocol-li-102">Someone who already lives that future, and how it feels to become them.</li>
+                    <li data-i18n="protocol-li-103">The “I am the type of person who…” you would have to give up, and the social cost.</li>
+                    <li data-i18n="protocol-li-104">The most embarrassing reason you have not changed.</li>
+                    <li data-i18n="protocol-li-105">If the behavior is self-protection: what it saves, and what it costs.</li>
                   </ul>
                 </div>
                 <div>
-                  <h4>Minimum vision</h4>
+                  <h4 data-i18n="protocol-h4-106">Minimum vision</h4>
                   <ul>
-                    <li>A Tuesday three years out, ignoring whether it is practical.</li>
-                    <li>The “I am…” that would make that Tuesday feel ordinary.</li>
-                    <li>One thing you would do this week as that person.</li>
+                    <li data-i18n="protocol-li-107">A Tuesday three years out, ignoring whether it is practical.</li>
+                    <li data-i18n="protocol-li-108">The “I am…” that would make that Tuesday feel ordinary.</li>
+                    <li data-i18n="protocol-li-109">One thing you would do this week as that person.</li>
                   </ul>
                 </div>
               </div>
@@ -1660,18 +1748,18 @@
         <li>
           <div class="rail" aria-hidden="true"><i></i></div>
           <div class="slot">
-            <h3>Day · interrupt</h3>
-            <p class="meta">Six checks</p>
-            <p>Phone reminders that ask what the current hour is for: avoidance, the want it implies, direction, the thing you are pretending, protection, and aliveness.</p>
+            <h3 data-i18n="protocol-h3-110">Day · interrupt</h3>
+            <p class="meta" data-i18n="protocol-p-111">Six checks</p>
+            <p data-i18n="protocol-p-112">Phone reminders that ask what the current hour is for: avoidance, the want it implies, direction, the thing you are pretending, protection, and aliveness.</p>
             <details>
-              <summary>Reminder themes</summary>
+              <summary data-i18n="protocol-summary-113">Reminder themes</summary>
               <ul class="clocklist">
-                <li><b>11:00</b><span>What this hour is helping you avoid.</span></li>
-                <li><b>13:30</b><span>What the last two hours say you want.</span></li>
-                <li><b>15:15</b><span>Toward the life you hate, or the one you want.</span></li>
-                <li><b>17:00</b><span>The important thing you are treating as optional.</span></li>
-                <li><b>19:30</b><span>What today came from protecting an identity.</span></li>
-                <li><b>21:00</b><span>When you felt alive, and when you felt gone.</span></li>
+                <li data-i18n="protocol-li-114" data-i18n-mode="clock"><b>11:00</b><span>What this hour is helping you avoid.</span></li>
+                <li data-i18n="protocol-li-115" data-i18n-mode="clock"><b>13:30</b><span>What the last two hours say you want.</span></li>
+                <li data-i18n="protocol-li-116" data-i18n-mode="clock"><b>15:15</b><span>Toward the life you hate, or the one you want.</span></li>
+                <li data-i18n="protocol-li-117" data-i18n-mode="clock"><b>17:00</b><span>The important thing you are treating as optional.</span></li>
+                <li data-i18n="protocol-li-118" data-i18n-mode="clock"><b>19:30</b><span>What today came from protecting an identity.</span></li>
+                <li data-i18n="protocol-li-119" data-i18n-mode="clock"><b>21:00</b><span>When you felt alive, and when you felt gone.</span></li>
               </ul>
             </details>
           </div>
@@ -1679,27 +1767,27 @@
         <li>
           <div class="rail" aria-hidden="true"><i></i></div>
           <div class="slot">
-            <h3>Evening · synthesize</h3>
-            <p class="meta">Sentences, then lenses</p>
-            <p>Why you are stuck, the actual enemy, one sentence you refuse, one sentence you are building. Then a one-year proof, a one-month condition, and two or three moves for tomorrow.</p>
+            <h3 data-i18n="protocol-h3-120">Evening · synthesize</h3>
+            <p class="meta" data-i18n="protocol-p-121">Sentences, then lenses</p>
+            <p data-i18n="protocol-p-122">Why you are stuck, the actual enemy, one sentence you refuse, one sentence you are building. Then a one-year proof, a one-month condition, and two or three moves for tomorrow.</p>
             <details>
-              <summary>What to lock</summary>
+              <summary data-i18n="protocol-summary-123">What to lock</summary>
               <div class="themes">
                 <div>
-                  <h4>Sentences</h4>
+                  <h4 data-i18n="protocol-h4-124">Sentences</h4>
                   <ul>
-                    <li>The truest reason you have been stuck.</li>
-                    <li>The enemy: an internal pattern or belief, named.</li>
-                    <li>Anti-vision, in one line: the life you will not let this become.</li>
-                    <li>Vision, in one line: what you are building toward.</li>
+                    <li data-i18n="protocol-li-125">The truest reason you have been stuck.</li>
+                    <li data-i18n="protocol-li-126">The enemy: an internal pattern or belief, named.</li>
+                    <li data-i18n="protocol-li-127">Anti-vision, in one line: the life you will not let this become.</li>
+                    <li data-i18n="protocol-li-128">Vision, in one line: what you are building toward.</li>
                   </ul>
                 </div>
                 <div>
-                  <h4>Lenses</h4>
+                  <h4 data-i18n="protocol-h4-129">Lenses</h4>
                   <ul>
-                    <li>One year: one concrete proof the old pattern broke.</li>
-                    <li>One month: what must be true or that year becomes fiction.</li>
-                    <li>Tomorrow: two or three blocks the person you are becoming would actually do.</li>
+                    <li data-i18n="protocol-li-130">One year: one concrete proof the old pattern broke.</li>
+                    <li data-i18n="protocol-li-131">One month: what must be true or that year becomes fiction.</li>
+                    <li data-i18n="protocol-li-132">Tomorrow: two or three blocks the person you are becoming would actually do.</li>
                   </ul>
                 </div>
               </div>
@@ -1711,8 +1799,8 @@
 
     <section class="sec" id="game">
       <div class="sec-head">
-        <h2>Turn the aim into a game.</h2>
-        <p>Mihaly Csikszentmihalyi described flow as order in consciousness: attention on one hard thing, the noise gone. A game builds that on purpose. Six rings, outside in, against distraction.</p>
+        <h2 data-i18n="game-h2-133">Turn the aim into a game.</h2>
+        <p data-i18n="game-p-134">Mihaly Csikszentmihalyi described flow as order in consciousness: attention on one hard thing, the noise gone. A game builds that on purpose. Six rings, outside in, against distraction.</p>
       </div>
 
       <div class="force">
@@ -1727,45 +1815,46 @@
         <ol class="gmap">
           <li class="card">
             <span class="gpair"><b>Anti-vision</b><i>Stake</i></span>
-            <p>The life you will not repeat. This is what you lose if you drift.</p>
+            <p data-i18n="game-p-135">The life you will not repeat. This is what you lose if you drift.</p>
           </li>
           <li class="card">
             <span class="gpair"><b>Vision</b><i>Win</i></span>
-            <p>The life you are playing toward. It can still change.</p>
+            <p data-i18n="game-p-136">The life you are playing toward. It can still change.</p>
           </li>
           <li class="card">
             <span class="gpair"><b>1-year goal</b><i>Mission</i></span>
-            <p>One proof the old pattern broke. The sole priority.</p>
+            <p data-i18n="game-p-137">One proof the old pattern broke. The sole priority.</p>
           </li>
           <li class="card">
             <span class="gpair"><b>1-month project</b><i>Boss</i></span>
-            <p>What has to be true in a month, or the year is a wish.</p>
+            <p data-i18n="game-p-138">What has to be true in a month, or the year is a wish.</p>
           </li>
           <li class="card">
             <span class="gpair"><b>Daily levers</b><i>Quests</i></span>
-            <p>The few blocks tomorrow that actually move the mission.</p>
+            <p data-i18n="game-p-139">The few blocks tomorrow that actually move the mission.</p>
           </li>
           <li class="card">
             <span class="gpair"><b>Constraints</b><i>Rules</i></span>
-            <p>What you will not trade away to win faster.</p>
+            <p data-i18n="game-p-140">What you will not trade away to win faster.</p>
           </li>
         </ol>
       </div>
 
       <div class="prose">
-        <p>The field gets stronger as you play it. At some point it is not a plan you consult. It is who you are.</p>
+        <p data-i18n="game-p-141">The field gets stronger as you play it. At some point it is not a plan you consult. It is who you are.</p>
       </div>
 
       <aside class="close">
-        <p>Which aim ran today — the one you say, or the one your last two hours would prove?</p>
+        <p data-i18n="game-p-142">Which aim ran today — the one you say, or the one your last two hours would prove?</p>
       </aside>
     </section>
 
     <footer class="lib-foot">
-      <p>Source: <a href="https://x.com/thedankoe/status/2010751592346030461" target="_blank" rel="noopener noreferrer">How to fix your entire life in 1 day</a> by Dan Koe (<a href="https://x.com/thedankoe" target="_blank" rel="noopener noreferrer">@thedankoe</a>). This page is a plain-language map of that essay, not the essay. The nine stages are his Human 3.0 sketch, also told in <a href="https://letters.thedankoe.com/p/human-30-a-map-to-reach-the-top-1" target="_blank" rel="noopener noreferrer">Human 3.0</a>.</p>
+      <p data-i18n="page-p-143" data-i18n-mode="footer">Source: <a href="https://x.com/thedankoe/status/2010751592346030461" target="_blank" rel="noopener noreferrer">How to fix your entire life in 1 day</a> by Dan Koe (<a href="https://x.com/thedankoe" target="_blank" rel="noopener noreferrer">@thedankoe</a>). This page is a plain-language map of that essay, not the essay. The nine stages are his Human 3.0 sketch, also told in <a href="https://letters.thedankoe.com/p/human-30-a-map-to-reach-the-top-1" target="_blank" rel="noopener noreferrer">Human 3.0</a>.</p>
     </footer>
   </main>
 
+  <script src="fix-life-lang.js?v=2"></script>
   <script>
     (function () {
       'use strict';
@@ -1802,24 +1891,33 @@
       var passes = Array.prototype.slice.call(document.querySelectorAll('#passes li'));
       var passRead = document.getElementById('pass-read');
       var passBtn = document.getElementById('pass-play');
-      var passNames = ['Morning', 'Day', 'Evening'];
       var passIndex = 0;
       var passTimer = 0;
       var passPlaying = !reduced;
+
+      function passLabel(index) {
+        var button = passes[index] && passes[index].querySelector('b');
+        return (button && button.textContent) || ['Morning', 'Day', 'Evening'][index];
+      }
 
       function showPass(index) {
         passIndex = (index + passes.length) % passes.length;
         passes.forEach(function (el, n) {
           el.classList.toggle('is-on', n === passIndex);
         });
-        if (passRead) passRead.textContent = passNames[passIndex];
+        if (passRead) passRead.textContent = passLabel(passIndex);
+      }
+
+      function paintPassControl() {
+        var pauseLabel = (window.fixLifeT && window.fixLifeT('pass-play')) || 'Pause';
+        passBtn.setAttribute('aria-pressed', passPlaying ? 'true' : 'false');
+        passBtn.textContent = passPlaying ? pauseLabel : 'Play';
+        passBtn.setAttribute('aria-label', passPlaying ? 'Pause the day passes' : 'Play the day passes');
       }
 
       function setPassPlaying(next) {
         passPlaying = next;
-        passBtn.setAttribute('aria-pressed', next ? 'true' : 'false');
-        passBtn.textContent = next ? 'Pause' : 'Play';
-        passBtn.setAttribute('aria-label', next ? 'Pause the day passes' : 'Play the day passes');
+        paintPassControl();
         if (passTimer) {
           clearInterval(passTimer);
           passTimer = 0;
@@ -1830,6 +1928,11 @@
           }, 2400);
         }
       }
+
+      document.addEventListener('fix-life-lang', function () {
+        showPass(passIndex);
+        paintPassControl();
+      });
 
       passes.forEach(function (el, index) {
         el.querySelector('button').addEventListener('click', function () {
