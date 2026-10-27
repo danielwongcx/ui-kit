@@ -1,0 +1,1036 @@
+{
+  "page": "fix-life.html",
+  "live": "https://danielwongcx.github.io/ui-kit/fix-life.html",
+  "instruction": "Fill each unit zh with Traditional Chinese (Hong Kong). Keep proper names (Dan Koe, Adler, Naval, Csikszentmihalyi). Keep URLs. Keep short nav chip labels concise. Return the same JSON shape.",
+  "units": [
+    {
+      "id": "meta-title",
+      "section": "meta",
+      "tag": "title",
+      "en": "Fix your entire life in one day.",
+      "zh": "用一日徹底重塑你的人生。"
+    },
+    {
+      "id": "meta-page-label",
+      "section": "meta",
+      "tag": "nav",
+      "en": "Fix your life",
+      "zh": "重塑人生"
+    },
+    {
+      "id": "meta-source",
+      "section": "meta",
+      "tag": "note",
+      "en": "Source: Dan Koe (@thedankoe) — How to fix your entire life in 1 day",
+      "zh": "來源：Dan Koe (@thedankoe) — How to fix your entire life in 1 day"
+    },
+    {
+      "id": "meta-source-url",
+      "section": "meta",
+      "tag": "url",
+      "en": "https://x.com/thedankoe/status/2010751592346030461",
+      "zh": "https://x.com/thedankoe/status/2010751592346030461"
+    },
+    {
+      "id": "meta-a-001",
+      "section": "meta",
+      "tag": "a",
+      "en": "Person",
+      "zh": "身分"
+    },
+    {
+      "id": "meta-a-002",
+      "section": "meta",
+      "tag": "a",
+      "en": "Want",
+      "zh": "所求"
+    },
+    {
+      "id": "meta-a-003",
+      "section": "meta",
+      "tag": "a",
+      "en": "Cycle",
+      "zh": "循環"
+    },
+    {
+      "id": "meta-a-004",
+      "section": "meta",
+      "tag": "a",
+      "en": "Mind",
+      "zh": "心智"
+    },
+    {
+      "id": "meta-a-005",
+      "section": "meta",
+      "tag": "a",
+      "en": "Steer",
+      "zh": "掌舵"
+    },
+    {
+      "id": "meta-a-006",
+      "section": "meta",
+      "tag": "a",
+      "en": "Flip",
+      "zh": "蛻變"
+    },
+    {
+      "id": "meta-a-007",
+      "section": "meta",
+      "tag": "a",
+      "en": "Protocol",
+      "zh": "流程"
+    },
+    {
+      "id": "meta-a-008",
+      "section": "meta",
+      "tag": "a",
+      "en": "Game",
+      "zh": "遊戲"
+    },
+    {
+      "id": "meta-h1-009",
+      "section": "meta",
+      "tag": "h1",
+      "en": "Fix your entire life in one day.",
+      "zh": "用一日徹底重塑你的人生。"
+    },
+    {
+      "id": "meta-p-010",
+      "section": "meta",
+      "tag": "p",
+      "en": "A surface goal changes a few weeks. This is a day for changing the person who picks the next goal.",
+      "zh": "表面目標只能維持數星期的改變。這一天，是要徹底改變那個挑選下一個目標的自己。"
+    },
+    {
+      "id": "meta-p-011",
+      "section": "meta",
+      "tag": "p",
+      "en": "Dan Koe (@thedankoe) · the X post",
+      "zh": "Dan Koe (@thedankoe) · X 貼文"
+    },
+    {
+      "id": "meta-button-012",
+      "section": "meta",
+      "tag": "button",
+      "en": "Morning Dig up the life you are done repeating.",
+      "zh": "早晨 挖出你不想再重複過的生活。"
+    },
+    {
+      "id": "meta-button-013",
+      "section": "meta",
+      "tag": "button",
+      "en": "Day Catch the aim your hours are already serving.",
+      "zh": "日間 抓出你每分每秒暗中為之服務的真正目的。"
+    },
+    {
+      "id": "meta-button-014",
+      "section": "meta",
+      "tag": "button",
+      "en": "Evening Compress it into a stake, a win, and tomorrow’s moves.",
+      "zh": "晚間 濃縮成籌碼、勝仗與明天的行動。"
+    },
+    {
+      "id": "pass-play",
+      "section": "meta",
+      "tag": "button",
+      "en": "Pause",
+      "zh": "暫停"
+    },
+    {
+      "id": "person-h2-016",
+      "section": "person",
+      "tag": "h2",
+      "en": "Actions follow the person.",
+      "zh": "行動源於身分。"
+    },
+    {
+      "id": "person-p-017",
+      "section": "person",
+      "tag": "p",
+      "en": "Two moves, and they are not equal. Who you are comes first. What you do follows.",
+      "zh": "兩種做法，但兩者並不對等。你是誰排在第一位，你做甚麼只是隨之而來。"
+    },
+    {
+      "id": "person-h3-018",
+      "section": "person",
+      "tag": "h3",
+      "en": "Change who you are",
+      "zh": "改變你是誰"
+    },
+    {
+      "id": "person-p-019",
+      "section": "person",
+      "tag": "p",
+      "en": "The lifestyle that creates the result, lived before the result shows up.",
+      "zh": "在成果顯現之前，就先活出能夠創造該成果的生活方式。"
+    },
+    {
+      "id": "person-h3-020",
+      "section": "person",
+      "tag": "h3",
+      "en": "Change actions",
+      "zh": "改變行動"
+    },
+    {
+      "id": "person-p-021",
+      "section": "person",
+      "tag": "p",
+      "en": "A few disciplined weeks on top of the old person. Then the old person returns.",
+      "zh": "在舊有的自己之上強行自律幾個星期，然後舊有的自己又故態復萌。"
+    },
+    {
+      "id": "person-p-022",
+      "section": "person",
+      "tag": "p",
+      "en": "People set a surface goal, hold it briefly, and slide back. The old identity was still in charge. Someone who already lives the result does not grind the core habit. The grind is the old choice: forcing the junk food, forcing the snooze.",
+      "zh": "人們設定表面目標，勉強維持一陣子，隨後又被打回原形。這是因為舊有的身分認同仍在主導。一個早已活出成果的人，根本毋須咬緊牙關死撐核心習慣。那種苦苦支撐，不過是舊有選擇的寫照：強忍不吃垃圾食物、強逼自己不要按貪睡鬧鐘。"
+    },
+    {
+      "id": "person-p-023",
+      "section": "person",
+      "tag": "p",
+      "en": "If you want the outcome, you need the lifestyle that produces it before the outcome arrives. Waiting to “enjoy life again” once the goal is done is a plan to rebound. When the new life pulls harder, habits that do not move you start to feel wrong. The old standards last because you have not looked at where they end.",
+      "zh": "若你想得到某種成果，在成果到來之前，你便需要活出能產出該成果的生活方式。妄想「達成目標後再次享受人生」，只會註定打回原形。當新生活對你的吸引力愈發強大，那些無法推進你的舊習慣就會開始讓你感到格格不入。舊有的標準之所以揮之不去，是因為你從未看清它們的終點通往何處。"
+    },
+    {
+      "id": "want-h2-024",
+      "section": "want",
+      "tag": "h2",
+      "en": "You don’t want the thing you named.",
+      "zh": "你真正想要的，並非你口中所說的那回事。"
+    },
+    {
+      "id": "want-p-025",
+      "section": "want",
+      "tag": "p",
+      "en": "Behavior is aimed, including the behavior you call a lack of discipline.",
+      "zh": "所有行為皆有其指向，包括那些被你歸咎為「缺乏自律」的行為。"
+    },
+    {
+      "id": "want-blockquote-026",
+      "section": "want",
+      "tag": "blockquote",
+      "en": "Trust only movement. Life happens at the level of events, not of words.",
+      "zh": "只相信行動。生命發生於具體事件的層面，而非言語。"
+    },
+    {
+      "id": "want-figcaption-027",
+      "section": "want",
+      "tag": "figcaption",
+      "en": "Alfred Adler",
+      "zh": "Alfred Adler"
+    },
+    {
+      "id": "want-th-028",
+      "section": "want",
+      "tag": "th",
+      "en": "What you do",
+      "zh": "表面上的行為"
+    },
+    {
+      "id": "want-th-029",
+      "section": "want",
+      "tag": "th",
+      "en": "Hidden aim",
+      "zh": "背後隱藏的目的"
+    },
+    {
+      "id": "want-th-030",
+      "section": "want",
+      "tag": "th",
+      "en": "Another evening on the couch",
+      "zh": "又一個賴在梳化上的夜晚"
+    },
+    {
+      "id": "want-td-031",
+      "section": "want",
+      "tag": "td",
+      "en": "Spend the time. Keep tomorrow from starting.",
+      "zh": "消磨時間，阻擋明天的到來。"
+    },
+    {
+      "id": "want-th-032",
+      "section": "want",
+      "tag": "th",
+      "en": "“I’ll start Monday.”",
+      "zh": "「我下星期一開始。」"
+    },
+    {
+      "id": "want-td-033",
+      "section": "want",
+      "tag": "td",
+      "en": "Stay unjudged. A start can fail. A delay cannot.",
+      "zh": "避免受到評判。開始了可能會失敗，拖延則永不會失敗。"
+    },
+    {
+      "id": "want-th-034",
+      "section": "want",
+      "tag": "th",
+      "en": "Stay in the job you’ve outgrown",
+      "zh": "繼續留在一份早已不適合、無法再讓你成長的工作"
+    },
+    {
+      "id": "want-td-035",
+      "section": "want",
+      "tag": "td",
+      "en": "Stay safe. Don’t look like someone who tried and missed.",
+      "zh": "求安全感。避免讓自己看起來像個嘗試過卻失敗的人。"
+    },
+    {
+      "id": "want-p-036",
+      "section": "want",
+      "tag": "p",
+      "en": "A goal is a lens. Point it somewhere and you start noticing what helps. A surface goal that secretly serves a safer aim will lose. Real change is a new point of view, not a louder version of the old one.",
+      "zh": "目標是一塊鏡頭。將它對準某個方向，你便會開始留意到有助於此的事物。一個表面上的目標若暗中服務於某個更求安全的隱藏目的，最終必定落敗。真正的改變是換上全新的視角，而不是把舊有的視角聲嘶力竭地再演繹一次。"
+    },
+    {
+      "id": "cycle-h2-037",
+      "section": "cycle",
+      "tag": "h2",
+      "en": "Identity is a loop.",
+      "zh": "身分認同是一個閉環。"
+    },
+    {
+      "id": "cycle-p-038",
+      "section": "cycle",
+      "tag": "p",
+      "en": "Maxwell Maltz’s point: an idea you fully accept can run you the way a hypnotist’s instruction would. You stop voting on it.",
+      "zh": "正如 Maxwell Maltz 所言：一個被你全盤接納的念頭，能像催眠師的指令般驅使你運作。你不再對它抱有任何質疑或選擇權。"
+    },
+    {
+      "id": "cycle-small-039",
+      "section": "cycle",
+      "tag": "small",
+      "en": "You want a future.",
+      "zh": "你渴望某種未來。"
+    },
+    {
+      "id": "cycle-small-040",
+      "section": "cycle",
+      "tag": "small",
+      "en": "You see through that want.",
+      "zh": "你透過這份渴望看待一切。"
+    },
+    {
+      "id": "cycle-small-041",
+      "section": "cycle",
+      "tag": "small",
+      "en": "You catch the information that helps it.",
+      "zh": "你捕捉有助於實現這份渴望的資訊。"
+    },
+    {
+      "id": "cycle-small-042",
+      "section": "cycle",
+      "tag": "small",
+      "en": "You move, and the world answers.",
+      "zh": "你付諸行動，世界給予反饋。"
+    },
+    {
+      "id": "cycle-small-043",
+      "section": "cycle",
+      "tag": "small",
+      "en": "You repeat it until it is automatic.",
+      "zh": "你不斷重複，直至化為自發反應。"
+    },
+    {
+      "id": "cycle-small-044",
+      "section": "cycle",
+      "tag": "small",
+      "en": "The behavior hardens into a self.",
+      "zh": "這種行為固化成你的自我。"
+    },
+    {
+      "id": "cycle-p-045",
+      "section": "cycle",
+      "tag": "p",
+      "en": "The opening is between “I am” and the defense. Less defense, and the next goals can change.",
+      "zh": "突破口就在「我是誰」與「自我防禦」之間。放下防禦，接下來的目標才能真正改變。"
+    },
+    {
+      "id": "cycle-small-046",
+      "section": "cycle",
+      "tag": "small",
+      "en": "You protect that self so it stays consistent.",
+      "zh": "你保護那個自我，好讓它保持一致。"
+    },
+    {
+      "id": "cycle-a-047",
+      "section": "cycle",
+      "tag": "a",
+      "en": "↺ New goals. The lens changes, and the loop runs again.",
+      "zh": "↺ 新目標。鏡頭更換，循環再次運轉。"
+    },
+    {
+      "id": "cycle-p-048",
+      "section": "cycle",
+      "tag": "p",
+      "en": "It starts young. Survival first, then fitting the family, who pass on an older picture of a good life. Once the body is safe, people protect the story. A threatened identity feels like a threat to survival, so the role — the professional, the fan, the “not a math person” — defends itself and blocks the move that would change the life.",
+      "zh": "這一切自幼開始。起初是為了生存，接着是為了融入家庭，而家庭則將上一代對「美好生活」的陳舊想像灌輸給你。一旦肉體安全得到保障，人們便開始捍衛自己的故事。身分認同受到威脅，感覺就像生存受到威脅一樣，因此各種角色——專業人士、某某擁躉、「沒有數學天分的人」——便會築起防禦，阻礙真正能改變人生的行動。"
+    },
+    {
+      "id": "mind-h2-049",
+      "section": "mind",
+      "tag": "h2",
+      "en": "The life you want sits at a level of mind.",
+      "zh": "你理想中的生活，取決於你的心智層次。"
+    },
+    {
+      "id": "mind-p-050",
+      "section": "mind",
+      "tag": "p",
+      "en": "Nine stages, compressed from a long research line. Most readers are in the marked band. Each stage fails the same way: it stops fitting.",
+      "zh": "九個階段，濃縮自長期的學術研究。絕大多數讀者皆處於所標記的區間之內。每個階段瓦解的方式都如出一轍：它不再合適。"
+    },
+    {
+      "id": "mind-p-051",
+      "section": "mind",
+      "tag": "p",
+      "en": "Typical band · stages 4–8",
+      "zh": "常見區間 · 第 4–8 階段"
+    },
+    {
+      "id": "mind-small-052",
+      "section": "mind",
+      "tag": "small",
+      "en": "The impulse is the action.",
+      "zh": "衝動即是行動。"
+    },
+    {
+      "id": "mind-small-053",
+      "section": "mind",
+      "tag": "small",
+      "en": "The world is a threat. Hide, or lie.",
+      "zh": "世界充滿威脅。躲藏，或說謊。"
+    },
+    {
+      "id": "mind-small-054",
+      "section": "mind",
+      "tag": "small",
+      "en": "You are the group. Its rules are reality.",
+      "zh": "你即是群體。群體的規則即是現實。"
+    },
+    {
+      "id": "mind-small-055",
+      "section": "mind",
+      "tag": "small",
+      "en": "The inner life does not match the outside.",
+      "zh": "內心世界與外在環境不再契合。"
+    },
+    {
+      "id": "mind-small-056",
+      "section": "mind",
+      "tag": "small",
+      "en": "Your own principles. You keep the score.",
+      "zh": "確立個人原則。自己為自己打分。"
+    },
+    {
+      "id": "mind-small-057",
+      "section": "mind",
+      "tag": "small",
+      "en": "Principles bend to context. You hold them loosely.",
+      "zh": "原則因應情境調整。不再固執死守。"
+    },
+    {
+      "id": "mind-small-058",
+      "section": "mind",
+      "tag": "small",
+      "en": "You work with systems, and with your own blind spots.",
+      "zh": "懂得運用系統運作，並正視自身的盲點。"
+    },
+    {
+      "id": "mind-small-059",
+      "section": "mind",
+      "tag": "small",
+      "en": "A framework, and an identity, is a useful fiction.",
+      "zh": "框架與身分認同，不過是有用的虛構產物。"
+    },
+    {
+      "id": "mind-small-060",
+      "section": "mind",
+      "tag": "small",
+      "en": "The split between self and life thins out. Presence.",
+      "zh": "自我與生命的隔閡逐漸消融。唯有當下臨在。"
+    },
+    {
+      "id": "mind-p-061",
+      "section": "mind",
+      "tag": "p",
+      "en": "Dan Koe’s Human 3.0 sketch, drawn from Maslow, Loevinger and Cook-Greuter, Spiral Dynamics, and Integral.",
+      "zh": "Dan Koe 的 Human 3.0 概念圖，借鑑自 Maslow、Loevinger 與 Cook-Greuter、Spiral Dynamics 以及 Integral 理論。"
+    },
+    {
+      "id": "steer-h2-062",
+      "section": "steer",
+      "tag": "h2",
+      "en": "Intelligence is steering.",
+      "zh": "智慧就是懂得掌舵。"
+    },
+    {
+      "id": "steer-p-063",
+      "section": "steer",
+      "tag": "p",
+      "en": "Getting what you want, on a long enough clock, by using the gap instead of quitting at it.",
+      "zh": "在足夠長的時間維度下，利用差距而非被差距嚇退，最終取得你真正想要的事物。"
+    },
+    {
+      "id": "steer-blockquote-064",
+      "section": "steer",
+      "tag": "blockquote",
+      "en": "The only real test of intelligence is if you get what you want out of life.",
+      "zh": "衡量智慧唯一的真實標準，就是你能否在人生中得到自己想要的東西。"
+    },
+    {
+      "id": "steer-figcaption-065",
+      "section": "steer",
+      "tag": "figcaption",
+      "en": "Naval Ravikant",
+      "zh": "Naval Ravikant"
+    },
+    {
+      "id": "steer-p-066",
+      "section": "steer",
+      "tag": "p",
+      "en": "Drive in a closed field yields little. An opening you cannot use yields little too.",
+      "zh": "在封閉的領域中狂奔收效甚微；同樣地，一個你無法把握的機遇也毫無價值。"
+    },
+    {
+      "id": "steer-li-067",
+      "section": "steer",
+      "tag": "li",
+      "en": "1Goal. A future that decides what you notice.",
+      "zh": "1目標。決定你能留意到甚麼的未來景象。"
+    },
+    {
+      "id": "steer-li-068",
+      "section": "steer",
+      "tag": "li",
+      "en": "2Act. One move toward it.",
+      "zh": "2行動。朝目標邁出一步。"
+    },
+    {
+      "id": "steer-li-069",
+      "section": "steer",
+      "tag": "li",
+      "en": "3Sense. An honest read of where you are.",
+      "zh": "3感知。如實審視自己當前所處的位置。"
+    },
+    {
+      "id": "steer-li-070",
+      "section": "steer",
+      "tag": "li",
+      "en": "4Compare. The gap. Not a verdict about you.",
+      "zh": "4對比。找出差距所在，而非對自己下評判。"
+    },
+    {
+      "id": "steer-li-071",
+      "section": "steer",
+      "tag": "li",
+      "en": "5Act again. The next move uses the gap.",
+      "zh": "5再次行動。依據差距調整下一步行動。"
+    },
+    {
+      "id": "steer-p-072",
+      "section": "steer",
+      "tag": "p",
+      "en": "The word under this is cybernetics: the art of steering. A weak loop hits a wall and stops. A strong one gives the problem a longer clock and stacks ideas. You do not jump from a blank page to a finished system. Most goals people carry are assigned — school, a job, an age to retire. That path is famous, and it does not fit.",
+      "zh": "這背後的核心詞彙是控制論（cybernetics）：掌舵的藝術。脆弱的反饋循環一碰壁就停滯不前；強大的循環則會給問題更長的時間跨度，並不斷疊加想法。你不可能從一張白紙一躍而成一套完善的系統。大多數人背負的目標都是被指派的——升學、就業、退休年齡。這條路廣為人知，但根本不適合你。"
+    },
+    {
+      "id": "steer-li-073",
+      "section": "steer",
+      "tag": "li",
+      "en": "Reject the assigned path.",
+      "zh": "拒絕被指派的既定道路。"
+    },
+    {
+      "id": "steer-li-074",
+      "section": "steer",
+      "tag": "li",
+      "en": "Step into what you cannot name yet.",
+      "zh": "踏入你尚且無法名狀的未知之中。"
+    },
+    {
+      "id": "steer-li-075",
+      "section": "steer",
+      "tag": "li",
+      "en": "Set a higher goal, and let it be the lens.",
+      "zh": "設定更高層次的目標，並以此作為看待一切的鏡頭。"
+    },
+    {
+      "id": "steer-li-076",
+      "section": "steer",
+      "tag": "li",
+      "en": "Stay with the chaos long enough to learn.",
+      "zh": "在混亂中停留足夠長的時間以從中學習。"
+    },
+    {
+      "id": "steer-li-077",
+      "section": "steer",
+      "tag": "li",
+      "en": "Study principles that show up in more than one field.",
+      "zh": "鑽研貫穿多個領域的共通底層原則。"
+    },
+    {
+      "id": "steer-li-078",
+      "section": "steer",
+      "tag": "li",
+      "en": "Go deep in several fields, not one groove.",
+      "zh": "深入涉獵多個領域，而非困在單一路徑中固步自封。"
+    },
+    {
+      "id": "flip-h2-079",
+      "section": "flip",
+      "tag": "h2",
+      "en": "A new life starts in a crack.",
+      "zh": "新生始於裂縫。"
+    },
+    {
+      "id": "flip-p-080",
+      "section": "flip",
+      "tag": "p",
+      "en": "The useful stretch comes after you are fed up with not moving. Identity flips in three phases.",
+      "zh": "唯有當你對停滯不前感到忍無可忍之時，真正有價值的轉變才會展開。身分認同的翻轉分為三個階段："
+    },
+    {
+      "id": "flip-h3-081",
+      "section": "flip",
+      "tag": "h3",
+      "en": "Dissonance",
+      "zh": "失調"
+    },
+    {
+      "id": "flip-p-082",
+      "section": "flip",
+      "tag": "p",
+      "en": "You don’t belong in the life you are still living. The lack of progress is finally intolerable.",
+      "zh": "你不再屬於自己仍過著的這種生活。毫無進展的狀態終於讓你忍無可忍。"
+    },
+    {
+      "id": "flip-h3-083",
+      "section": "flip",
+      "tag": "h3",
+      "en": "Uncertainty",
+      "zh": "迷茫"
+    },
+    {
+      "id": "flip-p-084",
+      "section": "flip",
+      "tag": "p",
+      "en": "You don’t know what’s next. You experiment, or you drift and call it waiting.",
+      "zh": "你不知道下一步該往哪裡走。你要麼大膽嘗試摸索，要麼隨波逐流並美其名曰等待。"
+    },
+    {
+      "id": "flip-h3-085",
+      "section": "flip",
+      "tag": "h3",
+      "en": "Discovery",
+      "zh": "發現"
+    },
+    {
+      "id": "flip-p-086",
+      "section": "flip",
+      "tag": "p",
+      "en": "The picture clears. Years of progress can compress into months, because the lens finally matches the moves.",
+      "zh": "景象逐漸清晰。數年的進步能夠濃縮於數月之內，因為鏡頭終於與你的行動完美契合。"
+    },
+    {
+      "id": "protocol-h2-087",
+      "section": "protocol",
+      "tag": "h2",
+      "en": "One day, three passes.",
+      "zh": "一日，三個階段。"
+    },
+    {
+      "id": "protocol-p-088",
+      "section": "protocol",
+      "tag": "p",
+      "en": "Pen and paper. Morning to dig, day to interrupt autopilot, night to compress. Write the morning yourself. Don’t hand it to a model.",
+      "zh": "準備紙筆。早晨深挖盲點，日間打斷自動導航，晚間全面濃縮。早晨的部分必須親手書寫，切勿交給模型代勞。"
+    },
+    {
+      "id": "protocol-h3-089",
+      "section": "protocol",
+      "tag": "h3",
+      "en": "Morning · excavate",
+      "zh": "早晨 · 深度挖掘"
+    },
+    {
+      "id": "protocol-p-090",
+      "section": "protocol",
+      "tag": "p",
+      "en": "15–30 min",
+      "zh": "15–30 分鐘"
+    },
+    {
+      "id": "protocol-p-091",
+      "section": "protocol",
+      "tag": "p",
+      "en": "Pain you’ve learned to tolerate, the aim your behavior reveals, an anti-vision, and the smallest vision that would feel natural.",
+      "zh": "審視你習以為常的痛苦、行為所揭示的真正目的、反向願景，以及讓你感到自然貼切的最小願景。"
+    },
+    {
+      "id": "protocol-summary-092",
+      "section": "protocol",
+      "tag": "summary",
+      "en": "Question themes",
+      "zh": "問題核心主題"
+    },
+    {
+      "id": "protocol-h4-093",
+      "section": "protocol",
+      "tag": "h4",
+      "en": "Pain",
+      "zh": "痛苦"
+    },
+    {
+      "id": "protocol-li-094",
+      "section": "protocol",
+      "tag": "li",
+      "en": "The dull dissatisfaction you have made room for.",
+      "zh": "你一直在默默容忍、習以為常的隱隱不滿。"
+    },
+    {
+      "id": "protocol-li-095",
+      "section": "protocol",
+      "tag": "li",
+      "en": "Complaints you repeat and never move.",
+      "zh": "那些你反覆抱怨卻從未付諸行動去改變的事情。"
+    },
+    {
+      "id": "protocol-li-096",
+      "section": "protocol",
+      "tag": "li",
+      "en": "For each, what a watcher would say you actually want.",
+      "zh": "針對上述每項，旁觀者會說你實際上真正想要的是甚麼。"
+    },
+    {
+      "id": "protocol-li-097",
+      "section": "protocol",
+      "tag": "li",
+      "en": "The truth about this life you would hate to tell someone you respect.",
+      "zh": "關於你目前生活，你最不願向你尊敬的人啟齒坦白的真相。"
+    },
+    {
+      "id": "protocol-h4-098",
+      "section": "protocol",
+      "tag": "h4",
+      "en": "Anti-vision",
+      "zh": "反向願景"
+    },
+    {
+      "id": "protocol-li-099",
+      "section": "protocol",
+      "tag": "li",
+      "en": "An ordinary Tuesday in five years if nothing changes.",
+      "zh": "若一切毫無改變，五年後一個平凡星期二的生活景象。"
+    },
+    {
+      "id": "protocol-li-100",
+      "section": "protocol",
+      "tag": "li",
+      "en": "Ten years on: what you missed, who stopped asking, what people say.",
+      "zh": "十年之後：你錯過了甚麼、誰不再過問你的狀況、旁人會如何評價你。"
+    },
+    {
+      "id": "protocol-li-101",
+      "section": "protocol",
+      "tag": "li",
+      "en": "The end, if the safe version never broke the pattern.",
+      "zh": "若那個求取安穩的自己始終沒有打破這個僵局，終局會是怎樣。"
+    },
+    {
+      "id": "protocol-li-102",
+      "section": "protocol",
+      "tag": "li",
+      "en": "Someone who already lives that future, and how it feels to become them.",
+      "zh": "設想一個早已活在那種未來中的人，變成他們會是甚麼滋味。"
+    },
+    {
+      "id": "protocol-li-103",
+      "section": "protocol",
+      "tag": "li",
+      "en": "The “I am the type of person who…” you would have to give up, and the social cost.",
+      "zh": "你必須放棄哪些「我是那種……的人」的身分標籤，以及隨之而來的社交代價。"
+    },
+    {
+      "id": "protocol-li-104",
+      "section": "protocol",
+      "tag": "li",
+      "en": "The most embarrassing reason you have not changed.",
+      "zh": "導致你至今仍未改變的那個最令人難以啟齒的真正原因。"
+    },
+    {
+      "id": "protocol-li-105",
+      "section": "protocol",
+      "tag": "li",
+      "en": "If the behavior is self-protection: what it saves, and what it costs.",
+      "zh": "若該行為是一種自我保護：它保全了甚麼，又讓你付出了甚麼代價。"
+    },
+    {
+      "id": "protocol-h4-106",
+      "section": "protocol",
+      "tag": "h4",
+      "en": "Minimum vision",
+      "zh": "最小願景"
+    },
+    {
+      "id": "protocol-li-107",
+      "section": "protocol",
+      "tag": "li",
+      "en": "A Tuesday three years out, ignoring whether it is practical.",
+      "zh": "先不論是否切合實際，想像三年後某個星期二的生活景象。"
+    },
+    {
+      "id": "protocol-li-108",
+      "section": "protocol",
+      "tag": "li",
+      "en": "The “I am…” that would make that Tuesday feel ordinary.",
+      "zh": "要讓那個星期二的生活感覺平常自然，你需要具備怎樣的「我是……」身分認同。"
+    },
+    {
+      "id": "protocol-li-109",
+      "section": "protocol",
+      "tag": "li",
+      "en": "One thing you would do this week as that person.",
+      "zh": "以那種身分，你本週會做的一件事。"
+    },
+    {
+      "id": "protocol-h3-110",
+      "section": "protocol",
+      "tag": "h3",
+      "en": "Day · interrupt",
+      "zh": "日間 · 截斷慣性"
+    },
+    {
+      "id": "protocol-p-111",
+      "section": "protocol",
+      "tag": "p",
+      "en": "Six checks",
+      "zh": "六次自我檢視"
+    },
+    {
+      "id": "protocol-p-112",
+      "section": "protocol",
+      "tag": "p",
+      "en": "Phone reminders that ask what the current hour is for: avoidance, the want it implies, direction, the thing you are pretending, protection, and aliveness.",
+      "zh": "設定手機提醒，質問自己當前這個小時究竟在為甚麼服務：逃避、背後隱含的渴望、人生方向、你正在假裝的事、自我防禦，以及生命力。"
+    },
+    {
+      "id": "protocol-summary-113",
+      "section": "protocol",
+      "tag": "summary",
+      "en": "Reminder themes",
+      "zh": "提醒主題"
+    },
+    {
+      "id": "protocol-li-114",
+      "section": "protocol",
+      "tag": "li",
+      "en": "11:00What this hour is helping you avoid.",
+      "zh": "11:00 這個小時正在幫你逃避甚麼。"
+    },
+    {
+      "id": "protocol-li-115",
+      "section": "protocol",
+      "tag": "li",
+      "en": "13:30What the last two hours say you want.",
+      "zh": "13:30 過去這兩個小時的行為，反映出你真正想要甚麼。"
+    },
+    {
+      "id": "protocol-li-116",
+      "section": "protocol",
+      "tag": "li",
+      "en": "15:15Toward the life you hate, or the one you want.",
+      "zh": "15:15 你正在邁向你厭惡的生活，還是你嚮往的生活。"
+    },
+    {
+      "id": "protocol-li-117",
+      "section": "protocol",
+      "tag": "li",
+      "en": "17:00The important thing you are treating as optional.",
+      "zh": "17:00 哪件至關重要的事情，正被你當成可有可無。"
+    },
+    {
+      "id": "protocol-li-118",
+      "section": "protocol",
+      "tag": "li",
+      "en": "19:30What today came from protecting an identity.",
+      "zh": "19:30 今天有哪些行為是源於維護某個身分認同。"
+    },
+    {
+      "id": "protocol-li-119",
+      "section": "protocol",
+      "tag": "li",
+      "en": "21:00When you felt alive, and when you felt gone.",
+      "zh": "21:00 今日何時讓你感到充滿活力，何時讓你感到渾渾噩噩、行屍走肉。"
+    },
+    {
+      "id": "protocol-h3-120",
+      "section": "protocol",
+      "tag": "h3",
+      "en": "Evening · synthesize",
+      "zh": "晚間 · 融會總結"
+    },
+    {
+      "id": "protocol-p-121",
+      "section": "protocol",
+      "tag": "p",
+      "en": "Sentences, then lenses",
+      "zh": "先定語句，後設鏡頭"
+    },
+    {
+      "id": "protocol-p-122",
+      "section": "protocol",
+      "tag": "p",
+      "en": "Why you are stuck, the actual enemy, one sentence you refuse, one sentence you are building. Then a one-year proof, a one-month condition, and two or three moves for tomorrow.",
+      "zh": "釐清你受困的原因、真正的敵人、一句你堅決摒棄的話、一句你正在建構的話。接着制定一年的具體證明、一個月的必要條件，以及明天落實執行的兩至三個行動。"
+    },
+    {
+      "id": "protocol-summary-123",
+      "section": "protocol",
+      "tag": "summary",
+      "en": "What to lock",
+      "zh": "必須鎖定的要素"
+    },
+    {
+      "id": "protocol-h4-124",
+      "section": "protocol",
+      "tag": "h4",
+      "en": "Sentences",
+      "zh": "核心語句"
+    },
+    {
+      "id": "protocol-li-125",
+      "section": "protocol",
+      "tag": "li",
+      "en": "The truest reason you have been stuck.",
+      "zh": "你一直停滯不前最真實的原因。"
+    },
+    {
+      "id": "protocol-li-126",
+      "section": "protocol",
+      "tag": "li",
+      "en": "The enemy: an internal pattern or belief, named.",
+      "zh": "敵人：指名道姓寫出某個內在模式或信念。"
+    },
+    {
+      "id": "protocol-li-127",
+      "section": "protocol",
+      "tag": "li",
+      "en": "Anti-vision, in one line: the life you will not let this become.",
+      "zh": "反向願景（一句話概括）：你絕不容許自己淪落的生活模樣。"
+    },
+    {
+      "id": "protocol-li-128",
+      "section": "protocol",
+      "tag": "li",
+      "en": "Vision, in one line: what you are building toward.",
+      "zh": "願景（一句話概括）：你正致力建構的生活模樣。"
+    },
+    {
+      "id": "protocol-h4-129",
+      "section": "protocol",
+      "tag": "h4",
+      "en": "Lenses",
+      "zh": "行動鏡頭"
+    },
+    {
+      "id": "protocol-li-130",
+      "section": "protocol",
+      "tag": "li",
+      "en": "One year: one concrete proof the old pattern broke.",
+      "zh": "一年目標：一項能具體證明舊有模式已被打破的實證。"
+    },
+    {
+      "id": "protocol-li-131",
+      "section": "protocol",
+      "tag": "li",
+      "en": "One month: what must be true or that year becomes fiction.",
+      "zh": "一個月目標：必須達成甚麼條件，否則一年的目標只會淪為空談。"
+    },
+    {
+      "id": "protocol-li-132",
+      "section": "protocol",
+      "tag": "li",
+      "en": "Tomorrow: two or three blocks the person you are becoming would actually do.",
+      "zh": "明天：安排兩至三個那個「正在蛻變中的你」真正會付諸實行的具體時間區塊。"
+    },
+    {
+      "id": "game-h2-133",
+      "section": "game",
+      "tag": "h2",
+      "en": "Turn the aim into a game.",
+      "zh": "將目標化為一場遊戲。"
+    },
+    {
+      "id": "game-p-134",
+      "section": "game",
+      "tag": "p",
+      "en": "Mihaly Csikszentmihalyi described flow as order in consciousness: attention on one hard thing, the noise gone. A game builds that on purpose. Six rings, outside in, against distraction.",
+      "zh": "Mihaly Csikszentmihalyi 將心流描述為意識中的秩序：將注意力集中於一件艱難的事物上，所有雜音頓時消散。遊戲正是特意為此而設計。由外而內的六道同心圓，旨在抵禦一切分心干擾。"
+    },
+    {
+      "id": "game-p-135",
+      "section": "game",
+      "tag": "p",
+      "en": "The life you will not repeat. This is what you lose if you drift.",
+      "zh": "你絕不願重複的生活。一旦隨波逐流，這就是你將失去的代價。"
+    },
+    {
+      "id": "game-p-136",
+      "section": "game",
+      "tag": "p",
+      "en": "The life you are playing toward. It can still change.",
+      "zh": "你正傾力奔赴的生活。它依然可以隨時調整。"
+    },
+    {
+      "id": "game-p-137",
+      "section": "game",
+      "tag": "p",
+      "en": "One proof the old pattern broke. The sole priority.",
+      "zh": "一項證明舊模式已被打破的實證。唯一的首要任務。"
+    },
+    {
+      "id": "game-p-138",
+      "section": "game",
+      "tag": "p",
+      "en": "What has to be true in a month, or the year is a wish.",
+      "zh": "一個月內必須實現的事，否則整年目標只是一廂情願。"
+    },
+    {
+      "id": "game-p-139",
+      "section": "game",
+      "tag": "p",
+      "en": "The few blocks tomorrow that actually move the mission.",
+      "zh": "明天那幾個真正能夠推進核心使命的時間區塊。"
+    },
+    {
+      "id": "game-p-140",
+      "section": "game",
+      "tag": "p",
+      "en": "What you will not trade away to win faster.",
+      "zh": "你絕不會為了求快取勝而犧牲妥協的底線。"
+    },
+    {
+      "id": "game-p-141",
+      "section": "game",
+      "tag": "p",
+      "en": "The field gets stronger as you play it. At some point it is not a plan you consult. It is who you are.",
+      "zh": "隨着你不斷投入遊戲，這座力場會愈發強大。在某個時刻，它不再是一份你需要時常查閱的計劃，而已經化為你自己的一部分。"
+    },
+    {
+      "id": "game-p-142",
+      "section": "game",
+      "tag": "p",
+      "en": "Which aim ran today — the one you say, or the one your last two hours would prove?",
+      "zh": "今天主導你的是哪個目的——是你嘴上說的那套，還是你過去兩小時的行徑所證明的那套？"
+    },
+    {
+      "id": "page-p-143",
+      "section": "page",
+      "tag": "p",
+      "en": "Source: How to fix your entire life in 1 day by Dan Koe (@thedankoe). This page is a plain-language map of that essay, not the essay. The nine stages are his Human 3.0 sketch, also told in Human 3.0.",
+      "zh": "來源：Dan Koe (@thedankoe) 所著《How to fix your entire life in 1 day》。本頁面為該篇文章的通俗圖解導讀，而非原文全文。文中的九個階段源自其 Human 3.0 概念圖，亦見於其著作《Human 3.0》。"
+    }
+  ]
+}
