@@ -1,0 +1,2237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Design with AI · ui-kit</title>
+  <meta name="description" content="Plain-language notes from Matt Dailey on designing with AI: a constraint loop, craft on one surface, and a pass for features that touch many screens." />
+  <script>
+    /* Match the gallery page shell before paint. Palettes change --page only. */
+    (function () {
+      try {
+        document.documentElement.classList.add('js');
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.documentElement.setAttribute('data-motion', 'reduce');
+        }
+        var id = localStorage.getItem('ui-kit-palette') || 'forest';
+        var pages = {
+          forest: '#f5f1ee', navy: '#eef2f6', terracotta: '#faf3ef',
+          plum: '#f6f1f8', ocean: '#eef6f6', amber: '#faf6ee',
+          slate: '#f0f1f3', rosewood: '#f8f1f3', olive: '#f4f3ea',
+          ink: '#ececf0'
+        };
+        document.documentElement.setAttribute('data-theme', id);
+        document.documentElement.style.setProperty('--page', pages[id] || pages.forest);
+      } catch (e) {}
+    })();
+  </script>
+  <style>
+    :root {
+      --page: #ececf0;
+      --canvas: #ffffff;
+      --ink: #1c1c22;
+      --muted: #6b6b76;
+      --line: #e4e4ea;
+      --accent: #5b5bf0;
+      --brand: #1e6851;
+      --spring: linear(
+        0, 0.006, 0.025, 0.07, 0.14, 0.25, 0.4, 0.55, 0.7, 0.82,
+        0.92, 0.99, 1.04, 1.08, 1.09, 1.07, 1.04, 1.02, 1.005, 1
+      );
+      --spring-dur: 0.75s;
+      --nav-h: 52px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--site-header-h, 56px) + var(--nav-h) + 16px);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      background: var(--page);
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { max-width: 100%; height: auto; }
+
+    .lib-nav {
+      position: sticky;
+      top: var(--site-header-h, 56px);
+      z-index: 40;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0 0.85rem 0 1rem;
+      background: color-mix(in srgb, var(--page) 88%, #fff);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .lib-brand {
+      font-size: 11px;
+      font-weight: 650;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+      flex: none;
+    }
+
+    .lib-links {
+      display: flex;
+      gap: 0.15rem;
+      margin-left: auto;
+      min-width: 0;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+    }
+
+    @media (max-width: 640px) {
+      .lib-links {
+        -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+        mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+      }
+    }
+
+    .lib-links::-webkit-scrollbar { display: none; }
+
+    .lib-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.45rem 0.7rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .lib-links a:hover,
+    .lib-links a[aria-current="location"] {
+      color: var(--ink);
+      background: var(--canvas);
+    }
+
+    .lib-links a:focus-visible,
+    a:focus-visible,
+    .btn:focus-visible,
+    .pipe-item:has(input:focus-visible),
+    .surface:has(input:focus-visible),
+    .variant:has(input:focus-visible),
+    .switch label:has(input:focus-visible) {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .lib {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+      min-width: 0;
+    }
+
+    .hero {
+      display: grid;
+      gap: 1.35rem;
+      align-items: center;
+      margin: 0 0 2.75rem;
+      min-width: 0;
+    }
+
+    @media (min-width: 840px) {
+      .hero { grid-template-columns: 1fr 1.05fr; gap: 2rem; }
+      .lib-nav { padding: 0 1.25rem; }
+    }
+
+    h1 {
+      margin: 0 0 0.55rem;
+      font-size: clamp(1.9rem, 4vw, 2.5rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+    }
+
+    .lede {
+      margin: 0;
+      max-width: 34rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .by {
+      margin: 0.85rem 0 0;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    a {
+      color: var(--accent);
+      text-underline-offset: 0.16em;
+    }
+
+    a:hover { color: var(--ink); }
+
+    .rise {
+      transition: transform var(--spring-dur) var(--spring), opacity 0.45s ease;
+    }
+
+    .js .hero:not(.is-in) .rise {
+      opacity: 0;
+      transform: translateY(14px) scale(0.97);
+    }
+
+    .hero.is-in .rise:nth-child(2) { transition-delay: 0.08s; }
+
+    .canvas {
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+      overflow: hidden;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .canvas-chrome {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid var(--line);
+      background: #fafafa;
+    }
+
+    .canvas-name,
+    .canvas-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+
+    .canvas-name { color: #3a3a44; }
+    .canvas-tag { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+    .stage-body,
+    .chart-body { padding: 1rem 1rem 0.95rem; min-width: 0; }
+
+    .dialog {
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 0.9rem 0.95rem 0.85rem;
+      box-shadow: 0 10px 28px #0000000f;
+    }
+
+    .dialog-top {
+      display: flex;
+      gap: 0.65rem;
+      align-items: flex-start;
+    }
+
+    .mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--ink);
+      flex: none;
+    }
+
+    .dialog strong {
+      display: block;
+      font-size: 0.95rem;
+      letter-spacing: -0.02em;
+    }
+
+    .proto, .check, .once, .keep {
+      font-size: 0.84rem;
+      line-height: 1.4;
+    }
+
+    .proto { display: block; margin-top: 0.12rem; color: var(--muted); }
+    .check, .keep, .once { margin: 0.5rem 0 0; }
+    .check { color: var(--ink); }
+    .check::before { content: "✓  "; color: var(--brand); font-weight: 700; }
+    .keep { color: var(--ink); }
+    .once { color: var(--muted); font-size: 0.75rem; }
+
+    .extra {
+      overflow: hidden;
+      max-height: 4.5rem;
+      opacity: 1;
+      transition:
+        max-height 0.65s var(--spring),
+        opacity 0.28s ease,
+        margin 0.4s ease;
+    }
+
+    .mock[data-slop="off"] .extra {
+      max-height: 0;
+      opacity: 0;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.85rem;
+    }
+
+    .ghost, .go {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0.2rem 0.7rem;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .ghost {
+      border: 1px solid var(--line);
+      color: var(--ink);
+      background: var(--canvas);
+    }
+
+    .go {
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .stage-row, .inline-row, .loop-foot, .mole-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .stage-row { margin-top: 0.85rem; }
+
+    .clock {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: #3a3a44;
+    }
+
+    .btn {
+      min-height: 44px;
+      padding: 0.4rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      color: var(--ink);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    .btn:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .stage-row .btn,
+    .loop-foot .btn { margin-left: auto; }
+
+    .caption, .quiet, .sec-head p {
+      margin: 0;
+      max-width: 40rem;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    .caption { margin-top: 0.8rem; font-size: 0.82rem; }
+
+    .sec {
+      margin: 0 0 2.85rem;
+      scroll-margin-top: calc(var(--site-header-h, 56px) + var(--nav-h) + 12px);
+      min-width: 0;
+    }
+
+    .sec-head { margin: 0 0 1rem; }
+
+    .sec-head h2 {
+      margin: 0 0 0.3rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .quiet { margin-top: 0.85rem; }
+
+    .kicker {
+      margin: 0 0 0.45rem;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* —— two layers —— */
+    .switch {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .switch label {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0 0.9rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      font-size: 13px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    .switch input,
+    .pipe-item input,
+    .surface input,
+    .variant input {
+      position: absolute;
+      opacity: 0;
+      inset: 0;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .switch input:focus,
+    .pipe-item input:focus,
+    .surface input:focus,
+    .variant input:focus { outline: none; }
+
+    .switch label:has(input:checked) {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
+
+    .nest-outer,
+    .nest-inner {
+      border: 1.5px solid var(--line);
+      transition: border-color 0.35s ease, box-shadow 0.35s ease, opacity 0.35s ease;
+    }
+
+    .nest-outer {
+      border-radius: 16px;
+      padding: 0.85rem;
+      background:
+        linear-gradient(180deg, color-mix(in srgb, var(--accent) 5%, #fff), #fff 72px);
+    }
+
+    .nest-inner {
+      margin-top: 0.75rem;
+      border-radius: 12px;
+      padding: 0.75rem;
+      background: var(--canvas);
+    }
+
+    .layer-box:has(input[value="inner"]:checked) .nest-inner {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent);
+    }
+
+    .layer-box:has(input[value="outer"]:checked) .nest-outer {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent);
+    }
+
+    .layer-box:has(input[value="outer"]:checked) .nest-inner { opacity: 0.72; }
+
+    .layer-read { display: none; margin: 0.75rem 0 0; }
+    .layer-box:has(input[value="inner"]:checked) .layer-read.inner,
+    .layer-box:has(input[value="outer"]:checked) .layer-read.outer { display: block; }
+
+    .seq {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .seq li {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      min-height: 28px;
+      padding: 0.2rem 0.55rem 0.2rem 0.25rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .seq .n {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--ink);
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .inner-seq li {
+      background: color-mix(in srgb, var(--page) 55%, #fff);
+      padding-left: 0.55rem;
+    }
+
+    /* —— shared step rail —— */
+    .pipe-shell {
+      display: grid;
+      grid-template-columns: 18px minmax(0, 1fr);
+      column-gap: 4px;
+      min-width: 0;
+    }
+
+    .rails { position: relative; height: 100%; color: var(--accent); }
+
+    .rail {
+      position: absolute;
+      border: 2px solid currentColor;
+      border-right: 0;
+      border-radius: 8px 0 0 8px;
+    }
+
+    .rail::before {
+      content: "";
+      position: absolute;
+      top: -4px;
+      right: -6px;
+      width: 7px;
+      height: 7px;
+      border-top: 2px solid currentColor;
+      border-right: 2px solid currentColor;
+      transform: rotate(45deg);
+    }
+
+    .rail::after {
+      content: "";
+      position: absolute;
+      right: -8px;
+      bottom: -1px;
+      width: 8px;
+      height: 2px;
+      background: currentColor;
+    }
+
+    .pipe-shell.steps-6 .rail.short {
+      left: 4px;
+      width: 14px;
+      top: 8.333%;
+      height: 16.667%;
+    }
+
+    .pipe-shell.steps-6 .rail.short::before { content: none; }
+
+    .pipe-shell.steps-6 .rail.long {
+      left: 0;
+      width: 11px;
+      top: 8.333%;
+      height: 83.334%;
+    }
+
+    .pipe-shell.steps-3 .rail.long {
+      left: 0;
+      width: 14px;
+      top: 16.67%;
+      height: 66.66%;
+    }
+
+    .pipe {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .pipe-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      height: 56px;
+      padding-right: 0.35rem;
+      border-radius: 10px;
+      cursor: pointer;
+      min-width: 0;
+    }
+
+    .pipe-item:has(input:checked) {
+      background: color-mix(in srgb, var(--accent) 8%, #fff);
+    }
+
+    .dot {
+      position: relative;
+      z-index: 1;
+      width: 28px;
+      height: 28px;
+      flex: none;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1.5px solid var(--line);
+      background: var(--canvas);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    .pipe::before {
+      content: "";
+      position: absolute;
+      left: 13px;
+      top: 28px;
+      bottom: 28px;
+      width: 2px;
+      background: var(--line);
+    }
+
+    .pipe { position: relative; }
+
+    .pipe-item:has(input:checked) .dot {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .pname {
+      font-size: 0.92rem;
+      font-weight: 650;
+      letter-spacing: -0.01em;
+      min-width: 0;
+    }
+
+    .back {
+      margin-left: auto;
+      flex: none;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 650;
+      color: var(--accent);
+    }
+
+    .step-note { display: none; margin: 0; font-size: 0.95rem; line-height: 1.45; }
+    .chart-body .step-note { margin-top: 0.85rem; }
+    .step-note .kicker { display: block; }
+
+    .cycle-box:has(input[value="constraints"]:checked) .step-note[data-for="constraints"],
+    .cycle-box:has(input[value="solutions"]:checked) .step-note[data-for="solutions"],
+    .cycle-box:has(input[value="revise"]:checked) .step-note[data-for="revise"],
+    .loop-box:has(input[value="understand"]:checked) .step-note[data-for="understand"],
+    .loop-box:has(input[value="trace"]:checked) .step-note[data-for="trace"],
+    .loop-box:has(input[value="zoomout"]:checked) .step-note[data-for="zoomout"],
+    .loop-box:has(input[value="zoomin"]:checked) .step-note[data-for="zoomin"],
+    .loop-box:has(input[value="team"]:checked) .step-note[data-for="team"],
+    .loop-box:has(input[value="ship"]:checked) .step-note[data-for="ship"] {
+      display: block;
+    }
+
+    .loop-box:has(input[value="trace"]:checked) .rail.short,
+    .loop-box:has(input[value="ship"]:checked) .rail.long {
+      filter: drop-shadow(0 0 0.35px var(--accent));
+    }
+
+    .rails .rail { opacity: 0.85; }
+
+    .whole, .loop-layout, .zoom-layout, .rule-block, .cuts {
+      display: grid;
+      gap: 0.85rem;
+      min-width: 0;
+    }
+
+    @media (min-width: 840px) {
+      .whole,
+      .loop-layout,
+      .zoom-layout { grid-template-columns: 1fr 1fr; align-items: start; }
+      .rule-block.with-shot { grid-template-columns: 0.9fr 1.1fr; align-items: start; }
+      .cuts { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .note-card { padding: 1rem 1.05rem 1.05rem; }
+    .note-card .kicker { margin-bottom: 0.35rem; }
+    .note-card p { margin: 0; font-size: 0.95rem; line-height: 1.45; }
+
+    .loop-foot { margin-top: 0.75rem; }
+
+    .key {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 0.85rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .key i {
+      display: inline-block;
+      width: 18px;
+      height: 8px;
+      margin-right: 0.3rem;
+      border: 2px solid var(--accent);
+      border-right: 0;
+      border-radius: 6px 0 0 6px;
+      vertical-align: -1px;
+    }
+
+    .key .swatch-long { width: 26px; height: 12px; }
+
+    /* —— spot-fix —— */
+    .mole-screen {
+      position: relative;
+      height: 168px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: color-mix(in srgb, var(--page) 42%, #fff);
+      overflow: hidden;
+    }
+
+    .mole-head {
+      padding: 0.55rem 0.75rem;
+      font-size: 12px;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .mole-row {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.55rem 0.75rem;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .mole-row i {
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      background: #d5d5de;
+    }
+
+    .mole-actions { margin-top: 0.75rem; }
+
+    .patch {
+      position: absolute;
+      z-index: 1;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+      padding: 0.28rem 0.42rem;
+    }
+
+    .patch-new {
+      top: 8px;
+      right: 8px;
+      border-radius: 999px;
+      background: #f3d36b;
+      color: #3a2e04;
+    }
+
+    .patch-pro {
+      top: 52px;
+      right: 10px;
+      border-radius: 4px;
+      border: 1.5px dashed var(--accent);
+      background: #fff;
+      color: var(--accent);
+    }
+
+    .patch-bang {
+      top: 92px;
+      left: 78px;
+      width: 18px;
+      height: 18px;
+      padding: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #9f1239;
+      color: #fff;
+    }
+
+    .patch-tour {
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      border-radius: 6px;
+      background: var(--brand);
+      color: #fff;
+      text-align: center;
+    }
+
+    .cuts article {
+      padding: 0.85rem 0.95rem;
+    }
+
+    .cuts b {
+      display: block;
+      margin-bottom: 0.2rem;
+      font-size: 0.92rem;
+      letter-spacing: -0.01em;
+    }
+
+    .cuts span {
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.4;
+    }
+
+    /* —— craft cards —— */
+    .rules { display: flex; flex-direction: column; gap: 0.85rem; min-width: 0; }
+
+    .rule {
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+      padding: 0.85rem;
+      min-width: 0;
+    }
+
+    .rule h3 {
+      margin: 0.7rem 0 0.25rem;
+      font-size: 0.98rem;
+      letter-spacing: -0.02em;
+    }
+
+    .rule p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.45;
+    }
+
+    .ba {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0.45rem;
+      align-items: center;
+    }
+
+    .ba-col {
+      min-height: 86px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      background: color-mix(in srgb, var(--page) 40%, #fff);
+    }
+
+    .ba-col i, .sheaf i, .vframe i {
+      display: block;
+      height: 5px;
+      border-radius: 99px;
+      background: #d9d9e2;
+    }
+
+    .ba-col b, .sheaf b, .vframe b {
+      display: block;
+      margin-top: auto;
+      height: 12px;
+      width: 42%;
+      margin-left: auto;
+      border-radius: 4px;
+      background: var(--ink);
+    }
+
+    .ba-col.full i:nth-child(1) { width: 92%; }
+    .ba-col.full i:nth-child(2) { width: 70%; }
+    .ba-col.full i:nth-child(3) { width: 84%; }
+    .ba-arrow {
+      font-size: 1.1rem;
+      color: var(--muted);
+    }
+
+    .variants {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.4rem;
+    }
+
+    .variant {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0.28rem;
+      cursor: pointer;
+      min-width: 0;
+    }
+
+    .vframe {
+      height: 78px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 7px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      background: #fff;
+    }
+
+    .variant:has(input:checked) .vframe {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+    }
+
+    .vname {
+      font-size: 11px;
+      font-weight: 650;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .variant:has(input:checked) .vname { color: var(--ink); }
+
+    .v-dense i:nth-child(1) { width: 100%; }
+    .v-dense i:nth-child(2) { width: 86%; }
+    .v-dense i:nth-child(3) { width: 74%; }
+    .v-split { flex-direction: row; gap: 5px; }
+    .v-split span {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .v-split i { width: 100%; }
+    .v-quiet i:nth-child(1) { width: 78%; }
+    .v-quiet i:nth-child(2) { width: 56%; }
+    .v-one i { width: 64%; }
+
+    .parts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
+      min-height: 72px;
+    }
+
+    .part {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0 0.7rem;
+      border-radius: 8px;
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .part.quiet {
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .part.busy { opacity: 0.45; }
+
+    .deploy {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      min-height: 72px;
+      justify-content: center;
+    }
+
+    .deploy-row {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.86rem;
+      font-weight: 650;
+    }
+
+    .live {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--brand);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 18%, transparent);
+    }
+
+    .deploy em {
+      font-style: normal;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .refs {
+      position: relative;
+      height: 86px;
+    }
+
+    .refs span {
+      position: absolute;
+      top: 14px;
+      width: 46%;
+      height: 62px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #fff;
+      box-shadow: 0 6px 16px #0000000d;
+    }
+
+    .refs span::before,
+    .refs span::after {
+      content: "";
+      position: absolute;
+      left: 8px;
+      height: 4px;
+      border-radius: 99px;
+      background: #e6e6ee;
+    }
+
+    .refs span::before { top: 12px; right: 10px; }
+    .refs span::after { top: 22px; width: 58%; }
+
+    .refs span:nth-child(1) { left: 6%; background: color-mix(in srgb, var(--page) 50%, #fff); }
+    .refs span:nth-child(2) { left: 27%; }
+    .refs span:nth-child(3) { left: 48%; background: color-mix(in srgb, var(--accent) 8%, #fff); }
+
+    .thresh {
+      position: relative;
+      height: 112px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .stick {
+      position: absolute;
+      width: 36px;
+      height: 2px;
+      background: var(--ink);
+      opacity: 0.4;
+    }
+
+    .s1 { top: 36px; left: calc(50% - 86px); transform: rotate(12deg); }
+    .s2 { top: 36px; right: calc(50% - 86px); transform: rotate(-12deg); }
+    .s3 { bottom: 34px; left: calc(50% - 82px); transform: rotate(-12deg); }
+    .s4 { bottom: 34px; right: calc(50% - 82px); transform: rotate(12deg); }
+
+    .sheaf {
+      width: 92px;
+      min-height: 52px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+      padding: 8px 8px 7px;
+      transition: border-color 0.35s ease;
+    }
+
+    .sheaf[data-pass="1"] i:nth-child(1) { width: 100%; }
+    .sheaf[data-pass="1"] i:nth-child(2) { width: 62%; margin-left: 22%; }
+    .sheaf[data-pass="1"] i:nth-child(3) { width: 88%; }
+    .sheaf[data-pass="2"] i:nth-child(1) { width: 80%; }
+    .sheaf[data-pass="2"] i:nth-child(2) { width: 68%; }
+    .sheaf[data-pass="2"] i:nth-child(3) { display: none; }
+    .sheaf[data-pass="3"] { border-color: var(--ink); }
+    .sheaf[data-pass="3"] i { display: none; }
+    .sheaf[data-pass="3"] i:nth-child(1) { display: block; width: 70%; }
+    .sheaf[data-pass="3"] b { margin-left: 0; width: 38%; }
+    .thresh[data-pass="3"] .stick { opacity: 0.15; }
+
+    .taste-row { margin-top: 0.7rem; }
+    .pass { margin-top: 0.45rem; }
+
+    .shot { margin: 0; min-width: 0; max-width: 100%; }
+    .shot img { display: block; width: 100%; border-radius: 0; }
+    .shot .canvas { border-radius: 12px; }
+    .shot figcaption {
+      margin: 0.45rem 0.1rem 0;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    /* —— zoom —— */
+    .surfaces {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.45rem;
+      min-width: 0;
+    }
+
+    .surface {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-end;
+      gap: 0.35rem;
+      min-height: 84px;
+      padding: 0.5rem 0.6rem 0.55rem;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: color-mix(in srgb, var(--page) 38%, #fff);
+      cursor: pointer;
+      min-width: 0;
+    }
+
+    .surface:has(input:checked) {
+      border-color: var(--accent);
+      background: #fff;
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+    }
+
+    .badge {
+      display: none;
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      padding: 0.12rem 0.35rem;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 650;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .surface:has(input:checked) .badge { display: inline-block; }
+
+    .sname { font-size: 12px; font-weight: 700; letter-spacing: -0.01em; }
+
+    .glyph {
+      width: 100%;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .glyph i {
+      display: block;
+      height: 4px;
+      border-radius: 99px;
+      background: #d5d5de;
+    }
+
+    .g-settings { flex-direction: column; align-items: stretch; justify-content: center; }
+    .g-settings i:nth-child(1) { width: 72%; }
+    .g-settings i:nth-child(2) { width: 54%; }
+    .g-settings i:nth-child(3) { width: 64%; }
+
+    .g-side {
+      width: 38%;
+      height: 28px;
+      border: 1.5px solid #c8c8d2;
+      border-radius: 4px;
+      background: #fff;
+    }
+
+    .g-phone {
+      width: 16px;
+      height: 26px;
+      border: 1.5px solid #c8c8d2;
+      border-radius: 4px;
+      background: #fff;
+    }
+
+    .g-empty {
+      width: 70%;
+      height: 22px;
+      border: 1.5px dashed #c8c8d2;
+      border-radius: 4px;
+    }
+
+    .g-error {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #9f1239;
+    }
+
+    .g-permission { align-items: flex-end; }
+    .g-permission i { width: 16px; height: 10px; border-radius: 3px; background: var(--ink); }
+    .g-permission i:first-child { width: 22px; background: transparent; border: 1px solid #c8c8d2; }
+
+    .g-wide i { height: 8px; border-radius: 3px; background: #d5d5de; }
+    .g-wide i:first-child { width: 46%; }
+    .g-wide i:last-child { width: 28%; margin-left: auto; }
+
+    .g-email {
+      width: 22px;
+      height: 16px;
+      border: 1.5px solid #c8c8d2;
+      border-radius: 3px;
+      background: #fff;
+    }
+
+    .loupe {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--canvas);
+      box-shadow: 0 1px 2px #00000008;
+      padding: 0.9rem;
+      min-width: 0;
+    }
+
+    .loupe-card { display: none; }
+    .zoom:has(#sf-settings:checked) .loupe-card[data-s="settings"],
+    .zoom:has(#sf-side:checked) .loupe-card[data-s="side"],
+    .zoom:has(#sf-phone:checked) .loupe-card[data-s="phone"],
+    .zoom:has(#sf-empty:checked) .loupe-card[data-s="empty"],
+    .zoom:has(#sf-error:checked) .loupe-card[data-s="error"],
+    .zoom:has(#sf-permission:checked) .loupe-card[data-s="permission"],
+    .zoom:has(#sf-wide:checked) .loupe-card[data-s="wide"],
+    .zoom:has(#sf-email:checked) .loupe-card[data-s="email"] { display: block; }
+
+    .mini {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: color-mix(in srgb, var(--page) 35%, #fff);
+      padding: 0.75rem;
+      min-height: 132px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .mini b { font-size: 0.92rem; letter-spacing: -0.02em; }
+    .mini .sub, .mini-row span, .status {
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+
+    .mini-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.35rem 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.84rem;
+    }
+
+    .mini-row b { font-size: 0.84rem; }
+
+    .mini.narrow { max-width: 200px; background: #fff; }
+    .mini-top { display: flex; gap: 4px; }
+    .mini-top i { width: 7px; height: 7px; border-radius: 50%; background: #dedee6; }
+    .mini-top .on { background: var(--brand); }
+    .mini-body { flex: 1; border-radius: 6px; background: color-mix(in srgb, var(--page) 55%, #fff); }
+    .mini-input {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.4rem 0.5rem;
+      font-size: 12px;
+      color: var(--muted);
+      background: #fff;
+    }
+
+    .bubble {
+      align-self: flex-start;
+      max-width: 80%;
+      padding: 0.4rem 0.55rem;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid var(--line);
+      font-size: 0.8rem;
+    }
+
+    .status { align-self: flex-start; }
+
+    .err {
+      color: #9f1239;
+      font-size: 0.86rem;
+      font-weight: 650;
+    }
+
+    .mini-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.4rem;
+      margin-top: auto;
+    }
+
+    .loupe-card p { margin: 0.65rem 0 0; font-size: 0.88rem; line-height: 1.45; }
+
+    .shots { display: flex; flex-direction: column; gap: 0.85rem; margin-top: 0.85rem; min-width: 0; }
+
+    /* —— checklist —— */
+    .table-wrap {
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .moves { width: 100%; border-collapse: collapse; }
+
+    .moves th, .moves td {
+      text-align: left;
+      padding: 0.75rem 0.9rem;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .moves tr:last-child th,
+    .moves tr:last-child td { border-bottom: 0; }
+
+    .moves thead th {
+      font-size: 0.68rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 650;
+      background: #fafafa;
+    }
+
+    .moves tbody th { font-weight: 700; }
+
+    .close {
+      margin-top: 1rem;
+      padding: 1.2rem 1.25rem;
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--accent);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+    }
+
+    .close p {
+      margin: 0;
+      max-width: 28em;
+      font-size: clamp(1.15rem, 2.4vw, 1.4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.25;
+    }
+
+    .lib-foot {
+      margin-top: 0.5rem;
+      padding-top: 1.4rem;
+      border-top: 1px solid var(--line);
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .lib-foot p { margin: 0; }
+    .lib-foot a { overflow-wrap: anywhere; }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 680px) {
+      .moves thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+      }
+
+      .table-wrap {
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+      }
+
+      .moves, .moves tbody, .moves tr, .moves th, .moves td {
+        display: block;
+        width: auto;
+      }
+
+      .moves tr {
+        background: var(--canvas);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        box-shadow: 0 1px 2px #00000008;
+        padding: 0.85rem 1rem 0.35rem;
+      }
+
+      .moves tbody th, .moves td {
+        border-bottom: 0;
+        padding: 0 0 0.7rem;
+      }
+
+      .moves tbody th {
+        font-size: 1rem;
+        padding-bottom: 0.55rem;
+      }
+
+      .moves td::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 0.15rem;
+        font-size: 0.68rem;
+        font-weight: 650;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+
+      .js .hero:not(.is-in) .rise {
+        opacity: 1;
+        transform: none;
+      }
+
+      .rise, .extra, .nest-outer, .nest-inner, .sheaf, .rail {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="shared/site-header.css?v=6" />
+</head>
+<body data-page="design-with-ai">
+  <nav class="lib-nav" aria-label="Page sections">
+    <div class="lib-brand">Design with AI</div>
+    <div class="lib-links">
+      <a href="#layers">Layers</a>
+      <a href="#whole">Whole</a>
+      <a href="#craft">Craft</a>
+      <a href="#loop">Loop</a>
+      <a href="#zoom">Zoom</a>
+      <a href="#checklist">Slop</a>
+    </div>
+  </nav>
+
+  <main class="lib">
+    <header class="hero" id="top">
+      <div class="hero-copy rise">
+        <h1>Take the slop out.</h1>
+        <p class="lede">Agents add parts, then spread them across every surface of a feature. You remove, you check the constraints, and you look at the whole thing before it ships.</p>
+        <p class="by">Matt Dailey (<a href="https://x.com/reactiverobot" target="_blank" rel="noopener noreferrer">@reactiverobot</a>)</p>
+      </div>
+
+      <div class="canvas rise" id="strip">
+        <div class="canvas-chrome">
+          <span class="canvas-name">one surface</span>
+          <span class="canvas-tag" id="strip-tag">3 extras</span>
+        </div>
+        <div class="stage-body">
+          <div class="mock" id="mock" data-slop="on">
+            <div class="dialog">
+              <div class="dialog-top">
+                <span class="mark" aria-hidden="true"></span>
+                <div>
+                  <strong>Opening in the app</strong>
+                  <span class="extra proto">app:// raises the thread in the app</span>
+                </div>
+              </div>
+              <p class="extra check">Your browser asks to open the app. Choose Open.</p>
+              <p class="keep">Your browser will ask to open the app on this computer.</p>
+              <p class="extra once">Shown once.</p>
+              <div class="dialog-actions" aria-hidden="true">
+                <span class="ghost">Cancel</span>
+                <span class="go">Open</span>
+              </div>
+            </div>
+          </div>
+          <div class="stage-row">
+            <span class="clock">The decision can stand alone.</span>
+            <button type="button" class="btn" id="strip-btn" aria-pressed="false">Remove</button>
+          </div>
+          <p class="caption">For each part, ask if you need it. The protocol line, the repeated instruction, and “shown once” can go.</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="sec" id="layers">
+      <div class="sec-head">
+        <h2>Two layers, one practice.</h2>
+        <p>Part 1 is craft on a single surface. Part 2 is the loop when a feature crosses many. The craft sits inside the loop.</p>
+      </div>
+
+      <div class="layer-box">
+        <div class="switch" role="radiogroup" aria-label="Which layer to read">
+          <label>One surface<input type="radio" name="layer" value="inner" checked /></label>
+          <label>Many surfaces<input type="radio" name="layer" value="outer" /></label>
+        </div>
+        <div class="nest" aria-hidden="true">
+          <div class="nest-outer">
+            <p class="kicker">Part 2 · many surfaces</p>
+            <ol class="seq">
+              <li><span class="n">1</span>Understand</li>
+              <li><span class="n">2</span>Trace</li>
+              <li><span class="n">3</span>Zoom out</li>
+              <li><span class="n">4</span>Zoom in</li>
+              <li><span class="n">5</span>Team</li>
+              <li><span class="n">6</span>Ship</li>
+            </ol>
+            <div class="nest-inner">
+              <p class="kicker">Part 1 · one surface</p>
+              <ul class="seq inner-seq">
+                <li>Whole</li>
+                <li>Remove</li>
+                <li>Tool</li>
+                <li>Parts</li>
+                <li>Preview</li>
+                <li>Steal</li>
+                <li>Taste</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="caption layer-read inner">Seven rules for one screen. They also run inside every step of a larger feature.</p>
+        <p class="caption layer-read outer">Six steps when one prompt would otherwise paint every screen at once. Come back ready to sculpt.</p>
+      </div>
+    </section>
+
+    <section class="sec" id="whole">
+      <div class="sec-head">
+        <h2>Consider the whole.</h2>
+        <p>List the constraints. Try solutions that satisfy them. If the list should change, start again.</p>
+      </div>
+
+      <div class="whole">
+        <div class="canvas cycle-box">
+          <div class="canvas-chrome">
+            <span class="canvas-name">The loop</span>
+            <span class="canvas-tag">3 steps</span>
+          </div>
+          <div class="chart-body">
+            <div class="pipe-shell steps-3">
+              <div class="rails" aria-hidden="true"><span class="rail long"></span></div>
+              <div class="pipe" role="radiogroup" aria-label="Three design steps">
+                <label class="pipe-item">
+                  <input type="radio" name="cycle" value="constraints" checked />
+                  <span class="dot" aria-hidden="true">1</span>
+                  <span class="pname">Constraints</span>
+                </label>
+                <label class="pipe-item">
+                  <input type="radio" name="cycle" value="solutions" />
+                  <span class="dot" aria-hidden="true">2</span>
+                  <span class="pname">Solutions</span>
+                </label>
+                <label class="pipe-item">
+                  <input type="radio" name="cycle" value="revise" />
+                  <span class="dot" aria-hidden="true">3</span>
+                  <span class="pname">Revise</span>
+                  <span class="back">→ 1</span>
+                </label>
+              </div>
+            </div>
+            <p class="step-note" data-for="constraints">You choose the list. Type and size, flows the product must support, states the logic can be in.</p>
+            <p class="step-note" data-for="solutions">Line up several options that the list allows. Ask for three or four, and keep the ones that fit.</p>
+            <p class="step-note" data-for="revise">A constraint showed up, or one can leave. Change the list before you touch the screen again.</p>
+          </div>
+        </div>
+
+        <div class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Spot-fix</span>
+            <span class="canvas-tag">wackamole</span>
+          </div>
+          <div class="chart-body">
+            <div class="mole-screen" id="mole-screen">
+              <div class="mole-head">Sidebar</div>
+              <div class="mole-row"><i></i>Refs</div>
+              <div class="mole-row"><i></i>Reviews</div>
+              <div class="mole-row"><i></i>Files</div>
+            </div>
+            <div class="mole-actions">
+              <button type="button" class="btn" id="spot-fix">Spot-fix</button>
+              <button type="button" class="btn" id="mole-reset" disabled>Clear</button>
+            </div>
+            <p class="caption" id="mole-note" aria-live="polite">Each fix is local. The constraint list stays put.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="quiet">Christopher Alexander, <i>Notes on the Synthesis of Form</i>. Feedback such as “make this more prominent” is a moment to check the list, then decide.</p>
+
+      <div class="cuts" style="margin-top: 0.85rem">
+        <article class="canvas">
+          <b>Obvious</b>
+          <span>Ship the fix while it is still small.</span>
+        </article>
+        <article class="canvas">
+          <b>Minor</b>
+          <span>Park it on a papercuts list.</span>
+        </article>
+        <article class="canvas">
+          <b>Later</b>
+          <span>One redesign covers the list.</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="sec" id="craft">
+      <div class="sec-head">
+        <h2>Six moves on one surface.</h2>
+        <p>The loop above is the first rule. These are the rest.</p>
+      </div>
+
+      <div class="rules">
+        <div class="rule-block with-shot">
+          <article class="rule">
+            <div class="ba" aria-hidden="true">
+              <div class="ba-col full"><i></i><i></i><i></i><b></b></div>
+              <span class="ba-arrow">→</span>
+              <div class="ba-col"><i></i><b></b></div>
+            </div>
+            <h3>Remove</h3>
+            <p>Agents add. For each part, ask if you need it.</p>
+          </article>
+          <figure class="shot">
+            <div class="canvas">
+              <img src="assets/design-with-ai/pt1-05.jpg" width="1536" height="817" alt="A dialog before and after a removal pass. The before state explains a protocol and says the note is shown once. The after state keeps a title, one sentence, and Cancel or Open." decoding="async" loading="lazy" />
+            </div>
+            <figcaption>Before, the dialog explains itself. After, it asks for a yes or no.</figcaption>
+          </figure>
+        </div>
+
+        <div class="rule-block with-shot">
+          <article class="rule">
+            <div class="variants" role="radiogroup" aria-label="Four variants of one dialog">
+              <label class="variant">
+                <input type="radio" name="variant" value="dense" checked />
+                <span class="vframe v-dense" aria-hidden="true"><i></i><i></i><i></i><b></b></span>
+                <span class="vname">Dense</span>
+              </label>
+              <label class="variant">
+                <input type="radio" name="variant" value="split" />
+                <span class="vframe v-split" aria-hidden="true"><span><i></i><i></i><i></i></span><span><i></i><i></i></span></span>
+                <span class="vname">Split</span>
+              </label>
+              <label class="variant">
+                <input type="radio" name="variant" value="quiet" />
+                <span class="vframe v-quiet" aria-hidden="true"><i></i><i></i><b></b></span>
+                <span class="vname">Quiet</span>
+              </label>
+              <label class="variant">
+                <input type="radio" name="variant" value="one" />
+                <span class="vframe v-one" aria-hidden="true"><i></i><b></b></span>
+                <span class="vname">Single</span>
+              </label>
+            </div>
+            <h3>Design tool</h3>
+            <p>Iterate in Figma, a design mode, or a throwaway HTML page. A rough idea hardens once it lives in the product. Ask for three or four variants.</p>
+          </article>
+          <figure class="shot">
+            <div class="canvas">
+              <img src="assets/design-with-ai/pt1-04.jpg" width="1536" height="915" alt="A design tool with several sidebar variants on the canvas, including notes to remove a footer and collapse recent files, plus a menu for creating variations." decoding="async" loading="lazy" />
+            </div>
+            <figcaption>Variants of one sidebar, generated beside the product.</figcaption>
+          </figure>
+        </div>
+
+        <div class="rule-block with-shot">
+          <article class="rule">
+            <div class="parts" aria-hidden="true">
+              <span class="part">Save</span>
+              <span class="part quiet">Save</span>
+              <span class="part busy">Saving</span>
+            </div>
+            <h3>Components</h3>
+            <p>Keep the view separate from the logic. Build the piece on a showcase page before it lands in the product.</p>
+          </article>
+          <figure class="shot">
+            <div class="canvas">
+              <img src="assets/design-with-ai/pt1-01.jpg" width="1536" height="922" alt="A showcase page for a split button, with primary, light, and secondary variants, three sizes, idle and busy states, and badge variants underneath." decoding="async" loading="lazy" />
+            </div>
+            <figcaption>Variants, sizes, and states, on a showcase page.</figcaption>
+          </figure>
+        </div>
+
+        <div class="rule-block with-shot">
+          <article class="rule">
+            <div class="deploy" aria-hidden="true">
+              <div class="deploy-row"><span class="live"></span> Preview <em>Plan client</em></div>
+              <div class="deploy-row" style="font-weight: 500; color: var(--muted); font-size: 0.8rem;">Real records. Real empty states.</div>
+            </div>
+            <h3>Preview deploys</h3>
+            <p>Judge the design with real data. Split the frontend pull request when that keeps the preview easier to read.</p>
+          </article>
+          <figure class="shot">
+            <div class="canvas">
+              <img src="assets/design-with-ai/pt1-08.jpg" width="1832" height="922" alt="A GitHub comment titled Preview Deployments, with a live link for the plan client and a note that each push adds a deployment." decoding="async" loading="lazy" />
+            </div>
+            <figcaption>A preview deploy, so the judgment uses real data.</figcaption>
+          </figure>
+        </div>
+
+        <div class="rule-block with-shot">
+          <article class="rule">
+            <div class="refs" aria-hidden="true"><span></span><span></span><span></span></div>
+            <h3>Steal</h3>
+            <p>Most of these problems are already solved. Keep screenshots, and hand them to the agent as context.</p>
+          </article>
+          <figure class="shot">
+            <div class="canvas">
+              <img src="assets/design-with-ai/pt1-03.jpg" width="2048" height="978" alt="A design-tool board of landing-page references, with notes about full width, carousels, and layouts worth keeping." decoding="async" loading="lazy" />
+            </div>
+            <figcaption>References pinned next to the work, with the parts worth keeping called out.</figcaption>
+          </figure>
+        </div>
+
+        <article class="rule">
+          <div class="thresh" id="thresh" data-pass="1">
+            <span class="stick s1" aria-hidden="true"></span>
+            <span class="stick s2" aria-hidden="true"></span>
+            <span class="stick s3" aria-hidden="true"></span>
+            <span class="stick s4" aria-hidden="true"></span>
+            <span class="sheaf" id="sheaf" data-pass="1" aria-hidden="true"><i></i><i></i><i></i><b></b></span>
+          </div>
+          <h3>Taste</h3>
+          <p id="taste-note" aria-live="polite">Notice your own reaction. Engineers can tell when a screen fails, and reps build the library of fixes. Pass 1 is still rough.</p>
+          <div class="inline-row taste-row">
+            <button type="button" class="btn" id="taste-again">Again</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="sec" id="loop">
+      <div class="sec-head">
+        <h2>A feature with many surfaces.</h2>
+        <p>Hand over the plan. Come back to clay. If the shape is wrong, or people surprise you later, return to the start.</p>
+      </div>
+
+      <div class="loop-box">
+        <div class="loop-layout">
+          <div class="canvas">
+            <div class="canvas-chrome">
+              <span class="canvas-name">The pass</span>
+              <span class="canvas-tag">6 steps</span>
+            </div>
+            <div class="chart-body">
+              <div class="pipe-shell steps-6">
+                <div class="rails" aria-hidden="true">
+                  <span class="rail long"></span>
+                  <span class="rail short"></span>
+                </div>
+                <div class="pipe" role="radiogroup" aria-label="Six steps for a complex feature">
+                  <label class="pipe-item">
+                    <input type="radio" name="loop" value="understand" checked aria-label="Understand. Map the surfaces and the constraints before you draw." />
+                    <span class="dot" aria-hidden="true">1</span>
+                    <span class="pname">Understand</span>
+                  </label>
+                  <label class="pipe-item">
+                    <input type="radio" name="loop" value="trace" aria-label="Trace. If the rough version diverges, go back to Understand." />
+                    <span class="dot" aria-hidden="true">2</span>
+                    <span class="pname">Trace</span>
+                    <span class="back">→ 1</span>
+                  </label>
+                  <label class="pipe-item">
+                    <input type="radio" name="loop" value="zoomout" aria-label="Zoom out. Look at every state, grouped by surface." />
+                    <span class="dot" aria-hidden="true">3</span>
+                    <span class="pname">Zoom out</span>
+                  </label>
+                  <label class="pipe-item">
+                    <input type="radio" name="loop" value="zoomin" aria-label="Zoom in. Pull the crux into a design tool." />
+                    <span class="dot" aria-hidden="true">4</span>
+                    <span class="pname">Zoom in</span>
+                  </label>
+                  <label class="pipe-item">
+                    <input type="radio" name="loop" value="team" aria-label="Team. Dogfood on staging and review before and after." />
+                    <span class="dot" aria-hidden="true">5</span>
+                    <span class="pname">Team</span>
+                  </label>
+                  <label class="pipe-item">
+                    <input type="radio" name="loop" value="ship" aria-label="Ship. A surprise in real use goes back to Understand." />
+                    <span class="dot" aria-hidden="true">6</span>
+                    <span class="pname">Ship</span>
+                    <span class="back">→ 1</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="canvas note-card" aria-live="polite">
+            <p class="step-note" data-for="understand"><span class="kicker">Understand</span>Dieter Rams: good design makes a product understandable. Map the surfaces and the technical constraints. Write the flow by hand, and ask until the map is yours.</p>
+            <p class="step-note" data-for="trace"><span class="kicker">Trace</span>Give the agent the plan, then come back to a rough working version. Skim for anything strange. A major divergence means the map was wrong. Go back to Understand.</p>
+            <p class="step-note" data-for="zoomout"><span class="kicker">Zoom out</span>Look at every state a person can hit. Group the screenshots by surface and name the bugs. Say “remove this” often. Small fixes get marked. Surprises reopen the map.</p>
+            <p class="step-note" data-for="zoomin"><span class="kicker">Zoom in</span>A few surfaces are the crux. Pull those into a design tool or an HTML prototype. Work the details, and leave the rest of the product alone for a while.</p>
+            <p class="step-note" data-for="team"><span class="kicker">Team</span>Human feedback is the part you cannot skip. Put it on staging, use it yourself, and post before-and-after shots where the team already talks.</p>
+            <p class="step-note" data-for="ship"><span class="kicker">Ship</span>Put it in people’s hands. A surprise in real use is the next constraint. Take it back to Understand.</p>
+          </div>
+        </div>
+
+        <div class="loop-foot">
+          <ul class="key">
+            <li><i class="swatch-short" aria-hidden="true"></i>Trace diverges</li>
+            <li><i class="swatch-long" aria-hidden="true"></i>Ship surprises</li>
+          </ul>
+          <button type="button" class="btn" id="loop-play" aria-pressed="true">Pause</button>
+        </div>
+      </div>
+
+      <div class="shots">
+        <figure class="shot">
+          <div class="canvas">
+            <img src="assets/design-with-ai/pt2-06.jpg" width="1494" height="992" alt="A written map of how a feature works: architecture, security, discovery, rollout, and the product surfaces those facts touch." decoding="async" loading="lazy" />
+          </div>
+          <figcaption>How it works, written down before the restyle.</figcaption>
+        </figure>
+        <figure class="shot">
+          <div class="canvas">
+            <img src="assets/design-with-ai/pt2-02.jpg" width="960" height="540" alt="One feature across three surfaces: a list of refs, a plan with three tasks, and a live agent chat." decoding="async" loading="lazy" />
+          </div>
+          <figcaption>One feature, already on three surfaces.</figcaption>
+        </figure>
+        <figure class="shot">
+          <div class="canvas">
+            <img src="assets/design-with-ai/pt2-08.jpg" width="1762" height="796" alt="A team message with before-and-after screenshots of a merge control, and a note about moving a label to hover." decoding="async" loading="lazy" />
+          </div>
+          <figcaption>The team reviews with a before and an after.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="sec" id="zoom">
+      <div class="sec-head">
+        <h2>Every state, then the crux.</h2>
+        <p>Sweep the grid. Spend your care on the screen that carries the idea.</p>
+      </div>
+
+      <div class="zoom" id="zoom">
+        <div class="zoom-layout">
+          <div class="surfaces" role="radiogroup" aria-label="Surfaces in the sweep. The selected surface is the crux.">
+            <label class="surface">
+              <input type="radio" name="surface" id="sf-settings" value="settings" />
+              <span class="badge">Crux</span>
+              <span class="glyph g-settings" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="sname">Settings</span>
+            </label>
+            <label class="surface">
+              <input type="radio" name="surface" id="sf-side" value="side" />
+              <span class="badge">Crux</span>
+              <span class="glyph g-side" aria-hidden="true"></span>
+              <span class="sname">Side panel</span>
+            </label>
+            <label class="surface">
+              <input type="radio" name="surface" id="sf-phone" value="phone" />
+              <span class="badge">Crux</span>
+              <span class="glyph g-phone" aria-hidden="true"></span>
+              <span class="sname">Phone</span>
+            </label>
+            <label class="surface">
+              <input type="radio" name="surface" id="sf-empty" value="empty" />
+              <span class="badge">Crux</span>
+              <span class="glyph g-empty" aria-hidden="true"></span>
+              <span class="sname">Empty</span>
+            </label>
+            <label class="surface">
+              <input type="radio" name="surface" id="sf-error" value="error" />
+              <span class="badge">Crux</span>
+              <span class="glyph g-error" aria-hidden="true"></span>
+              <span class="sname">Error</span>
+            </label>
+            <label class="surface">
+              <input type="radio" name="surface" id="sf-permission" value="permission" checked />
+              <span class="badge">Crux</span>
+              <span class="glyph g-permission" aria-hidden="true"><i></i><i></i></span>
+              <span class="sname">Permission</span>
+            </label>
+            <label class="surface">
+              <input type="radio" name="surface" id="sf-wide" value="wide" />
+              <span class="badge">Crux</span>
+              <span class="glyph g-wide" aria-hidden="true"><i></i><i></i></span>
+              <span class="sname">Wide</span>
+            </label>
+            <label class="surface">
+              <input type="radio" name="surface" id="sf-email" value="email" />
+              <span class="badge">Crux</span>
+              <span class="glyph g-email" aria-hidden="true"></span>
+              <span class="sname">Email</span>
+            </label>
+          </div>
+
+          <div class="loupe">
+            <p class="kicker">Zoom in</p>
+            <div class="loupe-card" data-s="settings">
+              <div class="mini">
+                <div class="mini-row"><b>Machines</b><span>2 online</span></div>
+                <div class="mini-row"><b>Agents</b><span>three found</span></div>
+                <div class="mini-row"><b>MCP</b><span>plan</span></div>
+              </div>
+              <p>The map of the product. Names and states, in an order a person can learn.</p>
+            </div>
+            <div class="loupe-card" data-s="side">
+              <div class="mini narrow">
+                <div class="mini-top" aria-hidden="true"><i></i><i></i><i class="on"></i></div>
+                <div class="mini-body"></div>
+                <div class="mini-input">Type a message</div>
+              </div>
+              <p>The daily view. At 340 pixels it still has to feel finished.</p>
+            </div>
+            <div class="loupe-card" data-s="phone">
+              <div class="mini">
+                <div class="bubble">Write README.md</div>
+                <div class="status">Changed by the agent</div>
+                <div class="status">Cancelled</div>
+              </div>
+              <p>Status lines sit on the left, with the thread. Centered meta is the bug.</p>
+            </div>
+            <div class="loupe-card" data-s="empty">
+              <div class="mini" style="justify-content: center;">
+                <b>No session yet</b>
+                <span class="sub">Stop is already offered.</span>
+              </div>
+              <p>The empty state is a state. The sweep includes it.</p>
+            </div>
+            <div class="loupe-card" data-s="error">
+              <div class="mini" style="justify-content: center;">
+                <div class="err">Couldn’t start. The login expired.</div>
+                <span class="sub">Sign in, then run it again.</span>
+              </div>
+              <p>Say what happened, and the next action.</p>
+            </div>
+            <div class="loupe-card" data-s="permission">
+              <div class="mini">
+                <b>Allow this once?</b>
+                <span class="status">Write README.md</span>
+                <div class="mini-actions" aria-hidden="true">
+                  <span class="ghost">Cancel</span>
+                  <span class="go">Allow</span>
+                </div>
+              </div>
+              <p>The crux. The decision is the whole screen. Details get the time here.</p>
+            </div>
+            <div class="loupe-card" data-s="wide">
+              <div class="mini">
+                <div class="mini-row"><b>Same list</b><span>480 wide</span></div>
+                <div class="mini-row"><b>Same rank</b><span>more air</span></div>
+              </div>
+              <p>Width changes the frame. The hierarchy stays.</p>
+            </div>
+            <div class="loupe-card" data-s="email">
+              <div class="mini" style="justify-content: center;">
+                <b>The plan finished</b>
+                <span class="sub">One fact. Fewer controls than the app.</span>
+              </div>
+              <p>The same event, on another surface.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="quiet">Ask for every state, grouped by surface, and the bugs found on the way. He packaged that pass as /ui-sweep in the <a href="https://github.com/ref-tools/marketplace/tree/main/plugins/ref-skills" target="_blank" rel="noopener noreferrer">Ref skills</a>.</p>
+
+      <div class="shots">
+        <figure class="shot">
+          <div class="canvas">
+            <img src="assets/design-with-ai/pt2-03.jpg" width="1902" height="1958" alt="A sweep of one side panel with filters for agent, state, and width, eight numbered fixes, and the panel open beside the notes." decoding="async" loading="lazy" />
+          </div>
+          <figcaption>Every state of one panel, with the fixes listed beside it.</figcaption>
+        </figure>
+        <figure class="shot">
+          <div class="canvas">
+            <img src="assets/design-with-ai/pt2-07.jpg" width="1200" height="937" alt="A UI sweep catalog. Screens are grouped by element, bugs are named, and a block of shots is marked to look at after the fixes." decoding="async" loading="lazy" />
+          </div>
+          <figcaption>The catalog: shots, bugs, and what to look at after the fixes.</figcaption>
+        </figure>
+        <figure class="shot">
+          <div class="canvas">
+            <img src="assets/design-with-ai/pt2-04.jpg" width="2048" height="1855" alt="A phone chat in review. Centered status lines are circled, with a note that they should align left." decoding="async" loading="lazy" />
+          </div>
+          <figcaption>The crux, marked by hand. These lines belong on the left.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="sec" id="checklist">
+      <div class="sec-head">
+        <h2>When the agent slops it up.</h2>
+        <p>The tendency, and the move.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table class="moves">
+          <caption class="visually-hidden">What an agent tends to do, and the move to make instead.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Tendency</th>
+              <th scope="col">Move</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">It adds a part.</th>
+              <td data-label="Move">Ask whether you need it.</td>
+            </tr>
+            <tr>
+              <th scope="row">It makes one thing louder.</th>
+              <td data-label="Move">Ask whether a constraint changed.</td>
+            </tr>
+            <tr>
+              <th scope="row">It designs inside the product.</th>
+              <td data-label="Move">Iterate in a design tool. Ask for three or four variants.</td>
+            </tr>
+            <tr>
+              <th scope="row">It builds the happy path.</th>
+              <td data-label="Move">Sweep every state, grouped by surface.</td>
+            </tr>
+            <tr>
+              <th scope="row">It polishes every screen the same.</th>
+              <td data-label="Move">Zoom in on the crux.</td>
+            </tr>
+            <tr>
+              <th scope="row">It finishes in the silo.</th>
+              <td data-label="Move">Dogfood on staging. Review before and after with the team.</td>
+            </tr>
+            <tr>
+              <th scope="row">It patches a surprise in place.</th>
+              <td data-label="Move">Take the surprise back to the constraints.</td>
+            </tr>
+            <tr>
+              <th scope="row">It fixes every note immediately.</th>
+              <td data-label="Move">Ship the obvious ones. Park the minor ones for one redesign.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <aside class="close">
+        <p>Which surface is the crux, and what would you remove first?</p>
+      </aside>
+    </section>
+
+    <footer class="lib-foot">
+      <p>Sources: <a href="https://x.com/reactiverobot/status/2092638003789439075" target="_blank" rel="noopener noreferrer">How I Design with AI</a> and <a href="https://x.com/reactiverobot/status/2115075879923765615" target="_blank" rel="noopener noreferrer">How I Design with AI (pt 2)</a> by Matt Dailey (<a href="https://x.com/reactiverobot" target="_blank" rel="noopener noreferrer">@reactiverobot</a>).</p>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var reduced = document.documentElement.getAttribute('data-motion') === 'reduce';
+      var hero = document.querySelector('.hero');
+
+      function revealHero() {
+        if (hero) hero.classList.add('is-in');
+      }
+
+      if (reduced) revealHero();
+      else requestAnimationFrame(function () { requestAnimationFrame(revealHero); });
+
+      var mock = document.getElementById('mock');
+      var stripBtn = document.getElementById('strip-btn');
+      var stripTag = document.getElementById('strip-tag');
+
+      function setSlop(on) {
+        mock.setAttribute('data-slop', on ? 'on' : 'off');
+        stripBtn.setAttribute('aria-pressed', on ? 'false' : 'true');
+        stripBtn.textContent = on ? 'Remove' : 'Restore';
+        stripTag.textContent = on ? '3 extras' : 'kept';
+      }
+
+      stripBtn.addEventListener('click', function () {
+        setSlop(mock.getAttribute('data-slop') !== 'on');
+      });
+
+      var screen = document.getElementById('mole-screen');
+      var spot = document.getElementById('spot-fix');
+      var reset = document.getElementById('mole-reset');
+      var moleNote = document.getElementById('mole-note');
+      var kinds = [
+        ['patch-new', 'New'],
+        ['patch-pro', 'Pro'],
+        ['patch-bang', '!'],
+        ['patch-tour', 'Take the tour']
+      ];
+      var count = 0;
+
+      function moleCopy(n) {
+        if (n === 0) return 'Each fix is local. The constraint list stays put.';
+        if (n === 1) return 'One patch. The constraints did not change.';
+        return n + ' patches. The constraints did not change.';
+      }
+
+      function paintMole() {
+        screen.querySelectorAll('.patch').forEach(function (el) { el.remove(); });
+        for (var i = 0; i < count; i++) {
+          var el = document.createElement('span');
+          el.className = 'patch ' + kinds[i][0];
+          el.textContent = kinds[i][1];
+          screen.appendChild(el);
+        }
+        moleNote.textContent = moleCopy(count);
+        spot.disabled = count >= kinds.length;
+        reset.disabled = count === 0;
+      }
+
+      spot.addEventListener('click', function () {
+        if (count < kinds.length) count += 1;
+        paintMole();
+      });
+
+      reset.addEventListener('click', function () {
+        count = 0;
+        paintMole();
+      });
+
+      var thresh = document.getElementById('thresh');
+      var sheaf = document.getElementById('sheaf');
+      var tasteNote = document.getElementById('taste-note');
+      var tasteBtn = document.getElementById('taste-again');
+      var passes = [
+        'Notice your own reaction. Engineers can tell when a screen fails, and reps build the library of fixes. Pass 1 is still rough.',
+        'Pass 2. One idea is louder than the rest. Keep beating it.',
+        'Pass 3. The reaction settles. That feeling is the taste you are building.'
+      ];
+      var pass = 0;
+
+      tasteBtn.addEventListener('click', function () {
+        pass = (pass + 1) % passes.length;
+        var n = String(pass + 1);
+        thresh.setAttribute('data-pass', n);
+        sheaf.setAttribute('data-pass', n);
+        tasteNote.textContent = passes[pass];
+      });
+
+      var radios = Array.prototype.slice.call(document.querySelectorAll('input[name="loop"]'));
+      var playBtn = document.getElementById('loop-play');
+      var index = 0;
+      var timer = 0;
+      var playing = !reduced;
+      var fromAuto = false;
+
+      function selectPiece(next) {
+        index = (next + radios.length) % radios.length;
+        fromAuto = true;
+        radios[index].checked = true;
+        fromAuto = false;
+      }
+
+      function stopLoop() {
+        if (timer) {
+          clearInterval(timer);
+          timer = 0;
+        }
+      }
+
+      function setPlaying(next) {
+        playing = next;
+        playBtn.setAttribute('aria-pressed', next ? 'true' : 'false');
+        playBtn.textContent = next ? 'Pause' : 'Play';
+        playBtn.setAttribute('aria-label', next ? 'Pause the feature steps' : 'Play the feature steps');
+        stopLoop();
+        if (next) {
+          timer = setInterval(function () { selectPiece(index + 1); }, 2800);
+        }
+      }
+
+      radios.forEach(function (radio, i) {
+        radio.addEventListener('change', function () {
+          if (fromAuto || !radio.checked) return;
+          index = i;
+          setPlaying(false);
+        });
+      });
+
+      playBtn.addEventListener('click', function () {
+        setPlaying(!playing);
+      });
+
+      setPlaying(playing);
+
+      var navLinks = Array.prototype.slice.call(document.querySelectorAll('.lib-links a'));
+      var spy = navLinks.map(function (a) {
+        return { a: a, el: document.querySelector(a.getAttribute('href')) };
+      }).filter(function (item) { return item.el; });
+
+      function mark(link) {
+        navLinks.forEach(function (a) { a.removeAttribute('aria-current'); });
+        if (!link) return;
+        link.setAttribute('aria-current', 'location');
+        var scroller = link.parentElement;
+        if (!scroller) return;
+        var left = link.offsetLeft;
+        var right = left + link.offsetWidth;
+        var viewLeft = scroller.scrollLeft;
+        var viewRight = viewLeft + scroller.clientWidth;
+        if (left < viewLeft + 8) scroller.scrollLeft = Math.max(0, left - 8);
+        else if (right > viewRight - 8) scroller.scrollLeft = right - scroller.clientWidth + 8;
+      }
+
+      function spyLine() {
+        var nav = document.querySelector('.lib-nav');
+        var edge = nav ? nav.getBoundingClientRect().bottom : 0;
+        var current = null;
+        spy.forEach(function (item) {
+          if (item.el.getBoundingClientRect().top <= edge + 200) current = item;
+        });
+        mark(current ? current.a : null);
+      }
+
+      spyLine();
+      window.addEventListener('scroll', spyLine, { passive: true });
+
+      var seekWas = false;
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) {
+          seekWas = playing;
+          if (playing) setPlaying(false);
+        } else if (seekWas) {
+          setPlaying(true);
+        }
+      });
+    })();
+  </script>
+  <script src="shared/site-header.js?v=11" defer></script>
+</body>
+</html>

@@ -19,6 +19,7 @@ Multi-page **static** UI kit published on GitHub Pages from the `main` branch ro
 - Motion studio: https://danielwongcx.github.io/ui-kit/motion-studio.html (`motion-studio.html`) — Explainer. Plain-language page on Movez’s (@0xMovez) X article, a 12-step course for turning a one-line motion prompt into a studio. Light seek(t) hero, a prompt-vs-harness chart, a four-part step diagram, and a without-it / fix table. Numbers are the article’s. No build step.
 - UI aesthetic: https://danielwongcx.github.io/ui-kit/ui-aesthetic.html (`ui-aesthetic.html`) — Explainer. Plain-language page on Xian’s (@Xian0063) X article, eight working principles and five AI design skills, with the article’s 15 images. Numbers and install commands are the article’s. No build step.
 - Fix your life: https://danielwongcx.github.io/ui-kit/fix-life.html (`fix-life.html`) — Explainer. Plain-language page on Dan Koe’s (@thedankoe) X article about changing identity in a day: first-order change, the identity loop, nine mind stages, a cybernetic steer, the flip, a one-day protocol, and a six-ring game. No build step.
+- Design with AI: https://danielwongcx.github.io/ui-kit/design-with-ai.html (`design-with-ai.html`) — Explainer. Plain-language page on Matt Dailey’s (@reactiverobot) two X articles about de-slopping AI design: a constraint loop, six craft moves on one surface, and a six-step loop for features that cross many screens. No build step.
 
 No build step. Plain HTML / CSS / JS.
 
@@ -43,6 +44,7 @@ Top-level pages: Gallery, Digest, Taste, Piano, ASCII, Ferry, MTR.
 - UI aesthetic → `ui-aesthetic.html`
 - Refactor UI → `refactor-ui.html`
 - Fix your life → `fix-life.html`
+- Design with AI → `design-with-ai.html`
 
 When you add a new page:
 
