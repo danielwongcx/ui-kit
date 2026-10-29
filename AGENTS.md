@@ -22,6 +22,7 @@ Multi-page **static** UI kit published on GitHub Pages from the `main` branch ro
 - Fix your life: https://danielwongcx.github.io/ui-kit/fix-life.html (`fix-life.html`) — Explainer. Plain-language page on Dan Koe’s (@thedankoe) X article about changing identity in a day: first-order change, the identity loop, nine mind stages, a cybernetic steer, the flip, a one-day protocol, and a six-ring game. No build step.
 - Design with AI: https://danielwongcx.github.io/ui-kit/design-with-ai.html (`design-with-ai.html`) — Explainer. Plain-language page on Matt Dailey’s (@reactiverobot) two X articles about de-slopping AI design: a constraint loop, six craft moves on one surface, and a six-step loop for features that cross many screens. No build step.
 - Grok Bot reel: https://danielwongcx.github.io/ui-kit/grok-bot-showreel.html (`grok-bot-showreel.html`) — Explainer. Full-viewport 15s motion showreel for Grok Bot, desktop assistant: cold open, identity spark, wordmark, six easings, morph, Truchet, depth, kinetic type, and fin. One GSAP master timeline (`vendor/gsap.min.js`). `prefers-reduced-motion` holds the fin plate. No build step.
+- Dub promo: https://danielwongcx.github.io/ui-kit/dub-promo-showreel.html (`dub-promo-showreel.html`) — Explainer. Full-viewport 15s looping motion study of a Dub short-link promo: long URL, short pill, live clicks, analytics, partners, feature slides, and a fin CTA. One GSAP master timeline (`vendor/gsap.min.js`). `prefers-reduced-motion` holds the fin plate. No build step.
 
 No build step. Plain HTML / CSS / JS.
 
@@ -48,6 +49,7 @@ Top-level pages: Gallery, Digest, Taste, Piano, ASCII, Ferry, MTR, Transition.
 - Fix your life → `fix-life.html`
 - Design with AI → `design-with-ai.html`
 - Grok Bot reel → `grok-bot-showreel.html`
+- Dub promo → `dub-promo-showreel.html`
 
 When you add a new page:
 
