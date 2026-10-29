@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>UI Library · Digits · Buttons · Cards · Palettes · Select · Glow · Folder · Spacing · Hierarchy · Combos</title>
+  <title>UI Library · Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow · Folder · Spacing · Hierarchy · Combos</title>
   <script>
     /* Apply saved page shell and glow stops before paint */
     (function () {
@@ -31,7 +31,7 @@
   </script>
   <style>
     /*
-      UI component gallery — digit scroll, glow buttons, nested-radius cards,
+      UI component gallery — digit scroll, glow buttons, nested-radius cards and dialog,
       rotating conic glow border. Natural spring ~10% overshoot (peak ~1.09, soft settle · 0.75s).
     */
     :root {
@@ -221,6 +221,18 @@
       line-height: 1.45;
       color: var(--muted);
       max-width: 40rem;
+    }
+
+    .sec-head a {
+      color: inherit;
+      font-weight: 650;
+      text-underline-offset: 0.16em;
+    }
+
+    .sec-head a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      border-radius: 2px;
     }
 
     .sec-grid {
@@ -787,6 +799,287 @@
     .lib-foot code { font-family: var(--mono); font-size: 0.95em; }
 
 
+
+    /* —— Nested radius skill: dialog compare. Scoped so it does not touch .stage / .btn / .chip. —— */
+    #nested-radius {
+      --nr-ink: #171717;
+      --nr-mute: #747170;
+      --nr-card: #ffffff;
+      --nr-panel: #f7f5f3;
+      --nr-line: #e5e1dd;
+      --nr-soft: #edeae6;
+      --nr-canvas: #f2f0ee;
+    }
+
+    #nested-radius .sec-grid {
+      align-items: stretch;
+    }
+
+    #nested-radius .sec-grid.two {
+      grid-template-columns: 1fr;
+    }
+
+    #nested-radius .canvas {
+      min-width: 0;
+      height: 100%;
+    }
+
+    @media (min-width: 900px) {
+      #nested-radius .sec-grid.two {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    #nested-radius .nr-body {
+      align-items: stretch;
+      justify-content: flex-start;
+      flex: 1;
+      background: var(--nr-canvas);
+      color: var(--nr-ink);
+      font-family: var(--mono);
+      font-size: 13.5px;
+      font-weight: 400;
+      letter-spacing: -0.44px;
+      line-height: 1.35;
+      text-align: left;
+      padding: 1.15rem 1rem 1.2rem;
+      min-height: 0;
+    }
+
+    #nested-radius .nr {
+      width: 100%;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    #nested-radius .nr-label {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    #nested-radius .nr-label strong {
+      display: block;
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    #nested-radius .nr-kicker {
+      margin: 2px 0 0;
+      color: var(--nr-mute);
+      font-size: 11px;
+    }
+
+    #nested-radius .nr-badge {
+      flex: none;
+      font-size: 10px;
+      line-height: 1.2;
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid var(--nr-line);
+      color: var(--nr-mute);
+    }
+
+    #nested-radius .nr-badge--on {
+      color: var(--nr-ink);
+      border-color: var(--nr-ink);
+    }
+
+    #nested-radius .nr-stage {
+      flex: 1;
+      background: var(--nr-soft);
+      padding: 28px 20px 16px;
+      border-radius: 2px;
+    }
+
+    #nested-radius .nr-dialog {
+      background: var(--nr-card);
+      border: 1px solid var(--nr-line);
+      box-shadow:
+        0 1px 1px rgba(23, 23, 23, 0.04),
+        0 12px 32px rgba(23, 23, 23, 0.06);
+      padding: 16px;
+    }
+
+    #nested-radius .nr-dialog h3 {
+      margin: 0 0 4px;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: -0.44px;
+      line-height: 1.3;
+    }
+
+    #nested-radius .nr-sub {
+      margin: 0 0 16px;
+      color: var(--nr-mute);
+      font-size: 11.5px;
+    }
+
+    #nested-radius .nr-panel {
+      background: var(--nr-panel);
+      border: 1px solid var(--nr-line);
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    #nested-radius .nr-field {
+      display: grid;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    #nested-radius .nr-lab {
+      color: var(--nr-mute);
+      font-size: 11px;
+    }
+
+    #nested-radius .nr-input {
+      width: 100%;
+      margin: 0;
+      min-height: 44px;
+      background: var(--nr-card);
+      border: 1px solid var(--nr-line);
+      padding: 10px 12px;
+      color: var(--nr-ink);
+      font: inherit;
+      letter-spacing: inherit;
+    }
+
+    #nested-radius .nr-input::placeholder {
+      color: #a8a29e;
+    }
+
+    #nested-radius .nr-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    #nested-radius .nr-row--end {
+      justify-content: flex-end;
+      margin-top: 4px;
+    }
+
+    #nested-radius .nr-btn {
+      appearance: none;
+      -webkit-appearance: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--nr-ink);
+      background: var(--nr-ink);
+      color: #fff;
+      min-height: 40px;
+      padding: 8px 14px;
+      font: inherit;
+      font-size: 12px;
+      letter-spacing: inherit;
+      line-height: 1.2;
+      cursor: pointer;
+    }
+
+    #nested-radius .nr-btn--ghost {
+      background: transparent;
+      color: var(--nr-ink);
+    }
+
+    #nested-radius .nr-btn:hover {
+      background: #2a2a2a;
+    }
+
+    #nested-radius .nr-btn--ghost:hover {
+      background: rgba(23, 23, 23, 0.05);
+    }
+
+    #nested-radius .nr-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      background: var(--nr-card);
+      border: 1px solid var(--nr-line);
+      font-size: 11px;
+      color: var(--nr-ink);
+    }
+
+    #nested-radius .nr-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #747170;
+      flex: none;
+    }
+
+    #nested-radius .nr-meta {
+      margin: 14px 0 0;
+      color: var(--nr-mute);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    #nested-radius .nr-meta code {
+      font: inherit;
+      color: #313030;
+      background: rgba(0, 0, 0, 0.06);
+      padding: 1px 4px;
+      border-radius: 2px;
+    }
+
+    /* Without skill: every nested layer shares one large radius. */
+    #nested-radius .nr-naive .nr-dialog,
+    #nested-radius .nr-naive .nr-panel,
+    #nested-radius .nr-naive .nr-input,
+    #nested-radius .nr-naive .nr-btn,
+    #nested-radius .nr-naive .nr-chip {
+      border-radius: 24px;
+    }
+
+    /* With skill: inner = outer − padding. Dialog 32 / pad 16 → 16; chips 8. Floor 4. */
+    #nested-radius .nr-skilled .nr-dialog {
+      border-radius: 32px;
+    }
+
+    #nested-radius .nr-skilled .nr-panel,
+    #nested-radius .nr-skilled .nr-input,
+    #nested-radius .nr-skilled .nr-btn {
+      border-radius: 16px;
+    }
+
+    #nested-radius .nr-skilled .nr-chip {
+      border-radius: 8px;
+    }
+
+    @supports (corner-shape: superellipse(1.25)) {
+      #nested-radius .nr-skilled .nr-dialog,
+      #nested-radius .nr-skilled .nr-panel,
+      #nested-radius .nr-skilled .nr-input,
+      #nested-radius .nr-skilled .nr-btn,
+      #nested-radius .nr-skilled .nr-chip {
+        corner-shape: superellipse(1.25);
+      }
+
+      #nested-radius .nr-skilled .nr-dot {
+        corner-shape: round;
+      }
+    }
+
+    #nested-radius .nr-input:focus-visible,
+    #nested-radius .nr-btn:focus-visible {
+      outline: 2px solid var(--nr-ink);
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 420px) {
+      #nested-radius .nr-body { padding: 0.9rem 0.75rem 1rem; }
+      #nested-radius .nr-stage { padding: 16px 12px 14px; }
+    }
 
     /* —— Flight destination cards (NestedRadius: outer 40 = inner 24 + gap 16) —— */
     .flight-demo {
@@ -5792,6 +6085,7 @@
       <a href="#digits">Digits</a>
       <a href="#buttons">Buttons</a>
       <a href="#cards">Cards</a>
+      <a href="#nested-radius">Nested radius</a>
       <a href="#palettes">Palettes</a>
       <a href="#select">Select</a>
       <a href="#glow-border">Glow border</a>
@@ -5806,10 +6100,10 @@
     <header class="lib-hero">
       <h1>Component gallery</h1>
       <p>
-        Self-contained demos: Digits · Buttons · Cards · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos.
+        Self-contained demos: Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos.
         Digit scroll with a natural <code>linear()</code> spring (~10%
         overshoot), hard-coded glow CTAs (violet / teal / slate), nested-radius
-        cards, ten page-shell colour palettes you can switch, twenty reference
+        photo cards and a progressive dialog, ten page-shell colour palettes you can switch, twenty reference
         colour pairings, six reciprocal color combos, a native
         CSS-customizable <code>&lt;select&gt;</code>
         (<code>appearance: base-select</code>), a pure-CSS rotating glow
@@ -6120,7 +6414,8 @@
       <div class="sec-head">
         <h2>Cards</h2>
         <p>
-          Nested radius for media cards (24 + 16 = 40), plus dashboard metric cards.
+          One nested step for media cards (24 + 16 = 40), plus dashboard metric cards.
+          The invite dialog is in <a href="#nested-radius">Nested radius</a>.
         </p>
       </div>
 
@@ -6462,6 +6757,111 @@
       </div>
     </section>
 
+    <!-- ===================== NESTED RADIUS ===================== -->
+    <section class="sec" id="nested-radius">
+      <div class="sec-head">
+        <h2>Nested radius</h2>
+        <p>
+          <a href="https://x.com/Kubai087/status/2115469767650021796" target="_blank" rel="noopener noreferrer">Kubai tip 004</a>:
+          progressive nested radius and continuous curvature.
+          <code>inner = outer − padding</code>. Same-level boxes share one radius. Floor 4.
+          <a href="#cards">Cards</a> keep one photo step (<code>24 + 16 = 40</code>). This dialog nests every control.
+        </p>
+      </div>
+
+      <div class="sec-grid two">
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">NestedRadius / without</span>
+            <span class="canvas-tag">all 24px</span>
+          </div>
+          <div class="canvas-body nr-body">
+            <div class="nr">
+              <div class="nr-label">
+                <div>
+                  <strong>Without skill</strong>
+                  <p class="nr-kicker">Same large radius on every layer</p>
+                </div>
+                <span class="nr-badge">naive</span>
+              </div>
+              <div class="nr-stage nr-naive">
+                <div class="nr-dialog">
+                  <h3>Invite teammate</h3>
+                  <p class="nr-sub">Dialog · panel · fields · chips — all 24px</p>
+                  <div class="nr-panel">
+                    <div class="nr-field">
+                      <label class="nr-lab" for="nr-email-naive">Email</label>
+                      <input id="nr-email-naive" class="nr-input" type="email" placeholder="alex@studio.com" autocomplete="off" spellcheck="false" />
+                    </div>
+                    <div class="nr-field">
+                      <span class="nr-lab">Role</span>
+                      <div class="nr-row">
+                        <span class="nr-chip"><span class="nr-dot" aria-hidden="true"></span>Editor</span>
+                        <span class="nr-chip"><span class="nr-dot" aria-hidden="true"></span>Viewer</span>
+                      </div>
+                    </div>
+                    <div class="nr-row nr-row--end">
+                      <button class="nr-btn nr-btn--ghost" type="button">Cancel</button>
+                      <button class="nr-btn" type="button">Send invite</button>
+                    </div>
+                  </div>
+                </div>
+                <p class="nr-meta">
+                  Outer and inner share <code>24px</code>. Corners drift inward and look puffy, not concentric.
+                  No <code>corner-shape</code>, so each curve kinks into the straight edge.
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">NestedRadius / with</span>
+            <span class="canvas-tag">32 · 16 · 8</span>
+          </div>
+          <div class="canvas-body nr-body">
+            <div class="nr">
+              <div class="nr-label">
+                <div>
+                  <strong>With skill</strong>
+                  <p class="nr-kicker">r = R − p · 4px grid · superellipse</p>
+                </div>
+                <span class="nr-badge nr-badge--on">applied</span>
+              </div>
+              <div class="nr-stage nr-skilled">
+                <div class="nr-dialog">
+                  <h3>Invite teammate</h3>
+                  <p class="nr-sub">Dialog 32 → panel/inputs/buttons 16 → chips 8</p>
+                  <div class="nr-panel">
+                    <div class="nr-field">
+                      <label class="nr-lab" for="nr-email-skilled">Email</label>
+                      <input id="nr-email-skilled" class="nr-input" type="email" placeholder="alex@studio.com" autocomplete="off" spellcheck="false" />
+                    </div>
+                    <div class="nr-field">
+                      <span class="nr-lab">Role</span>
+                      <div class="nr-row">
+                        <span class="nr-chip"><span class="nr-dot" aria-hidden="true"></span>Editor</span>
+                        <span class="nr-chip"><span class="nr-dot" aria-hidden="true"></span>Viewer</span>
+                      </div>
+                    </div>
+                    <div class="nr-row nr-row--end">
+                      <button class="nr-btn nr-btn--ghost" type="button">Cancel</button>
+                      <button class="nr-btn" type="button">Send invite</button>
+                    </div>
+                  </div>
+                </div>
+                <p class="nr-meta">
+                  <code>dialog 32</code> / pad <code>16</code> → panel, inputs, and buttons <code>16</code>.
+                  Chips on an <code>8</code> pad → <code>8</code>. Same-level boxes share one radius. Floor 4. Dots stay round.
+                  <code>@supports (corner-shape: superellipse(1.25))</code> on Chrome and Edge 139+.
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
 
     <!-- ===================== PALETTES ===================== -->
     <section class="sec" id="palettes">
@@ -9821,7 +10221,7 @@
     </section>
 
     <footer class="lib-foot">
-      Digits · Buttons · Cards · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos. Digit-scroll <code>lh</code> + natural
+      Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos. Digit-scroll <code>lh</code> + natural
       <code>linear()</code> spring (~10% overshoot) · hard-coded glow buttons
       (violet / teal / slate) · nested radius · page-shell palettes · colour pairings · color combos · native
       <code>appearance: base-select</code> · rotating <code>conic-gradient</code> rim · SVG glass folder. No CDN.
@@ -10497,6 +10897,6 @@
     })();
   </script>
   <script src="shared/site-header.js?v=11" defer></script>
-  <script src="shared/section-fab.js?v=3" defer></script>
+  <script src="shared/section-fab.js?v=4" defer></script>
 </body>
 </html>

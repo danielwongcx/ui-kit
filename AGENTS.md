@@ -6,7 +6,7 @@ Rules for AI agents editing this repository.
 
 Multi-page **static** UI kit published on GitHub Pages from the `main` branch root:
 
-- Gallery: https://danielwongcx.github.io/ui-kit/ (`index.html`, mirrored by `ui-combo.html`) — Digits · Buttons · Cards · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos; keep index unchanged when adding other pages. Color combos (`#color-combos`) is on `index.html` only. Hierarchy (`#hierarchy`) owns visual rank, including the harbour ladder. Spacing links there and stays on the scale.
+- Gallery: https://danielwongcx.github.io/ui-kit/ (`index.html`, mirrored by `ui-combo.html`) — Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos; keep index unchanged when adding other pages. `index.html` and `ui-combo.html` stay byte-identical, including Color combos. Hierarchy (`#hierarchy`) owns visual rank, including the harbour ladder. Spacing links there and stays on the scale.
 - Digest: https://danielwongcx.github.io/ui-kit/digest.html
 - Taste: https://danielwongcx.github.io/ui-kit/taste.html (`taste.html`) — motion / app-data / buttons+ / states / forms / cards+ patterns from taste-skill study
 - Refactor UI: https://danielwongcx.github.io/ui-kit/refactor-ui.html (`refactor-ui.html`) — Explainer. Interactive handbook of the Refactoring UI framework: nine parts, short original lessons, and live before/after demos. Inspired by Adam Wathan and Steve Schoger; not the book.
@@ -79,7 +79,7 @@ In-page `.lib-nav` is for **section anchors only**. Cross-page links belong in t
 
 ## Identical gallery copies
 
-`index.html` and `ui-combo.html` stay in sync for the shared gallery demos. Color combos (`#color-combos`) lives on `index.html` only — do not copy that section into `ui-combo.html` unless asked. After other gallery edits, copy them across.
+`index.html` and `ui-combo.html` are byte-identical, including Color combos (`#color-combos`). After gallery edits, copy `index.html` over `ui-combo.html`.
 
 ## UI copy
 

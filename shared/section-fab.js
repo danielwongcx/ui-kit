@@ -10,6 +10,7 @@
     { id: 'digits', label: 'Digits' },
     { id: 'buttons', label: 'Buttons' },
     { id: 'cards', label: 'Cards' },
+    { id: 'nested-radius', label: 'Nested radius' },
     { id: 'palettes', label: 'Palettes' },
     { id: 'select', label: 'Select' },
     { id: 'glow-border', label: 'Glow border' },
