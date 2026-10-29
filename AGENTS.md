@@ -21,6 +21,7 @@ Multi-page **static** UI kit published on GitHub Pages from the `main` branch ro
 - UI aesthetic: https://danielwongcx.github.io/ui-kit/ui-aesthetic.html (`ui-aesthetic.html`) — Explainer. Plain-language page on Xian’s (@Xian0063) X article, eight working principles and five AI design skills, with the article’s 15 images. Numbers and install commands are the article’s. No build step.
 - Fix your life: https://danielwongcx.github.io/ui-kit/fix-life.html (`fix-life.html`) — Explainer. Plain-language page on Dan Koe’s (@thedankoe) X article about changing identity in a day: first-order change, the identity loop, nine mind stages, a cybernetic steer, the flip, a one-day protocol, and a six-ring game. No build step.
 - Design with AI: https://danielwongcx.github.io/ui-kit/design-with-ai.html (`design-with-ai.html`) — Explainer. Plain-language page on Matt Dailey’s (@reactiverobot) two X articles about de-slopping AI design: a constraint loop, six craft moves on one surface, and a six-step loop for features that cross many screens. No build step.
+- Grok Bot reel: https://danielwongcx.github.io/ui-kit/grok-bot-showreel.html (`grok-bot-showreel.html`) — Explainer. Full-viewport 15s motion showreel for Grok Bot, desktop assistant: cold open, identity spark, wordmark, six easings, morph, Truchet, depth, kinetic type, and fin. One GSAP master timeline (`vendor/gsap.min.js`). `prefers-reduced-motion` holds the fin plate. No build step.
 
 No build step. Plain HTML / CSS / JS.
 
@@ -46,6 +47,7 @@ Top-level pages: Gallery, Digest, Taste, Piano, ASCII, Ferry, MTR, Transition.
 - Refactor UI → `refactor-ui.html`
 - Fix your life → `fix-life.html`
 - Design with AI → `design-with-ai.html`
+- Grok Bot reel → `grok-bot-showreel.html`
 
 When you add a new page:
 
