@@ -1,0 +1,3170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transition · ui-kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ========== Recipe :root tokens ========== */
+:root {
+  --resize-dur: 300ms;
+  --resize-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --digit-dur: 500ms;
+  --digit-distance: 8px;
+  --digit-stagger: 70ms;
+  --digit-blur: 2px;
+  --digit-ease: cubic-bezier(0.34, 1.45, 0.64, 1);
+  --digit-dir-x: 0;
+  --digit-dir-y: 1;
+  --badge-slide-dur: 260ms;
+  --badge-pop-dur: 500ms;
+  --badge-pop-close-dur: 180ms;
+  --badge-fade-dur: 400ms;
+  --badge-fade-close-dur: 180ms;
+  --badge-blur: 2px;
+  --badge-offset-x: -8.2px;
+  --badge-offset-y: 12.4px;
+  --badge-slide-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --badge-pop-ease: cubic-bezier(0.34, 1.36, 0.64, 1);
+  --badge-close-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --text-swap-dur: 150ms;
+  --text-swap-translate-y: 4px;
+  --text-swap-blur: 2px;
+  --text-swap-ease: ease-in-out;
+  --dropdown-open-dur: 250ms;
+  --dropdown-close-dur: 150ms;
+  --dropdown-pre-scale: 0.97;
+  --dropdown-closing-scale: 0.99;
+  --dropdown-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --modal-open-dur: 250ms;
+  --modal-close-dur: 150ms;
+  --modal-scale: 0.96;
+  --modal-scale-close: 0.96;
+  --modal-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --panel-open-dur: 400ms;
+  --panel-close-dur: 350ms;
+  --panel-translate-y: 100px;
+  --panel-blur: 2px;
+  --panel-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --page-slide-dur: 250ms;
+  --page-fade-dur: 250ms;
+  --page-slide-distance: 8px;
+  --page-blur: 3px;
+  --page-stagger: 0ms;
+  --page-exit-enabled: 1;
+  --page-slide-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --page-fade-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --icon-swap-dur: 250ms;
+  --icon-swap-blur: 2px;
+  --icon-swap-start-scale: 0.25;
+  --icon-swap-ease: ease-in-out;
+  --check-opacity-dur: 500ms;
+  --check-rotate-dur: 500ms;
+  --check-rotate-from: 80deg;
+  --check-bob-dur: 500ms;
+  --check-y-amount: 40px;
+  --check-blur-dur: 500ms;
+  --check-blur-from: 10px;
+  --check-path-dur: 500ms;
+  --check-path-delay: 80ms;
+  --check-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --check-ease-opacity: cubic-bezier(0.22, 1, 0.36, 1);
+  --check-ease-rotate: cubic-bezier(0.22, 1, 0.36, 1);
+  --check-ease-bob: cubic-bezier(0.34, 1.35, 0.64, 1);
+  --check-ease-path: cubic-bezier(0.22, 1, 0.36, 1);
+  --avatar-lift: -4px;
+  --avatar-dur: 320ms;
+  --avatar-scale: 1.05;
+  --avatar-falloff: 0.45;
+  --avatar-ease-in: cubic-bezier(0.22, 1, 0.36, 1);
+  --avatar-ease-out: cubic-bezier(0.34, 3.85, 0.64, 1);
+  --shake-distance: 6px;
+  --shake-overshoot: 4px;
+  --shake-dur-a: 80ms;
+  --shake-dur-b: 60ms;
+  --shake-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --revert-hold: 3000ms;
+  --revert-dur: 280ms;
+  --clear-dur: 1000ms;
+  --clear-out-dur: 400ms;
+  --clear-in-dur: 400ms;
+  --clear-out-fly: 12px;
+  --clear-in-fly: 12px;
+  --clear-out-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --clear-in-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --clear-blur: 2px;
+  --glow-delay: 50ms;
+  --glow-peak-at: 0.15;
+  --glow-opacity: 0.42;
+  --glow-spread: 1.5;
+  --pulse-dur: 1000ms;
+  --pulse-count: 1;
+  --pulse-min: 0.5;
+  --reveal-dur: 400ms;
+  --reveal-blur: 2px;
+  --reveal-ease: ease-in-out;
+  --shimmer-dur: 2000ms;
+  --shimmer-base: #7c7c7c;
+  --shimmer-highlight: #0d0d0d;
+  --shimmer-band: 400%;
+  --shimmer-ease: linear;
+  --tabs-dur: 250ms;
+  --tabs-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --tabs-text-muted: rgba(15, 15, 15, 0.8);
+  --tabs-text-active: #0f0f0f;
+  --tabs-bar-bg: #f1f1f1;
+  --tabs-pill-bg: #ffffff;
+  --tt-in-dur: 150ms;
+  --tt-out-dur: 50ms;
+  --tt-scale: 0.98;
+  --tt-delay: 80ms;
+  --tt-in-ease: ease-out;
+  --tt-out-ease: ease-out;
+  --tt-bg: #ffffff;
+  --tt-fg: #2f2f2f;
+  --stagger-dur: 500ms;
+  --stagger-distance: 12px;
+  --stagger-stagger: 40ms;
+  --stagger-blur: 3px;
+  --stagger-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --tilt-perspective: 1000px;
+  --tilt-return: 1000ms;
+  --tilt-return-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --tilt-follow: 400ms;
+  --tilt-follow-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --tilt-glare-opacity: 0.32;
+  --tilt-glare-fade: 300ms;
+  --tilt-glare-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --morph-open-dur: 350ms;
+  --morph-close-dur: 250ms;
+  --morph-ease: cubic-bezier(0.34, 1.25, 0.64, 1);
+  --morph-close-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --morph-r-closed: 40px;
+  --morph-r-open: 20px;
+  --morph-fade-dur: 200ms;
+  --morph-slide: 40px;
+  --morph-rotate: 45deg;
+  --morph-scale: 0.97;
+  --morph-blur: 2px;
+  --acc-expand: 250ms;
+  --acc-collapse: 250ms;
+  --acc-chevron: 250ms;
+  --acc-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --toast-open: 350ms;
+  --toast-close: 250ms;
+  --toast-distance: 16px;
+  --toast-blur: 2px;
+  --toast-scale: 0.97;
+  --toast-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --like-color: #f40051;
+  --like-fill: 150ms;
+  --like-pop: 350ms;
+  --like-pop-ease: cubic-bezier(0.34, 1.96, 0.64, 1);
+  --like-particle-dur: 600ms;
+  --like-particle-dist: 20px;
+  --like-particle-size: 2.5px;
+  --like-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --learn-shift: 2px;
+  --learn-spread: 8deg;
+  --learn-in: 350ms;
+  --learn-out: 350ms;
+  --learn-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --check-box: 150ms;
+  --check-draw: 350ms;
+  --check-delay: 0ms;
+  --check-uncheck: 150ms;
+  --check-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --reel-dur: 1400ms;
+  --reel-cell: 30px;
+  --reel-spin-blur: 3px;
+  --reel-stagger: 90ms;
+  --reel-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --toggle-dur: 350ms;
+  --toggle-travel: 14.66px;
+  --toggle-ov1: 1px;
+  --toggle-ov2: 0px;
+  --toggle-track: 0ms;
+  --toggle-ease: cubic-bezier(0.34, 1.35, 0.64, 1);
+  --think-hold: 2000ms;
+  --think-swap: 150ms;
+  --think-gap: 50ms;
+  --think-distance: 8px;
+  --think-blur: 2px;
+  --think-shimmer: 2000ms;
+  --think-base: #7c7c7c;
+  --think-highlight: #0d0d0d;
+  --think-ease: ease-in-out;
+  --reason-hold: 840ms;
+  --reason-step: 500ms;
+  --reason-lines: 2;
+  --reason-fade: 28px;
+  --reason-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --stream-gap: 60ms;
+  --stream-fade: 350ms;
+  --stream-blur: 1px;
+  --stream-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --matrix-cycle: 1200ms;
+  --matrix-base: #d9d9d9;
+  --matrix-active: #85858f;
+  --matrix-ease: ease-in-out;
+  --stack-open: 350ms;
+  --stack-close: 250ms;
+  --stack-rise: 80px;
+  --stack-blur: 2px;
+  --stack-scale: 0.97;
+  --stack-peek: 12px;
+  --stack-spread-gap: 8px;
+  --stack-depth-scale: 0.06;
+  --stack-depth-fade: 0.4;
+  --stack-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --check-len: 15;
+}
+
+
+/* ========== Recipe transition CSS (t-*) ========== */
+.t-resize {
+  transition:
+    width  var(--resize-dur) var(--resize-ease),
+    height var(--resize-dur) var(--resize-ease);
+  will-change: width, height;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-resize { transition: none !important; }
+}
+
+@keyframes t-digit-pop-in {
+  0%   {
+    transform: translate(
+      calc(var(--digit-distance) * var(--digit-dir-x)),
+      calc(var(--digit-distance) * var(--digit-dir-y))
+    );
+    opacity: 0;
+    filter: blur(var(--digit-blur));
+  }
+  100% { transform: translate(0, 0); opacity: 1; filter: blur(0); }
+}
+
+.t-digit-group {
+  display: inline-flex;
+  align-items: baseline;
+}
+.t-digit {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+}
+.t-digit-group.is-animating .t-digit {
+  animation: t-digit-pop-in var(--digit-dur) var(--digit-ease) both;
+}
+.t-digit-group.is-animating .t-digit[data-stagger="1"] {
+  animation-delay: var(--digit-stagger);
+}
+.t-digit-group.is-animating .t-digit[data-stagger="2"] {
+  animation-delay: calc(var(--digit-stagger) * 2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-digit-group .t-digit { animation: none !important; }
+}
+
+@keyframes t-badge-slide-in {
+  from { transform: translate(var(--badge-offset-x), var(--badge-offset-y)); }
+  to   { transform: translate(0, 0); }
+}
+
+/* .t-badge is the absolutely-positioned wrapper for the dot.
+   Adjust top/right (or left/bottom) to anchor it on your trigger. */
+.t-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  pointer-events: none;
+  will-change: transform;
+}
+.t-badge[data-open="true"] {
+  animation: t-badge-slide-in var(--badge-slide-dur) var(--badge-slide-ease);
+}
+
+.t-badge-dot {
+  display: block;
+  transform-origin: center;
+  transform: scale(1);
+  opacity: 1;
+  filter: blur(0);
+  transition:
+    transform var(--badge-pop-dur)  var(--badge-pop-ease),
+    opacity   var(--badge-fade-dur) var(--badge-pop-ease),
+    filter    var(--badge-pop-dur)  var(--badge-pop-ease);
+  will-change: transform, opacity, filter;
+}
+.t-badge[data-open="false"] .t-badge-dot {
+  transform: scale(0);
+  opacity: 0;
+  filter: blur(var(--badge-blur));
+  transition:
+    transform var(--badge-pop-close-dur)  var(--badge-close-ease),
+    opacity   var(--badge-fade-close-dur) var(--badge-close-ease),
+    filter    var(--badge-pop-close-dur)  var(--badge-close-ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-badge, .t-badge-dot { animation: none !important; transition: none !important; }
+}
+
+.t-text-swap {
+  display: inline-block;
+  transform: translateY(0);
+  filter: blur(0);
+  opacity: 1;
+  transition:
+    transform var(--text-swap-dur) var(--text-swap-ease),
+    filter    var(--text-swap-dur) var(--text-swap-ease),
+    opacity   var(--text-swap-dur) var(--text-swap-ease);
+  will-change: transform, filter, opacity;
+}
+.t-text-swap.is-exit {
+  transform: translateY(calc(var(--text-swap-translate-y) * -1));
+  filter: blur(var(--text-swap-blur));
+  opacity: 0;
+}
+.t-text-swap.is-enter-start {
+  transform: translateY(var(--text-swap-translate-y));
+  filter: blur(var(--text-swap-blur));
+  opacity: 0;
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-text-swap { transition: none !important; }
+}
+
+.t-dropdown {
+  transform-origin: top left;
+  transform: scale(var(--dropdown-pre-scale));
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform var(--dropdown-open-dur) var(--dropdown-ease),
+    opacity   var(--dropdown-open-dur) var(--dropdown-ease);
+  will-change: transform, opacity;
+}
+.t-dropdown[data-origin="top-right"]     { transform-origin: top right; }
+.t-dropdown[data-origin="top-center"]    { transform-origin: top center; }
+.t-dropdown[data-origin="bottom-left"]   { transform-origin: bottom left; }
+.t-dropdown[data-origin="bottom-center"] { transform-origin: bottom center; }
+.t-dropdown[data-origin="bottom-right"]  { transform-origin: bottom right; }
+
+.t-dropdown.is-open {
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+.t-dropdown.is-closing {
+  transform: scale(var(--dropdown-closing-scale));
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform var(--dropdown-close-dur) var(--dropdown-ease),
+    opacity   var(--dropdown-close-dur) var(--dropdown-ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-dropdown { transition: none !important; }
+}
+
+.t-modal {
+  transform-origin: center;
+  transform: scale(var(--modal-scale));
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform var(--modal-open-dur) var(--modal-ease),
+    opacity   var(--modal-open-dur) var(--modal-ease);
+  will-change: transform, opacity;
+}
+.t-modal.is-open {
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+.t-modal.is-closing {
+  transform: scale(var(--modal-scale-close));
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform var(--modal-close-dur) var(--modal-ease),
+    opacity   var(--modal-close-dur) var(--modal-ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-modal { transition: none !important; }
+}
+
+.t-panel-slide {
+  transform: translateY(var(--panel-translate-y));
+  opacity: 0;
+  filter: blur(var(--panel-blur));
+  pointer-events: none;
+  transition:
+    transform var(--panel-close-dur) var(--panel-ease),
+    opacity   var(--panel-close-dur) var(--panel-ease),
+    filter    var(--panel-close-dur) var(--panel-ease);
+  will-change: transform, opacity, filter;
+}
+.t-panel-slide[data-open="true"] {
+  transform: translateY(0);
+  opacity: 1;
+  filter: blur(0);
+  pointer-events: auto;
+  transition:
+    transform var(--panel-open-dur) var(--panel-ease),
+    opacity   var(--panel-open-dur) var(--panel-ease),
+    filter    var(--panel-open-dur) var(--panel-ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-panel-slide { transition: none !important; }
+}
+
+.t-page-slide {
+  position: relative;
+}
+.t-page-slide .t-page[data-page-id="1"] {
+  --t-page-from-x: calc(var(--page-slide-distance) * -1);
+}
+.t-page-slide .t-page[data-page-id="2"] {
+  --t-page-from-x: var(--page-slide-distance);
+}
+.t-page-slide .t-page {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(calc(var(--t-page-from-x, 0px) * var(--page-exit-enabled)));
+  filter: blur(calc(var(--page-blur) * var(--page-exit-enabled)));
+  transition:
+    opacity   var(--page-fade-dur)  var(--page-fade-ease),
+    transform var(--page-slide-dur) var(--page-slide-ease),
+    filter    var(--page-slide-dur) var(--page-slide-ease);
+  will-change: opacity, transform, filter;
+}
+.t-page-slide[data-page="1"] .t-page[data-page-id="1"],
+.t-page-slide[data-page="2"] .t-page[data-page-id="2"] {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+  filter: blur(0);
+  transition-delay: var(--page-stagger);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-page-slide .t-page { transition: none !important; }
+}
+
+.t-icon-swap {
+  position: relative;
+  display: inline-grid;
+}
+.t-icon-swap .t-icon {
+  grid-area: 1 / 1;
+  transition:
+    opacity   var(--icon-swap-dur) var(--icon-swap-ease),
+    filter    var(--icon-swap-dur) var(--icon-swap-ease),
+    transform var(--icon-swap-dur) var(--icon-swap-ease);
+  will-change: opacity, filter, transform;
+}
+.t-icon-swap[data-state="a"] .t-icon[data-icon="a"],
+.t-icon-swap[data-state="b"] .t-icon[data-icon="b"] {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1);
+}
+.t-icon-swap[data-state="a"] .t-icon[data-icon="b"],
+.t-icon-swap[data-state="b"] .t-icon[data-icon="a"] {
+  opacity: 0;
+  filter: blur(var(--icon-swap-blur));
+  transform: scale(var(--icon-swap-start-scale));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-icon-swap .t-icon { transition: none !important; }
+}
+
+/* Wrapper drives the appear animation; it doesn't own any
+   sizing or color so you can drop in any icon. */
+.t-success-check {
+  display: inline-block;
+  transform-origin: center;
+  opacity: 0;
+  will-change: transform, opacity, filter;
+}
+/* overflow: visible keeps the stroke from clipping while it
+   draws; display: block kills the inline whitespace under SVGs. */
+.t-success-check svg { display: block; overflow: visible; }
+/* Stroke-draw setup. Replace 20 with the result of
+   path.getTotalLength() for your path; round caps mean any
+   sub-pixel overshoot is invisible. */
+.t-success-check svg path {
+  stroke-dasharray: 20;
+  stroke-dashoffset: 20;
+}
+
+.t-success-check[data-state="in"] {
+  animation:
+    t-check-fade   var(--check-opacity-dur) var(--check-ease-opacity) forwards,
+    t-check-rotate var(--check-rotate-dur)  var(--check-ease-rotate)  forwards,
+    t-check-blur   var(--check-blur-dur)    var(--check-ease-out)     forwards,
+    t-check-bob    var(--check-bob-dur)     var(--check-ease-bob)     forwards;
+}
+.t-success-check[data-state="in"] svg path {
+  animation: t-check-draw var(--check-path-dur) var(--check-ease-path) var(--check-path-delay, 0ms) forwards;
+}
+
+@keyframes t-check-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes t-check-rotate {
+  from { transform: rotate(var(--check-rotate-from)); }
+  to   { transform: rotate(0deg); }
+}
+@keyframes t-check-blur {
+  from { filter: blur(var(--check-blur-from)); }
+  to   { filter: blur(0); }
+}
+@keyframes t-check-bob {
+  from { translate: 0 var(--check-y-amount); }
+  to   { translate: 0 0; }
+}
+@keyframes t-check-draw { to { stroke-dashoffset: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .t-success-check { animation: none !important; opacity: 1; }
+  .t-success-check svg path { animation: none !important; stroke-dashoffset: 0 !important; }
+}
+
+/* Hover-spring transition only — bring your own avatar/chip
+   styling (size, shape, border, stacking, background). */
+.t-avatar {
+  transform-origin: center;
+  /* translateY before scale so scale doesn't amplify the lift offset. */
+  transform:
+    translateY(var(--shift, 0px))
+    scale(var(--scale-active, 1));
+  transition: transform var(--avatar-dur) var(--avatar-ease-in);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-avatar { transition: none !important; transform: none !important; }
+}
+
+/* Border-color tween. Define your input's default / focused
+   / error border-color in your own component CSS — this rule
+   only owns the interpolation. Use a constant border-width
+   across states so the tween never shifts inner content. */
+.t-input {
+  transition: border-color 150ms ease-out;
+  will-change: transform;
+}
+.t-input.is-error {
+  /* Error border auto-reverts on the hold timer, so the
+     fade-out uses the slower revert duration (matches the
+     message fade). */
+  transition: border-color var(--revert-dur, 280ms) ease-out;
+}
+
+/* Error message reveal. Visibility is delayed by --revert-dur
+   on hide so the message stays painted for the full opacity
+   fade-out. Entering .is-error drops the delay to 0 so the
+   message becomes visible immediately. */
+.t-error-msg {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity    var(--revert-dur, 280ms) ease-out,
+    visibility 0s linear var(--revert-dur, 280ms);
+}
+.t-input-wrap.is-error .t-error-msg {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity    var(--revert-dur, 280ms) ease-out,
+    visibility 0s linear 0s;
+}
+
+/* Multi-segment keyframe with per-stop easing so each leg
+   of the shake follows its own cubic-bezier independently.
+   %-stops are cumulative durations as a fraction of the
+   total (80, 60, 80, 60 = 280ms): 28.57%, 57.14%, 78.57%,
+   100%. Recompute if any segment duration changes. */
+.t-input.is-shaking {
+  animation: t-input-shake calc(
+      var(--shake-dur-a) * 2 + var(--shake-dur-b) * 2
+    ) linear;
+}
+@keyframes t-input-shake {
+  0%      { transform: translateX(0);                                 animation-timing-function: var(--shake-ease); }
+  28.57%  { transform: translateX(var(--shake-distance));             animation-timing-function: var(--shake-ease); }
+  57.14%  { transform: translateX(calc(var(--shake-distance) * -1)); animation-timing-function: var(--shake-ease); }
+  78.57%  { transform: translateX(var(--shake-overshoot));            animation-timing-function: var(--shake-ease); }
+  100%    { transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-input { animation: none !important; transform: none !important; }
+}
+
+/* The wrap clips the glow to its rounded box. The hairline
+   border is `inset` so it sits inside that clip — when the
+   glow's mix-blend-mode darkens its area, the border
+   underneath darkens with it. Bring your own width / height /
+   border-radius / surface color. */
+.t-clear {
+  position: relative;
+  overflow: hidden;
+}
+.t-clear-mirror,
+.t-clear-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  z-index: 2;
+}
+.t-clear-mirror { opacity: 0; }
+.t-clear.has-value .t-clear-mirror,
+.t-clear.is-clearing .t-clear-mirror { opacity: 1; }
+/* Hide the input's own glyphs while the mirror owns them so
+   the cleared text doesn't double-render with the fly-up. */
+.t-clear.has-value > input,
+.t-clear.is-clearing > input {
+  -webkit-text-fill-color: transparent;
+}
+.t-clear.has-value .t-clear-placeholder { opacity: 0; }
+/* The streak overlay: empty by default; JS writes a stack of
+   `radial-gradient(...)` layers into background during a clear,
+   then animates opacity. mix-blend-mode: multiply darkens the
+   underlying input + hairline; flip to `screen` in dark mode
+   so the same alpha values lighten instead of vanish. */
+.t-clear-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 3;
+  mix-blend-mode: multiply;
+}
+
+/* The transitions live in JS (per-frame transform/opacity/
+   filter writes), so this stylesheet only owns the resting
+   state + the variables that JS reads. Read them with
+   `parseFloat(getComputedStyle(root).getPropertyValue(...))`
+   so live tweaks apply on the next clear without a reload. */
+
+@media (prefers-reduced-motion: reduce) {
+  .t-clear-glow { opacity: 0 !important; }
+}
+
+/* The wrap stacks two layers on the same coordinates. The
+   skeleton owns the cold pulse + the fade-out side of the
+   reveal; the content owns the fade-in side. They share the
+   same duration / ease so the swap reads as one motion. */
+.t-skel { position: relative; }
+.t-skel-skeleton,
+.t-skel-content {
+  position: absolute;
+  inset: 0;
+}
+
+.t-skel-skeleton {
+  z-index: 1;
+  opacity: 1;
+  filter: blur(0);
+  transition:
+    opacity var(--reveal-dur) var(--reveal-ease),
+    filter  var(--reveal-dur) var(--reveal-ease);
+}
+.t-skel-content {
+  z-index: 2;
+  opacity: 0;
+  filter: blur(var(--reveal-blur));
+  transition:
+    opacity var(--reveal-dur) var(--reveal-ease),
+    filter  var(--reveal-dur) var(--reveal-ease);
+}
+.t-skel.is-revealed .t-skel-skeleton {
+  opacity: 0;
+  filter: blur(var(--reveal-blur));
+}
+.t-skel.is-revealed .t-skel-content {
+  opacity: 1;
+  filter: blur(0);
+}
+/* Snap-back when replaying: kill transitions so the reverse
+   (revealed → skeleton) is instant. Drop `.is-resetting`
+   after a forced reflow and the next reveal animates again. */
+.t-skel.is-resetting .t-skel-skeleton,
+.t-skel.is-resetting .t-skel-content {
+  transition: none !important;
+}
+
+/* Pulse: place the animation on the bar/avatar children, not
+   on the skeleton itself, so the skeleton's opacity / filter
+   stay free for the cross-fade transition above. */
+.t-skel-skeleton.is-pulsing > * {
+  animation: t-skel-pulse var(--pulse-dur) ease-in-out var(--pulse-count);
+}
+@keyframes t-skel-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: var(--pulse-min); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-skel-skeleton, .t-skel-content {
+    transition: none !important;
+  }
+  .t-skel-skeleton.is-pulsing > * { animation: none !important; }
+}
+
+/* Two-layer construction:
+   1. The base text renders normally in --shimmer-base.
+   2. ::before duplicates it via content: attr(data-text),
+      paints a transparent → highlight → transparent gradient
+      onto it, and clips that gradient to the glyphs via
+      background-clip: text. Animating background-position
+      sweeps the band across the text. */
+.t-shimmer {
+  position: relative;
+  display: inline-block;
+  color: var(--shimmer-base);
+}
+.t-shimmer::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(
+    90deg,
+    transparent          0%,
+    transparent         40%,
+    var(--shimmer-highlight) 50%,
+    transparent         60%,
+    transparent        100%
+  );
+  background-size: var(--shimmer-band) 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: t-shimmer var(--shimmer-dur) var(--shimmer-ease) infinite;
+}
+@keyframes t-shimmer {
+  0%   { background-position: 100% 0; }
+  100% { background-position: 0% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-shimmer::before { animation: none !important; }
+}
+
+/* The bar is just a flex container with padding for the pill
+   to sit inside. Tabs sit on z-index: 1, the pill on z-index: 0,
+   so labels read above the pill background. */
+.t-tabs {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px;
+  border-radius: 48px;
+  background: var(--tabs-bar-bg);
+}
+.t-tab {
+  position: relative;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  height: 30px;
+  padding: 4px 12px;
+  color: var(--tabs-text-muted);
+  cursor: pointer;
+  border-radius: 48px;
+  z-index: 1;
+  transition: color var(--tabs-dur) var(--tabs-ease);
+}
+.t-tab:not([aria-selected="true"]):hover,
+.t-tab[aria-selected="true"] {
+  color: var(--tabs-text-active);
+}
+
+/* The pill: width + transform are written inline by JS so
+   the transition tweens between the previous and next
+   measured positions. */
+.t-tabs-pill {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  height: 30px;
+  width: 0;
+  background: var(--tabs-pill-bg);
+  border-radius: 48px;
+  transform: translateX(0);
+  transition:
+    transform var(--tabs-dur) var(--tabs-ease),
+    width     var(--tabs-dur) var(--tabs-ease);
+  will-change: transform, width;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-tabs-pill, .t-tab { transition: none !important; }
+}
+
+.t-tt-wrap {
+  position: relative;
+  display: inline-block;
+}
+.t-tt {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translate(-50%, 0) scale(var(--tt-scale));
+  transform-origin: 50% 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--tt-bg);
+  color: var(--tt-fg);
+  white-space: nowrap;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.06),
+    0 2px 6px 0 rgba(0, 0, 0, 0.05),
+    0 4px 42px 0 rgba(0, 0, 0, 0.06);
+  opacity: 0;
+  pointer-events: none;
+  /* Default rule controls the LEAVE state. transition-delay
+     stays unset so leaving plays without delay. */
+  transition:
+    opacity   var(--tt-out-dur) var(--tt-out-ease),
+    transform var(--tt-out-dur) var(--tt-out-ease);
+}
+/* The 50ms delay belongs ONLY to the hover rule so leaving
+   the trigger snaps the delay back to 0 and the disappear
+   plays immediately. */
+.t-tt-wrap:hover .t-tt,
+.t-tt-trigger:focus-visible + .t-tt {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+  transition-duration: var(--tt-in-dur);
+  transition-timing-function: var(--tt-in-ease);
+  transition-delay: var(--tt-delay);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-tt { transition: none !important; }
+}
+
+/* Lines start translated down + blurred + invisible; .is-shown
+   on the parent flips them to their resting state. The second
+   line's transition-delay holds it back by --stagger-stagger
+   so the eye lands on the headline first. */
+.t-stagger-line {
+  display: block;
+  opacity: 0;
+  transform: translateY(var(--stagger-distance));
+  filter: blur(var(--stagger-blur));
+  transition:
+    opacity   var(--stagger-dur) var(--stagger-ease),
+    transform var(--stagger-dur) var(--stagger-ease),
+    filter    var(--stagger-dur) var(--stagger-ease);
+  will-change: transform, opacity, filter;
+}
+.t-stagger-line--2 { transition-delay: var(--stagger-stagger); }
+
+.t-stagger.is-shown .t-stagger-line {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+/* Exit decouples from the stagger: same fade for every line,
+   no Y return, no blur — so the disappearance reads as a
+   single quiet fade instead of a reverse reveal. */
+.t-stagger.is-hiding .t-stagger-line {
+  opacity: 0;
+  transform: translateY(0);
+  filter: blur(0);
+  transition:
+    opacity 200ms ease,
+    transform 0s linear,
+    filter 0s linear;
+  transition-delay: 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-stagger-line { transition: none !important; }
+}
+
+/* The outer wrapper is the flat hit area; touch-action:none
+   lets a finger drag tilt the card instead of scrolling the
+   page, so tap-hold-drag works on mobile. */
+.t-tilt { touch-action: none; }
+/* The card tilts toward the pointer via rotateX/rotateY fed
+   from JS; on leave it eases back to flat. A separate
+   .is-tilting class swaps in a short linear follow while the
+   pointer moves so the tilt tracks the cursor 1:1. */
+.t-tilt-card {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  transform:
+    perspective(var(--tilt-perspective))
+    rotateX(var(--tilt-rx, 0deg))
+    rotateY(var(--tilt-ry, 0deg));
+  transform-style: preserve-3d;
+  transition: transform var(--tilt-return) var(--tilt-return-ease);
+  will-change: transform;
+}
+.t-tilt-card.is-tilting {
+  transition: transform var(--tilt-follow) var(--tilt-follow-ease);
+}
+/* Cursor-tracked glare: layered soft circles that add like
+   light (screen blend) at the pointer position. */
+.t-tilt-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(circle 95px at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
+      rgba(255,255,255,0.48), rgba(255,255,255,0.06) 52%, rgba(255,255,255,0) 84%),
+    radial-gradient(circle 200px at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
+      rgba(255,255,255,0.22), rgba(255,255,255,0.04) 58%, rgba(255,255,255,0) 78%),
+    radial-gradient(circle 360px at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
+      rgba(255,255,255,0.10), rgba(255,255,255,0) 88%);
+  transition: opacity var(--tilt-glare-fade) var(--tilt-glare-ease);
+}
+.t-tilt.is-hover .t-tilt-glare { opacity: var(--tilt-glare-opacity); }
+
+@media (prefers-reduced-motion: reduce) {
+  .t-tilt-card { transform: none !important; transition: none !important; }
+}
+
+/* Closed: a small circular button. Open: a rounded panel.
+   Width/height/border-radius animate; the open state uses a
+   bouncier ease than the close. */
+.t-morph {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--morph-r-closed);
+  overflow: hidden;
+  transition:
+    width var(--morph-close-dur) var(--morph-close-ease),
+    height var(--morph-close-dur) var(--morph-close-ease),
+    border-radius var(--morph-close-dur) var(--morph-close-ease);
+}
+.t-morph[data-open="true"] {
+  width: 183px;
+  height: 172px;
+  border-radius: var(--morph-r-open);
+  transition:
+    width var(--morph-open-dur) var(--morph-ease),
+    height var(--morph-open-dur) var(--morph-ease),
+    border-radius var(--morph-open-dur) var(--morph-ease);
+}
+/* Plus fades + slides out and the icon rotates into an ×. */
+.t-morph-plus {
+  position: absolute;
+  inset: auto 0 0 auto;
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  border: 0; background: transparent; cursor: pointer;
+  transition:
+    opacity var(--morph-fade-dur) var(--morph-close-ease),
+    transform var(--morph-open-dur) var(--morph-close-ease),
+    filter var(--morph-fade-dur) var(--morph-close-ease);
+}
+.t-morph-plus svg {
+  transition: transform var(--morph-open-dur) var(--morph-close-ease);
+}
+.t-morph[data-open="true"] .t-morph-plus {
+  opacity: 0;
+  transform: translateX(calc(-1 * var(--morph-slide)));
+  filter: blur(var(--morph-blur));
+  pointer-events: none;
+}
+.t-morph[data-open="true"] .t-morph-plus svg {
+  transform: scale(var(--morph-scale)) rotate(var(--morph-rotate));
+}
+/* Menu starts slid in + scaled + blurred; reveals on open. */
+.t-morph-menu {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateX(var(--morph-slide)) scale(var(--morph-scale));
+  filter: blur(var(--morph-blur));
+  pointer-events: none;
+  transition:
+    opacity var(--morph-fade-dur) var(--morph-close-ease),
+    transform var(--morph-open-dur) var(--morph-close-ease),
+    filter var(--morph-fade-dur) var(--morph-close-ease);
+}
+.t-morph[data-open="true"] .t-morph-menu {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  filter: blur(0);
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-morph, .t-morph-plus, .t-morph-menu { transition: none !important; }
+}
+
+/* grid-template-rows 0fr → 1fr gives a clean height animation
+   with no JS measurement; the inner element clips overflow. */
+.t-acc-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--acc-collapse) var(--acc-ease);
+}
+.t-acc[data-open="true"] .t-acc-panel {
+  grid-template-rows: 1fr;
+  transition: grid-template-rows var(--acc-expand) var(--acc-ease);
+}
+.t-acc-panel-inner {
+  overflow: hidden;
+  opacity: 0;
+  filter: blur(2px);
+  transition:
+    opacity var(--acc-collapse) var(--acc-ease),
+    filter var(--acc-collapse) var(--acc-ease);
+}
+.t-acc[data-open="true"] .t-acc-panel-inner {
+  opacity: 1;
+  filter: blur(0);
+  transition:
+    opacity var(--acc-expand) var(--acc-ease),
+    filter var(--acc-expand) var(--acc-ease);
+}
+/* Flip the chevron vertically to turn the "v" into a "^".
+   scaleY(-1) about the centre passes through a flat line at
+   the midpoint (same look as a `d:` path morph) but animates
+   in every browser, unlike CSS `d:` morphing (Chromium only).
+   The chevron path is symmetric about the 16x16 viewBox
+   centre, so the flip lands exactly on the "^"; non-scaling
+   -stroke keeps the stroke width constant through the flip. */
+.t-acc-chevron {
+  display: inline-flex;
+  transform: scaleY(1);
+  transform-origin: center;
+  transition: transform var(--acc-chevron) var(--acc-ease);
+}
+.t-acc-chevron path { vector-effect: non-scaling-stroke; }
+.t-acc[data-open="true"] .t-acc-chevron {
+  transform: scaleY(-1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-acc-panel, .t-acc-panel-inner, .t-acc-chevron {
+    transition: none !important;
+  }
+}
+
+.t-toast {
+  opacity: 0;
+  transform: translateY(var(--toast-distance)) scale(var(--toast-scale));
+  filter: blur(var(--toast-blur));
+  will-change: transform, opacity, filter;
+  transition:
+    opacity var(--toast-close) var(--toast-ease),
+    transform var(--toast-close) var(--toast-ease),
+    filter var(--toast-close) var(--toast-ease);
+}
+.t-toast.is-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+  transition:
+    opacity var(--toast-open) var(--toast-ease),
+    transform var(--toast-open) var(--toast-ease),
+    filter var(--toast-open) var(--toast-ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-toast { transition: none !important; }
+}
+
+.t-like-heart { color: currentColor; transition: color var(--like-fill) var(--like-ease); }
+.t-like-heart path {
+  fill: transparent; stroke: currentColor;
+  transition: fill var(--like-fill) var(--like-ease), stroke var(--like-fill) var(--like-ease);
+}
+.t-like[data-liked="true"] .t-like-heart { color: var(--like-color); }
+.t-like[data-liked="true"] .t-like-heart path { fill: currentColor; }
+/* Pop scale lives on an HTML wrapper, never the <svg> itself:
+   transforming an inline SVG makes Chromium rasterise it at 1×
+   (pixelated on hi-DPI). Wrapping keeps the vector crisp. */
+.t-like[data-liked="true"] .t-like-icon { animation: t-like-pop var(--like-pop) var(--like-pop-ease); }
+@keyframes t-like-pop { 0% { transform: scale(1); } 30% { transform: scale(0.82); } 100% { transform: scale(1); } }
+
+/* Particle burst — 8 dots flung along per-particle vectors. */
+.t-like-particles { position: absolute; left: 50%; top: 50%; width: 0; height: 0; pointer-events: none; color: var(--like-color); }
+.t-like-particles i {
+  position: absolute;
+  left: calc(var(--like-particle-size) * var(--psize, 1) / -2);
+  top: calc(var(--like-particle-size) * var(--psize, 1) / -2);
+  width: calc(var(--like-particle-size) * var(--psize, 1));
+  height: calc(var(--like-particle-size) * var(--psize, 1));
+  border-radius: 50%; background: currentColor; opacity: 0;
+}
+@keyframes t-like-burst {
+  0%   { opacity: 0; transform: translate(0, 0) scale(0.4); }
+  20%  { opacity: 1; transform: translate(calc(var(--px) * 0.25), calc(var(--py) * 0.25)) scale(1); }
+  100% { opacity: 0; transform: translate(var(--px), var(--py)) scale(var(--p-end-scale, 0.6)); }
+}
+.t-like.is-bursting .t-like-particles i {
+  animation: t-like-burst var(--pdur, var(--like-particle-dur)) ease-out var(--pdelay, 0ms) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-like-icon, .t-like-particles i { animation: none !important; }
+}
+
+.t-learn-chevron {
+  display: inline-flex;
+  transform: translateX(0);
+  transition: transform var(--learn-out) var(--learn-ease);
+}
+.t-learn-arm {
+  transform-box: view-box;
+  transform-origin: 10px 8px;
+  vector-effect: non-scaling-stroke;
+  transition: transform var(--learn-out) var(--learn-ease);
+}
+.t-learn:hover .t-learn-chevron { transform: translateX(var(--learn-shift)); transition-duration: var(--learn-in); }
+.t-learn:hover .t-learn-arm { transition-duration: var(--learn-in); }
+.t-learn:hover .t-learn-arm-top { transform: rotate(var(--learn-spread)); }
+.t-learn:hover .t-learn-arm-bot { transform: rotate(calc(var(--learn-spread) * -1)); }
+
+@media (prefers-reduced-motion: reduce) {
+  .t-learn-chevron, .t-learn-arm { transition: none !important; }
+}
+
+.t-check {
+  transition:
+    background var(--check-box) var(--check-ease),
+    box-shadow var(--check-box) var(--check-ease);
+}
+.t-check svg path {
+  stroke-dasharray: var(--check-len, 15);
+  stroke-dashoffset: var(--check-len, 15);
+  transition: stroke-dashoffset var(--check-uncheck) var(--check-ease);
+}
+.t-check[aria-checked="true"] svg path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset var(--check-draw) var(--check-ease) var(--check-delay);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-check, .t-check svg path { transition: none !important; }
+}
+
+.t-reel { display: inline-flex; align-items: center; height: var(--reel-cell); font-variant-numeric: tabular-nums; }
+.t-reel-col {
+  position: relative; height: var(--reel-cell); overflow: hidden;
+  /* Soft-fade the window edges instead of hard-cropping. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%);
+}
+.t-reel-strip { display: flex; flex-direction: column; will-change: transform, filter; }
+.t-reel-digit { height: var(--reel-cell); display: flex; align-items: center; justify-content: center; }
+/* JS drives the tween: strip.style.transition =
+     'transform var(--reel-dur) var(--reel-ease) ' + (col*var(--reel-stagger)) + 'ms';
+   and decays each column's feGaussianBlur stdDeviation from
+   var(--reel-spin-blur) to 0 over its own window. */
+
+@media (prefers-reduced-motion: reduce) {
+  .t-reel-strip { transition: none !important; filter: none !important; }
+}
+
+.t-toggle { transition: background var(--toggle-track) var(--toggle-ease); }
+.t-toggle-thumb { translate: 0 0; will-change: translate; }
+.t-toggle[data-on="true"] .t-toggle-thumb { translate: var(--toggle-travel) 0; }
+.t-toggle.is-init[data-on="true"] .t-toggle-thumb { animation: t-toggle-on var(--toggle-dur) var(--toggle-ease) both; }
+.t-toggle.is-init[data-on="false"] .t-toggle-thumb { animation: t-toggle-off var(--toggle-dur) var(--toggle-ease) both; }
+@keyframes t-toggle-on {
+  0% { translate: 0 0; }
+  55% { translate: calc(var(--toggle-travel) + var(--toggle-ov1)) 0; }
+  80% { translate: calc(var(--toggle-travel) - var(--toggle-ov2)) 0; }
+  100% { translate: var(--toggle-travel) 0; }
+}
+@keyframes t-toggle-off {
+  0% { translate: var(--toggle-travel) 0; }
+  55% { translate: calc(0px - var(--toggle-ov1)) 0; }
+  80% { translate: var(--toggle-ov2) 0; }
+  100% { translate: 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-toggle-thumb { animation: none !important; }
+}
+
+/* Set your type on .t-think: the sizer only reports the right
+   width if it is set in the same font as the line. */
+.t-think { position: relative; display: inline-block; text-align: center; }
+.t-think-sizer { display: block; visibility: hidden; white-space: nowrap; }
+.t-think-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: block;
+  color: var(--think-base);
+  white-space: nowrap;
+  transform: translateY(0);
+  filter: blur(0);
+  opacity: 1;
+  transition:
+    transform var(--think-swap) var(--think-ease),
+    filter var(--think-swap) var(--think-ease),
+    opacity var(--think-swap) var(--think-ease);
+  will-change: transform, filter, opacity;
+}
+/* Shimmer sweeps the glyphs only (background-clip: text). */
+.t-think-text::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(90deg,
+    transparent 0%, transparent 40%,
+    var(--think-highlight) 50%,
+    transparent 60%, transparent 100%);
+  background-size: 400% 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: t-think-shimmer var(--think-shimmer) linear infinite;
+}
+@keyframes t-think-shimmer {
+  0%   { background-position: 100% 0; }
+  100% { background-position: 0% 0; }
+}
+/* The outgoing line floats over the box so both halves animate. */
+.t-think-text.is-exit {
+  transform: translateY(calc(var(--think-distance) * -1));
+  filter: blur(var(--think-blur));
+  opacity: 0;
+}
+.t-think-text.is-enter-start {
+  transition: none;
+  transform: translateY(var(--think-distance));
+  filter: blur(var(--think-blur));
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-think-text { transition: none !important; transform: none !important; filter: none !important; }
+  .t-think-text::before { display: none !important; }
+}
+
+.t-reason { position: relative; overflow: hidden; }
+.t-reason-viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* Edge fades are a mask, not painted gradients, so the card
+     background can be anything. */
+  -webkit-mask-image: linear-gradient(
+    transparent 0,
+    black var(--reason-fade),
+    black calc(100% - var(--reason-fade)),
+    transparent 100%);
+  mask-image: linear-gradient(
+    transparent 0,
+    black var(--reason-fade),
+    black calc(100% - var(--reason-fade)),
+    transparent 100%);
+}
+.t-reason-scroll {
+  position: absolute;
+  left: 0;
+  right: 0;
+  transform: translateY(0);
+  will-change: transform;
+}
+/* JS drives the tween:
+     scroll.style.transition = 'transform var(--reason-step) var(--reason-ease)';
+     scroll.style.transform  = 'translateY(-' + offset + 'px)';
+   and wraps the offset by one copy's height with transition: none. */
+
+@media (prefers-reduced-motion: reduce) {
+  .t-reason-scroll { transition: none !important; transform: none !important; }
+}
+
+.t-stream-w {
+  opacity: 0;
+  filter: blur(var(--stream-blur));
+  transition:
+    opacity var(--stream-fade) var(--stream-ease),
+    filter var(--stream-fade) var(--stream-ease);
+}
+.t-stream-w.is-in {
+  opacity: 1;
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-stream-w { transition: none !important; filter: none !important; opacity: 1 !important; }
+}
+
+.t-matrix {
+  display: grid;
+  grid-template-columns: repeat(4, 2px);
+  grid-auto-rows: 2px;
+  gap: 2px;
+}
+.t-matrix i {
+  display: block;
+  background: var(--matrix-base);
+  animation: t-matrix-pulse var(--matrix-cycle) var(--matrix-ease) infinite;
+  animation-delay: calc(var(--d, 0) * 1ms);
+}
+/* Hole positions (rounded variants) render nothing. */
+.t-matrix i.is-gap { visibility: hidden; animation: none; }
+@keyframes t-matrix-pulse {
+  0%, 45%, 100% { background-color: var(--matrix-base); }
+  15%           { background-color: var(--matrix-active); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-matrix i { animation: none !important; }
+}
+
+.t-stack { position: relative; }
+.t-stack-banner {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  /* Centre origin so an arriving banner scales like a toast; the
+     push-back depths switch to the bottom edge, which they can do
+     freely because the swap happens at identity. */
+  transform-origin: 50% 50%;
+  /* Explicit blur(0) rather than an unset filter — blur → none is
+     not reliably interpolated, and the cross-blur would snap. */
+  filter: blur(0);
+  will-change: transform, opacity, filter;
+  transition:
+    transform var(--stack-open) var(--stack-ease),
+    opacity var(--stack-open) var(--stack-ease),
+    filter var(--stack-open) var(--stack-ease);
+}
+.t-stack-banner[data-depth="0"] {
+  z-index: 3;
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+.t-stack-banner[data-depth="1"] {
+  z-index: 2;
+  transform-origin: 50% 100%;
+  transform: translateY(calc(var(--stack-peek) * -1))
+             scale(calc(1 - var(--stack-depth-scale)));
+  opacity: calc(1 - var(--stack-depth-fade));
+}
+.t-stack-banner[data-depth="2"] {
+  z-index: 1;
+  transform-origin: 50% 100%;
+  transform: translateY(calc(var(--stack-peek) * -2))
+             scale(calc(1 - var(--stack-depth-scale) * 2));
+  opacity: calc(1 - var(--stack-depth-fade) * 1.6);
+}
+/* Spread: newest stays put, older ones climb one banner height
+   each (100% = the banner's own height). Driven by a class, not
+   :hover — the gaps between spread banners belong to no element. */
+.t-stack.is-spread .t-stack-banner[data-depth="1"],
+.t-stack.is-spread .t-stack-banner[data-depth="2"] { opacity: 1; }
+.t-stack.is-spread .t-stack-banner[data-depth="1"] {
+  transform: translateY(calc((100% + var(--stack-spread-gap)) * -1)) scale(1);
+}
+.t-stack.is-spread .t-stack-banner[data-depth="2"] {
+  transform: translateY(calc((100% + var(--stack-spread-gap)) * -2)) scale(1);
+}
+.t-stack-banner.is-enter {
+  transition: none;
+  transform: translateY(var(--stack-rise)) scale(var(--stack-scale));
+  opacity: 0;
+  filter: blur(var(--stack-blur));
+}
+.t-stack-banner.is-leaving {
+  z-index: 0;
+  transform-origin: 50% 100%;
+  transform: translateY(calc(var(--stack-peek) * -3))
+             scale(calc(1 - var(--stack-depth-scale) * 3));
+  opacity: 0;
+  filter: blur(var(--stack-blur));
+  transition:
+    transform var(--stack-close) var(--stack-ease),
+    opacity var(--stack-close) var(--stack-ease),
+    filter var(--stack-close) var(--stack-ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-stack-banner { transition: none !important; transform: none !important; filter: none !important; }
+}
+
+/* ========== Gallery chrome (light) ========== */
+
+/* Gallery chrome — light, matches transitions.dev/library.html */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  background: #fdfdfd;
+  color: #0d0d0d;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+.gal-page { max-width: 1100px; margin: 0 auto; padding: 56px 24px 96px; }
+.gal-header { text-align: center; margin-bottom: 40px; }
+.gal-header h1 {
+  font-size: 36px; font-weight: 500; letter-spacing: -0.03em;
+  margin: 0 0 10px; color: #0d0d0d;
+}
+.gal-header p {
+  margin: 0 auto; color: #767676; font-size: 14px; line-height: 1.5; max-width: 48ch;
+}
+.gal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+  gap: 24px;
+  justify-content: center;
+}
+.gal-card {
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 320px;
+  height: 344px;
+  margin: 0 auto;
+  padding: 12px 12px 14px;
+  display: flex; flex-direction: column; gap: 12px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 8px 24px rgba(0,0,0,0.04);
+  position: relative;
+  min-width: 0;
+}
+.gal-stage {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  background: #f9f9f9;
+  border-radius: 14px;
+  display: grid; place-items: center;
+  overflow: hidden;
+  flex: 0 0 260px;
+}
+.gal-card-meta {
+  padding: 0 6px 2px;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;
+}
+.gal-card-meta > div { min-width: 0; }
+.gal-card-meta h2 {
+  margin: 0; font-size: 13px; font-weight: 500; color: #0d0d0d;
+  letter-spacing: -0.01em;
+}
+.gal-card-meta p {
+  margin: 3px 0 0; font-size: 12px; color: #767676; line-height: 1.4;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.gal-pill {
+  appearance: none; border: 0;
+  background: #ececec; color: #0d0d0d;
+  border-radius: 999px;
+  padding: 6px 12px; font-size: 12px; font-weight: 500;
+  cursor: pointer; line-height: 1;
+  transition: background 120ms ease;
+  position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
+  z-index: 5; white-space: nowrap;
+}
+.gal-pill:hover { background: #e2e2e2; }
+.gal-footer {
+  margin-top: 56px; padding-top: 24px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  color: #9a9a9a; font-size: 12px; line-height: 1.5; text-align: center;
+}
+.gal-footer a { color: #565656; }
+
+@media (max-width: 400px) {
+  .gal-page { padding: 32px 16px 72px; }
+  .gal-header h1 { font-size: 28px; }
+  .gal-grid { gap: 16px; }
+  .gal-card {
+    max-width: 100%;
+    height: auto;
+    min-height: 344px;
+  }
+  .gal-stage { width: 100%; }
+  .gal-tilt { width: min(190px, 92%); }
+  .gal-stream { max-width: 100%; }
+  .gal-reason { width: min(250px, 92%); }
+}
+
+/* ---- Demo chrome (light) ---- */
+.gal-demo-card {
+  width: 120px; height: 80px; background: #fff;
+  border: 1px solid rgba(0,0,0,0.08); border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  display: flex; flex-direction: column; gap: 8px; padding: 10px;
+}
+.gal-demo-card .gal-wire { height: 8px; border-radius: 4px; background: #ececec; }
+.gal-demo-card .gal-wire.sm { width: 55%; }
+.gal-demo-card .gal-wire.md { width: 80%; }
+.gal-demo-card.is-small { width: 88px; height: 60px; padding: 8px; gap: 6px; }
+.gal-demo-card:not(.is-small) { width: 168px; height: 110px; }
+
+.gal-bell {
+  appearance: none; background: #fff; border: 1px solid rgba(0,0,0,0.08);
+  width: 48px; height: 48px; border-radius: 12px; color: #0d0d0d; cursor: pointer;
+  display: grid; place-items: center;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.gal-badge-dot {
+  background: #ef4444; color: #fff; font-size: 10px; font-weight: 600;
+  min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px;
+  display: grid; place-items: center; line-height: 1;
+}
+
+.gal-dropdown-wrap { position: relative; display: inline-block; }
+/* Keep open menu from clipping under stage on mobile */
+#card-menu-dropdown .gal-stage { overflow: visible; }
+#card-menu-dropdown { overflow: visible; z-index: 4; }
+#card-menu-dropdown .gal-dropdown-wrap { transform: translateY(-36px); }
+.gal-dropdown-panel {
+  position: absolute; top: calc(100% + 8px); left: 50%;
+  min-width: 168px; background: #fff; border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px; padding: 6px; z-index: 6;
+  display: flex; flex-direction: column; gap: 2px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  /* keep recipe transform scale; offset with left */
+  margin-left: -84px;
+}
+.gal-dropdown-panel button {
+  appearance: none; border: 0; background: transparent; color: #0d0d0d;
+  text-align: left; padding: 8px 10px; border-radius: 8px; cursor: pointer; font-size: 13px;
+}
+.gal-dropdown-panel button:hover { background: #f3f3f3; }
+
+.gal-modal-stage { position: relative; width: 100%; height: 100%; display: grid; place-items: center; }
+.gal-modal-bg {
+  position: absolute; inset: 16px; border-radius: 10px;
+  background:
+    linear-gradient(#ececec,#ececec) 12px 16px / 40% 8px no-repeat,
+    linear-gradient(#ececec,#ececec) 12px 32px / 70% 8px no-repeat,
+    linear-gradient(#ececec,#ececec) 12px 56px / 45% 60px no-repeat,
+    linear-gradient(#ececec,#ececec) calc(100% - 52px) 56px / 40px 60px no-repeat,
+    #fff;
+  border: 1px solid rgba(0,0,0,0.06);
+  opacity: 0.7;
+}
+.gal-modal-panel {
+  position: relative; z-index: 4;
+  width: min(200px, 78%); background: #fff;
+  border: 1px solid rgba(0,0,0,0.08); border-radius: 14px;
+  padding: 16px; text-align: center;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+}
+.gal-modal-panel p { margin: 6px 0 12px; color: #767676; font-size: 12px; }
+.gal-btn {
+  appearance: none; border: 1px solid rgba(0,0,0,0.1);
+  background: #fff; color: #0d0d0d; border-radius: 999px;
+  padding: 6px 12px; font-size: 12px; font-weight: 500; cursor: pointer;
+}
+.gal-btn:hover { background: #f5f5f5; }
+.gal-btn-ghost { background: #f3f3f3; border-color: transparent; }
+
+.gal-panel-frame {
+  position: relative; width: calc(100% - 28px); height: calc(100% - 56px);
+  margin-top: -20px; overflow: hidden;
+  background: #fff; border-radius: 12px; border: 1px solid rgba(0,0,0,0.06);
+}
+.gal-panel-chrome {
+  position: absolute; top: 0; left: 0; right: 0; height: 36px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 12px; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 12px; color: #565656;
+  z-index: 2; background: #fff;
+}
+.gal-panel-grid {
+  position: absolute; inset: 44px 12px 12px; display: grid;
+  grid-template-columns: 1fr 1fr; gap: 8px;
+}
+.gal-panel-grid > i { display: block; background: #ececec; border-radius: 8px; }
+.gal-panel-body {
+  position: absolute; left: 12px; right: 12px; bottom: 12px; top: 44px;
+  background: #fff; border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px; padding: 14px; z-index: 3;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+.gal-panel-body p { margin: 4px 0 0; color: #767676; font-size: 12px; }
+
+.gal-page-slide { width: calc(100% - 40px); height: 160px; }
+.gal-page {
+  background: #fff; border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px; padding: 14px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+.gal-page-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 12px;
+}
+.gal-page-row:last-child { border-bottom: 0; }
+.gal-dot { width: 22px; height: 22px; border-radius: 50%; background: #ececec; flex: 0 0 auto; }
+.gal-page p { margin: 4px 0 0; color: #767676; font-size: 12px; }
+
+.gal-icon-swap { color: #0d0d0d; padding: 8px; }
+
+.gal-avatar-group { display: flex; align-items: center; }
+.gal-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: grid; place-items: center; color: #fff; font-size: 11px; font-weight: 600;
+  margin-left: -10px; border: 2px solid #f9f9f9;
+  cursor: default; background-size: cover; background-position: center;
+}
+.gal-avatar-group .gal-avatar:first-child { margin-left: 0; }
+
+.gal-input-wrap { width: min(220px, 86%); }
+.gal-input-box {
+  background: #fff; border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 10px; padding: 0 12px; height: 40px;
+  display: flex; align-items: center;
+  transition: border-color var(--revert-dur) ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+.gal-input-box input {
+  width: 100%; background: transparent; border: 0; outline: none; color: #0d0d0d; font-size: 13px;
+}
+.t-input-wrap.is-error .gal-input-box,
+.gal-input-box.is-error { border-color: #ef4444; }
+.gal-error-msg {
+  margin: 6px 0 0; font-size: 12px; color: #ef4444;
+}
+/* recipe owns opacity of .t-error-msg */
+
+.gal-clear {
+  width: min(240px, 88%); height: 40px; background: #fff;
+  border: 1px solid rgba(0,0,0,0.12); border-radius: 10px;
+  display: flex; align-items: center; padding: 0 36px 0 12px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+.gal-clear > input {
+  position: relative; z-index: 1; width: 100%; background: transparent;
+  border: 0; outline: none; color: #0d0d0d; font-size: 13px; padding: 0;
+}
+.gal-clear .t-clear-mirror,
+.gal-clear .t-clear-placeholder {
+  padding: 0 36px 0 12px; color: #0d0d0d; font-size: 13px;
+}
+.gal-clear .t-clear-placeholder { color: #9a9a9a; }
+.gal-clear-btn {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  z-index: 4; width: 22px; height: 22px; border-radius: 50%;
+  border: 0; background: #ececec; color: #565656;
+  cursor: pointer; font-size: 14px; line-height: 1;
+}
+
+.gal-skel { width: min(240px, 88%); height: 72px; }
+.gal-skel-skeleton { display: flex; gap: 12px; align-items: center; padding: 4px 0; }
+.gal-skel-av { width: 44px; height: 44px; border-radius: 50%; background: #e4e4e4; flex: 0 0 auto; }
+.gal-skel-lines { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.gal-skel-bar { height: 10px; border-radius: 6px; background: #e4e4e4; }
+.gal-skel-content { display: flex; gap: 12px; align-items: center; }
+.gal-skel-content .gal-skel-av { background: #d4d4d8; }
+.gal-skel-content strong { font-size: 13px; display: block; }
+.gal-skel-content span { font-size: 12px; color: #767676; }
+
+.gal-tilt { width: 190px; height: 118px; perspective: var(--tilt-perspective); touch-action: none; }
+.gal-tilt-card {
+  width: 100%; height: 100%; border-radius: 14px;
+  background: linear-gradient(135deg, #1e1b4b, #4f46e5 40%, #a855f7);
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: space-between; padding: 14px;
+  transform: rotateX(var(--tilt-rx, 0deg)) rotateY(var(--tilt-ry, 0deg));
+  transition: transform var(--tilt-return) var(--tilt-return-ease);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+  color: #fff;
+}
+.gal-tilt-card.is-tilting { transition: transform var(--tilt-follow) var(--tilt-follow-ease); }
+.gal-tilt-top { font-size: 10px; letter-spacing: 0.12em; opacity: 0.85; font-weight: 600; }
+.gal-tilt-num { font-size: 14px; letter-spacing: 0.16em; font-variant-numeric: tabular-nums; }
+.gal-tilt-bot { display: flex; justify-content: space-between; font-size: 10px; opacity: 0.9; }
+
+.gal-morph {
+  background: #fff; border: 1px solid rgba(0,0,0,0.1);
+  color: #0d0d0d; box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+.gal-morph-plus { color: #0d0d0d; }
+.gal-morph-menu {
+  padding: 12px; display: flex; flex-direction: column; gap: 4px;
+}
+.gal-morph-menu button {
+  appearance: none; border: 0; background: transparent; color: #0d0d0d;
+  text-align: left; padding: 8px 10px; border-radius: 8px; cursor: pointer; font-size: 13px;
+}
+.gal-morph-menu button:hover { background: #f3f3f3; }
+
+.gal-acc {
+  width: min(250px, 88%); background: #fff;
+  border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; overflow: hidden;
+}
+.gal-acc-head {
+  width: 100%; appearance: none; border: 0; background: transparent;
+  color: #0d0d0d; display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 14px; cursor: pointer; font-size: 13px; font-weight: 500;
+}
+.gal-acc-inner { padding: 0 14px 14px; color: #767676; font-size: 12px; }
+.gal-acc-inner p { margin: 0; }
+
+.gal-toast-stage { width: 100%; height: 100%; display: grid; place-items: end center; padding-bottom: 48px; }
+.gal-toast {
+  background: #fff; border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px; padding: 10px 16px; font-size: 13px; color: #0d0d0d;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+}
+
+.gal-like {
+  position: relative; appearance: none; border: 1px solid rgba(0,0,0,0.1);
+  background: #fff; color: #0d0d0d; border-radius: 999px;
+  padding: 8px 16px 8px 12px; display: inline-flex; align-items: center; gap: 8px;
+  cursor: pointer; font-size: 13px; font-weight: 500;
+}
+.gal-like .t-like-icon { display: inline-flex; }
+
+.gal-learn {
+  appearance: none; border: 0; background: transparent; color: #0d0d0d;
+  font-size: 14px; font-weight: 500; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 4px; padding: 4px;
+}
+
+.gal-check {
+  width: 22px; height: 22px; border-radius: 6px;
+  border: 1.5px solid rgba(0,0,0,0.2); background: #fff;
+  display: grid; place-items: center; cursor: pointer; padding: 0;
+}
+.gal-check[aria-checked="true"] {
+  background: #0d0d0d; border-color: #0d0d0d;
+}
+
+.gal-toggle {
+  width: 42px; height: 26px; border-radius: 999px; border: 0;
+  background: #d4d4d8; padding: 3px; cursor: pointer; position: relative;
+}
+.gal-toggle[data-on="true"] { background: #0d0d0d; }
+.gal-toggle .t-toggle-thumb {
+  display: block; width: 20px; height: 20px; border-radius: 50%;
+  background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.gal-reason {
+  /* Parent must have height: .t-reason-viewport is position:absolute; inset:0 */
+  width: min(250px, 88%);
+  height: calc(18px * var(--reason-lines) + var(--reason-fade));
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.gal-reason-vp {
+  /* fills .gal-reason via absolute inset:0 from recipe — no own height */
+  color: #565656; font-size: 12px; line-height: 18px;
+  padding: 0 12px;
+}
+.gal-reason-vp p { margin: 0; height: 18px; }
+
+.gal-stream { max-width: 230px; font-size: 13px; line-height: 1.45; color: #0d0d0d; text-align: left; }
+
+.gal-matrix-row { display: flex; gap: 18px; align-items: center; }
+
+.gal-stack-stage { width: 100%; height: 100%; display: flex; align-items: flex-end; justify-content: center; position: relative; padding-bottom: 48px; }
+.t-stack { width: min(230px, 86%); height: 44px; }
+.gal-stage .t-stack-banner {
+  right: 0;
+  background: #fff; border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px; padding: 10px 14px; font-size: 13px; color: #0d0d0d;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+
+.gal-reel { --reel-cell: 36px; font-variant-numeric: tabular-nums; }
+.gal-reel .t-reel-col { width: 1.1ch; }
+
+.gal-digit { font-size: 40px; font-weight: 500; letter-spacing: -0.03em; color: #0d0d0d; }
+.gal-swap-text { font-size: 14px; font-weight: 500; color: #0d0d0d; }
+.gal-shimmer { font-size: 15px; font-weight: 500; }
+.gal-stagger strong { font-size: 18px; font-weight: 500; color: #0d0d0d; }
+.gal-stagger span { color: #767676; margin-top: 4px; display: block; font-size: 13px; }
+.gal-think { font-size: 14px; }
+
+/* Shell shares .gal-page with the page-slide demo. Keep the demo card,
+   and give the library frame the same clearance digest/taste use under the sticky header. */
+body > .gal-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+body > .gal-page > .gal-header p {
+  margin: 0 auto;
+  color: #767676;
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 48ch;
+}
+@media (max-width: 400px) {
+  body > .gal-page { padding: 32px 16px 72px; }
+}
+
+</style>
+<link rel="stylesheet" href="shared/site-header.css?v=6" />
+</head>
+<body data-page="transition">
+<div class="gal-page">
+  <header class="gal-header">
+    <h1>Library</h1>
+    <p>Free motion recipes from transitions.dev, hosted in ui-kit. Official CSS tokens and <code>t-*</code> classes — open in a browser, no build step.</p>
+  </header>
+  <div class="gal-grid">
+<article class="gal-card" id="card-card-resize" data-slug="card-resize">
+  <div class="gal-stage">
+    <div class="t-resize gal-demo-card is-small" id="demo-resize">
+  <div class="gal-wire md"></div><div class="gal-wire sm"></div><div class="gal-wire" style="width:70%;flex:1;border-radius:8px"></div>
+</div>
+    <button type="button" class="gal-pill" data-animate="card-resize">Animate</button>
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Card resize</h2>
+      <p>Tweening a container&#x27;s width or height when its layout state changes (compact ↔ expanded card, collapsing panel, list row toggling extra detail).</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-number-pop-in" data-slug="number-pop-in">
+  <div class="gal-stage">
+    <span class="t-digit-group is-animating gal-digit" id="demo-digits">
+  <span class="t-digit">6</span><span class="t-digit">5</span><span class="t-digit" data-stagger="1">.</span><span class="t-digit" data-stagger="2">7</span><span class="t-digit" data-stagger="2">8</span>
+</span>
+    <button type="button" class="gal-pill" data-animate="number-pop-in">Animate</button>
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Number pop-in</h2>
+      <p>Counters, prices, balances, or any number that updates and should re-enter from a direction with blur.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-notification-badge" data-slug="notification-badge">
+  <div class="gal-stage">
+    <button class="gal-bell" style="position:relative" type="button" aria-label="Notifications" id="demo-badge-trigger">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10 19a2 2 0 0 0 4 0"/></svg>
+  <span class="t-badge" data-open="true" id="demo-badge"><span class="t-badge-dot gal-badge-dot"></span></span>
+</button>
+    <button type="button" class="gal-pill" data-animate="notification-badge">Animate</button>
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Notification badge</h2>
+      <p>A small badge appearing on top of a trigger (bell, inbox, button).</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-text-states-swap" data-slug="text-states-swap">
+  <div class="gal-stage">
+    <span class="t-text-swap gal-swap-text" id="demo-text-swap">Transaction processing…</span>
+    <button type="button" class="gal-pill" data-animate="text-states-swap">Animate</button>
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Text states swap</h2>
+      <p>Swapping the text of a status indicator in place — &quot;Processing…&quot; → &quot;Done&quot;, &quot;Save&quot; → &quot;Saved&quot;.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-menu-dropdown" data-slug="menu-dropdown">
+  <div class="gal-stage">
+    <div class="gal-dropdown-wrap">
+  <button type="button" class="gal-btn" id="demo-dd-btn">Menu</button>
+  <div class="t-dropdown gal-dropdown-panel" data-origin="top-center" id="demo-dropdown">
+    <button type="button">Edit</button>
+    <button type="button">Duplicate</button>
+    <button type="button">Archive</button>
+    <button type="button">Delete</button>
+  </div>
+</div>
+    <button type="button" class="gal-pill" data-animate="menu-dropdown">Toggle menu</button>
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Menu dropdown</h2>
+      <p>Contextual menus, dropdowns, popovers — anything that opens from a trigger and should visually grow from that trigger&#x27;s position.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-modal" data-slug="modal">
+  <div class="gal-stage">
+    <div class="gal-modal-stage">
+  <div class="gal-modal-bg" aria-hidden="true"></div>
+  <div class="t-modal gal-modal-panel" role="dialog" id="demo-modal" aria-label="Demo modal">
+    <strong style="font-size:14px">Confirm</strong>
+    <p>Scales up from center.</p>
+    <button type="button" class="gal-btn gal-btn-ghost" id="demo-modal-close">Close</button>
+  </div>
+</div>
+    <button type="button" class="gal-pill" data-animate="modal">Toggle modal</button>
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Modal open / close</h2>
+      <p>Modal dialogs and full-overlay surfaces that scale up from center.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-panel-reveal" data-slug="panel-reveal">
+  <div class="gal-stage">
+    <div class="gal-panel-frame" id="demo-panel-frame">
+  <div class="gal-panel-chrome"><span>Workspace</span><span style="font-size:11px;color:#9a9a9a">•••</span></div>
+  <div class="gal-panel-grid"><i></i><i></i><i></i><i></i></div>
+  <div class="t-panel-slide gal-panel-body" data-open="false" id="demo-panel">
+    <strong style="font-size:13px">Panel</strong>
+    <p>Slides up into the container.</p>
+  </div>
+</div>
+    <button type="button" class="gal-pill" data-animate="panel-reveal">Toggle panel</button>
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Panel reveal</h2>
+      <p>A panel that slides into view inside an existing container — e.g.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-page-side-by-side" data-slug="page-side-by-side">
+  <div class="gal-stage">
+    <div class="t-page-slide gal-page-slide" data-page="1" id="demo-pages">
+  <section class="t-page gal-page" data-page-id="1">
+    <div class="gal-page-row"><span class="gal-dot" style="background:#627eea"></span>Ethereum</div>
+    <div class="gal-page-row"><span class="gal-dot" style="background:#e84142"></span>Avalanche</div>
+    <div class="gal-page-row"><span class="gal-dot" style="background:#f3ba2f"></span>BNB</div>
+  </section>
+  <section class="t-page gal-page" data-page-id="2">
+    <strong style="font-size:13px">Detail</strong>
+    <p>Side-by-side page slide.</p>
+  </section>
+</div>
+    <button type="button" class="gal-pill" data-animate="page-side-by-side">Forward</button>
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Page side-by-side</h2>
+      <p>Sliding between two full pages or screens that live side-by-side: list ↔ detail, step 1 ↔ step 2 in a wizard.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-icon-swap" data-slug="icon-swap">
+  <div class="gal-stage">
+    <div class="t-icon-swap gal-icon-swap" data-state="a" id="demo-icon-swap">
+  <span class="t-icon" data-icon="a"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></span>
+  <span class="t-icon" data-icon="b"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></span>
+</div>
+    <button type="button" class="gal-pill" data-animate="icon-swap">Animate</button>
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Icon swap</h2>
+      <p>Cross-fading two icons in the same slot — hamburger ↔ close, sun ↔ moon, play ↔ pause, expand ↔ collapse.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-success-check" data-slug="success-check">
+  <div class="gal-stage">
+    <span class="t-success-check" data-state="out" id="demo-success" aria-hidden="true">
+  <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+    <circle cx="24" cy="24" r="20" stroke="#e4e4e4" stroke-width="2"/>
+    <path d="M16 24.5L21.5 30L33 17.5" stroke="#0d0d0d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</span>
+    <button type="button" class="gal-pill" data-animate="success-check">Animate</button>
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Success check</h2>
+      <p>Confirming a completed action — payment processed, file uploaded, message sent, form saved.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-avatar-group-hover" data-slug="avatar-group-hover">
+  <div class="gal-stage">
+    <div class="t-avatar-group gal-avatar-group" id="demo-avatars"><div class="t-avatar gal-avatar" style="background:#6366f1;z-index:0">AW</div><div class="t-avatar gal-avatar" style="background:#ec4899;z-index:1">BK</div><div class="t-avatar gal-avatar" style="background:#14b8a6;z-index:2">CL</div><div class="t-avatar gal-avatar" style="background:#f59e0b;z-index:3">DM</div><div class="t-avatar gal-avatar" style="background:#8b5cf6;z-index:4">EN</div></div>
+    
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Avatar group hover</h2>
+      <p>Hovering an item in a horizontal stack (avatar row, chip group, badge cluster, segmented button) should lift the hovered item, gently lift its neighbors with a </p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-error-state-shake" data-slug="error-state-shake">
+  <div class="gal-stage">
+    <div class="t-input-wrap gal-input-wrap" id="demo-error-wrap">
+  <div class="t-input gal-input-box" id="demo-error-input">
+    <input type="text" value="John" id="demo-error-field">
+  </div>
+  <p class="t-error-msg gal-error-msg">Please enter a valid name.</p>
+</div>
+    <button type="button" class="gal-pill" data-animate="error-state-shake">Animate</button>
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Error state shake</h2>
+      <p>Form validation feedback — invalid email, wrong password, missing required field, mismatched confirmation.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-input-clear-dissolve" data-slug="input-clear-dissolve">
+  <div class="gal-stage">
+    <div class="t-clear has-value gal-clear" id="demo-clear">
+  <input type="text" value="How do transitions work?" id="demo-clear-input">
+  <div class="t-clear-mirror" aria-hidden="true">How do transitions work?</div>
+  <div class="t-clear-placeholder" aria-hidden="true">Search</div>
+  <div class="t-clear-glow" aria-hidden="true"></div>
+  <button class="t-clear-btn gal-clear-btn" type="button" aria-label="Clear">×</button>
+</div>
+    
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Input clear with dissolve</h2>
+      <p>Clearing a text field — search box, filter input, any field with a clear (×) button.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-skeleton-reveal" data-slug="skeleton-reveal">
+  <div class="gal-stage">
+    <div class="t-skel gal-skel" data-state="loading" id="demo-skel">
+  <div class="t-skel-skeleton is-pulsing gal-skel-skeleton">
+    <div class="gal-skel-av"></div>
+    <div class="gal-skel-lines"><div class="gal-skel-bar" style="width:70%"></div><div class="gal-skel-bar" style="width:90%"></div></div>
+  </div>
+  <div class="t-skel-content gal-skel-content">
+    <div class="gal-skel-av"></div>
+    <div><strong>Alex Rivera</strong><span>Product designer</span></div>
+  </div>
+</div>
+    <button type="button" class="gal-pill" data-animate="skeleton-reveal">Animate</button>
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Skeleton loader and reveal</h2>
+      <p>A placeholder that loads then reveals real content — list rows, cards, profile headers.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-texts-reveal" data-slug="texts-reveal">
+  <div class="gal-stage">
+    <div class="t-stagger gal-stagger" id="demo-stagger">
+  <strong class="t-stagger-line t-stagger-line--1">Headline rises first</strong>
+  <span class="t-stagger-line t-stagger-line--2">Then the supporting line</span>
+</div>
+    <button type="button" class="gal-pill" data-animate="texts-reveal">Animate</button>
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Texts reveal</h2>
+      <p>A headline + supporting line that rise into view with staggered blur — hero copy, empty states, onboarding steps.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-tabs-sliding" data-slug="tabs-sliding">
+  <div class="gal-stage">
+    <div class="t-tabs" role="tablist" id="demo-tabs">
+  <span class="t-tabs-pill" aria-hidden="true"></span>
+  <button class="t-tab" role="tab" aria-selected="true" type="button">Plan</button>
+  <button class="t-tab" role="tab" aria-selected="false" type="button">Debug</button>
+  <button class="t-tab" role="tab" aria-selected="false" type="button">Ask</button>
+</div>
+    
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Tabs sliding</h2>
+      <p>A segmented control / tab bar where the active pill slides between options — view switchers, filter segments, small mutually-exclusive button sets.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-shimmer-text" data-slug="shimmer-text">
+  <div class="gal-stage">
+    <span class="t-shimmer gal-shimmer" data-text="Planning next moves">Planning next moves</span>
+    
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Shimmer text</h2>
+      <p>A loading / &quot;thinking&quot; label that shimmers — streaming status, &quot;Generating…&quot;, any in-progress copy that should feel alive without a spinner.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-tooltip" data-slug="tooltip">
+  <div class="gal-stage">
+    <span class="t-tt-wrap">
+  <button class="t-tt-trigger gal-btn" aria-describedby="tt-1" type="button">Hover me</button>
+  <span class="t-tt" id="tt-1" role="tooltip">Tooltip text</span>
+</span>
+    
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Tooltip open/close</h2>
+      <p>A hover/focus tooltip that fades + scales in with a short appear-delay but disappears immediately on leave.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-card-tilt" data-slug="card-tilt">
+  <div class="gal-stage">
+    <div class="t-tilt gal-tilt" id="demo-tilt">
+  <div class="t-tilt-card gal-tilt-card">
+    <div class="gal-tilt-top">VISA</div>
+    <div class="gal-tilt-num">•••• 4242</div>
+    <div class="gal-tilt-bot"><span>ALEX RIVERA</span><span>12/28</span></div>
+    <div class="t-tilt-glare"></div>
+  </div>
+</div>
+    
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Card hover tilt</h2>
+      <p>A card / tile / media surface that tilts in 3D toward the pointer while hovered, with a soft light &quot;glare&quot; tracking the cursor across it.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-plus-menu-morph" data-slug="plus-menu-morph">
+  <div class="gal-stage">
+    <div class="t-morph gal-morph" data-open="false" id="demo-morph">
+  <div class="t-morph-menu gal-morph-menu">
+    <button type="button">New file</button>
+    <button type="button">New folder</button>
+    <button type="button">Upload</button>
+  </div>
+  <button class="t-morph-plus gal-morph-plus" aria-expanded="false" type="button">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3v12M3 9h12"/></svg>
+  </button>
+</div>
+    
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Plus to menu morph</h2>
+      <p>A small circular trigger (a &quot;+&quot; FAB, a compose button, an add-action affordance) that **morphs into the menu / panel it opens** instead of popping a separate su</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-accordion" data-slug="accordion">
+  <div class="gal-stage">
+    <div class="t-acc gal-acc" data-open="false" id="demo-acc">
+  <button class="t-acc-head gal-acc-head" aria-expanded="false" type="button">
+    Settings
+    <span class="t-acc-chevron"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 6.5L8 10.5L12 6.5"/></svg></span>
+  </button>
+  <div class="t-acc-panel"><div class="t-acc-panel-inner gal-acc-inner">
+    <p>Panel grows with grid-template-rows 0fr → 1fr.</p>
+  </div></div>
+</div>
+    
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Accordion expand</h2>
+      <p>A disclosure / accordion / collapsible section whose panel grows and shrinks in height when toggled, with the header chevron flipping between a downward &quot;v&quot; and</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-toast" data-slug="toast">
+  <div class="gal-stage">
+    <div class="gal-toast-stage">
+  <div class="t-toast gal-toast" id="demo-toast">Saved successfully</div>
+</div>
+    <button type="button" class="gal-pill" data-animate="toast">Animate</button>
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Toast open / close</h2>
+      <p>Toasts, snackbars, and transient confirmations that rise into view from the bottom edge — &quot;Saved&quot;, &quot;Copied&quot;, &quot;Message sent&quot;.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-like-button" data-slug="like-button">
+  <div class="gal-stage">
+    <button class="t-like gal-like" data-liked="false" type="button" id="demo-like">
+  <span class="t-like-icon"><svg class="t-like-heart" width="22" height="22" viewBox="0 0 24 24"><path d="M12 21s-7-4.6-9.5-9.1C.7 8.4 2.2 5 5.5 5c1.9 0 3.4 1.1 4.2 2.4C10.5 6.1 12 5 13.9 5c3.3 0 4.8 3.4 3 6.9C19 16.4 12 21 12 21z" stroke-width="1.75" stroke-linejoin="round"/></svg></span>
+  <span class="t-like-particles"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+  Like
+</button>
+    
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Like button</h2>
+      <p>Like / favorite / heart buttons — anywhere a single tap flips a boolean and deserves a tiny celebration.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-learn-more-hover" data-slug="learn-more-hover">
+  <div class="gal-stage">
+    <button class="t-learn gal-learn" type="button">Learn more
+  <span class="t-learn-chevron"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path class="t-learn-arm t-learn-arm-top" d="M6 4L10 8"/><path class="t-learn-arm t-learn-arm-bot" d="M10 8L6 12"/></svg></span>
+</button>
+    
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Learn more hover</h2>
+      <p>&quot;Learn more&quot;, &quot;See all&quot;, &quot;Continue&quot; — inline links or buttons with a trailing chevron that should acknowledge hover.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-checkbox-check" data-slug="checkbox-check">
+  <div class="gal-stage">
+    <button class="t-check gal-check" role="checkbox" aria-checked="false" type="button" id="demo-check">
+  <svg viewBox="0 0 10.1668 10.1668" width="12" height="12"><path d="M1 5.52L3.92 9.17L9.17 1" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+    
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Checkbox check</h2>
+      <p>Checkboxes, to-do completion, multi-select rows — any boolean control where the checked state should feel earned.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-spinning-counter" data-slug="spinning-counter">
+  <div class="gal-stage">
+    <div class="t-reel gal-reel gal-digit" id="demo-reel"></div>
+    <button type="button" class="gal-pill" data-animate="spinning-counter">Animate</button>
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Spinning counter</h2>
+      <p>Numbers that change with fanfare — points, prices, follower counts, dashboards KPIs.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-toggle" data-slug="toggle">
+  <div class="gal-stage">
+    <button class="t-toggle gal-toggle" role="switch" data-on="false" type="button" id="demo-toggle" aria-checked="false">
+  <span class="t-toggle-thumb"></span>
+</button>
+    
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Toggle</h2>
+      <p>On/off switches — settings rows, theme toggles, feature flags.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-thinking-states" data-slug="thinking-states">
+  <div class="gal-stage">
+    <span class="t-think gal-think" role="status" id="demo-think">
+  <span class="t-think-sizer" aria-hidden="true">Setting up a workplace</span>
+  <span class="t-think-text" data-text="Thinking…">Thinking…</span>
+</span>
+    
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Thinking states</h2>
+      <p>An AI status line that narrates what the agent is doing — &quot;Setting up a workplace&quot;, &quot;Running a command&quot;, &quot;Browsing files&quot;.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-reasoning-stream" data-slug="reasoning-stream">
+  <div class="gal-stage">
+    <div class="t-reason gal-reason" id="demo-reason">
+  <div class="t-reason-viewport gal-reason-vp">
+    <div class="t-reason-scroll">
+      <div class="t-reason-text"><p>Scanning the request for intent…</p><p>Pulling relevant context from memory…</p><p>Drafting a structured answer…</p><p>Checking edge cases and constraints…</p><p>Refining wording for clarity…</p><p>Ready to respond.</p></div>
+    </div>
+  </div>
+</div>
+    
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Reasoning stream</h2>
+      <p>An agent &quot;thinking out loud&quot; — a small card plays back a stream of reasoning by stepping the transcript up two lines at a time, holding between steps.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-streaming-text" data-slug="streaming-text">
+  <div class="gal-stage">
+    <div class="t-stream gal-stream" id="demo-stream">Motion recipes arrive word by word like a streamed completion.</div>
+    <button type="button" class="gal-pill" data-animate="streaming-text">Animate</button>
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Streaming text</h2>
+      <p>Model output arriving word by word — chat responses, AI completions, any streamed paragraph.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-matrix-loader" data-slug="matrix-loader">
+  <div class="gal-stage">
+    <div class="gal-matrix-row">
+  <div class="t-matrix" data-variant="scan"></div>
+  <div class="t-matrix" data-variant="twinkle"></div>
+  <div class="t-matrix" data-variant="orbit" data-rounded="true"></div>
+  <div class="t-matrix" data-variant="pulse" data-rounded="true"></div>
+</div>
+    
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Matrix dot loader</h2>
+      <p>Tiny inline loaders built from a 4×4 matrix of 2px dots.</p>
+    </div>
+  </div>
+</article>
+<article class="gal-card" id="card-banner-stacking" data-slug="banner-stacking">
+  <div class="gal-stage">
+    <div class="gal-stack-stage" id="demo-stack-stage">
+  <div class="t-stack" id="demo-stack"></div>
+</div>
+    <button type="button" class="gal-pill" data-animate="banner-stacking">Animate</button>
+  </div>
+  <div class="gal-card-meta">
+    <div>
+      <h2>Banner stacking</h2>
+      <p>Sonner-style banner / toast stacking.</p>
+    </div>
+  </div>
+</article>
+  </div>
+  <footer class="gal-footer">
+    Free transitions.dev recipe demos hosted in ui-kit.
+    Motion recipes from <a href="https://transitions.dev/library.html">transitions.dev</a> (free CLI).
+    Pro-only recipes (confetti, gooey, card-stack-hover, drag-drop, organic-shimmer, etc.) are omitted.
+  </footer>
+</div>
+<script>
+(function () {
+  const root = document.documentElement;
+  const ms = (name, fb) => {
+    const v = parseFloat(getComputedStyle(root).getPropertyValue(name));
+    return Number.isFinite(v) ? v : fb;
+  };
+  const onAnimate = (slug, fn) => {
+    const btn = document.querySelector(`[data-animate="${slug}"]`);
+    if (btn) btn.addEventListener("click", fn);
+  };
+
+  // card-resize
+  onAnimate("card-resize", () => {
+    document.getElementById("demo-resize").classList.toggle("is-small");
+  });
+
+  // number-pop-in
+  (function () {
+    const group = document.getElementById("demo-digits");
+    if (!group) return;
+    let n = 0;
+    const values = ["65.78", "12.40", "99.99", "3.14", "256"];
+    function setDigits(str) {
+      group.classList.remove("is-animating");
+      group.replaceChildren();
+      const chars = str.split("");
+      chars.forEach((ch, i) => {
+        const span = document.createElement("span");
+        span.className = "t-digit";
+        span.textContent = ch;
+        if (i === chars.length - 2) span.dataset.stagger = "1";
+        else if (i === chars.length - 1) span.dataset.stagger = "2";
+        group.appendChild(span);
+      });
+      void group.offsetHeight;
+      group.classList.add("is-animating");
+    }
+    onAnimate("number-pop-in", () => {
+      n = (n + 1) % values.length;
+      setDigits(values[n]);
+    });
+  })();
+
+  // notification-badge — replay pop-in
+  onAnimate("notification-badge", () => {
+    const b = document.getElementById("demo-badge");
+    b.setAttribute("data-open", "false");
+    void b.offsetWidth;
+    b.setAttribute("data-open", "true");
+  });
+
+  // text-states-swap
+  (function () {
+    const el = document.getElementById("demo-text-swap");
+    if (!el) return;
+    const states = ["Transaction processing…", "Done", "Save", "Saved", "Uploading…", "Uploaded"];
+    let i = 0;
+    function swapText(next) {
+      const dur = ms("--text-swap-dur", 150);
+      el.classList.add("is-exit");
+      setTimeout(() => {
+        el.textContent = next;
+        el.classList.remove("is-exit");
+        el.classList.add("is-enter-start");
+        void el.offsetHeight;
+        el.classList.remove("is-enter-start");
+      }, dur);
+    }
+    onAnimate("text-states-swap", () => {
+      i = (i + 1) % states.length;
+      swapText(states[i]);
+    });
+  })();
+
+  // menu-dropdown
+  (function () {
+    const dropdown = document.getElementById("demo-dropdown");
+    const btn = document.querySelector('[data-animate="menu-dropdown"]');
+    if (!dropdown) return;
+    const closeMs = ms("--dropdown-close-dur", 150);
+    function openDropdown() {
+      dropdown.classList.remove("is-closing");
+      dropdown.classList.add("is-open");
+    }
+    function closeDropdown() {
+      dropdown.classList.remove("is-open");
+      dropdown.classList.add("is-closing");
+      setTimeout(() => dropdown.classList.remove("is-closing"), closeMs);
+    }
+    const trigger = document.getElementById("demo-dd-btn");
+    const toggle = () => {
+      if (dropdown.classList.contains("is-open")) closeDropdown();
+      else openDropdown();
+    };
+    if (btn) btn.addEventListener("click", (e) => { e.stopPropagation(); toggle(); });
+    if (trigger) trigger.addEventListener("click", (e) => { e.stopPropagation(); toggle(); });
+    document.addEventListener("click", (e) => {
+      if (!dropdown.contains(e.target) && e.target !== trigger && e.target !== btn) {
+        if (dropdown.classList.contains("is-open")) closeDropdown();
+      }
+    });
+  })();
+
+  // modal
+  (function () {
+    const modal = document.getElementById("demo-modal");
+    const closeBtn = document.getElementById("demo-modal-close");
+    const btn = document.querySelector('[data-animate="modal"]');
+    if (!modal) return;
+    const closeMs = ms("--modal-close-dur", 150);
+    function openModal() {
+      modal.classList.remove("is-closing");
+      modal.classList.add("is-open");
+    }
+    function closeModal() {
+      modal.classList.remove("is-open");
+      modal.classList.add("is-closing");
+      setTimeout(() => modal.classList.remove("is-closing"), closeMs);
+    }
+    function toggle() {
+      if (modal.classList.contains("is-open")) closeModal();
+      else openModal();
+    }
+    if (btn) btn.addEventListener("click", toggle);
+    if (closeBtn) closeBtn.addEventListener("click", closeModal);
+    // start closed visually — show open once so user sees it, then pill toggles
+    openModal();
+  })();
+
+  // panel-reveal
+  onAnimate("panel-reveal", () => {
+    const p = document.getElementById("demo-panel");
+    p.setAttribute("data-open", p.getAttribute("data-open") === "true" ? "false" : "true");
+  });
+
+  // page-side-by-side
+  (function () {
+    const slider = document.getElementById("demo-pages");
+    const btn = document.querySelector('[data-animate="page-side-by-side"]');
+    if (!slider || !btn) return;
+    btn.addEventListener("click", () => {
+      const cur = slider.getAttribute("data-page");
+      const next = cur === "1" ? "2" : "1";
+      slider.setAttribute("data-page", next);
+      btn.textContent = next === "1" ? "Forward" : "Back";
+    });
+  })();
+
+  // icon-swap
+  onAnimate("icon-swap", () => {
+    const el = document.getElementById("demo-icon-swap");
+    el.setAttribute("data-state", el.getAttribute("data-state") === "a" ? "b" : "a");
+  });
+
+  // success-check
+  onAnimate("success-check", () => {
+    const check = document.getElementById("demo-success");
+    const path = check.querySelector("svg path:last-child");
+    if (path && !path.dataset.calibrated) {
+      const len = Math.ceil(path.getTotalLength());
+      path.style.strokeDasharray = String(len);
+      path.style.strokeDashoffset = String(len);
+      path.dataset.calibrated = "1";
+    }
+    check.setAttribute("data-state", "out");
+    void check.offsetWidth;
+    check.setAttribute("data-state", "in");
+  });
+
+  // avatar-group-hover
+  (function () {
+    const group = document.getElementById("demo-avatars");
+    if (!group) return;
+    const avatars = Array.from(group.querySelectorAll(".t-avatar"));
+    const num = (name, fb) => {
+      const v = parseFloat(getComputedStyle(root).getPropertyValue(name));
+      return Number.isFinite(v) ? v : fb;
+    };
+    const ease = (name, fb) => getComputedStyle(root).getPropertyValue(name).trim() || fb;
+    function setShifts(activeIdx, phase) {
+      const lift = num("--avatar-lift", -4);
+      const falloff = num("--avatar-falloff", 0.45);
+      const scale = num("--avatar-scale", 1.05);
+      const tf = phase === "out"
+        ? ease("--avatar-ease-out", "cubic-bezier(0.34, 3.85, 0.64, 1)")
+        : ease("--avatar-ease-in", "cubic-bezier(0.22, 1, 0.36, 1)");
+      avatars.forEach((el, i) => {
+        el.style.transitionTimingFunction = tf;
+        if (activeIdx == null) {
+          el.style.setProperty("--shift", "0px");
+          el.style.setProperty("--scale-active", "1");
+          return;
+        }
+        const d = Math.abs(i - activeIdx);
+        el.style.setProperty("--shift", (lift * Math.pow(falloff, d)).toFixed(3) + "px");
+        el.style.setProperty("--scale-active", i === activeIdx ? String(scale) : "1");
+      });
+    }
+    avatars.forEach((el, i) => el.addEventListener("mouseenter", () => setShifts(i, "in")));
+    group.addEventListener("mouseleave", () => setShifts(null, "out"));
+  })();
+
+  // error-state-shake
+  onAnimate("error-state-shake", () => {
+    const wrap = document.getElementById("demo-error-wrap");
+    const input = document.getElementById("demo-error-input");
+    wrap.classList.add("is-error");
+    input.classList.add("is-error");
+    input.classList.remove("is-shaking");
+    void input.offsetWidth;
+    input.classList.add("is-shaking");
+    const shakeMs = ms("--shake-dur-a", 80) * 2 + ms("--shake-dur-b", 60) * 2;
+    setTimeout(() => input.classList.remove("is-shaking"), shakeMs + 20);
+    if (wrap._revertTimer) clearTimeout(wrap._revertTimer);
+    wrap._revertTimer = setTimeout(() => {
+      wrap.classList.remove("is-error");
+      input.classList.remove("is-error");
+    }, shakeMs + ms("--revert-hold", 3000));
+  });
+  const errField = document.getElementById("demo-error-field");
+  if (errField) {
+    errField.addEventListener("input", () => {
+      const wrap = document.getElementById("demo-error-wrap");
+      const input = document.getElementById("demo-error-input");
+      if (wrap._revertTimer) clearTimeout(wrap._revertTimer);
+      wrap.classList.remove("is-error");
+      input.classList.remove("is-error", "is-shaking");
+    });
+  }
+
+  // input-clear — continued in part 2
+  window.__gal_ms = ms;
+  window.__gal_onAnimate = onAnimate;
+  window.__gal_root = root;
+})();
+
+(function () {
+  const root = window.__gal_root;
+  const ms = window.__gal_ms;
+  const onAnimate = window.__gal_onAnimate;
+
+  // input-clear-dissolve
+  (function () {
+    const wrap = document.getElementById("demo-clear");
+    if (!wrap) return;
+    const input = wrap.querySelector("input");
+    const mirror = wrap.querySelector(".t-clear-mirror");
+    const phold = wrap.querySelector(".t-clear-placeholder");
+    const glow = wrap.querySelector(".t-clear-glow");
+    const btn = wrap.querySelector(".t-clear-btn");
+    const canvas = document.createElement("canvas").getContext("2d");
+    let clearing = false;
+    const num = (name, fb) => {
+      const v = parseFloat(getComputedStyle(root).getPropertyValue(name));
+      return Number.isFinite(v) ? v : fb;
+    };
+    function bezier(str) {
+      const m = String(str).match(/cubic-bezier\(([-\d.]+),([-\d.]+),([-\d.]+),([-\d.]+)\)/);
+      if (!m) return (t) => t;
+      const [x1, y1, x2, y2] = m.slice(1).map(parseFloat);
+      const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx;
+      const cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+      return (t) => {
+        if (t <= 0) return 0;
+        if (t >= 1) return 1;
+        let s = t;
+        for (let i = 0; i < 8; i++) {
+          const dx = ((ax * s + bx) * s + cx) * s - t;
+          const d = (3 * ax * s + 2 * bx) * s + cx;
+          if (Math.abs(dx) < 1e-6 || d === 0) break;
+          s -= dx / d;
+        }
+        return ((ay * s + by) * s + cy) * s;
+      };
+    }
+    const sync = () => {
+      const has = input.value.length > 0;
+      wrap.classList.toggle("has-value", has);
+      mirror.textContent = input.value.replace(/ /g, "\u00a0");
+      btn.style.opacity = has ? "1" : "0";
+      btn.style.pointerEvents = has ? "auto" : "none";
+    };
+    function measure(text) {
+      const cs = getComputedStyle(input);
+      canvas.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+      return canvas.measureText(text).width;
+    }
+    function buildGlow(text) {
+      const words = text.split(/\s+/).filter(Boolean);
+      const padL = parseFloat(getComputedStyle(wrap).paddingLeft) || 12;
+      const w = wrap.clientWidth;
+      const h = wrap.clientHeight;
+      const layers = [];
+      let x = padL;
+      const rgb = "0,0,0";
+      words.forEach((word, wi) => {
+        const seg = wi < words.length - 1 ? word + " " : word;
+        const segW = measure(seg);
+        const cx = x + segW / 2;
+        const hw = Math.max(segW * 0.55, 8);
+        [
+          [0, 1.15, h * 0.9, 0.55],
+          [-segW * 0.2, 0.7, h * 0.55, 0.28],
+          [segW * 0.18, 0.65, h * 0.5, 0.22],
+        ].forEach(([dx, rwm, rh, a]) => {
+          const lx = (((cx + dx) / w) * 100).toFixed(2);
+          layers.push(
+            `radial-gradient(ellipse ${Math.max(hw * rwm, 2).toFixed(1)}px ${rh}px at ${lx}% 100%, rgba(${rgb},${a}), transparent)`
+          );
+        });
+        x += segW;
+      });
+      return layers.join(", ");
+    }
+    function clearWithAnimation() {
+      if (clearing || !input.value) {
+        if (!input.value) {
+          input.value = "How do transitions work?";
+          sync();
+        }
+        return;
+      }
+      clearing = true;
+      const keepFocus = document.activeElement === input;
+      mirror.textContent = input.value.replace(/ /g, "\u00a0");
+      const total = num("--clear-dur", 1000);
+      const outDur = num("--clear-out-dur", 400);
+      const inDur = num("--clear-in-dur", 400);
+      const outFly = num("--clear-out-fly", 12);
+      const inFly = num("--clear-in-fly", 12);
+      const blur = num("--clear-blur", 2);
+      const delay = num("--glow-delay", 50);
+      const peakAt = num("--glow-peak-at", 0.15);
+      const gOp = num("--glow-opacity", 0.42);
+      const easeOut = bezier(getComputedStyle(root).getPropertyValue("--clear-out-ease"));
+      const easeIn = bezier(getComputedStyle(root).getPropertyValue("--clear-in-ease"));
+      input.value = "";
+      wrap.classList.remove("has-value");
+      wrap.classList.add("is-clearing");
+      glow.style.background = buildGlow(mirror.textContent);
+      glow.style.opacity = "0";
+      phold.style.transform = `translateY(-${inFly}px)`;
+      phold.style.opacity = "0.9";
+      phold.style.filter = `blur(${blur}px)`;
+      const t0 = performance.now();
+      (function tick(now) {
+        const el = now - t0;
+        const eo = easeOut(Math.min(1, el / outDur));
+        mirror.style.transform = `translateY(${(eo * outFly).toFixed(1)}px)`;
+        mirror.style.opacity = (1 - eo).toFixed(3);
+        mirror.style.filter = `blur(${(eo * blur).toFixed(1)}px)`;
+        const ei = easeIn(Math.min(1, el / inDur));
+        phold.style.transform = `translateY(${(-inFly + ei * inFly).toFixed(1)}px)`;
+        phold.style.opacity = (0.9 + ei * 0.1).toFixed(3);
+        phold.style.filter = `blur(${(blur - ei * blur).toFixed(1)}px)`;
+        let g = 0;
+        if (el > delay) {
+          const gp = Math.min(1, (el - delay) / Math.max(1, total - delay));
+          g = gp < peakAt ? gp / peakAt : 1 - (gp - peakAt) / (1 - peakAt);
+        }
+        glow.style.opacity = (g * gOp).toFixed(3);
+        if (el < total) requestAnimationFrame(tick);
+        else {
+          wrap.classList.remove("is-clearing");
+          [mirror, phold].forEach((el) => (el.style.cssText = ""));
+          mirror.textContent = "";
+          glow.style.opacity = "0";
+          glow.style.background = "";
+          clearing = false;
+          sync();
+          if (keepFocus) requestAnimationFrame(() => input.focus({ preventScroll: true }));
+        }
+      })(performance.now());
+    }
+    const keep = (e) => { if (document.activeElement === input) e.preventDefault(); };
+    btn.addEventListener("pointerdown", keep);
+    btn.addEventListener("mousedown", keep);
+    btn.addEventListener("click", clearWithAnimation);
+    input.addEventListener("input", sync);
+    sync();
+  })();
+
+  // skeleton-reveal
+  onAnimate("skeleton-reveal", () => {
+    const skel = document.getElementById("demo-skel");
+    const skeleton = skel.querySelector(".t-skel-skeleton");
+    skel.classList.add("is-resetting");
+    skel.classList.remove("is-revealed");
+    skeleton.classList.remove("is-pulsing");
+    void skeleton.offsetWidth;
+    skel.classList.remove("is-resetting");
+    skeleton.classList.add("is-pulsing");
+    const total = ms("--pulse-dur", 1000) * ms("--pulse-count", 1);
+    setTimeout(() => skel.classList.add("is-revealed"), total);
+  });
+
+  // tabs-sliding
+  (function () {
+    const bar = document.getElementById("demo-tabs");
+    if (!bar) return;
+    const pill = bar.querySelector(".t-tabs-pill");
+    const tabs = [...bar.querySelectorAll(".t-tab")];
+    function moveTo(tab, animate) {
+      if (!animate) {
+        const prev = pill.style.transition;
+        pill.style.transition = "none";
+        pill.style.transform = `translateX(${tab.offsetLeft}px)`;
+        pill.style.width = `${tab.offsetWidth}px`;
+        void pill.offsetWidth;
+        pill.style.transition = prev;
+      } else {
+        pill.style.transform = `translateX(${tab.offsetLeft}px)`;
+        pill.style.width = `${tab.offsetWidth}px`;
+      }
+    }
+    const active = () => tabs.find((t) => t.getAttribute("aria-selected") === "true") || tabs[0];
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        tabs.forEach((t) => t.setAttribute("aria-selected", t === tab ? "true" : "false"));
+        moveTo(tab, true);
+      });
+    });
+    requestAnimationFrame(() => moveTo(active(), false));
+    window.addEventListener("resize", () => moveTo(active(), false));
+  })();
+
+  // texts-reveal
+  onAnimate("texts-reveal", () => {
+    const block = document.getElementById("demo-stagger");
+    block.classList.remove("is-hiding");
+    block.classList.remove("is-shown");
+    void block.offsetHeight;
+    block.classList.add("is-shown");
+  });
+  requestAnimationFrame(() => {
+    const block = document.getElementById("demo-stagger");
+    if (block) block.classList.add("is-shown");
+  });
+
+  // card-tilt
+  (function () {
+    const tilt = document.getElementById("demo-tilt");
+    if (!tilt) return;
+    const card = tilt.querySelector(".t-tilt-card");
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+    const MAX = 14;
+    function reset() {
+      tilt.classList.remove("is-hover");
+      card.classList.remove("is-tilting");
+      card.style.setProperty("--tilt-rx", "0deg");
+      card.style.setProperty("--tilt-ry", "0deg");
+    }
+    function track(e) {
+      if (reduce.matches) return;
+      const r = tilt.getBoundingClientRect();
+      const px = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+      const py = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));
+      tilt.classList.add("is-hover");
+      card.classList.add("is-tilting");
+      card.style.setProperty("--tilt-ry", ((px - 0.5) * MAX).toFixed(2) + "deg");
+      card.style.setProperty("--tilt-rx", ((0.5 - py) * MAX).toFixed(2) + "deg");
+      card.style.setProperty("--tilt-gx", (px * 100).toFixed(1) + "%");
+      card.style.setProperty("--tilt-gy", (py * 100).toFixed(1) + "%");
+    }
+    tilt.addEventListener("pointerdown", (e) => {
+      if (e.pointerType !== "mouse") {
+        try { tilt.setPointerCapture(e.pointerId); } catch (_) {}
+      }
+    });
+    tilt.addEventListener("pointermove", track);
+    tilt.addEventListener("pointerup", reset);
+    tilt.addEventListener("pointercancel", reset);
+    tilt.addEventListener("pointerleave", (e) => {
+      if (e.pointerType === "mouse") reset();
+    });
+  })();
+
+  // plus-menu-morph
+  (function () {
+    const morph = document.getElementById("demo-morph");
+    if (!morph) return;
+    const plus = morph.querySelector(".t-morph-plus");
+    function setOpen(open) {
+      morph.setAttribute("data-open", String(open));
+      plus.setAttribute("aria-expanded", String(open));
+    }
+    plus.addEventListener("click", (e) => {
+      e.stopPropagation();
+      setOpen(morph.getAttribute("data-open") !== "true");
+    });
+    document.addEventListener("click", (e) => {
+      if (!morph.contains(e.target)) setOpen(false);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") setOpen(false);
+    });
+  })();
+
+  // accordion
+  (function () {
+    const acc = document.getElementById("demo-acc");
+    if (!acc) return;
+    const head = acc.querySelector(".t-acc-head");
+    head.addEventListener("click", () => {
+      const open = acc.getAttribute("data-open") === "true";
+      acc.setAttribute("data-open", String(!open));
+      head.setAttribute("aria-expanded", String(!open));
+    });
+  })();
+
+  // toast
+  onAnimate("toast", () => {
+    const toast = document.getElementById("demo-toast");
+    toast.classList.add("is-open");
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => toast.classList.remove("is-open"), 2000);
+  });
+
+  // like-button
+  (function () {
+    const btn = document.getElementById("demo-like");
+    if (!btn) return;
+    const particles = [...btn.querySelectorAll(".t-like-particles i")];
+    const dist = () => ms("--like-particle-dist", 20);
+    btn.addEventListener("click", () => {
+      const liked = btn.getAttribute("data-liked") === "true";
+      if (!liked) {
+        particles.forEach((p, i) => {
+          const ang = (Math.PI * 2 * i) / particles.length + (Math.random() - 0.5) * 0.4;
+          const d = dist() * (0.7 + Math.random() * 0.6);
+          p.style.setProperty("--px", (Math.cos(ang) * d).toFixed(1) + "px");
+          p.style.setProperty("--py", (Math.sin(ang) * d).toFixed(1) + "px");
+          p.style.setProperty("--pdur", (400 + Math.random() * 300).toFixed(0) + "ms");
+          p.style.setProperty("--pdelay", (Math.random() * 40).toFixed(0) + "ms");
+          p.style.setProperty("--p-end-scale", (0.3 + Math.random() * 0.5).toFixed(2));
+          p.style.setProperty("--psize", (0.7 + Math.random() * 0.6).toFixed(2));
+        });
+        btn.classList.remove("is-bursting");
+        void btn.offsetWidth;
+        btn.classList.add("is-bursting");
+        setTimeout(() => btn.classList.remove("is-bursting"), ms("--like-particle-dur", 600) + 80);
+      }
+      btn.setAttribute("data-liked", String(!liked));
+    });
+  })();
+
+  // checkbox
+  (function () {
+    const c = document.getElementById("demo-check");
+    if (!c) return;
+    c.addEventListener("click", () => {
+      const on = c.getAttribute("aria-checked") === "true";
+      c.setAttribute("aria-checked", String(!on));
+    });
+  })();
+
+  // spinning-counter (improvised from recipe HTML notes)
+  (function () {
+    const reel = document.getElementById("demo-reel");
+    if (!reel) return;
+    let current = 42;
+    function build(target, spins, animate) {
+      const str = String(target).padStart(3, "0");
+      reel.replaceChildren();
+      const cell = ms("--reel-cell", 30) || 36;
+      // use CSS var on element
+      reel.style.setProperty("--reel-cell", "36px");
+      const dur = ms("--reel-dur", 1400);
+      const stagger = ms("--reel-stagger", 90);
+      const ease = getComputedStyle(root).getPropertyValue("--reel-ease").trim() || "cubic-bezier(0.16, 1, 0.3, 1)";
+      const blurPx = ms("--reel-spin-blur", 3);
+      const cellPx = 36;
+      [...str].forEach((ch, col) => {
+        const digit = parseInt(ch, 10);
+        const colEl = document.createElement("div");
+        colEl.className = "t-reel-col";
+        const strip = document.createElement("div");
+        strip.className = "t-reel-strip";
+        const total = Math.max(spins * 10 + digit + 1, digit + 1);
+        for (let i = 0; i < total; i++) {
+          const d = document.createElement("div");
+          d.className = "t-reel-digit";
+          d.textContent = String(i % 10);
+          strip.appendChild(d);
+        }
+        colEl.appendChild(strip);
+        reel.appendChild(colEl);
+        if (!animate) {
+          strip.style.transition = "none";
+          strip.style.transform = `translateY(${-(digit) * cellPx}px)`;
+          return;
+        }
+        strip.style.transform = "translateY(0)";
+        void strip.offsetWidth;
+        requestAnimationFrame(() => {
+          strip.style.transition = `transform ${dur}ms ${ease} ${col * stagger}ms, filter ${dur * 0.6}ms ease ${col * stagger}ms`;
+          strip.style.filter = `blur(${blurPx}px)`;
+          strip.style.transform = `translateY(${-(spins * 10 + digit) * cellPx}px)`;
+          setTimeout(() => { strip.style.filter = "blur(0px)"; }, col * stagger + dur * 0.55);
+        });
+      });
+    }
+    build(current, 0, false);
+    onAnimate("spinning-counter", () => {
+      current = (current + 137) % 1000;
+      build(current, 2 + Math.floor(Math.random() * 2), true);
+    });
+  })();
+
+  // toggle
+  (function () {
+    const t = document.getElementById("demo-toggle");
+    if (!t) return;
+    t.addEventListener("click", () => {
+      const on = t.getAttribute("data-on") === "true";
+      t.classList.add("is-init");
+      t.setAttribute("data-on", String(!on));
+      t.setAttribute("aria-checked", String(!on));
+    });
+  })();
+
+  // thinking-states
+  (function () {
+    const box = document.getElementById("demo-think");
+    if (!box) return;
+    let live = box.querySelector(".t-think-text");
+    const STATES = ["Setting up a workplace", "Running a command", "Browsing files", "Thinking…"];
+    let i = 0;
+    (function cycle() {
+      setTimeout(() => {
+        const swap = ms("--think-swap", 150);
+        const gap = ms("--think-gap", 50);
+        const leaving = live;
+        i = (i + 1) % STATES.length;
+        leaving.classList.add("is-exit");
+        const next = document.createElement("span");
+        next.className = "t-think-text is-enter-start";
+        next.textContent = STATES[i];
+        next.setAttribute("data-text", STATES[i]);
+        box.appendChild(next);
+        live = next;
+        const release = () => {
+          void next.offsetWidth;
+          next.classList.remove("is-enter-start");
+        };
+        if (gap > 0) setTimeout(release, gap);
+        else release();
+        setTimeout(() => { leaving.remove(); cycle(); }, swap + gap);
+      }, ms("--think-hold", 2000));
+    })();
+  })();
+
+  // reasoning-stream
+  (function () {
+    const scroll = document.querySelector("#demo-reason .t-reason-scroll");
+    if (!scroll) return;
+    const text = scroll.querySelector(".t-reason-text");
+    scroll.appendChild(text.cloneNode(true));
+    let offset = 0;
+    (function step() {
+      setTimeout(() => {
+        const lineH = parseFloat(getComputedStyle(text).lineHeight) || 18;
+        const stepPx = lineH * ms("--reason-lines", 2);
+        const dur = ms("--reason-step", 500);
+        const ease = getComputedStyle(root).getPropertyValue("--reason-ease").trim() || "ease-out";
+        offset += stepPx;
+        scroll.style.transition = "transform " + dur + "ms " + ease;
+        scroll.style.transform = "translateY(" + (-offset) + "px)";
+        setTimeout(() => {
+          const copyH = text.offsetHeight;
+          if (offset >= copyH) {
+            offset -= copyH;
+            scroll.style.transition = "none";
+            scroll.style.transform = "translateY(" + (-offset) + "px)";
+            void scroll.offsetWidth;
+          }
+          step();
+        }, dur + 30);
+      }, ms("--reason-hold", 1200));
+    })();
+  })();
+
+  // streaming-text
+  (function () {
+    const block = document.getElementById("demo-stream");
+    if (!block) return;
+    const words = block.textContent.trim().split(/\s+/);
+    block.textContent = "";
+    const spans = words.map((w, i) => {
+      const s = document.createElement("span");
+      s.className = "t-stream-w is-in";
+      s.textContent = w;
+      block.appendChild(s);
+      if (i < words.length - 1) block.appendChild(document.createTextNode(" "));
+      return s;
+    });
+    const gap = ms("--stream-gap", 60);
+    function stream() {
+      spans.forEach((s) => {
+        s.style.transition = "none";
+        s.classList.remove("is-in");
+      });
+      void block.offsetWidth;
+      spans.forEach((s) => { s.style.transition = ""; });
+      (function next(n) {
+        if (n >= spans.length) return;
+        spans[n].classList.add("is-in");
+        setTimeout(() => next(n + 1), gap);
+      })(0);
+    }
+    onAnimate("streaming-text", stream);
+    setTimeout(stream, 400);
+  })();
+
+  // matrix-loader
+  (function () {
+    const CORNERS = [0, 3, 12, 15];
+    const RING = [1, 2, 7, 11, 14, 13, 8, 4];
+    const INNER = [5, 6, 9, 10];
+    const TWINKLE = [7, 2, 11, 5, 14, 9, 0, 12, 3, 15, 6, 10, 13, 1, 8, 4];
+    const cycle = ms("--matrix-cycle", 1200);
+    document.querySelectorAll(".t-matrix").forEach((loader) => {
+      const variant = loader.getAttribute("data-variant");
+      const rounded = loader.getAttribute("data-rounded") === "true";
+      for (let idx = 0; idx < 16; idx++) {
+        const dot = document.createElement("i");
+        const col = idx % 4;
+        if (rounded && CORNERS.includes(idx)) {
+          dot.className = "is-gap";
+        } else if (variant === "scan") {
+          dot.style.setProperty("--d", String(Math.round(col * (cycle / 10))));
+        } else if (variant === "twinkle") {
+          dot.style.setProperty("--d", String(Math.round(TWINKLE[idx] * (cycle / 16))));
+        } else if (variant === "orbit") {
+          const k = RING.indexOf(idx);
+          if (k !== -1) dot.style.setProperty("--d", String(Math.round(k * (cycle / 8))));
+          else dot.style.animation = "none";
+        } else if (variant === "pulse") {
+          const ring = INNER.includes(idx) ? 0 : 1;
+          dot.style.setProperty("--d", String(Math.round(ring * (cycle * 0.16))));
+        }
+        loader.appendChild(dot);
+      }
+    });
+  })();
+
+  // banner-stacking
+  (function () {
+    const stack = document.getElementById("demo-stack");
+    const stage = document.getElementById("demo-stack-stage");
+    if (!stack || !stage) return;
+    let banners = [];
+    let n = 0;
+    const messages = ["Saved", "Copied to clipboard", "Message sent", "Changes published", "Invite sent"];
+    function addBanner(contentHTML) {
+      const el = document.createElement("div");
+      el.className = "t-stack-banner is-enter";
+      el.setAttribute("data-depth", "0");
+      el.innerHTML = contentHTML;
+      banners.unshift(el);
+      stack.appendChild(el);
+      banners.forEach((b, i) => {
+        if (i === 0) return;
+        if (i > 2) {
+          if (!b.classList.contains("is-leaving")) {
+            b.classList.add("is-leaving");
+            setTimeout(() => b.remove(), ms("--stack-close", 250) + 60);
+          }
+        } else {
+          b.setAttribute("data-depth", String(i));
+        }
+      });
+      banners = banners.slice(0, 3).concat(banners.slice(3).filter((b) => !b.classList.contains("is-leaving")));
+      void el.offsetWidth;
+      el.classList.remove("is-enter");
+    }
+    onAnimate("banner-stacking", () => {
+      addBanner(messages[n % messages.length]);
+      n++;
+    });
+    addBanner(messages[0]); n = 1;
+    const spreadHeight = () => (stack.offsetHeight + ms("--stack-spread-gap", 8)) * 2;
+    const within = (e, above) => {
+      const r = stack.getBoundingClientRect();
+      return e.clientX >= r.left && e.clientX <= r.right &&
+        e.clientY <= r.bottom && e.clientY >= r.top - above;
+    };
+    stage.addEventListener("pointermove", (e) => {
+      if (stack.classList.contains("is-spread")) {
+        if (!within(e, spreadHeight())) stack.classList.remove("is-spread");
+      } else if (within(e, 0)) {
+        stack.classList.add("is-spread");
+      }
+    });
+    stage.addEventListener("pointerleave", () => stack.classList.remove("is-spread"));
+  })();
+})();
+
+</script>
+<script src="shared/site-header.js?v=12" defer></script>
+</body>
+</html>
