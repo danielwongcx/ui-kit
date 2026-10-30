@@ -234,7 +234,16 @@
     left: 0;
     right: 0;
     top: 100%;
-    padding: 0.55rem 0.85rem 0.85rem;
+    box-sizing: border-box;
+    /* The bar is sticky/fixed, so page scroll cannot reveal links past the fold.
+       Cap the panel to the space under the bar (safe-area included on full-bleed pages). */
+    max-height: calc(100vh - var(--site-header-h) - env(safe-area-inset-top, 0px));
+    max-height: calc(100dvh - var(--site-header-h) - env(safe-area-inset-top, 0px));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    padding: 0.55rem 0.85rem max(0.85rem, env(safe-area-inset-bottom, 0px));
     background: color-mix(in srgb, #f7f5f2 94%, transparent);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
