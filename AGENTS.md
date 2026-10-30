@@ -23,6 +23,7 @@ Multi-page **static** UI kit published on GitHub Pages from the `main` branch ro
 - Design with AI: https://danielwongcx.github.io/ui-kit/design-with-ai.html (`design-with-ai.html`) — Explainer. Plain-language page on Matt Dailey’s (@reactiverobot) two X articles about de-slopping AI design: a constraint loop, six craft moves on one surface, and a six-step loop for features that cross many screens. No build step.
 - Grok Bot reel: https://danielwongcx.github.io/ui-kit/grok-bot-showreel.html (`grok-bot-showreel.html`) — Explainer. Full-viewport 15s motion showreel for Grok Bot, desktop assistant: cold open, identity spark, wordmark, six easings, morph, Truchet, depth, kinetic type, and fin. One GSAP master timeline (`vendor/gsap.min.js`). `prefers-reduced-motion` holds the fin plate. No build step.
 - Dub promo: https://danielwongcx.github.io/ui-kit/dub-promo-showreel.html (`dub-promo-showreel.html`) — Explainer. Full-viewport 15s looping motion study of a Dub short-link promo: long URL, short pill, live clicks, analytics, partners, feature slides, and a fin CTA. One GSAP master timeline (`vendor/gsap.min.js`). `prefers-reduced-motion` holds the fin plate. No build step.
+- Wave grid: https://danielwongcx.github.io/ui-kit/wave-card-grid.html (`wave-card-grid.html`) — Explainer. Responsive SaaS card grid that fades, rises, and scales in as a staggered wave. Delay follows the diagonal (row + column), the row, or the column. Replay restarts the wave. `prefers-reduced-motion` shows every card at rest. GSAP (`vendor/gsap.min.js`). No build step.
 
 No build step. Plain HTML / CSS / JS.
 
@@ -50,6 +51,7 @@ Top-level pages: Gallery, Digest, Taste, Piano, ASCII, Ferry, MTR, Transition.
 - Design with AI → `design-with-ai.html`
 - Grok Bot reel → `grok-bot-showreel.html`
 - Dub promo → `dub-promo-showreel.html`
+- Wave grid → `wave-card-grid.html`
 
 When you add a new page:
 

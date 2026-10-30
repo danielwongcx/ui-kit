@@ -28,7 +28,8 @@
         { id: 'fix-life', label: 'Fix your life', href: 'fix-life.html' },
         { id: 'design-with-ai', label: 'Design with AI', href: 'design-with-ai.html' },
         { id: 'grok-bot-showreel', label: 'Grok Bot reel', href: 'grok-bot-showreel.html' },
-        { id: 'dub-promo-showreel', label: 'Dub promo', href: 'dub-promo-showreel.html' }
+        { id: 'dub-promo-showreel', label: 'Dub promo', href: 'dub-promo-showreel.html' },
+        { id: 'wave-card-grid', label: 'Wave grid', href: 'wave-card-grid.html' }
       ]
     }
   ];
