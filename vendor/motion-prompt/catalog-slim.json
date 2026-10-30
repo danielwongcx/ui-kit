@@ -1,0 +1,2272 @@
+{
+  "version": "1.6950972783",
+  "count": 192,
+  "packs": [
+    {
+      "pack": "motion",
+      "title": "Motion graphics moves",
+      "order": 1,
+      "categories": [
+        {
+          "slug": "entrances-text",
+          "en": "Entrances & text"
+        },
+        {
+          "slug": "motion-polish",
+          "en": "Motion polish"
+        },
+        {
+          "slug": "transitions-highlights",
+          "en": "Transitions & highlights"
+        }
+      ]
+    },
+    {
+      "pack": "camera",
+      "title": "Camera moves & transitions",
+      "order": 2,
+      "categories": [
+        {
+          "slug": "camera-movement",
+          "en": "Camera Movement"
+        },
+        {
+          "slug": "shooting-style-time",
+          "en": "Shooting Style & Time"
+        },
+        {
+          "slug": "transitions",
+          "en": "Transitions"
+        }
+      ]
+    },
+    {
+      "pack": "ui",
+      "title": "UI component names",
+      "order": 3,
+      "categories": [
+        {
+          "slug": "open-overlay",
+          "en": "Opening & overlays"
+        },
+        {
+          "slug": "select-switch",
+          "en": "Choosing & switching"
+        },
+        {
+          "slug": "navigate-status",
+          "en": "Navigation & status"
+        }
+      ]
+    },
+    {
+      "pack": "lp",
+      "title": "Landing page & web effects",
+      "order": 4,
+      "categories": [
+        {
+          "slug": "scroll",
+          "en": "Scroll effects"
+        },
+        {
+          "slug": "hover-click",
+          "en": "Hover & click interactions"
+        },
+        {
+          "slug": "loading-loops",
+          "en": "Loading, navigation & ambient loops"
+        }
+      ]
+    },
+    {
+      "pack": "photo",
+      "title": "Photo looks, lighting & styles",
+      "order": 5,
+      "categories": [
+        {
+          "slug": "lighting",
+          "en": "Lighting & time of day"
+        },
+        {
+          "slug": "lens-camera",
+          "en": "Lens & camera effects"
+        },
+        {
+          "slug": "tone-finish",
+          "en": "Tones & finishing looks"
+        }
+      ]
+    },
+    {
+      "pack": "motion2",
+      "title": "Motion graphics moves, part 2",
+      "order": 6,
+      "categories": [
+        {
+          "slug": "techniques",
+          "en": "Motion techniques"
+        },
+        {
+          "slug": "text-shapes",
+          "en": "Text & shapes"
+        },
+        {
+          "slug": "transitions-highlights",
+          "en": "Transitions & highlights"
+        }
+      ]
+    },
+    {
+      "pack": "lp2",
+      "title": "Landing page & web effects, part 2",
+      "order": 7,
+      "categories": [
+        {
+          "slug": "scroll",
+          "en": "Scroll effects"
+        },
+        {
+          "slug": "mouse-input",
+          "en": "Mouse & input interactions"
+        },
+        {
+          "slug": "showcase",
+          "en": "Showcase effects"
+        }
+      ]
+    },
+    {
+      "pack": "camera2",
+      "title": "Camera moves & transitions, part 2",
+      "order": 8,
+      "categories": [
+        {
+          "slug": "camera-movement",
+          "en": "Camera Movement"
+        },
+        {
+          "slug": "angles-framing",
+          "en": "Angles & Framing"
+        },
+        {
+          "slug": "transitions-editing",
+          "en": "Transitions & Editing"
+        }
+      ]
+    }
+  ],
+  "elements": [
+    {
+      "id": "001",
+      "pack": "motion",
+      "slug": "pop-in",
+      "category": "entrances-text",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Pop-in",
+      "meaning": "Pops into view with a small bounce"
+    },
+    {
+      "id": "002",
+      "pack": "motion",
+      "slug": "stagger",
+      "category": "entrances-text",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Stagger",
+      "meaning": "Items appear one after another, slightly offset in time"
+    },
+    {
+      "id": "003",
+      "pack": "motion",
+      "slug": "burst",
+      "category": "entrances-text",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Burst",
+      "meaning": "Lines and dots burst outward as something appears"
+    },
+    {
+      "id": "004",
+      "pack": "motion",
+      "slug": "line-draw",
+      "category": "entrances-text",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Line draw",
+      "meaning": "A line extends as if it were being drawn"
+    },
+    {
+      "id": "005",
+      "pack": "motion",
+      "slug": "mask-reveal",
+      "category": "entrances-text",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Mask reveal",
+      "meaning": "Text rises into view from behind an invisible edge"
+    },
+    {
+      "id": "006",
+      "pack": "motion",
+      "slug": "typewriter",
+      "category": "entrances-text",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Typewriter",
+      "meaning": "Text appears one character at a time, as if typed"
+    },
+    {
+      "id": "007",
+      "pack": "motion",
+      "slug": "count-up",
+      "category": "entrances-text",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Count-up",
+      "meaning": "A number runs up quickly to its final value"
+    },
+    {
+      "id": "008",
+      "pack": "motion",
+      "slug": "kinetic-typography",
+      "category": "entrances-text",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Kinetic typography",
+      "meaning": "Words move, scale and turn in time with what is said"
+    },
+    {
+      "id": "009",
+      "pack": "motion",
+      "slug": "easing",
+      "category": "motion-polish",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Easing",
+      "meaning": "Motion speeds up and slows down instead of moving at one speed"
+    },
+    {
+      "id": "010",
+      "pack": "motion",
+      "slug": "overshoot",
+      "category": "motion-polish",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Overshoot",
+      "meaning": "Goes a little past the target, then settles back"
+    },
+    {
+      "id": "011",
+      "pack": "motion",
+      "slug": "squash-and-stretch",
+      "category": "motion-polish",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Squash & stretch",
+      "meaning": "Squashes and stretches so that it feels elastic"
+    },
+    {
+      "id": "012",
+      "pack": "motion",
+      "slug": "shape-morph",
+      "category": "motion-polish",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Shape morph",
+      "meaning": "One shape turns smoothly into another"
+    },
+    {
+      "id": "013",
+      "pack": "motion",
+      "slug": "liquid-motion",
+      "category": "motion-polish",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Liquid motion",
+      "meaning": "Shapes move and merge like liquid"
+    },
+    {
+      "id": "014",
+      "pack": "motion",
+      "slug": "motion-trail",
+      "category": "motion-polish",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Motion trail",
+      "meaning": "A fading trail follows a moving object"
+    },
+    {
+      "id": "015",
+      "pack": "motion",
+      "slug": "particles",
+      "category": "motion-polish",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Particles",
+      "meaning": "Many small pieces fly out and scatter"
+    },
+    {
+      "id": "016",
+      "pack": "motion",
+      "slug": "parallax",
+      "category": "motion-polish",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Parallax",
+      "meaning": "Near and far layers move at different speeds to show depth"
+    },
+    {
+      "id": "017",
+      "pack": "motion",
+      "slug": "mask-transition",
+      "category": "transitions-highlights",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Mask transition",
+      "meaning": "The next scene appears inside a growing shape"
+    },
+    {
+      "id": "018",
+      "pack": "motion",
+      "slug": "shape-transition",
+      "category": "transitions-highlights",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Shape transition",
+      "meaning": "Shapes cover the screen and uncover the next scene"
+    },
+    {
+      "id": "019",
+      "pack": "motion",
+      "slug": "liquid-transition",
+      "category": "transitions-highlights",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Liquid transition",
+      "meaning": "Liquid flows in and replaces the scene"
+    },
+    {
+      "id": "020",
+      "pack": "motion",
+      "slug": "zoom-through",
+      "category": "transitions-highlights",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Zoom through",
+      "meaning": "Zooms into an object and passes through it into the next scene"
+    },
+    {
+      "id": "021",
+      "pack": "motion",
+      "slug": "flip",
+      "category": "transitions-highlights",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Flip",
+      "meaning": "Turns over like a card to show the other side"
+    },
+    {
+      "id": "022",
+      "pack": "motion",
+      "slug": "light-sweep",
+      "category": "transitions-highlights",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Light sweep",
+      "meaning": "A band of light crosses a surface"
+    },
+    {
+      "id": "023",
+      "pack": "motion",
+      "slug": "glitch",
+      "category": "transitions-highlights",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Glitch",
+      "meaning": "The picture breaks up as if it were malfunctioning"
+    },
+    {
+      "id": "024",
+      "pack": "motion",
+      "slug": "impact-shake",
+      "category": "transitions-highlights",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Impact shake",
+      "meaning": "The whole frame shakes when something lands"
+    },
+    {
+      "id": "025",
+      "pack": "camera",
+      "slug": "pan",
+      "category": "camera-movement",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Pan",
+      "meaning": "Pivot the camera left or right"
+    },
+    {
+      "id": "026",
+      "pack": "camera",
+      "slug": "tilt",
+      "category": "camera-movement",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Tilt",
+      "meaning": "Pivot the camera up or down"
+    },
+    {
+      "id": "027",
+      "pack": "camera",
+      "slug": "dolly-in",
+      "category": "camera-movement",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Dolly in",
+      "meaning": "Move the camera toward the subject"
+    },
+    {
+      "id": "028",
+      "pack": "camera",
+      "slug": "zoom-in",
+      "category": "camera-movement",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Zoom in",
+      "meaning": "Magnify with the lens (camera stays put)"
+    },
+    {
+      "id": "029",
+      "pack": "camera",
+      "slug": "tracking-shot",
+      "category": "camera-movement",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Tracking shot",
+      "meaning": "Move along with the subject"
+    },
+    {
+      "id": "030",
+      "pack": "camera",
+      "slug": "orbit-arc-shot",
+      "category": "camera-movement",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Orbit (Arc shot)",
+      "meaning": "Circle around the subject"
+    },
+    {
+      "id": "031",
+      "pack": "camera",
+      "slug": "crane-up",
+      "category": "camera-movement",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Crane up",
+      "meaning": "Lift the camera up"
+    },
+    {
+      "id": "032",
+      "pack": "camera",
+      "slug": "dolly-zoom-vertigo",
+      "category": "camera-movement",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Dolly zoom (Vertigo)",
+      "meaning": "Subject stays, background warps"
+    },
+    {
+      "id": "033",
+      "pack": "camera",
+      "slug": "rack-focus",
+      "category": "shooting-style-time",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Rack focus",
+      "meaning": "Shift focus between near and far"
+    },
+    {
+      "id": "034",
+      "pack": "camera",
+      "slug": "handheld",
+      "category": "shooting-style-time",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Handheld",
+      "meaning": "A slight shake, as if the camera were held by hand"
+    },
+    {
+      "id": "035",
+      "pack": "camera",
+      "slug": "fpv-drone-shot",
+      "category": "shooting-style-time",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "FPV drone shot",
+      "meaning": "Fast, immersive fly-through"
+    },
+    {
+      "id": "036",
+      "pack": "camera",
+      "slug": "dutch-angle",
+      "category": "shooting-style-time",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Dutch angle",
+      "meaning": "Tilt the frame diagonally"
+    },
+    {
+      "id": "037",
+      "pack": "camera",
+      "slug": "slow-motion",
+      "category": "shooting-style-time",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Slow motion",
+      "meaning": "Play the action slower"
+    },
+    {
+      "id": "038",
+      "pack": "camera",
+      "slug": "speed-ramp",
+      "category": "shooting-style-time",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Speed ramp",
+      "meaning": "Change speed mid-shot"
+    },
+    {
+      "id": "039",
+      "pack": "camera",
+      "slug": "time-lapse",
+      "category": "shooting-style-time",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Time-lapse",
+      "meaning": "Compress hours into seconds"
+    },
+    {
+      "id": "040",
+      "pack": "camera",
+      "slug": "freeze-frame",
+      "category": "shooting-style-time",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Freeze frame",
+      "meaning": "Pause the action for a beat"
+    },
+    {
+      "id": "041",
+      "pack": "camera",
+      "slug": "jump-cut",
+      "category": "transitions",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Jump cut",
+      "meaning": "Same framing, skip ahead in time"
+    },
+    {
+      "id": "042",
+      "pack": "camera",
+      "slug": "match-cut",
+      "category": "transitions",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Match cut",
+      "meaning": "Cut on a matching shape or motion"
+    },
+    {
+      "id": "043",
+      "pack": "camera",
+      "slug": "whip-pan",
+      "category": "transitions",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Whip pan",
+      "meaning": "Fast pan blur into the next shot"
+    },
+    {
+      "id": "044",
+      "pack": "camera",
+      "slug": "cross-dissolve",
+      "category": "transitions",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Cross dissolve",
+      "meaning": "Blend one shot into the next"
+    },
+    {
+      "id": "045",
+      "pack": "camera",
+      "slug": "wipe",
+      "category": "transitions",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Wipe",
+      "meaning": "A moving edge replaces the shot"
+    },
+    {
+      "id": "046",
+      "pack": "camera",
+      "slug": "smash-cut",
+      "category": "transitions",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Smash cut",
+      "meaning": "Abrupt cut to a contrasting scene"
+    },
+    {
+      "id": "047",
+      "pack": "camera",
+      "slug": "j-cut",
+      "category": "transitions",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "J-cut",
+      "meaning": "Next scene's audio starts first"
+    },
+    {
+      "id": "048",
+      "pack": "camera",
+      "slug": "l-cut",
+      "category": "transitions",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "L-cut",
+      "meaning": "Previous scene's audio carries over"
+    },
+    {
+      "id": "049",
+      "pack": "ui",
+      "slug": "modal-dialog",
+      "category": "open-overlay",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Modal dialog",
+      "meaning": "A window opens in the middle while the page behind dims"
+    },
+    {
+      "id": "050",
+      "pack": "ui",
+      "slug": "drawer",
+      "category": "open-overlay",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Drawer (Off-canvas)",
+      "meaning": "A menu panel slides in from the side of the screen"
+    },
+    {
+      "id": "051",
+      "pack": "ui",
+      "slug": "bottom-sheet",
+      "category": "open-overlay",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Bottom sheet",
+      "meaning": "A panel slides up from the bottom of the screen"
+    },
+    {
+      "id": "052",
+      "pack": "ui",
+      "slug": "accordion",
+      "category": "open-overlay",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Accordion",
+      "meaning": "Click a heading to show or hide its content"
+    },
+    {
+      "id": "053",
+      "pack": "ui",
+      "slug": "dropdown-menu",
+      "category": "open-overlay",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Dropdown (select)",
+      "meaning": "Click a field to drop a list of options below it"
+    },
+    {
+      "id": "054",
+      "pack": "ui",
+      "slug": "tooltip",
+      "category": "open-overlay",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Tooltip",
+      "meaning": "Hover over something to show a short label"
+    },
+    {
+      "id": "055",
+      "pack": "ui",
+      "slug": "popover",
+      "category": "open-overlay",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Popover",
+      "meaning": "Click a button to open a small panel pointing at it"
+    },
+    {
+      "id": "056",
+      "pack": "ui",
+      "slug": "toast",
+      "category": "open-overlay",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Toast notification",
+      "meaning": "A short message appears in a corner and goes away on its own"
+    },
+    {
+      "id": "057",
+      "pack": "ui",
+      "slug": "tabs",
+      "category": "select-switch",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Tabs",
+      "meaning": "Click a label to switch which panel is shown"
+    },
+    {
+      "id": "058",
+      "pack": "ui",
+      "slug": "carousel",
+      "category": "select-switch",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Carousel",
+      "meaning": "Slides that move sideways to show one item at a time"
+    },
+    {
+      "id": "059",
+      "pack": "ui",
+      "slug": "toggle-switch",
+      "category": "select-switch",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Toggle switch",
+      "meaning": "Flip a setting on or off"
+    },
+    {
+      "id": "060",
+      "pack": "ui",
+      "slug": "segmented-control",
+      "category": "select-switch",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Segmented control",
+      "meaning": "A row of joined buttons that switches the view"
+    },
+    {
+      "id": "061",
+      "pack": "ui",
+      "slug": "filter-chips",
+      "category": "select-switch",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Filter chips",
+      "meaning": "Small pills you click to add or remove a filter"
+    },
+    {
+      "id": "062",
+      "pack": "ui",
+      "slug": "range-slider",
+      "category": "select-switch",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Range slider",
+      "meaning": "Two handles on one track pick a minimum and a maximum"
+    },
+    {
+      "id": "063",
+      "pack": "ui",
+      "slug": "stepper",
+      "category": "select-switch",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Stepper (+/−)",
+      "meaning": "Plus and minus buttons that change a number by one"
+    },
+    {
+      "id": "064",
+      "pack": "ui",
+      "slug": "pagination",
+      "category": "select-switch",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Pagination",
+      "meaning": "Numbered buttons that move between pages"
+    },
+    {
+      "id": "065",
+      "pack": "ui",
+      "slug": "hamburger-menu",
+      "category": "navigate-status",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Hamburger menu",
+      "meaning": "A three-line icon that opens the menu"
+    },
+    {
+      "id": "066",
+      "pack": "ui",
+      "slug": "breadcrumbs",
+      "category": "navigate-status",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Breadcrumbs",
+      "meaning": "A trail of links showing where the page sits in the site"
+    },
+    {
+      "id": "067",
+      "pack": "ui",
+      "slug": "mega-menu",
+      "category": "navigate-status",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Mega menu",
+      "meaning": "A wide panel of grouped links that opens from the main menu"
+    },
+    {
+      "id": "068",
+      "pack": "ui",
+      "slug": "step-indicator",
+      "category": "navigate-status",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Step indicator",
+      "meaning": "Shows which step of a process you are on"
+    },
+    {
+      "id": "069",
+      "pack": "ui",
+      "slug": "skeleton-screen",
+      "category": "navigate-status",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Skeleton screen",
+      "meaning": "Grey shapes stand in for content while it loads"
+    },
+    {
+      "id": "070",
+      "pack": "ui",
+      "slug": "spinner",
+      "category": "navigate-status",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Spinner",
+      "meaning": "A spinning circle that means \"please wait\""
+    },
+    {
+      "id": "071",
+      "pack": "ui",
+      "slug": "badge",
+      "category": "navigate-status",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Badge",
+      "meaning": "A small dot with a number showing a count"
+    },
+    {
+      "id": "072",
+      "pack": "ui",
+      "slug": "empty-state",
+      "category": "navigate-status",
+      "width": 542,
+      "height": 191,
+      "cycle": 4.5,
+      "name": "Empty state",
+      "meaning": "The screen shown when there is nothing to list yet"
+    },
+    {
+      "id": "073",
+      "pack": "lp",
+      "slug": "parallax-scrolling",
+      "category": "scroll",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Parallax scrolling",
+      "meaning": "On scroll, background layers move slower than the content"
+    },
+    {
+      "id": "074",
+      "pack": "lp",
+      "slug": "fade-in-on-scroll",
+      "category": "scroll",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Fade-in on scroll",
+      "meaning": "Elements fade in as they scroll into view"
+    },
+    {
+      "id": "075",
+      "pack": "lp",
+      "slug": "sticky-header",
+      "category": "scroll",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Sticky header",
+      "meaning": "The header stays at the top while the page scrolls"
+    },
+    {
+      "id": "076",
+      "pack": "lp",
+      "slug": "pinning",
+      "category": "scroll",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Pinning",
+      "meaning": "A section stays fixed while scrolling advances its content"
+    },
+    {
+      "id": "077",
+      "pack": "lp",
+      "slug": "horizontal-scroll",
+      "category": "scroll",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Horizontal scroll",
+      "meaning": "Scrolling down moves the content sideways"
+    },
+    {
+      "id": "078",
+      "pack": "lp",
+      "slug": "scroll-snap",
+      "category": "scroll",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Scroll snap",
+      "meaning": "Scrolling settles exactly on the next section"
+    },
+    {
+      "id": "079",
+      "pack": "lp",
+      "slug": "scroll-progress-bar",
+      "category": "scroll",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Scroll progress bar",
+      "meaning": "A bar at the top shows how far you have read"
+    },
+    {
+      "id": "080",
+      "pack": "lp",
+      "slug": "highlighter-animation",
+      "category": "scroll",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Highlighter animation",
+      "meaning": "A highlighter stroke is drawn under key words"
+    },
+    {
+      "id": "081",
+      "pack": "lp",
+      "slug": "hover-lift",
+      "category": "hover-click",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Hover lift",
+      "meaning": "On hover, the element rises with a deeper shadow"
+    },
+    {
+      "id": "082",
+      "pack": "lp",
+      "slug": "image-zoom-on-hover",
+      "category": "hover-click",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Image zoom on hover",
+      "meaning": "The photo enlarges inside a fixed frame"
+    },
+    {
+      "id": "083",
+      "pack": "lp",
+      "slug": "cursor-follower",
+      "category": "hover-click",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Cursor follower",
+      "meaning": "A shape trails the mouse pointer with a delay"
+    },
+    {
+      "id": "084",
+      "pack": "lp",
+      "slug": "magnetic-button",
+      "category": "hover-click",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Magnetic button",
+      "meaning": "The button is pulled toward a nearby cursor"
+    },
+    {
+      "id": "085",
+      "pack": "lp",
+      "slug": "ripple-effect",
+      "category": "hover-click",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Ripple effect",
+      "meaning": "A ripple spreads from the point that was pressed"
+    },
+    {
+      "id": "086",
+      "pack": "lp",
+      "slug": "underline-animation",
+      "category": "hover-click",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Underline animation",
+      "meaning": "A link's underline grows from the left on hover"
+    },
+    {
+      "id": "087",
+      "pack": "lp",
+      "slug": "before-after-slider",
+      "category": "hover-click",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Before/after slider",
+      "meaning": "Drag a divider to compare before and after"
+    },
+    {
+      "id": "088",
+      "pack": "lp",
+      "slug": "exit-intent-popup",
+      "category": "hover-click",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Exit-intent popup",
+      "meaning": "A popup shown when the visitor is about to leave"
+    },
+    {
+      "id": "089",
+      "pack": "lp",
+      "slug": "preloader",
+      "category": "loading-loops",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Preloader",
+      "meaning": "A screen shown while the page loads"
+    },
+    {
+      "id": "090",
+      "pack": "lp",
+      "slug": "lazy-loading",
+      "category": "loading-loops",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Lazy loading",
+      "meaning": "Images load only when they come into view"
+    },
+    {
+      "id": "091",
+      "pack": "lp",
+      "slug": "infinite-scroll",
+      "category": "loading-loops",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Infinite scroll",
+      "meaning": "More items load automatically at the bottom"
+    },
+    {
+      "id": "092",
+      "pack": "lp",
+      "slug": "page-transition",
+      "category": "loading-loops",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Page transition",
+      "meaning": "An animation that bridges two pages"
+    },
+    {
+      "id": "093",
+      "pack": "lp",
+      "slug": "smooth-scroll",
+      "category": "loading-loops",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Smooth scroll",
+      "meaning": "In-page links glide to their target instead of jumping"
+    },
+    {
+      "id": "094",
+      "pack": "lp",
+      "slug": "marquee",
+      "category": "loading-loops",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Marquee",
+      "meaning": "Text or logos scroll across in an endless band"
+    },
+    {
+      "id": "095",
+      "pack": "lp",
+      "slug": "animated-gradient",
+      "category": "loading-loops",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Animated gradient",
+      "meaning": "Background colours keep drifting and blending"
+    },
+    {
+      "id": "096",
+      "pack": "lp",
+      "slug": "floating-animation",
+      "category": "loading-loops",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.8,
+      "name": "Floating animation",
+      "meaning": "Elements bob gently up and down"
+    },
+    {
+      "id": "097",
+      "pack": "photo",
+      "slug": "backlighting",
+      "category": "lighting",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Backlighting",
+      "meaning": "The light source sits behind the subject"
+    },
+    {
+      "id": "098",
+      "pack": "photo",
+      "slug": "rim-light",
+      "category": "lighting",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Rim light",
+      "meaning": "A light from behind that outlines the subject's edge"
+    },
+    {
+      "id": "099",
+      "pack": "photo",
+      "slug": "silhouette",
+      "category": "lighting",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Silhouette",
+      "meaning": "The subject shows as a black shape against a bright sky"
+    },
+    {
+      "id": "100",
+      "pack": "photo",
+      "slug": "split-lighting",
+      "category": "lighting",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Split lighting",
+      "meaning": "Light from the side splits the face into lit and dark halves"
+    },
+    {
+      "id": "101",
+      "pack": "photo",
+      "slug": "rembrandt-lighting",
+      "category": "lighting",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Rembrandt lighting",
+      "meaning": "High side light that leaves a lit triangle on the shadow cheek"
+    },
+    {
+      "id": "102",
+      "pack": "photo",
+      "slug": "butterfly-lighting",
+      "category": "lighting",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Butterfly lighting",
+      "meaning": "High frontal light that casts a butterfly shadow under the nose"
+    },
+    {
+      "id": "103",
+      "pack": "photo",
+      "slug": "golden-hour",
+      "category": "lighting",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Golden hour",
+      "meaning": "The low, warm light just after sunrise or before sunset"
+    },
+    {
+      "id": "104",
+      "pack": "photo",
+      "slug": "blue-hour",
+      "category": "lighting",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Blue hour",
+      "meaning": "The time after sunset or before sunrise when the sky turns deep blue"
+    },
+    {
+      "id": "105",
+      "pack": "photo",
+      "slug": "bokeh",
+      "category": "lens-camera",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Bokeh",
+      "meaning": "Out-of-focus points of light melt into soft discs"
+    },
+    {
+      "id": "106",
+      "pack": "photo",
+      "slug": "tilt-shift",
+      "category": "lens-camera",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Tilt-shift",
+      "meaning": "Blur top and bottom so a real scene looks like a miniature"
+    },
+    {
+      "id": "107",
+      "pack": "photo",
+      "slug": "long-exposure",
+      "category": "lens-camera",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Long exposure",
+      "meaning": "Keep the shutter open long so moving lights become lines"
+    },
+    {
+      "id": "108",
+      "pack": "photo",
+      "slug": "panning-shot",
+      "category": "lens-camera",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Panning shot",
+      "meaning": "Follow a moving subject so only the background streaks"
+    },
+    {
+      "id": "109",
+      "pack": "photo",
+      "slug": "lens-flare",
+      "category": "lens-camera",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Lens flare",
+      "meaning": "Rings and spots of light from a bright source in the lens"
+    },
+    {
+      "id": "110",
+      "pack": "photo",
+      "slug": "fisheye-lens",
+      "category": "lens-camera",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Fisheye lens",
+      "meaning": "Ultra-wide lens that bulges the centre and bends straight lines"
+    },
+    {
+      "id": "111",
+      "pack": "photo",
+      "slug": "chromatic-aberration",
+      "category": "lens-camera",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Chromatic aberration",
+      "meaning": "Red and blue-violet colour fringes along high-contrast edges"
+    },
+    {
+      "id": "112",
+      "pack": "photo",
+      "slug": "vignette",
+      "category": "lens-camera",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Vignette",
+      "meaning": "The corners darken and draw the eye to the centre"
+    },
+    {
+      "id": "113",
+      "pack": "photo",
+      "slug": "high-key",
+      "category": "tone-finish",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "High-key",
+      "meaning": "A bright, white-toned image with very light shadows"
+    },
+    {
+      "id": "114",
+      "pack": "photo",
+      "slug": "low-key",
+      "category": "tone-finish",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Low-key",
+      "meaning": "A dark image where only the lit parts stand out"
+    },
+    {
+      "id": "115",
+      "pack": "photo",
+      "slug": "black-and-white",
+      "category": "tone-finish",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Black and white",
+      "meaning": "Remove colour and show brightness only"
+    },
+    {
+      "id": "116",
+      "pack": "photo",
+      "slug": "duotone",
+      "category": "tone-finish",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Duotone",
+      "meaning": "Show the image in two colours, one for darks and one for lights"
+    },
+    {
+      "id": "117",
+      "pack": "photo",
+      "slug": "teal-and-orange",
+      "category": "tone-finish",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Teal and orange",
+      "meaning": "Pushes shadows to teal and skin and highlights to orange"
+    },
+    {
+      "id": "118",
+      "pack": "photo",
+      "slug": "film-grain",
+      "category": "tone-finish",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Film grain",
+      "meaning": "Fine, film-like grain over the image"
+    },
+    {
+      "id": "119",
+      "pack": "photo",
+      "slug": "light-leak",
+      "category": "tone-finish",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Light leak",
+      "meaning": "Red-orange glow as if light leaked onto the film"
+    },
+    {
+      "id": "120",
+      "pack": "photo",
+      "slug": "double-exposure",
+      "category": "tone-finish",
+      "width": 539,
+      "height": 208,
+      "cycle": 5,
+      "name": "Double exposure",
+      "meaning": "Two photos layered into one frame"
+    },
+    {
+      "id": "121",
+      "pack": "motion2",
+      "slug": "anticipation",
+      "category": "techniques",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Anticipation",
+      "meaning": "Pulls back briefly before moving forward"
+    },
+    {
+      "id": "122",
+      "pack": "motion2",
+      "slug": "follow-through",
+      "category": "techniques",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Follow-through",
+      "meaning": "Parts keep swinging after the body stops"
+    },
+    {
+      "id": "123",
+      "pack": "motion2",
+      "slug": "bounce",
+      "category": "techniques",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Bounce",
+      "meaning": "Falls and bounces lower until it stops"
+    },
+    {
+      "id": "124",
+      "pack": "motion2",
+      "slug": "wiggle",
+      "category": "techniques",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Wiggle",
+      "meaning": "Shakes in small, random, continuous jitters"
+    },
+    {
+      "id": "125",
+      "pack": "motion2",
+      "slug": "pulse",
+      "category": "techniques",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Pulse",
+      "meaning": "Its size throbs like a heartbeat"
+    },
+    {
+      "id": "126",
+      "pack": "motion2",
+      "slug": "motion-path",
+      "category": "techniques",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Motion path",
+      "meaning": "Moves along a curve that you define"
+    },
+    {
+      "id": "127",
+      "pack": "motion2",
+      "slug": "ping-pong-loop",
+      "category": "techniques",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Ping-pong loop",
+      "meaning": "Plays forward, then backward, over and over"
+    },
+    {
+      "id": "128",
+      "pack": "motion2",
+      "slug": "stop-motion-style",
+      "category": "techniques",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Stop-motion style",
+      "meaning": "Moves in choppy steps, with frames dropped"
+    },
+    {
+      "id": "129",
+      "pack": "motion2",
+      "slug": "text-scramble",
+      "category": "text-shapes",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Text scramble",
+      "meaning": "Letters shuffle at random, then settle"
+    },
+    {
+      "id": "130",
+      "pack": "motion2",
+      "slug": "wave-text",
+      "category": "text-shapes",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Wave text",
+      "meaning": "Letters rise and fall in turn, like a wave"
+    },
+    {
+      "id": "131",
+      "pack": "motion2",
+      "slug": "text-on-a-path",
+      "category": "text-shapes",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Text on a path",
+      "meaning": "Text flows along a line or curve"
+    },
+    {
+      "id": "132",
+      "pack": "motion2",
+      "slug": "variable-font-animation",
+      "category": "text-shapes",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Variable font animation",
+      "meaning": "The weight of the letters changes smoothly"
+    },
+    {
+      "id": "133",
+      "pack": "motion2",
+      "slug": "text-mask",
+      "category": "text-shapes",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Text mask",
+      "meaning": "Letters cut out to show a picture inside"
+    },
+    {
+      "id": "134",
+      "pack": "motion2",
+      "slug": "repeater",
+      "category": "text-shapes",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Repeater",
+      "meaning": "Duplicates a shape and turns the copies"
+    },
+    {
+      "id": "135",
+      "pack": "motion2",
+      "slug": "kaleidoscope",
+      "category": "text-shapes",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Kaleidoscope",
+      "meaning": "Mirrored patterns spread out symmetrically"
+    },
+    {
+      "id": "136",
+      "pack": "motion2",
+      "slug": "line-boil",
+      "category": "text-shapes",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Line boil",
+      "meaning": "Hand-drawn lines wobble frame to frame"
+    },
+    {
+      "id": "137",
+      "pack": "motion2",
+      "slug": "push-transition",
+      "category": "transitions-highlights",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Push transition",
+      "meaning": "The next scene pushes the current one out"
+    },
+    {
+      "id": "138",
+      "pack": "motion2",
+      "slug": "blinds-transition",
+      "category": "transitions-highlights",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Blinds transition",
+      "meaning": "The next scene opens through thin strips"
+    },
+    {
+      "id": "139",
+      "pack": "motion2",
+      "slug": "cube-transition",
+      "category": "transitions-highlights",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Cube transition",
+      "meaning": "Changes scenes like a turning cube"
+    },
+    {
+      "id": "140",
+      "pack": "motion2",
+      "slug": "page-curl",
+      "category": "transitions-highlights",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Page curl",
+      "meaning": "Peels back like paper to show the next page"
+    },
+    {
+      "id": "141",
+      "pack": "motion2",
+      "slug": "pixelate",
+      "category": "transitions-highlights",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Pixelate",
+      "meaning": "Turns into coarse blocks, then switches"
+    },
+    {
+      "id": "142",
+      "pack": "motion2",
+      "slug": "shatter",
+      "category": "transitions-highlights",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Shatter",
+      "meaning": "Breaks like glass and the shards fly off"
+    },
+    {
+      "id": "143",
+      "pack": "motion2",
+      "slug": "exploded-view",
+      "category": "transitions-highlights",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Exploded view",
+      "meaning": "Parts separate to show the structure inside"
+    },
+    {
+      "id": "144",
+      "pack": "motion2",
+      "slug": "split-screen",
+      "category": "transitions-highlights",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Split screen",
+      "meaning": "Divides the frame to show scenes side by side"
+    },
+    {
+      "id": "145",
+      "pack": "lp2",
+      "slug": "timeline-on-scroll",
+      "category": "scroll",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Timeline on scroll",
+      "meaning": "A timeline line grows as you scroll"
+    },
+    {
+      "id": "146",
+      "pack": "lp2",
+      "slug": "scroll-text-reveal",
+      "category": "scroll",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Scroll text reveal",
+      "meaning": "Text darkens letter by letter as you scroll"
+    },
+    {
+      "id": "147",
+      "pack": "lp2",
+      "slug": "stacking-cards",
+      "category": "scroll",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Stacking cards",
+      "meaning": "Cards stack on top of each other on scroll"
+    },
+    {
+      "id": "148",
+      "pack": "lp2",
+      "slug": "background-color-change",
+      "category": "scroll",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Background color change on scroll",
+      "meaning": "The page background changes color by section"
+    },
+    {
+      "id": "149",
+      "pack": "lp2",
+      "slug": "hide-on-scroll-header",
+      "category": "scroll",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Hide-on-scroll header",
+      "meaning": "Hides on scroll down, returns on scroll up"
+    },
+    {
+      "id": "150",
+      "pack": "lp2",
+      "slug": "scrollspy",
+      "category": "scroll",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Scrollspy",
+      "meaning": "Highlights the current section in the menu"
+    },
+    {
+      "id": "151",
+      "pack": "lp2",
+      "slug": "back-to-top-button",
+      "category": "scroll",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Back-to-top button",
+      "meaning": "Appears lower down and returns you to the top"
+    },
+    {
+      "id": "152",
+      "pack": "lp2",
+      "slug": "zoom-on-scroll",
+      "category": "scroll",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Zoom on scroll",
+      "meaning": "An image grows to fill the screen as you scroll"
+    },
+    {
+      "id": "153",
+      "pack": "lp2",
+      "slug": "3d-tilt",
+      "category": "mouse-input",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "3D tilt on hover",
+      "meaning": "The card tilts in 3D following the cursor"
+    },
+    {
+      "id": "154",
+      "pack": "lp2",
+      "slug": "spotlight-hover",
+      "category": "mouse-input",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Spotlight hover",
+      "meaning": "Only the area around the cursor lights up"
+    },
+    {
+      "id": "155",
+      "pack": "lp2",
+      "slug": "image-swap-on-hover",
+      "category": "mouse-input",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Image swap on hover",
+      "meaning": "Hovering swaps the photo for another shot"
+    },
+    {
+      "id": "156",
+      "pack": "lp2",
+      "slug": "text-roll-on-hover",
+      "category": "mouse-input",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Text roll on hover",
+      "meaning": "Letters roll up and swap on hover"
+    },
+    {
+      "id": "157",
+      "pack": "lp2",
+      "slug": "hover-image-reveal",
+      "category": "mouse-input",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Hover image reveal",
+      "meaning": "Hovering a list item shows its photo"
+    },
+    {
+      "id": "158",
+      "pack": "lp2",
+      "slug": "floating-label",
+      "category": "mouse-input",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Floating label",
+      "meaning": "The label floats up when you start typing"
+    },
+    {
+      "id": "159",
+      "pack": "lp2",
+      "slug": "inline-validation",
+      "category": "mouse-input",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Inline validation",
+      "meaning": "Shows right or wrong while you type"
+    },
+    {
+      "id": "160",
+      "pack": "lp2",
+      "slug": "loading-button",
+      "category": "mouse-input",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Loading button",
+      "meaning": "Shows loading, then done, inside the button"
+    },
+    {
+      "id": "161",
+      "pack": "lp2",
+      "slug": "view-transition",
+      "category": "showcase",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "View transition (shared element)",
+      "meaning": "A list photo expands into the detail page"
+    },
+    {
+      "id": "162",
+      "pack": "lp2",
+      "slug": "lightbox",
+      "category": "showcase",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Lightbox",
+      "meaning": "Opens an image large over a dimmed page"
+    },
+    {
+      "id": "163",
+      "pack": "lp2",
+      "slug": "hotspots",
+      "category": "showcase",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Hotspots",
+      "meaning": "Dots on an image open notes when clicked"
+    },
+    {
+      "id": "164",
+      "pack": "lp2",
+      "slug": "countdown-timer",
+      "category": "showcase",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Countdown timer",
+      "meaning": "Counts down the time left to a deadline"
+    },
+    {
+      "id": "165",
+      "pack": "lp2",
+      "slug": "animated-shape-divider",
+      "category": "showcase",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Animated shape divider",
+      "meaning": "A wavy section divider that keeps moving"
+    },
+    {
+      "id": "166",
+      "pack": "lp2",
+      "slug": "like-button-animation",
+      "category": "showcase",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Like button animation",
+      "meaning": "The heart pops with a burst when liked"
+    },
+    {
+      "id": "167",
+      "pack": "lp2",
+      "slug": "scroll-down-cue",
+      "category": "showcase",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Scroll-down cue",
+      "meaning": "A looping cue that invites you to scroll down"
+    },
+    {
+      "id": "168",
+      "pack": "lp2",
+      "slug": "background-video",
+      "category": "showcase",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Background video",
+      "meaning": "A video plays behind the hero section"
+    },
+    {
+      "id": "169",
+      "pack": "camera2",
+      "slug": "pedestal",
+      "category": "camera-movement",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Pedestal",
+      "meaning": "Move the whole camera straight up or down"
+    },
+    {
+      "id": "170",
+      "pack": "camera2",
+      "slug": "barrel-roll",
+      "category": "camera-movement",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Barrel roll",
+      "meaning": "Roll the camera a full turn on its axis"
+    },
+    {
+      "id": "171",
+      "pack": "camera2",
+      "slug": "hyperlapse",
+      "category": "camera-movement",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Hyperlapse",
+      "meaning": "A time-lapse shot while the camera travels"
+    },
+    {
+      "id": "172",
+      "pack": "camera2",
+      "slug": "long-take",
+      "category": "camera-movement",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Long take",
+      "meaning": "One continuous shot with no cuts"
+    },
+    {
+      "id": "173",
+      "pack": "camera2",
+      "slug": "steadicam",
+      "category": "camera-movement",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Steadicam",
+      "meaning": "Smooth, floating movement with no shake"
+    },
+    {
+      "id": "174",
+      "pack": "camera2",
+      "slug": "follow-shot",
+      "category": "camera-movement",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Follow shot",
+      "meaning": "Follow behind the subject as they move"
+    },
+    {
+      "id": "175",
+      "pack": "camera2",
+      "slug": "locked-off-shot",
+      "category": "camera-movement",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Locked-off shot",
+      "meaning": "Camera fixed; only the subject moves"
+    },
+    {
+      "id": "176",
+      "pack": "camera2",
+      "slug": "fly-through",
+      "category": "camera-movement",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Fly-through",
+      "meaning": "Fly through an opening into the next space"
+    },
+    {
+      "id": "177",
+      "pack": "camera2",
+      "slug": "low-angle",
+      "category": "angles-framing",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Low angle",
+      "meaning": "Shoot from low down, looking up"
+    },
+    {
+      "id": "178",
+      "pack": "camera2",
+      "slug": "high-angle",
+      "category": "angles-framing",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "High angle",
+      "meaning": "Shoot from above, looking down"
+    },
+    {
+      "id": "179",
+      "pack": "camera2",
+      "slug": "pov-shot",
+      "category": "angles-framing",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "POV shot",
+      "meaning": "See through a character's eyes"
+    },
+    {
+      "id": "180",
+      "pack": "camera2",
+      "slug": "over-the-shoulder",
+      "category": "angles-framing",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Over-the-shoulder",
+      "meaning": "Frame one person over another's shoulder"
+    },
+    {
+      "id": "181",
+      "pack": "camera2",
+      "slug": "birds-eye-view",
+      "category": "angles-framing",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Bird's-eye view",
+      "meaning": "Straight down from directly overhead"
+    },
+    {
+      "id": "182",
+      "pack": "camera2",
+      "slug": "deep-focus",
+      "category": "angles-framing",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Deep focus",
+      "meaning": "Near and far all in sharp focus"
+    },
+    {
+      "id": "183",
+      "pack": "camera2",
+      "slug": "establishing-shot",
+      "category": "angles-framing",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Establishing shot",
+      "meaning": "A wide opening shot that shows the place"
+    },
+    {
+      "id": "184",
+      "pack": "camera2",
+      "slug": "extreme-close-up",
+      "category": "angles-framing",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Extreme close-up",
+      "meaning": "Fill the frame with one small detail"
+    },
+    {
+      "id": "185",
+      "pack": "camera2",
+      "slug": "insert-shot",
+      "category": "transitions-editing",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Insert shot",
+      "meaning": "Cut in to a detail of the same scene"
+    },
+    {
+      "id": "186",
+      "pack": "camera2",
+      "slug": "morph-cut",
+      "category": "transitions-editing",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Morph cut",
+      "meaning": "Blend two takes so the join disappears"
+    },
+    {
+      "id": "187",
+      "pack": "camera2",
+      "slug": "fade-to-black",
+      "category": "transitions-editing",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Fade to black",
+      "meaning": "The picture darkens to black"
+    },
+    {
+      "id": "188",
+      "pack": "camera2",
+      "slug": "iris-out",
+      "category": "transitions-editing",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Iris out",
+      "meaning": "A circle closes down to black"
+    },
+    {
+      "id": "189",
+      "pack": "camera2",
+      "slug": "cutaway",
+      "category": "transitions-editing",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Cutaway",
+      "meaning": "Cut to something else, then back"
+    },
+    {
+      "id": "190",
+      "pack": "camera2",
+      "slug": "cross-cutting",
+      "category": "transitions-editing",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Cross-cutting",
+      "meaning": "Alternate between two simultaneous scenes"
+    },
+    {
+      "id": "191",
+      "pack": "camera2",
+      "slug": "bullet-time",
+      "category": "transitions-editing",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Bullet time",
+      "meaning": "Time stands still while the camera circles"
+    },
+    {
+      "id": "192",
+      "pack": "camera2",
+      "slug": "montage",
+      "category": "transitions-editing",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Montage",
+      "meaning": "A run of short shots condensing time"
+    }
+  ]
+}

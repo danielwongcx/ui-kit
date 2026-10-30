@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Kinetic typography · ui-kit</title>
-<meta name="description" content="Kinetic typography. STRETCH, BOUNCE, SPIN, and SLAM move the way they mean, in a 4.7 second cycle from Shohei Ohtaki’s motion prompt #008.">
+<title>Motion prompt · ui-kit</title>
+<meta name="description" content="192 looping canvas effects from Shohei Ohtaki’s Motion Prompt gallery. Filter by pack. MIT License.">
 <!--
-  Rank: primary = the stage. Secondary = the title. Tertiary = the credit.
-  Primary action = Replay.
-  Tokens: space 4–64, type 12–24, ink / muted / page, radius 12, the wave-grid shadow.
-  Stage colors are the motion-prompt kit: navy, blue, yellow, mint, coral.
+  Rank: primary = the effect canvases. Secondary = each effect name. Tertiary = the number, the meaning, and the credit.
+  Primary action = the pack filter. All is the resting choice.
+  Tokens: space 4–64, type 12–18, ink / muted / page, radius 12, the wave-grid shadow.
+  Effects: vendor/motion-prompt/ (MIT, Shohei Ohtaki). #008 is one card in the grid.
 -->
 <script>
   (function () {
@@ -26,7 +26,7 @@
     if (reduce) document.documentElement.setAttribute("data-motion", "reduce");
   })();
 </script>
-<link rel="stylesheet" href="shared/site-header.css?v=6">
+<link rel="stylesheet" href="shared/site-header.css?v=7">
 <style>
   :root {
     --space-4: 4px;
@@ -44,8 +44,10 @@
     --ink: #1c1c22;
     --muted: #5c5c66;
     --page: #f6f5f3;
+    --card: #ffffff;
+    --line: rgba(28, 28, 34, 0.1);
+    --track: #eceae6;
     --radius: 12px;
-    --navy: #0F1A3D;
     --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
     --shadow:
       0 1px 2px rgba(28, 28, 34, 0.06),
@@ -69,19 +71,20 @@
     box-sizing: border-box;
   }
 
+  .page [hidden] {
+    display: none !important;
+  }
+
   .page {
     max-width: 1120px;
     margin: 0 auto;
     padding: var(--space-32) var(--space-24) var(--space-64);
   }
 
-  .toolbar {
+  .hero {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-16);
-    margin-bottom: var(--space-32);
+    flex-direction: column;
+    gap: var(--space-8);
   }
 
   h1 {
@@ -92,68 +95,180 @@
     line-height: 1.3;
   }
 
-  .controls {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-12);
-  }
-
-  .replay {
-    min-height: 44px;
-    padding: 0 var(--space-16);
-    border: 0;
-    border-radius: var(--radius);
-    background: var(--ink);
-    color: #fff;
-    font: 600 var(--text-14)/1.2 var(--sans);
-    cursor: pointer;
-  }
-
-  .replay:hover {
-    background: #2a2a32;
-  }
-
-  .replay:active {
-    background: #111114;
-  }
-
-  .replay:focus-visible,
-  .credit a:focus-visible {
-    outline: 2px solid var(--ink);
-    outline-offset: 2px;
-  }
-
-  .stage {
+  .lede {
     margin: 0;
-    border-radius: var(--radius);
-    overflow: hidden;
-    background: var(--navy);
-    box-shadow: var(--shadow);
-    line-height: 0;
-  }
-
-  .stage canvas {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 539 / 208;
-    background: var(--navy);
-  }
-
-  .credit {
-    margin: var(--space-32) 0 0;
-    max-width: 36em;
+    max-width: 40em;
     font-size: var(--text-14);
     font-weight: 400;
     line-height: 1.5;
     color: var(--muted);
   }
 
-  .credit a {
+  .lede a {
     color: var(--ink);
     font-weight: 600;
     text-underline-offset: 0.15em;
+  }
+
+  .filters {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    margin: var(--space-32) 0;
+  }
+
+  .filter {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .filter__label {
+    font-size: var(--text-12);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1.3;
+    color: var(--muted);
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+  }
+
+  .chip {
+    min-height: 44px;
+    max-width: 100%;
+    padding: var(--space-8) var(--space-16);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--card);
+    color: var(--ink);
+    font: 600 var(--text-14)/1.2 var(--sans);
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .chip:hover {
+    border-color: rgba(28, 28, 34, 0.28);
+  }
+
+  .chip[aria-checked="true"] {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: #fff;
+  }
+
+  .chip[aria-checked="true"]:hover {
+    background: #2a2a32;
+    border-color: #2a2a32;
+  }
+
+  .count,
+  .status {
+    margin: 0;
+    font-size: var(--text-14);
+    font-weight: 400;
+    line-height: 1.5;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .count {
+    color: var(--muted);
+  }
+
+  .status {
+    color: var(--ink);
+    margin-bottom: var(--space-16);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    gap: var(--space-24);
+  }
+
+  .card {
+    min-width: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    scroll-margin-top: calc(var(--site-header-h, 56px) + var(--space-16));
+    scroll-margin-bottom: var(--space-16);
+  }
+
+  .card.is-target,
+  .card:target {
+    box-shadow:
+      0 0 0 2px var(--ink),
+      var(--shadow);
+  }
+
+  .card:focus {
+    outline: none;
+  }
+
+  .card__stage {
+    background: var(--track);
+    line-height: 0;
+  }
+
+  .card__stage canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .card__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding: var(--space-16);
+  }
+
+  .card__name {
+    margin: 0;
+    font-size: var(--text-16);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+  }
+
+  .card__name a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .card__name a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .card__id {
+    color: var(--muted);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .card__meaning {
+    margin: 0;
+    font-size: var(--text-14);
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .lede a:focus-visible,
+  .chip:focus-visible,
+  .card__name a:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
   }
 
   @media (min-width: 800px) {
@@ -161,297 +276,46 @@
       padding: var(--space-48) var(--space-48) var(--space-64);
     }
   }
-
-  @media (max-width: 560px) {
-    .controls {
-      width: 100%;
-      align-items: stretch;
-    }
-
-    .replay {
-      width: 100%;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .replay {
-      transition: none;
-    }
-  }
 </style>
 </head>
 <body data-page="kinetic-typography">
 <main class="page">
-  <div class="toolbar">
-    <h1 id="effect-name">Kinetic typography</h1>
-    <div class="controls">
-      <button type="button" class="replay" id="replay">Replay</button>
+  <header class="hero">
+    <h1 id="page-title">Motion prompt</h1>
+    <p class="lede" id="lede">
+      192 looping canvas effects from
+      <a href="https://showheyohtaki.github.io/motion-prompt/" target="_blank" rel="noopener noreferrer">Shohei Ohtaki’s Motion Prompt</a>
+      gallery, including
+      <a href="#008">kinetic typography</a>.
+      MIT License. Source on
+      <a href="https://github.com/showheyohtaki/motion-prompt" target="_blank" rel="noopener noreferrer">GitHub</a>.
+    </p>
+  </header>
+
+  <div class="filters">
+    <div class="filter">
+      <span class="filter__label" id="pack-label">Pack</span>
+      <div class="chips" id="pack-chips" role="radiogroup" aria-labelledby="pack-label" aria-controls="grid"></div>
     </div>
+    <div class="filter" id="cat-filter" hidden>
+      <span class="filter__label" id="cat-label">Category</span>
+      <div class="chips" id="cat-chips" role="radiogroup" aria-labelledby="cat-label" aria-controls="grid"></div>
+    </div>
+    <p class="count" id="count" hidden></p>
   </div>
-
-  <div class="stage">
-    <canvas id="kinetic" width="539" height="208" role="img" aria-labelledby="effect-name" aria-describedby="kinetic-credit">
-      STRETCH, BOUNCE, SPIN, and SLAM. Each word moves the way it means.
-    </canvas>
-  </div>
-
-  <p class="credit" id="kinetic-credit">
-    <a href="https://showheyohtaki.github.io/motion-prompt/#008" target="_blank" rel="noopener noreferrer">Motion prompt #008</a>
-    by Shohei Ohtaki, MIT License.
-    STRETCH, BOUNCE, SPIN, and SLAM stand in for
-    <span lang="ja">のびる</span>, <span lang="ja">はねる</span>, <span lang="ja">まわる</span>, and <span lang="ja">ドン！</span>
-  </p>
+  <p class="status" id="status" role="status" hidden></p>
+  <div class="grid" id="grid"></div>
 </main>
-<script>
-(function () {
-  "use strict";
-
-  // Motion Prompt #008 · MIT License (c) 2026 Shohei Ohtaki
-  // https://showheyohtaki.github.io/motion-prompt/#008
-  // Trimmed from the motion kit: stage, spring, P, eIn, eOut, backOut, chars, txt, palette, cycle, display face.
-
-  var CW = 539, CH = 208;
-  var CYC = 4.7;
-  var C = {
-    navy: "#0F1A3D",
-    blue: "#3B7BFF",
-    coral: "#FF6B5C",
-    yel: "#FFC83D",
-    mint: "#2EDBA8"
-  };
-  var DISP = '"Avenir Next", "Helvetica Neue", system-ui, sans-serif';
-  var SETTLED = 3 * (CYC / 4) + 0.7;
-
-  var clamp = function (x, a, b) { return Math.min(b, Math.max(a, x)); };
-  var lerp = function (a, b, x) { return a + (b - a) * x; };
-  var P = function (t, a, b) { return clamp((t - a) / (b - a), 0, 1); };
-  var eOut = function (x) { return 1 - Math.pow(1 - x, 3); };
-  var eIn = function (x) { return x * x * x; };
-  var backOut = function (x, s) {
-    if (s === undefined) s = 1.70158;
-    return 1 + (s + 1) * Math.pow(x - 1, 3) + s * Math.pow(x - 1, 2);
-  };
-  var spring = function (t, w, d) {
-    if (w === undefined) w = 14;
-    if (d === undefined) d = 7;
-    return t <= 0 ? 0 : 1 - Math.exp(-d * t) * Math.cos(w * t);
-  };
-
-  function stage(k, col) {
-    k.fillStyle = col || C.navy;
-    k.fillRect(0, 0, CW, CH);
-  }
-
-  function txt(ctx, s, x, y, font, col, align, base, ls) {
-    ctx.font = font;
-    ctx.fillStyle = col;
-    ctx.textAlign = align || "left";
-    ctx.textBaseline = base || "alphabetic";
-    ctx.letterSpacing = ls || "0px";
-    ctx.fillText(s, x, y);
-    ctx.letterSpacing = "0px";
-  }
-
-  function chars(k, s, font, ls) {
-    if (ls === undefined) ls = 0;
-    k.font = font;
-    var list = Array.from(s);
-    var ws = list.map(function (ch) { return k.measureText(ch).width + ls; });
-    var tot = ws.reduce(function (a, b) { return a + b; }, 0) - ls;
-    var x = -tot / 2;
-    return list.map(function (ch, i) {
-      var o = { ch: ch, x: x + (ws[i] - ls) / 2, w: ws[i] - ls };
-      x += ws[i];
-      return o;
-    });
-  }
-
-  // Cell is the published #008 function. Words are the English equivalents; font is the kit display face.
-  function cell(k, w, h, u) {
-    stage(k);
-    var T = CYC / 4, n = Math.min(3, Math.floor(u / T)), lu = u - n * T, X = w / 2, Y = h / 2 + 6;
-    var out = P(lu, T - 0.2, T - 0.02), oa = 1 - out, oy = -46 * eIn(out);
-    var f = "800 88px " + DISP;
-    k.save();
-    k.translate(X, Y + oy);
-    k.globalAlpha = oa;
-    if (n === 0) {
-      var sp = spring(lu - 0.05, 12, 4.2), sx = 0.3 + 0.7 * sp, sy = 1 / Math.sqrt(Math.max(0.75, sx));
-      k.globalAlpha = oa * P(lu, 0.03, 0.12);
-      k.scale(sx, sy);
-      txt(k, "STRETCH", 0, 0, f, C.blue, "center", "middle", "4px");
-    } else if (n === 1) {
-      chars(k, "BOUNCE", f, 6).forEach(function (c, i) {
-        var tt = lu - 0.06 - i * 0.1;
-        if (tt < 0) return;
-        var y = -78 * Math.abs(Math.sin(Math.PI * tt / 0.4)) * Math.exp(-2.6 * tt);
-        var near = Math.abs(Math.sin(Math.PI * tt / 0.4)) < 0.25 ? 1 : 0;
-        var sq = 1 - 0.16 * near * Math.exp(-2.6 * tt);
-        var a = P(tt, 0, 0.08);
-        k.save();
-        k.globalAlpha = oa * a;
-        k.translate(c.x, y + 44);
-        k.scale(2 - sq, sq);
-        txt(k, c.ch, 0, -44, f, C.yel, "center", "middle");
-        k.restore();
-      });
-    } else if (n === 2) {
-      chars(k, "SPIN", f, 6).forEach(function (c, i) {
-        var tt = lu - 0.05 - i * 0.12;
-        if (tt < 0) return;
-        var q = backOut(P(tt, 0, 0.62), 1.3), sc = eOut(P(tt, 0, 0.25));
-        k.save();
-        k.translate(c.x, 0);
-        k.rotate((1 - q) * -Math.PI * 2);
-        k.scale(sc, sc);
-        txt(k, c.ch, 0, 0, f, C.mint, "center", "middle");
-        k.restore();
-      });
-    } else {
-      var hit = 0.2, tt = lu - hit;
-      var sc = tt < 0 ? lerp(3.4, 1, eIn(P(lu, 0.02, hit))) : 1;
-      var dx = tt > 0 ? 10 * Math.exp(-9 * tt) * Math.sin(38 * tt) : 0;
-      var sy = tt > 0 ? 1 - 0.2 * Math.exp(-11 * tt) : 1;
-      k.globalAlpha = oa * P(lu, 0.02, 0.1);
-      if (tt > 0 && tt < 0.4) {
-        var q = eOut(tt / 0.4);
-        k.strokeStyle = C.yel;
-        k.lineWidth = 7 * (1 - q);
-        k.lineCap = "round";
-        for (var i = 0; i < 8; i++) {
-          var a = i / 8 * Math.PI * 2 + 0.2, r0 = 120 + 50 * q, r1 = r0 + 26;
-          k.beginPath();
-          k.moveTo(Math.cos(a) * r0 * 1.35, Math.sin(a) * r0 * 0.5);
-          k.lineTo(Math.cos(a) * r1 * 1.35, Math.sin(a) * r1 * 0.5);
-          if (q < 0.97) k.stroke();
-        }
-      }
-      k.translate(dx, 44);
-      k.scale(sc * (2 - sy), sc * sy);
-      k.transform(1, 0, -0.14, 1, 0, 0);
-      txt(k, "SLAM!", 0, -44, "800 100px " + DISP, C.coral, "center", "middle");
-    }
-    k.restore();
-  }
-
-  var canvas = document.getElementById("kinetic");
-  var replay = document.getElementById("replay");
-  var ctx = canvas.getContext("2d");
-  var reduceMq = window.matchMedia("(prefers-reduced-motion: reduce)");
-  var params = new URLSearchParams(location.search);
-  var forceReduce = params.get("reduce") === "1";
-  var forceMotion = params.get("motion") === "1";
-  var origin = performance.now();
-  var rafId = 0;
-  var freezeU = null;
-  var uParam = params.get("u");
-  if (uParam != null && uParam !== "") {
-    var parsed = Number(uParam);
-    if (isFinite(parsed)) freezeU = ((parsed % CYC) + CYC) % CYC;
-  }
-
-  var LIVE_LABEL = "STRETCH, BOUNCE, SPIN, and SLAM. Each word moves the way it means.";
-  var STILL_LABEL = "SLAM, settled. Motion is turned off.";
-
-  function prefersReduce() {
-    if (forceMotion) return false;
-    if (forceReduce) return true;
-    return !!(reduceMq && reduceMq.matches);
-  }
-
-  function syncMotionAttr() {
-    if (prefersReduce()) document.documentElement.setAttribute("data-motion", "reduce");
-    else document.documentElement.removeAttribute("data-motion");
-  }
-
-  function shownU() {
-    if (prefersReduce()) return SETTLED;
-    if (freezeU != null) return freezeU;
-    return ((performance.now() - origin) / 1000) % CYC;
-  }
-
-  function layout() {
-    var rect = canvas.getBoundingClientRect();
-    if (rect.width < 2 || rect.height < 2) return false;
-    var dpr = Math.min(window.devicePixelRatio || 1, 3);
-    var bw = Math.max(1, Math.round(rect.width * dpr));
-    var bh = Math.max(1, Math.round(rect.height * dpr));
-    if (canvas.width !== bw || canvas.height !== bh) {
-      canvas.width = bw;
-      canvas.height = bh;
-    }
-    ctx.setTransform(bw / CW, 0, 0, bh / CH, 0, 0);
-    ctx.globalAlpha = 1;
-    ctx.globalCompositeOperation = "source-over";
-    return true;
-  }
-
-  function render(u) {
-    if (!ctx || !layout()) return false;
-    ctx.clearRect(0, 0, CW, CH);
-    ctx.save();
-    cell(ctx, CW, CH, u);
-    ctx.restore();
-    return true;
-  }
-
-  function labelForMode() {
-    canvas.setAttribute("aria-label", prefersReduce() ? STILL_LABEL : LIVE_LABEL);
-  }
-
-  function stop() {
-    if (rafId) cancelAnimationFrame(rafId);
-    rafId = 0;
-  }
-
-  function tick() {
-    if (!render(shownU())) {
-      rafId = requestAnimationFrame(tick);
-      return;
-    }
-    if (prefersReduce() || freezeU != null) {
-      rafId = 0;
-      return;
-    }
-    rafId = requestAnimationFrame(tick);
-  }
-
-  function play(fromStart) {
-    syncMotionAttr();
-    labelForMode();
-    stop();
-    if (fromStart) {
-      freezeU = null;
-      origin = performance.now();
-    }
-    rafId = requestAnimationFrame(tick);
-  }
-
-  replay.addEventListener("click", function () {
-    play(true);
-  });
-
-  window.addEventListener("resize", function () {
-    render(shownU());
-  });
-
-  if (window.ResizeObserver) {
-    new ResizeObserver(function () {
-      render(shownU());
-    }).observe(canvas);
-  }
-
-  function onMotionChange() {
-    if (forceReduce || forceMotion) return;
-    play(!prefersReduce());
-  }
-
-  if (reduceMq.addEventListener) reduceMq.addEventListener("change", onMotionChange);
-  else if (reduceMq.addListener) reduceMq.addListener(onMotionChange);
-
-  play(false);
-})();
-</script>
-<script src="shared/site-header.js?v=16" defer></script>
+<script src="vendor/motion-prompt/runtime.js" defer></script>
+<script src="vendor/motion-prompt/pack-motion.js" defer></script>
+<script src="vendor/motion-prompt/pack-camera.js" defer></script>
+<script src="vendor/motion-prompt/pack-ui.js" defer></script>
+<script src="vendor/motion-prompt/pack-lp.js" defer></script>
+<script src="vendor/motion-prompt/pack-photo.js" defer></script>
+<script src="vendor/motion-prompt/pack-motion2.js" defer></script>
+<script src="vendor/motion-prompt/pack-lp2.js" defer></script>
+<script src="vendor/motion-prompt/pack-camera2.js" defer></script>
+<script src="kinetic-typography.js" defer></script>
+<script src="shared/site-header.js?v=17" defer></script>
 </body>
 </html>

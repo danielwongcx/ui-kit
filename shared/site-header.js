@@ -30,7 +30,7 @@
         { id: 'grok-bot-showreel', label: 'Grok Bot reel', href: 'grok-bot-showreel.html' },
         { id: 'dub-promo-showreel', label: 'Dub promo', href: 'dub-promo-showreel.html' },
         { id: 'wave-card-grid', label: 'Wave grid', href: 'wave-card-grid.html' },
-        { id: 'kinetic-typography', label: 'Kinetic type', href: 'kinetic-typography.html' }
+        { id: 'kinetic-typography', label: 'Motion prompt', href: 'kinetic-typography.html' }
       ]
     }
   ];
