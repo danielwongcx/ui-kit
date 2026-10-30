@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Staggered wave reveal · ui-kit</title>
+<meta name="description" content="Staggered wave reveal. A responsive card grid fades and scales in with a delay from each card’s row and column, so the entrance ripples across the grid.">
+<script>
+  (function () {
+    var q = location.search || "";
+    var forceReduce = /(?:^|[?&])reduce=1(?:&|$)/.test(q);
+    var forceMotion = /(?:^|[?&])motion=1(?:&|$)/.test(q);
+    var reduce = false;
+    try {
+      reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    } catch (e) {}
+    if (forceMotion) reduce = false;
+    if (forceReduce) reduce = true;
+    document.documentElement.classList.add("js");
+    if (reduce) document.documentElement.setAttribute("data-motion", "reduce");
+  })();
+</script>
+<link rel="stylesheet" href="shared/site-header.css?v=6">
+<style>
+  :root {
+    --space-4: 4px;
+    --space-8: 8px;
+    --space-12: 12px;
+    --space-16: 16px;
+    --space-24: 24px;
+    --space-32: 32px;
+    --space-48: 48px;
+    --space-64: 64px;
+    --text-12: 12px;
+    --text-14: 14px;
+    --text-16: 16px;
+    --text-18: 18px;
+    --text-24: 24px;
+    --ink: #1c1c22;
+    --muted: #5c5c66;
+    --page: #f6f5f3;
+    --card: #ffffff;
+    --line: rgba(28, 28, 34, 0.1);
+    --track: #eceae6;
+    --radius: 12px;
+    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --shadow:
+      0 1px 2px rgba(28, 28, 34, 0.06),
+      0 8px 16px rgba(28, 28, 34, 0.05);
+  }
+
+  html, body {
+    margin: 0;
+    background: var(--page);
+    color: var(--ink);
+  }
+
+  body {
+    font-family: var(--sans);
+    font-size: var(--text-16);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page, .page *, .page *::before, .page *::after {
+    box-sizing: border-box;
+  }
+
+  .page {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: var(--space-32) var(--space-24) var(--space-64);
+  }
+
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-16);
+    margin-bottom: var(--space-32);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: var(--text-18);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-12);
+  }
+
+  .seg {
+    display: flex;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    background: var(--track);
+    border-radius: var(--radius);
+  }
+
+  .seg__opt {
+    position: relative;
+    flex: 1 1 auto;
+  }
+
+  .seg__opt input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .seg__opt span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 var(--space-16);
+    border-radius: 8px;
+    font-size: var(--text-14);
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .seg__opt input:checked + span {
+    background: var(--card);
+    color: var(--ink);
+    font-weight: 600;
+    box-shadow: var(--shadow);
+  }
+
+  .seg__opt input:focus-visible + span,
+  .replay:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+
+  .replay {
+    min-height: 44px;
+    padding: 0 var(--space-16);
+    border: 0;
+    border-radius: var(--radius);
+    background: var(--ink);
+    color: #fff;
+    font: 600 var(--text-14)/1.2 var(--sans);
+    cursor: pointer;
+  }
+
+  .replay:hover {
+    background: #2a2a32;
+  }
+
+  .replay:active {
+    background: #111114;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: var(--space-16);
+  }
+
+  .card {
+    margin: 0;
+    padding: var(--space-16);
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transform-origin: center center;
+  }
+
+  html.js:not([data-motion="reduce"]) .card:not(.is-shown) {
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+  }
+
+  .card__name {
+    margin: 0 0 var(--space-8);
+    font-size: var(--text-12);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    line-height: 1.4;
+    color: var(--muted);
+  }
+
+  .card__value {
+    margin: 0;
+    font-size: var(--text-24);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .card__note {
+    margin: var(--space-4) 0 0;
+    font-size: var(--text-12);
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  @media (min-width: 800px) {
+    .page {
+      padding: var(--space-48) var(--space-48) var(--space-64);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .controls {
+      width: 100%;
+      align-items: stretch;
+    }
+
+    .seg {
+      width: 100%;
+    }
+
+    .replay {
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .replay,
+    .seg__opt span {
+      transition: none;
+    }
+  }
+</style>
+</head>
+<body data-page="wave-card-grid">
+<main class="page">
+  <div class="toolbar">
+    <h1 id="effect-name">Staggered wave reveal</h1>
+    <div class="controls">
+      <div class="seg" role="radiogroup" aria-label="Wave direction">
+        <label class="seg__opt">
+          <input type="radio" name="wave" value="diagonal" checked>
+          <span>Diagonal</span>
+        </label>
+        <label class="seg__opt">
+          <input type="radio" name="wave" value="row">
+          <span>Row</span>
+        </label>
+        <label class="seg__opt">
+          <input type="radio" name="wave" value="column">
+          <span>Column</span>
+        </label>
+      </div>
+      <button type="button" class="replay" id="replay">Replay</button>
+    </div>
+  </div>
+
+  <div class="grid" id="grid" aria-labelledby="effect-name">
+    <article class="card">
+      <h2 class="card__name">Revenue</h2>
+      <p class="card__value">$48,210</p>
+      <p class="card__note">Up 12% this month</p>
+    </article>
+    <article class="card">
+      <h2 class="card__name">Active accounts</h2>
+      <p class="card__value">1,284</p>
+      <p class="card__note">32 new today</p>
+    </article>
+    <article class="card">
+      <h2 class="card__name">Latency</h2>
+      <p class="card__value">42 ms</p>
+      <p class="card__note">p95 under 80 ms</p>
+    </article>
+    <article class="card">
+      <h2 class="card__name">Signups</h2>
+      <p class="card__value">186</p>
+      <p class="card__note">Today</p>
+    </article>
+    <article class="card">
+      <h2 class="card__name">Churn</h2>
+      <p class="card__value">1.4%</p>
+      <p class="card__note">Trailing 30 days</p>
+    </article>
+    <article class="card">
+      <h2 class="card__name">Open tickets</h2>
+      <p class="card__value">23</p>
+      <p class="card__note">4 waiting on us</p>
+    </article>
+    <article class="card">
+      <h2 class="card__name">Uptime</h2>
+      <p class="card__value">99.98%</p>
+      <p class="card__note">Last 90 days</p>
+    </article>
+    <article class="card">
+      <h2 class="card__name">Deploys</h2>
+      <p class="card__value">14</p>
+      <p class="card__note">This week</p>
+    </article>
+    <article class="card">
+      <h2 class="card__name">Seats</h2>
+      <p class="card__value">86</p>
+      <p class="card__note">of 120</p>
+    </article>
+    <article class="card">
+      <h2 class="card__name">Error rate</h2>
+      <p class="card__value">0.21%</p>
+      <p class="card__note">Last hour</p>
+    </article>
+    <article class="card">
+      <h2 class="card__name">NPS</h2>
+      <p class="card__value">62</p>
+      <p class="card__note">This quarter</p>
+    </article>
+    <article class="card">
+      <h2 class="card__name">Net revenue</h2>
+      <p class="card__value">$12.4k</p>
+      <p class="card__note">Monthly</p>
+    </article>
+  </div>
+</main>
+<script src="vendor/gsap.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var STEP = 0.08;
+  var DURATION = 0.6;
+  var grid = document.getElementById("grid");
+  var replay = document.getElementById("replay");
+  var radios = document.querySelectorAll('input[name="wave"]');
+  var reduceMq = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var params = new URLSearchParams(location.search);
+  var forceReduce = params.get("reduce") === "1";
+  var forceMotion = params.get("motion") === "1";
+  var timeline = null;
+  var mode = "diagonal";
+  var lastCols = 0;
+
+  var dir = params.get("dir");
+  if (dir === "row" || dir === "column" || dir === "diagonal") mode = dir;
+
+  function prefersReduce() {
+    if (forceMotion) return false;
+    if (forceReduce) return true;
+    return !!(reduceMq && reduceMq.matches);
+  }
+
+  function syncMotionAttr() {
+    if (prefersReduce()) document.documentElement.setAttribute("data-motion", "reduce");
+    else document.documentElement.removeAttribute("data-motion");
+  }
+
+  function columnCount() {
+    var template = getComputedStyle(grid).gridTemplateColumns;
+    if (!template || template === "none") return 1;
+    return template.trim().split(/\s+/).length;
+  }
+
+  function indexCards() {
+    var cards = grid.querySelectorAll(".card");
+    var cols = Math.max(1, columnCount());
+    var rows = Math.max(1, Math.ceil(cards.length / cols));
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].dataset.row = String(Math.floor(i / cols));
+      cards[i].dataset.col = String(i % cols);
+    }
+    lastCols = cols;
+    return { cards: cards, cols: cols, rows: rows };
+  }
+
+  function delayOf(card, cols, rows) {
+    var r = Number(card.dataset.row) || 0;
+    var c = Number(card.dataset.col) || 0;
+    var index = r + c;
+    if (mode === "row") index = r * cols + c;
+    else if (mode === "column") index = c * rows + r;
+    return index * STEP;
+  }
+
+  function release(cards) {
+    if (timeline) {
+      timeline.eventCallback("onComplete", null);
+      timeline.kill();
+      timeline = null;
+    }
+    if (window.gsap) gsap.killTweensOf(cards);
+  }
+
+  function rest(cards) {
+    if (window.gsap) gsap.set(cards, { clearProps: "all" });
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].classList.add("is-shown");
+      if (!cards[i].getAttribute("style")) cards[i].removeAttribute("style");
+    }
+    replay.removeAttribute("aria-busy");
+  }
+
+  function showStatic() {
+    var cards = grid.querySelectorAll(".card");
+    release(cards);
+    rest(cards);
+  }
+
+  function play() {
+    syncMotionAttr();
+    var info = indexCards();
+    if (prefersReduce() || !window.gsap) {
+      showStatic();
+      return;
+    }
+
+    release(info.cards);
+    for (var i = 0; i < info.cards.length; i++) info.cards[i].classList.remove("is-shown");
+    gsap.set(info.cards, { opacity: 0, y: 16, scale: 0.96, force3D: false });
+
+    timeline = gsap.timeline({
+      onComplete: function () {
+        rest(info.cards);
+        timeline = null;
+      }
+    });
+
+    replay.setAttribute("aria-busy", "true");
+    for (var k = 0; k < info.cards.length; k++) {
+      timeline.to(info.cards[k], {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: DURATION,
+        ease: "power2.out",
+        force3D: false
+      }, delayOf(info.cards[k], info.cols, info.rows));
+    }
+  }
+
+  replay.addEventListener("click", function () {
+    play();
+  });
+
+  for (var r = 0; r < radios.length; r++) {
+    if (radios[r].value === mode) radios[r].checked = true;
+    radios[r].addEventListener("change", function (event) {
+      if (!event.target.checked) return;
+      mode = event.target.value;
+      play();
+    });
+  }
+
+  var resizeTimer = 0;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      var cols = columnCount();
+      if (cols === lastCols) return;
+      if (timeline) play();
+      else indexCards();
+    }, 150);
+  });
+
+  function onMotionChange() {
+    if (forceReduce || forceMotion) return;
+    if (prefersReduce()) showStatic();
+    else play();
+  }
+
+  if (reduceMq.addEventListener) reduceMq.addEventListener("change", onMotionChange);
+  else if (reduceMq.addListener) reduceMq.addListener(onMotionChange);
+
+  play();
+})();
+</script>
+<script src="shared/site-header.js?v=15" defer></script>
+</body>
+</html>
