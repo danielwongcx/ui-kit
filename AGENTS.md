@@ -24,6 +24,7 @@ Multi-page **static** UI kit published on GitHub Pages from the `main` branch ro
 - Grok Bot reel: https://danielwongcx.github.io/ui-kit/grok-bot-showreel.html (`grok-bot-showreel.html`) — Explainer. Full-viewport 15s motion showreel for Grok Bot, desktop assistant: cold open, identity spark, wordmark, six easings, morph, Truchet, depth, kinetic type, and fin. One GSAP master timeline (`vendor/gsap.min.js`). `prefers-reduced-motion` holds the fin plate. No build step.
 - Dub promo: https://danielwongcx.github.io/ui-kit/dub-promo-showreel.html (`dub-promo-showreel.html`) — Explainer. Full-viewport 15s looping motion study of a Dub short-link promo: long URL, short pill, live clicks, analytics, partners, feature slides, and a fin CTA. One GSAP master timeline (`vendor/gsap.min.js`). `prefers-reduced-motion` holds the fin plate. No build step.
 - Wave grid: https://danielwongcx.github.io/ui-kit/wave-card-grid.html (`wave-card-grid.html`) — Explainer. Responsive SaaS card grid that fades, rises, and scales in as a staggered wave. Delay follows the diagonal (row + column), the row, or the column. Replay restarts the wave. `prefers-reduced-motion` shows every card at rest. GSAP (`vendor/gsap.min.js`). No build step.
+- Kinetic type: https://danielwongcx.github.io/ui-kit/kinetic-typography.html (`kinetic-typography.html`) — Explainer. Words move the way they mean: STRETCH, BOUNCE, SPIN, and SLAM, ported from Shohei Ohtaki’s motion prompt #008 (MIT). Canvas cycle is 4.7s on the kit navy stage. Replay restarts from the start. `prefers-reduced-motion` holds SLAM at rest. No build step.
 
 No build step. Plain HTML / CSS / JS.
 
@@ -52,6 +53,7 @@ Top-level pages: Gallery, Digest, Taste, Piano, ASCII, Ferry, MTR, Transition.
 - Grok Bot reel → `grok-bot-showreel.html`
 - Dub promo → `dub-promo-showreel.html`
 - Wave grid → `wave-card-grid.html`
+- Kinetic type → `kinetic-typography.html`
 
 When you add a new page:
 
