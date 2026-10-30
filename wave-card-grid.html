@@ -393,12 +393,19 @@
     if (window.gsap) gsap.killTweensOf(cards);
   }
 
+  function rest(cards) {
+    if (window.gsap) gsap.set(cards, { clearProps: "all" });
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].classList.add("is-shown");
+      if (!cards[i].getAttribute("style")) cards[i].removeAttribute("style");
+    }
+    replay.removeAttribute("aria-busy");
+  }
+
   function showStatic() {
     var cards = grid.querySelectorAll(".card");
     release(cards);
-    if (window.gsap) gsap.set(cards, { clearProps: "all" });
-    for (var i = 0; i < cards.length; i++) cards[i].classList.add("is-shown");
-    replay.removeAttribute("aria-busy");
+    rest(cards);
   }
 
   function play() {
@@ -415,9 +422,7 @@
 
     timeline = gsap.timeline({
       onComplete: function () {
-        for (var j = 0; j < info.cards.length; j++) info.cards[j].classList.add("is-shown");
-        gsap.set(info.cards, { clearProps: "all" });
-        replay.removeAttribute("aria-busy");
+        rest(info.cards);
         timeline = null;
       }
     });
