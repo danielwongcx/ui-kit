@@ -176,9 +176,59 @@
   }
 
   function axisText(root, x, y, text, anchor, fill) {
-    var node = svg("text", { x: x, y: y, fill: fill || "#5c5c5c", "font-size": "11", "font-family": "Nunito, ui-rounded, sans-serif", "font-weight": "700", "text-anchor": anchor || "middle" });
+    var node = svg("text", { x: x, y: y, fill: fill || "#5c5c5c", "font-size": "12", "font-family": "Nunito, ui-rounded, sans-serif", "font-weight": "700", "text-anchor": anchor || "middle" });
     node.textContent = text;
     root.appendChild(node);
+  }
+
+  function shortAxis(plot, value, narrow) {
+    var tip = plot.tip || "num";
+    var abs = Math.abs(Number(value) || 0);
+    if (tip === "pct" || tip === "pct0" || tip === "pcts") return fmt(value, "pct0");
+    if (tip === "compact" || tip.indexOf("usd") === 0) {
+      if (tip === "compact" || abs >= 1000 || narrow) return fmt(value, "compact");
+      return fmt(value, abs >= 100 ? "usd0" : "usd");
+    }
+    if (abs >= 1000) return fmt(value, "compact").replace("$", "");
+    return fmt(value, abs >= 100 ? "num" : "num1");
+  }
+
+  function showX(i, n, narrow) {
+    var max = narrow ? 4 : 6;
+    if (n <= max) return true;
+    var step = Math.ceil((n - 1) / (max - 1));
+    return i % step === 0 || i === n - 1;
+  }
+
+  function xText(label, narrow) {
+    if (!label) return "";
+    if (!narrow || String(label).length <= 8) return label;
+    return String(label).replace(/,?\s+\d{4}$/, "").slice(0, 8);
+  }
+
+  function placeX(root, x, y, label, i, n) {
+    var anchor = i <= 0 ? "start" : i >= n - 1 ? "end" : "middle";
+    axisText(root, x, y, label, anchor);
+  }
+
+  function layoutBox(host, plot) {
+    var w = Math.round((host && host.clientWidth) || 0);
+    if (w < 160) w = 320;
+    var narrow = w < 520;
+    var slices = (plot.slices || []).length || (plot.parts || []).length || 0;
+    var h = narrow ? 188 : 212;
+    if (plot.t === "donut") h = narrow ? Math.round(Math.min(84, w * 0.28) * 2 + 36 + slices * 20) : 236;
+    else if (plot.t === "radial") h = narrow ? 210 : 240;
+    else if (plot.t === "gauge") h = narrow ? 168 : 188;
+    else if (plot.t === "sankey") h = 248;
+    else if (plot.t === "waffle") h = Math.ceil(137 / (narrow ? 11 : 16)) * (narrow ? 16 : 18) + 12;
+    else if (plot.t === "share") h = 28 + Math.ceil(Math.max(slices, 1) / (narrow ? 1 : 2)) * 22 + 24;
+    else if (plot.t === "split") h = 120;
+    else if (plot.t === "candle") h = narrow ? 196 : 220;
+    else if (plot.t === "scatter" || plot.t === "cells" || plot.t === "matrix") h = narrow ? 188 : 210;
+    var fullBleed = { donut: 1, gauge: 1, radial: 1, sankey: 1, waffle: 1, share: 1, split: 1 };
+    var left = fullBleed[plot.t] ? 4 : (narrow ? 58 : 68);
+    return { w: w, h: h, l: left, r: w - 4, t: 8, b: h - 26, narrow: narrow };
   }
 
   function yScale(min, max, top, bottom) {
@@ -265,16 +315,18 @@
     }
     var dom = domain(values, true);
     var y = yScale(dom.min, dom.max, box.t, box.b);
-    grid(root, dom.ticks, y, box.l, box.r).forEach(function (tick) { axisText(root, box.l - 6, y(tick) + 4, fmt(tick, Math.abs(dom.max) >= 1000 ? "compact" : (plot.tip || "num")), "end"); });
+    grid(root, dom.ticks, y, box.l, box.r).forEach(function (tick) { axisText(root, box.l - 8, y(tick) + 4, shortAxis(plot, tick, box.narrow), "end"); });
     var zero = y(0);
     root.appendChild(svg("line", { x1: box.l, x2: box.r, y1: zero, y2: zero, stroke: "#d1d1d1" }));
     var gap = n > 20 ? 2 : n > 10 ? 4 : 8;
     var inner = box.r - box.l;
     var groupW = n ? (inner - gap * (n - 1)) / n : inner;
-    var step = Math.ceil(n / 6);
     for (var k = 0; k < n; k++) {
       var x = box.l + k * (groupW + gap);
-      if (plot.labels && plot.labels[k] && (n <= 8 || k % step === 0 || k === n - 1)) axisText(root, x + groupW / 2, box.h - 8, plot.labels[k]);
+      if (plot.labels && plot.labels[k] && showX(k, n, box.narrow)) {
+        var anchorX = k === 0 ? x : k === n - 1 ? x + groupW : x + groupW / 2;
+        placeX(root, anchorX, box.h - 8, xText(plot.labels[k], box.narrow), k, n);
+      }
       if (mode === "bars") {
         var s0 = shown[0];
         var val = s0 ? s0.d[k] : 0;
@@ -282,7 +334,6 @@
         var y1 = y(Math.min(val, 0));
         var fill = (plot.colors && plot.colors[k]) || (plot.stripe ? patterns.stripe : plot.hatch ? patterns.hatch : (s0 && s0.c) || "#097df6");
         var rect = svg("rect", { x: x, y: Math.min(y0, y1), width: Math.max(groupW, 1), height: Math.max(2, Math.abs(y1 - y0)), rx: plot.capsule ? groupW / 2 : 5, fill: fill, "data-i": k, "data-base": fill, "data-x": x + groupW / 2 });
-        if (!reduce) rect.setAttribute("class", "grow");
         root.appendChild(rect);
       } else if (mode === "stack") {
         var acc = 0;
@@ -319,7 +370,7 @@
     var dom = domain(values, false);
     var y = yScale(dom.min, dom.max, box.t, box.b);
     var x = function (i) { return n < 2 ? (box.l + box.r) / 2 : box.l + (i / (n - 1)) * (box.r - box.l); };
-    grid(root, dom.ticks, y, box.l, box.r).forEach(function (tick) { axisText(root, box.l - 6, y(tick) + 4, fmt(tick, Math.abs(dom.max) >= 10000 ? "compact" : (plot.tip === "pct" ? "pct0" : Math.abs(dom.max) >= 1000 ? "compact" : "num")), "end"); });
+    grid(root, dom.ticks, y, box.l, box.r).forEach(function (tick) { axisText(root, box.l - 8, y(tick) + 4, shortAxis(plot, tick, box.narrow), "end"); });
     var base = y(Math.min(dom.max, Math.max(dom.min, 0)));
     shown.forEach(function (s) {
       var pts = s.d.map(function (v, i) { return [x(i), y(v)]; });
@@ -335,11 +386,8 @@
     }
     var cursor = svg("line", { "data-cursor": "1", y1: box.t, y2: box.b, stroke: "#171717", "stroke-dasharray": "3 3", opacity: "0" });
     root.appendChild(cursor);
-    var step = Math.ceil(n / 6);
     (plot.labels || []).forEach(function (label, i) {
-      if (!label) return;
-      if (n > 8 && i % step !== 0 && i !== n - 1) return;
-      axisText(root, x(i), box.h - 8, label);
+      if (label && showX(i, n, box.narrow)) placeX(root, x(i), box.h - 8, xText(label, box.narrow), i, n);
     });
     if (plot.column) {
       var hi = plot.hi || 0;
@@ -358,12 +406,14 @@
     root.appendChild(svg("line", { x1: box.l, x2: box.r, y1: mid, y2: mid, stroke: "#d1d1d1" }));
     var gap = n > 16 ? 2 : 6;
     var bw = (box.r - box.l - gap * (n - 1)) / n;
-    var step = Math.ceil(n / 6);
     for (var i = 0; i < n; i++) {
       var x = box.l + i * (bw + gap);
       root.appendChild(svg("rect", { x: x, y: yUp(plot.up.d[i]), width: bw, height: Math.max(1, mid - yUp(plot.up.d[i])), rx: 3, fill: plot.up.c, "data-i": i, "data-base": plot.up.c, "data-x": x + bw / 2 }));
       root.appendChild(svg("rect", { x: x, y: mid, width: bw, height: Math.max(1, yDn(plot.down.d[i]) - mid), rx: 3, fill: plot.down.c, "data-i": i, "data-base": plot.down.c }));
-      if (plot.labels[i] && (n <= 8 || i % step === 0)) axisText(root, x + bw / 2, box.h - 6, plot.labels[i]);
+      if (plot.labels[i] && showX(i, n, box.narrow)) {
+        var labelX = i === 0 ? x : i === n - 1 ? x + bw : x + bw / 2;
+        placeX(root, labelX, box.h - 6, xText(plot.labels[i], box.narrow), i, n);
+      }
     }
     return n;
   }
@@ -394,9 +444,11 @@
       var face = plot.c;
       root.appendChild(svg("polygon", { points: [x + bw - depth, top - depth, x + bw, top, x + bw, zero, x + bw - depth, zero - depth].join(" "), fill: "#171717", opacity: "0.08" }));
       var rect = svg("rect", { x: x, y: top, width: bw - depth, height: h, rx: 3, fill: face, "data-i": i, "data-base": face, "data-x": x + bw / 2 });
-      if (!reduce) rect.setAttribute("class", "grow");
       root.appendChild(rect);
-      if (plot.labels && plot.labels[i]) axisText(root, x + bw / 2, box.h - 8, plot.labels[i]);
+      if (plot.labels && plot.labels[i] && showX(i, n, box.narrow)) {
+        var labelX = i === 0 ? x : i === n - 1 ? x + bw : x + bw / 2;
+        placeX(root, labelX, box.h - 8, xText(plot.labels[i], box.narrow), i, n);
+      }
     }
     return n;
   }
@@ -409,12 +461,11 @@
     var dom = domain(highs.concat(lows), false);
     var priceBottom = box.t + (box.b - box.t) * 0.74;
     var y = yScale(dom.min, dom.max, box.t, priceBottom);
-    grid(root, dom.ticks, y, box.l, box.r).forEach(function (tick) { axisText(root, box.l - 6, y(tick) + 4, fmt(tick, "compact"), "end"); });
+    grid(root, dom.ticks, y, box.l, box.r).forEach(function (tick) { axisText(root, box.l - 8, y(tick) + 4, shortAxis(plot, tick, box.narrow), "end"); });
     var vols = items.map(function (c) { return c.v; });
     var vmax = extent(vols).max || 1;
     var gap = n > 40 ? 1 : 3;
     var bw = Math.max(2, (box.r - box.l - gap * (n - 1)) / n);
-    var step = Math.ceil(n / 6);
     items.forEach(function (c, i) {
       var x = box.l + i * (bw + gap);
       var up = c.c >= c.o;
@@ -427,7 +478,10 @@
       root.appendChild(svg("rect", { x: x, y: Math.min(yO, yC), width: bw, height: Math.max(1.5, Math.abs(yC - yO)), fill: color, "data-i": i, "data-base": color, "data-x": x + bw / 2 }));
       var vh = ((c.v || 0) / vmax) * (box.b - priceBottom - 16);
       root.appendChild(svg("rect", { x: x, y: box.b - 8 - vh, width: bw, height: Math.max(1, vh), fill: color, opacity: "0.45" }));
-      if (n <= 8 || i % step === 0) axisText(root, x + bw / 2, box.h - 4, c.l);
+      if (showX(i, n, box.narrow)) {
+        var labelX = i === 0 ? x : i === n - 1 ? x + bw : x + bw / 2;
+        placeX(root, labelX, box.h - 4, xText(c.l, box.narrow), i, n);
+      }
     });
     return n;
   }
@@ -445,34 +499,37 @@
   function drawDonut(root, plot, box) {
     var slices = plot.slices.filter(function (s) { return s.v > 0; });
     var total = slices.reduce(function (a, s) { return a + s.v; }, 0) || 1;
-    var cx = 220;
-    var cy = box.h / 2;
+    var stacked = box.w < 520;
+    var r1 = Math.min(stacked ? 72 : 92, Math.round(box.w * (stacked ? 0.26 : 0.16)));
+    var r0 = Math.round(r1 * 0.62);
+    var cx = stacked ? box.w / 2 : r1 + 20;
+    var cy = stacked ? r1 + 16 : box.h / 2;
     var a = -Math.PI / 2;
     slices.forEach(function (s, i) {
       var sweep = (s.v / total) * Math.PI * 2;
-      var r1 = plot.spiral ? 108 - i * 6 : 108;
-      var path = svg("path", { d: arcPath(cx, cy, 64, r1, a + 0.015, a + sweep - 0.015), fill: s.hatch ? "#f3f3f3" : s.c, stroke: s.hatch ? "#d1d1d1" : "#fff", "stroke-width": "2", "data-i": i, "data-base": s.hatch ? "#f3f3f3" : s.c });
-      if (s.hatch) path.setAttribute("stroke-dasharray", "3 3");
+      var outer = plot.spiral ? r1 - i * Math.min(5, r1 / (slices.length + 2)) : r1;
+      var path = svg("path", { d: arcPath(cx, cy, r0, Math.max(r0 + 8, outer), a + 0.02, a + Math.max(sweep - 0.02, 0.02)), fill: s.hatch ? "#f3f3f3" : s.c, stroke: "#fff", "stroke-width": "2", "data-i": i, "data-base": s.hatch ? "#f3f3f3" : s.c });
       root.appendChild(path);
       a += sweep;
     });
-    axisText(root, cx, cy - 6, plot.center || "", "middle");
-    var value = svg("text", { x: cx, y: cy + 18, "text-anchor": "middle", fill: "#171717", "font-size": "22", "font-weight": "700", "font-family": "Nunito, sans-serif" });
-    value.textContent = fmt(plot.centerValue, plot.centerFmt || "usd");
-    value.setAttribute("data-center", "1");
+    var value = svg("text", { x: cx, y: cy + 6, "text-anchor": "middle", fill: "#171717", "font-size": "16", "font-weight": "700", "font-family": "Nunito, sans-serif" });
+    value.textContent = fmt(plot.centerValue, plot.centerFmt || "compact");
     root.appendChild(value);
+    if (plot.center) axisText(root, cx, cy - 12, plot.center, "middle");
+    var legendY = stacked ? cy + r1 + 22 : 28;
+    var legendX = stacked ? 8 : cx + r1 + 20;
     slices.forEach(function (s, i) {
-      var y = 36 + i * 28;
-      root.appendChild(svg("circle", { cx: 390, cy: y, r: 6, fill: s.c }));
-      axisText(root, 406, y + 4, s.n + "  " + fmt(s.v, plot.centerFmt || "usd0"), "start");
+      var y = legendY + i * 20;
+      root.appendChild(svg("circle", { cx: legendX + 5, cy: y, r: 5, fill: s.c }));
+      axisText(root, legendX + 16, y + 4, s.n + "  " + fmt(s.v, "compact"), "start");
     });
     return slices.length;
   }
 
   function drawGauge(root, plot, box) {
-    var cx = 320;
-    var cy = box.h - 36;
-    var r = 120;
+    var cx = box.w / 2;
+    var r = Math.max(64, Math.min(108, Math.round(box.w * 0.36)));
+    var cy = r + 28;
     var segs = plot.segments || 1;
     var ratio = plot.max ? Math.max(0, Math.min(1, plot.value / plot.max)) : 0;
     if (segs > 1) {
@@ -481,101 +538,108 @@
         var a1 = Math.PI + ((i + 1) / segs) * Math.PI - 0.02;
         var lit = i / segs < ratio - 1e-6;
         var shade = lit ? (i / segs > 0.66 ? "#0a5e2a" : i / segs > 0.33 ? "#12aa4c" : "#92d8ad") : "#ececec";
-        root.appendChild(svg("path", { d: arcPath(cx, cy, r - 22, r, a0, a1), fill: shade }));
+        root.appendChild(svg("path", { d: arcPath(cx, cy, r - 16, r, a0, a1), fill: shade }));
       }
     } else {
-      root.appendChild(svg("path", { d: arcPath(cx, cy, r - 18, r, Math.PI, Math.PI * 2), fill: "#ececec" }));
-      if (ratio > 0) root.appendChild(svg("path", { d: arcPath(cx, cy, r - 18, r, Math.PI, Math.PI + Math.PI * ratio), fill: plot.c || "#097df6" }));
+      root.appendChild(svg("path", { d: arcPath(cx, cy, r - 14, r, Math.PI, Math.PI * 2), fill: "#ececec" }));
+      if (ratio > 0) root.appendChild(svg("path", { d: arcPath(cx, cy, r - 14, r, Math.PI, Math.PI + Math.PI * ratio), fill: plot.c || "#097df6" }));
     }
     var ang = Math.PI + Math.PI * ratio;
-    root.appendChild(svg("circle", { cx: cx + r * Math.cos(ang), cy: cy + r * Math.sin(ang), r: 7, fill: "#fff", stroke: plot.c || "#12aa4c", "stroke-width": "3" }));
-    var label = svg("text", { x: cx, y: cy - 28, "text-anchor": "middle", fill: "#171717", "font-size": "28", "font-weight": "700", "font-family": "Nunito, sans-serif" });
+    root.appendChild(svg("circle", { cx: cx + (r - 4) * Math.cos(ang), cy: cy + (r - 4) * Math.sin(ang), r: 6, fill: "#fff", stroke: plot.c || "#12aa4c", "stroke-width": "3" }));
+    var label = svg("text", { x: cx, y: cy - 18, "text-anchor": "middle", fill: "#171717", "font-size": "18", "font-weight": "700", "font-family": "Nunito, sans-serif" });
     label.textContent = plot.label || fmt(plot.value, "usd0");
     root.appendChild(label);
-    axisText(root, cx, cy - 8, fmt(plot.value, "compact") + " / " + fmt(plot.max, "compact"));
+    axisText(root, cx, cy - 2, fmt(plot.value, "compact") + " / " + fmt(plot.max, "compact"));
     return 1;
   }
 
   function drawRadial(root, plot, box) {
     var n = plot.d.length;
     var max = extent(plot.d).max || 1;
-    var cx = 250;
+    var cx = box.w / 2;
     var cy = box.h / 2 + 4;
+    var reach = Math.max(36, Math.min(86, Math.round(Math.min(box.w, box.h) * 0.32)));
+    var inner = Math.round(reach * 0.5);
     var hi = {};
     (plot.hi || []).forEach(function (i) { hi[i] = true; });
     plot.d.forEach(function (v, i) {
-      var a = -Math.PI / 2 + (i / n) * Math.PI * 2;
-      var inner = 58;
-      var outer = inner + (v / max) * 70;
+      var ang = -Math.PI / 2 + (i / n) * Math.PI * 2;
+      var outer = inner + (v / max) * (reach - inner);
       var color = hi[i] ? "#097df6" : "#b3d7fc";
       root.appendChild(svg("line", {
-        x1: cx + inner * Math.cos(a),
-        y1: cy + inner * Math.sin(a),
-        x2: cx + outer * Math.cos(a),
-        y2: cy + outer * Math.sin(a),
+        x1: cx + inner * Math.cos(ang),
+        y1: cy + inner * Math.sin(ang),
+        x2: cx + outer * Math.cos(ang),
+        y2: cy + outer * Math.sin(ang),
         stroke: color,
-        "stroke-width": hi[i] ? 8 : 5,
+        "stroke-width": hi[i] ? 7 : 4,
         "stroke-linecap": "round",
         "data-i": i,
         "data-base": color
       }));
     });
-    var value = svg("text", { x: cx, y: cy + 6, "text-anchor": "middle", fill: "#171717", "font-size": "18", "font-weight": "700", "font-family": "Nunito, sans-serif" });
+    var value = svg("text", { x: cx, y: cy + 4, "text-anchor": "middle", fill: "#171717", "font-size": "16", "font-weight": "700", "font-family": "Nunito, sans-serif" });
     value.textContent = fmt(plot.center, plot.centerFmt || "usd0");
     root.appendChild(value);
-    axisText(root, cx, cy + 24, plot.centerLabel || "");
+    axisText(root, cx, cy + 20, plot.centerLabel || "");
     return n;
   }
 
   function drawShare(root, plot, box) {
     var parts = plot.parts;
     var total = parts.reduce(function (a, p) { return a + p.v; }, 0) || 1;
-    var x = 24;
-    var y = 48;
-    var w = 592;
-    var h = 28;
+    var x0 = 4;
+    var y = 8;
+    var w = Math.max(40, box.w - 8);
+    var h = 22;
+    var x = x0;
     parts.forEach(function (p, i) {
       var pw = (p.v / total) * w;
       root.appendChild(svg("rect", { x: x, y: y, width: Math.max(pw, 0), height: h, fill: p.c, "data-i": i, "data-base": p.c }));
       x += pw;
     });
+    var cols = box.narrow ? 1 : 2;
     parts.forEach(function (p, i) {
-      var col = i % 2;
-      var row = Math.floor(i / 2);
-      root.appendChild(svg("circle", { cx: 32 + col * 300, cy: 110 + row * 28, r: 6, fill: p.c }));
-      axisText(root, 46 + col * 300, 114 + row * 28, p.n + "  " + fmt(p.v, "compact") + " · " + fmt((p.v / total) * 100, "pct0"), "start");
+      var col = i % cols;
+      var row = Math.floor(i / cols);
+      var lx = 8 + col * (box.w / cols);
+      var ly = 48 + row * 22;
+      root.appendChild(svg("circle", { cx: lx + 5, cy: ly, r: 5, fill: p.c }));
+      axisText(root, lx + 16, ly + 4, p.n + "  " + fmt((p.v / total) * 100, "pct0"), "start");
     });
     return parts.length;
   }
 
   function drawSplit(root, plot, box) {
     var total = plot.a.v + plot.b.v || 1;
-    var w = 560;
+    var x0 = 4;
+    var w = Math.max(40, box.w - 8);
     var a = (plot.a.v / total) * w;
-    root.appendChild(svg("rect", { x: 40, y: 70, width: w, height: 22, rx: 11, fill: plot.b.c }));
-    root.appendChild(svg("rect", { x: 40, y: 70, width: Math.max(8, a), height: 22, rx: 11, fill: plot.a.c }));
-    axisText(root, 40, 56, plot.a.n + " " + fmt(plot.a.v, "usd0"), "start");
-    axisText(root, 600, 56, plot.b.n + " " + fmt(plot.b.v, "usd0"), "end");
-    [0, 25, 50, 75, 100].forEach(function (t) { axisText(root, 40 + (t / 100) * w, 114, t + "%"); });
+    root.appendChild(svg("rect", { x: x0, y: 36, width: w, height: 18, rx: 9, fill: plot.b.c }));
+    root.appendChild(svg("rect", { x: x0, y: 36, width: Math.max(8, a), height: 18, rx: 9, fill: plot.a.c }));
+    axisText(root, x0, 24, plot.a.n + " " + fmt(plot.a.v, "usd0"), "start");
+    axisText(root, x0 + w, 24, plot.b.n + " " + fmt(plot.b.v, "usd0"), "end");
+    [0, 50, 100].forEach(function (t) { axisText(root, x0 + (t / 100) * w, 72, t + "%"); });
     return 1;
   }
 
-  function drawWaffle(root, plot) {
+  function drawWaffle(root, plot, box) {
     var cells = [];
     plot.parts.forEach(function (part) {
       for (var i = 0; i < part.count; i++) cells.push(part.c);
     });
-    var cols = 14;
-    var r = 8;
+    var cols = Math.max(8, Math.min(16, Math.floor((box.w - 8) / 16)));
+    var gap = (box.w - 8) / cols;
+    var r = gap * 0.42;
     cells.forEach(function (color, i) {
       var col = i % cols;
       var row = Math.floor(i / cols);
-      var cx = 28 + col * 18 + (row % 2 ? 9 : 0);
-      var cy = 20 + row * 16;
+      var cx = 4 + gap * 0.5 + col * gap;
+      var cy = 8 + gap * 0.5 + row * gap;
       var pts = [];
       for (var k = 0; k < 6; k++) {
-        var a = Math.PI / 6 + (k * Math.PI) / 3;
-        pts.push((cx + r * Math.cos(a)).toFixed(2) + "," + (cy + r * Math.sin(a)).toFixed(2));
+        var ang = Math.PI / 6 + (k * Math.PI) / 3;
+        pts.push((cx + r * Math.cos(ang)).toFixed(2) + "," + (cy + r * Math.sin(ang)).toFixed(2));
       }
       root.appendChild(svg("polygon", { points: pts.join(" "), fill: color }));
     });
@@ -612,7 +676,7 @@
     return Math.max(xs.length, 1);
   }
 
-  function drawSankey(root, plot) {
+  function drawSankey(root, plot, box) {
     var left = plot.nodes.filter(function (n) { return n.side === "l"; });
     var right = plot.nodes.filter(function (n) { return n.side === "r"; });
     function weight(id, side) {
@@ -622,8 +686,11 @@
     }
     var lTotal = left.reduce(function (a, n) { return a + weight(n.id, "l"); }, 0) || 1;
     var rTotal = right.reduce(function (a, n) { return a + weight(n.id, "r"); }, 0) || 1;
-    var top = 28;
-    var height = 250;
+    var top = 16;
+    var height = Math.max(160, box.h - 28);
+    var labelW = Math.max(72, Math.min(120, Math.round(box.w * 0.28)));
+    var x1 = 8 + labelW;
+    var x2 = box.w - 8 - labelW;
     function layout(nodes, total, side) {
       var y = top;
       var map = {};
@@ -648,8 +715,6 @@
       var y2 = b.y + (usedR[link.to] || 0);
       usedL[link.from] = (usedL[link.from] || 0) + lh;
       usedR[link.to] = (usedR[link.to] || 0) + rh;
-      var x1 = 150;
-      var x2 = 470;
       var c = (x2 - x1) / 2;
       var d = "M " + x1 + " " + y1 + " C " + (x1 + c) + " " + y1 + ", " + (x2 - c) + " " + y2 + ", " + x2 + " " + y2 +
         " L " + x2 + " " + (y2 + rh) + " C " + (x2 - c) + " " + (y2 + rh) + ", " + (x1 + c) + " " + (y1 + lh) + ", " + x1 + " " + (y1 + lh) + " Z";
@@ -657,13 +722,13 @@
     });
     Object.keys(L).forEach(function (id) {
       var node = L[id];
-      root.appendChild(svg("rect", { x: 24, y: node.y, width: 126, height: node.h, rx: 8, fill: node.n.c }));
-      axisText(root, 32, node.y + Math.min(16, node.h / 2 + 4), node.n.n, "start", "#171717");
+      root.appendChild(svg("rect", { x: 8, y: node.y, width: labelW, height: node.h, rx: 8, fill: node.n.c }));
+      axisText(root, 14, node.y + Math.min(16, node.h / 2 + 4), node.n.n, "start", "#171717");
     });
     Object.keys(R).forEach(function (id) {
       var node = R[id];
-      root.appendChild(svg("rect", { x: 470, y: node.y, width: 140, height: node.h, rx: 8, fill: node.n.c }));
-      axisText(root, 482, node.y + Math.min(16, node.h / 2 + 4), node.n.n, "start", "#171717");
+      root.appendChild(svg("rect", { x: x2, y: node.y, width: labelW, height: node.h, rx: 8, fill: node.n.c }));
+      axisText(root, x2 + 6, node.y + Math.min(16, node.h / 2 + 4), node.n.n, "start", "#171717");
     });
     return plot.links.length;
   }
@@ -803,14 +868,16 @@
     var n = items.length;
     var gap = n > 24 ? 2 : 4;
     var bw = (box.r - box.l - gap * (n - 1)) / n;
-    var step = Math.ceil(n / 6);
     items.forEach(function (item, i) {
       var x = box.l + i * (bw + gap);
       var y0 = y(item.top);
       var y1 = y(item.bot);
       var fill = item.over ? "#fa7319" : "#c8c8c8";
       root.appendChild(svg("rect", { x: x, y: Math.min(y0, y1), width: Math.max(bw, 1), height: Math.max(3, Math.abs(y1 - y0)), rx: Math.min(8, bw / 2), fill: fill, "data-i": i, "data-base": fill, "data-x": x }));
-      if (plot.labels[i] && (n <= 8 || i % step === 0)) axisText(root, x + bw / 2, box.h - 6, plot.labels[i]);
+      if (plot.labels[i] && showX(i, n, box.narrow)) {
+        var labelX = i === 0 ? x : i === n - 1 ? x + bw : x + bw / 2;
+        placeX(root, labelX, box.h - 6, xText(plot.labels[i], box.narrow), i, n);
+      }
     });
     return n;
   }
@@ -903,6 +970,96 @@
     return plot.n;
   }
 
+  function revealDelay(i) {
+    var n = Number(i);
+    if (!Number.isFinite(n) || n < 0) n = 0;
+    return Math.min(n, 16) * 32 + "ms";
+  }
+
+  function stampReveal(node, cls, i) {
+    node.classList.add(cls);
+    node.style.setProperty("--d", revealDelay(i));
+  }
+
+  function armReveal(host, plot) {
+    if (reduce || !host || !plot) return;
+    var t = plot.t;
+    if (t === "meter") {
+      host.querySelectorAll(".meter i.on").forEach(function (node, i) { stampReveal(node, "reveal-bar", i); });
+      return;
+    }
+    function markBars(cls) {
+      host.querySelectorAll("rect").forEach(function (node, i) {
+        if (node.closest("defs")) return;
+        var fill = node.getAttribute("fill");
+        if (!fill || fill === "none" || fill === "transparent") return;
+        stampReveal(node, cls, node.getAttribute("data-i") != null ? node.getAttribute("data-i") : i);
+      });
+    }
+    if (t === "bars" || t === "stack" || t === "group" || t === "cols" || t === "float" || t === "candle" || t === "panels" || t === "combo") {
+      markBars("reveal-bar");
+    }
+    if (t === "div") markBars("reveal-div");
+    if (t === "share" || t === "split" || t === "time") markBars("reveal-x");
+    if (t === "area" || t === "line" || t === "band" || t === "combo" || t === "stream") {
+      host.querySelectorAll("path").forEach(function (node, i) {
+        var fill = node.getAttribute("fill");
+        var stroke = node.getAttribute("stroke");
+        if (stroke && stroke !== "none") {
+          try {
+            var len = node.getTotalLength();
+            if (len) node.style.setProperty("--len", len + "px");
+          } catch (err) { return; }
+          stampReveal(node, "reveal-line", i);
+        } else if (fill && fill !== "none") {
+          stampReveal(node, "reveal-fade", i);
+        }
+      });
+      if (t === "band") {
+        host.querySelectorAll("rect[data-role='band']").forEach(function (node) { stampReveal(node, "reveal-fade", 0); });
+      }
+    }
+    if (t === "radial") {
+      host.querySelectorAll("line").forEach(function (node, i) {
+        try {
+          var len = node.getTotalLength();
+          if (len) node.style.setProperty("--len", len + "px");
+        } catch (err) { return; }
+        stampReveal(node, "reveal-line", node.getAttribute("data-i") || i);
+      });
+    }
+    if (t === "donut" || t === "gauge" || t === "sankey") {
+      host.querySelectorAll("path, polygon").forEach(function (node, i) { stampReveal(node, "reveal-fade", i); });
+      if (t === "sankey") markBars("reveal-fade");
+    }
+    if (t === "scatter") {
+      host.querySelectorAll("circle").forEach(function (node, i) {
+        var fill = node.getAttribute("fill");
+        if (!fill || fill === "transparent" || fill === "none") return;
+        stampReveal(node, "reveal-dot", i);
+      });
+      host.querySelectorAll("path").forEach(function (node, i) {
+        if (node.getAttribute("stroke") && node.getAttribute("stroke") !== "none") {
+          try {
+            var len = node.getTotalLength();
+            if (len) node.style.setProperty("--len", len + "px");
+          } catch (err) { return; }
+          stampReveal(node, "reveal-line", i);
+        }
+      });
+    }
+    if (t === "waffle") {
+      host.querySelectorAll("polygon").forEach(function (node, i) { stampReveal(node, "reveal-dot", Math.floor(i / 14)); });
+    }
+    if (t === "cells" || t === "matrix") {
+      host.querySelectorAll("rect").forEach(function (node, i) {
+        var fill = node.getAttribute("fill");
+        if (!fill || fill === "transparent" || fill === "#f3f3f3") return;
+        stampReveal(node, "reveal-dot", node.getAttribute("data-i") != null ? node.getAttribute("data-i") : Math.floor(i / 8));
+      });
+    }
+  }
+
   function mountPlot(host, plot, state, hooks) {
     host.replaceChildren();
     if (!plot) return;
@@ -938,20 +1095,22 @@
       tip.setAttribute("role", "status");
       host.appendChild(tip);
       host.dataset.n = String(plot.n);
+      armReveal(host, plot);
       return;
     }
     if (plot.t === "panels") {
       drawPanels(host, plot, hooks.hidden);
+      armReveal(host, plot);
       return;
     }
-    var heights = { donut: 300, radial: 320, gauge: 220, sankey: 320, waffle: 200, share: 210, scatter: 240, time: 220, cells: 240 };
-    var h = heights[plot.t] || (plot.t === "candle" ? 250 : 228);
-    if (plot.t === "waffle") h = 200;
-    var root = svg("svg", { viewBox: "0 0 640 " + h, role: "img" });
+    var box = layoutBox(host, plot);
+    var h = box.h;
+    var root = svg("svg", { viewBox: "0 0 " + box.w + " " + h, role: "img", width: "100%", height: String(h) });
     root.setAttribute("aria-label", hooks.label || "Chart");
+    root.dataset.w = String(box.w);
+    host.dataset.drawn = String(box.w);
     var pid = "p" + (++mountPlot.uid);
     var patterns = addPatterns(root, pid);
-    var box = { w: 640, h: h, l: plot.t === "sankey" ? 16 : 52, r: 620, t: 16, b: h - 28 };
     var n = 0;
     var low = state.low != null ? state.low : plot.low;
     var high = state.high != null ? state.high : plot.high;
@@ -969,9 +1128,9 @@
     else if (plot.t === "radial") n = drawRadial(root, plot, box);
     else if (plot.t === "share") n = drawShare(root, plot, box);
     else if (plot.t === "split") n = drawSplit(root, plot, box);
-    else if (plot.t === "waffle") n = drawWaffle(root, plot);
+    else if (plot.t === "waffle") n = drawWaffle(root, plot, box);
     else if (plot.t === "scatter") n = drawScatter(root, plot, box, state.off);
-    else if (plot.t === "sankey") n = drawSankey(root, plot);
+    else if (plot.t === "sankey") n = drawSankey(root, plot, box);
     else if (plot.t === "time") n = drawTime(root, plot, box);
     else if (plot.t === "cells") n = drawCells(root, plot, box);
     else if (plot.t === "matrix") n = drawMatrix(root, plot, box);
@@ -980,6 +1139,7 @@
     else if (plot.t === "band") n = drawBand(root, plot, box, low, high);
     host.dataset.n = String(n);
     host.appendChild(root);
+    armReveal(host, plot);
     var tip = el("div", "tip");
     tip.hidden = true;
     tip.setAttribute("role", "status");
@@ -988,7 +1148,7 @@
 
     function indexAt(event) {
       var rect = root.getBoundingClientRect();
-      var px = ((event.clientX - rect.left) / rect.width) * 640;
+      var px = ((event.clientX - rect.left) / rect.width) * box.w;
       var best = 0;
       var bestD = Infinity;
       root.querySelectorAll("[data-i]").forEach(function (node) {
@@ -1277,7 +1437,7 @@
     article.id = chart.id;
     article.dataset.kind = chart.kind;
     article.dataset.chart = chart.id;
-    article.style.animationDelay = Math.min(index * 0.025, 0.36) + "s";
+    if (!reduce) article.classList.add("is-pending");
     article._state = {
       seg: chart.defSeg,
       mode: chart.defMode,
@@ -1322,7 +1482,7 @@
     }
     article.appendChild(head);
     article.appendChild(el("div", "card-body"));
-    paint(article, chart);
+    article._chart = chart;
     return article;
   }
 
@@ -1353,7 +1513,9 @@
     });
     charts.forEach(function (chart, i) {
       try {
-        grid.appendChild(cardArticle(chart, i));
+        var article = cardArticle(chart, i);
+        grid.appendChild(article);
+        paint(article, chart);
       } catch (err) {
         errors.push(chart.id + " card: " + (err && err.stack ? err.stack : err));
         var failed = el("article", "card");
@@ -1393,6 +1555,35 @@
       });
     }
     apply();
+    var resizeTimer = 0;
+    window.addEventListener("resize", function () {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(function () {
+        grid.querySelectorAll(".card").forEach(function (card) {
+          if (!card._chart || card.hidden) return;
+          var host = card.querySelector("[data-plot='1']");
+          if (!host) return;
+          var drawn = Number(host.dataset.drawn || 0);
+          if (drawn && Math.abs(host.clientWidth - drawn) > 8) paint(card, card._chart);
+        });
+      }, 140);
+    });
+    if (!reduce && window.IntersectionObserver) {
+      var revealObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.remove("is-pending");
+          entry.target.classList.add("is-in");
+          revealObserver.unobserve(entry.target);
+        });
+      }, { threshold: 0.2, rootMargin: "0px 0px -8% 0px" });
+      grid.querySelectorAll(".card").forEach(function (card) { revealObserver.observe(card); });
+    } else {
+      grid.querySelectorAll(".card").forEach(function (card) {
+        card.classList.remove("is-pending");
+        card.classList.add("is-in");
+      });
+    }
     if (location.hash) {
       var target = document.getElementById(location.hash.slice(1));
       if (target) target.scrollIntoView();
