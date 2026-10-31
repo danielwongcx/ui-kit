@@ -1,9 +1,8 @@
 /* HK middle household income and spend.
    A 16s film. Each beat is a pure function of time.
-   Motion Prompt techniques, adapted from the vendored cells (MIT, Shohei Ohtaki):
-   #183 establishing shot, #007 count-up, #002 stagger, #005 mask reveal,
-   #144 split screen, #004 line draw, #027 dolly in, #071 badge,
-   #006 typewriter, #187 fade to black.
+   Motion Prompt techniques, adapted from the vendored cells (MIT, Shohei Ohtaki).
+   Scenes: #183 #007 #002 #005 #144 #004 #027 #071 #006 #187.
+   Cuts: #017 #018 #137 #020 #044. Landed figures: #080.
    Demo scenes from those cells are not drawn. */
 (function () {
   "use strict";
@@ -12,12 +11,14 @@
   var H = 720;
   var DURATION = 16;
   var FONT = 'Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif';
+  var FONT_YUE = '"PingFang HK", "PingFang TC", "Noto Sans CJK HK", "Noto Sans CJK TC", "WenQuanYi Micro Hei", "Heiti TC", "Microsoft JhengHei", sans-serif';
   var INK = "#1c1c22";
   var MUTED = "#5c5c66";
   var PAGE = "#f6f5f3";
   var CARD = "#ffffff";
   var LINE = "rgba(28, 28, 34, 0.1)";
   var TRACK = "#eceae6";
+  var MARK = "rgba(28, 28, 34, 0.18)";
 
   /* Cell indexes match catalog-slim.json order inside each pack. */
   var EFFECTS = {
@@ -30,8 +31,24 @@
     "027": { pack: "camera", index: 2, name: "Dolly in" },
     "071": { pack: "ui", index: 22, name: "Badge" },
     "006": { pack: "motion", index: 5, name: "Typewriter" },
-    "187": { pack: "camera2", index: 18, name: "Fade to black" }
+    "187": { pack: "camera2", index: 18, name: "Fade to black" },
+    "017": { pack: "motion", index: 16, name: "Mask transition" },
+    "018": { pack: "motion", index: 17, name: "Shape transition" },
+    "022": { pack: "motion", index: 21, name: "Light sweep" },
+    "020": { pack: "motion", index: 19, name: "Zoom through" },
+    "137": { pack: "motion2", index: 16, name: "Push transition" },
+    "044": { pack: "camera", index: 19, name: "Cross dissolve" },
+    "080": { pack: "lp", index: 7, name: "Highlighter animation" }
   };
+
+  /* Cuts sit on the beat boundary. The outgoing frame is held; the incoming beat keeps playing. */
+  var CUTS = [
+    { t0: 2, dur: 0.5, id: "017" },
+    { t0: 5, dur: 0.5, id: "018" },
+    { t0: 8, dur: 0.5, id: "137" },
+    { t0: 12, dur: 0.5, id: "020" },
+    { t0: 14, dur: 0.5, id: "044" }
+  ];
 
   var BEATS = [
     {
@@ -40,31 +57,39 @@
       t1: 2,
       label: "Hook",
       effects: ["183"],
-      live: "Hong Kong, middle of the pack."
+      en: "Hong Kong \u00b7 middle of the pack",
+      yue: "\u9999\u6e2f \u00b7 \u4e2d\u7522\u6c34\u5e73\u4e00\u77a5",
+      live: "Hong Kong, middle of the pack. \u9999\u6e2f, \u4e2d\u7522\u6c34\u5e73\u4e00\u77a5."
     },
     {
       id: "income",
       t0: 2,
       t1: 5,
       label: "Income",
-      effects: ["007", "002"],
-      live: "Median household income, $30,000 per month. Economically active households, $40,000."
+      effects: ["007", "002", "080"],
+      en: "Median household income $30,000/mo \u00b7 economically active $40,000",
+      yue: "\u4f4f\u6236\u5165\u606f\u4e2d\u4f4d\u6578\u6bcf\u6708\u4e09\u842c \u00b7 \u6709\u5de5\u4f5c\u4f4f\u6236\u56db\u842c",
+      live: "Median household income $30,000 per month. Economically active households, $40,000. \u4f4f\u6236\u5165\u606f\u4e2d\u4f4d\u6578\u6bcf\u6708\u4e09\u842c, \u6709\u5de5\u4f5c\u4f4f\u6236\u56db\u842c."
     },
     {
       id: "spend",
       t0: 5,
       t1: 8,
       label: "Spend",
-      effects: ["005", "144"],
-      live: "Average household spend, $32,472 per month. Median spend, $26,000."
+      effects: ["005", "144", "080"],
+      en: "Average spend $32,472 \u00b7 median $26,000",
+      yue: "\u5e73\u5747\u958b\u652f\u4e09\u842c\u4e8c\u5343 \u00b7 \u4e2d\u4f4d\u6578\u4e8c\u842c\u516d\u5343",
+      live: "Average household spend, $32,472 per month. Median spend, $26,000. \u5e73\u5747\u958b\u652f\u4e09\u842c\u4e8c\u5343, \u4e2d\u4f4d\u6578\u4e8c\u842c\u516d\u5343."
     },
     {
       id: "where",
       t0: 8,
       t1: 12,
       label: "Where it goes",
-      effects: ["004", "002"],
-      live: "Housing 39 percent, $12,775. Food 24 percent, $7,836. Transport 8 percent, $2,499."
+      effects: ["004", "002", "080"],
+      en: "Housing 39% \u00b7 food 24% \u00b7 transport 8%",
+      yue: "\u4f4f\u5c4b\u4e09\u6210\u4e5d \u00b7 \u98df\u7269\u5169\u6210\u56db \u00b7 \u4ea4\u901a\u7d04\u4e00\u6210",
+      live: "Housing 39 percent, $12,775. Food 24 percent, $7,836. Transport 8 percent, $2,499. \u4f4f\u5c4b\u4e09\u6210\u4e5d, \u98df\u7269\u5169\u6210\u56db, \u4ea4\u901a\u7d04\u4e00\u6210."
     },
     {
       id: "scale",
@@ -72,7 +97,9 @@
       t1: 14,
       label: "Scale",
       effects: ["027", "071"],
-      live: "Average household, 2.6 people. Third-quartile spend band, about $32,000."
+      en: "Avg household 2.6 people \u00b7 third-quartile spend ~$32k",
+      yue: "\u5e73\u5747\u4f4f\u6236\u4e8c\u9ede\u516d\u4eba \u00b7 \u7b2c\u4e09\u56db\u5206\u4f4d\u958b\u652f\u7d04\u4e09\u842c\u4e8c",
+      live: "Average household, 2.6 people. Third-quartile spend band, about $32,000. \u5e73\u5747\u4f4f\u6236\u4e8c\u9ede\u516d\u4eba, \u7b2c\u4e09\u56db\u5206\u4f4d\u958b\u652f\u7d04\u4e09\u842c\u4e8c."
     },
     {
       id: "close",
@@ -80,7 +107,9 @@
       t1: 16,
       label: "Close",
       effects: ["006", "187"],
-      live: "No official middle class line. Census and Statistics Department medians."
+      en: "No official middle-class line \u00b7 Censtatd medians",
+      yue: "\u5b98\u65b9\u7121\u300c\u4e2d\u7522\u300d\u5b9a\u7fa9 \u00b7 \u7528\u7d71\u8a08\u8655\u4e2d\u4f4d\u6578",
+      live: "No official middle class line. Census and Statistics Department medians. \u5b98\u65b9\u7121\u4e2d\u7522\u5b9a\u7fa9, \u7528\u7d71\u8a08\u8655\u4e2d\u4f4d\u6578."
     }
   ];
 
@@ -158,8 +187,8 @@
     return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
   }
 
-  function setFont(ctx, size, weight, ls) {
-    ctx.font = weight + " " + size + "px " + FONT;
+  function setFont(ctx, size, weight, ls, face) {
+    ctx.font = weight + " " + size + "px " + (face || FONT);
     if ("letterSpacing" in ctx) ctx.letterSpacing = ls || "0px";
   }
 
@@ -167,15 +196,15 @@
     if ("letterSpacing" in ctx) ctx.letterSpacing = "0px";
   }
 
-  function measure(ctx, text, size, weight, ls) {
-    setFont(ctx, size, weight, ls);
+  function measure(ctx, text, size, weight, ls, face) {
+    setFont(ctx, size, weight, ls, face);
     var w = ctx.measureText(text).width;
     clearSpacing(ctx);
     return w;
   }
 
-  function txt(ctx, text, x, y, size, weight, color, align, base, ls) {
-    setFont(ctx, size, weight, ls);
+  function txt(ctx, text, x, y, size, weight, color, align, base, ls, face) {
+    setFont(ctx, size, weight, ls, face);
     ctx.fillStyle = color;
     ctx.textAlign = align || "left";
     ctx.textBaseline = base || "middle";
@@ -245,12 +274,20 @@
     }
   }
 
-  function fitSteps(ctx, text, weight, steps, max, ls) {
+  function fitSteps(ctx, text, weight, steps, max, ls, face) {
     var i;
     for (i = 0; i < steps.length; i++) {
-      if (measure(ctx, text, steps[i], weight, ls) <= max) return steps[i];
+      if (measure(ctx, text, steps[i], weight, ls, face) <= max) return steps[i];
     }
     return steps[steps.length - 1];
+  }
+
+  /* #080 Highlighter: a stroke draws across the landed figure, then holds. */
+  function highlighter(ctx, x, y, w, h, p) {
+    if (p <= 0.001 || w <= 0 || h <= 0) return;
+    roundRect(ctx, x, y, Math.max(1, w * p), h, 4);
+    ctx.fillStyle = MARK;
+    ctx.fill();
   }
 
   function beatAt(t) {
@@ -348,7 +385,8 @@
     var suffixW = measure(ctx, suffix, 20, 500);
     var gap = 16;
     var left = (W - (finalW + gap + suffixW)) / 2;
-    var baseline = 360;
+    var baseline = 340;
+    highlighter(ctx, left, baseline - 36, finalW, 40, cubicOut(seg(local, 1.25, 1.7)));
     drawMoneySlots(ctx, shown, left + (finalW - shownW), baseline, 64, INK, ls);
     txt(ctx, suffix, left + finalW + gap, baseline, 20, 500, MUTED, "left", "alphabetic");
 
@@ -371,14 +409,14 @@
       if (wp > 0) {
         ctx.save();
         ctx.globalAlpha = wp;
-        txt(ctx, parts[i].t, x, 468 + (1 - wp) * 12, 24, parts[i].weight, parts[i].color, "left", "middle");
+        txt(ctx, parts[i].t, x, 448 + (1 - wp) * 12, 24, parts[i].weight, parts[i].color, "left", "middle");
         ctx.restore();
       }
       x += widths[i] + wordGap;
     }
   }
 
-function spendCopy(ctx, x, y, w, h, kicker, amount, suffix, rise) {
+function spendCopy(ctx, x, y, w, h, kicker, amount, suffix, rise, mark) {
   ctx.save();
   ctx.beginPath();
   ctx.rect(x, y, Math.max(1, w), h);
@@ -391,6 +429,10 @@ function spendCopy(ctx, x, y, w, h, kicker, amount, suffix, rise) {
   var cx = x + w / 2;
   var cy = y + h / 2 + rise;
   txt(ctx, kicker, cx, cy - 48, 20, 500, MUTED, "center", "middle");
+  if (mark > 0) {
+    var aw = measure(ctx, amount, 48, 600, "-0.03em");
+    highlighter(ctx, cx - aw / 2, cy + 8 - 22, aw, 40, mark);
+  }
   txt(ctx, amount, cx, cy + 8, 48, 600, INK, "center", "middle", "-0.03em");
   if (suffix) txt(ctx, suffix, cx, cy + 56, 20, 500, MUTED, "center", "middle");
   ctx.restore();
@@ -409,12 +451,13 @@ function spendCopy(ctx, x, y, w, h, kicker, amount, suffix, rise) {
     var rightW = lerp(0, half, open);
     var rightX = x + leftW + gap * open;
     var rise = open > 0 ? 0 : (1 - quintOut(seg(local, 0, 0.5))) * 160;
+    var mark = local < 0.5 ? 0 : cubicOut(seg(local, 0.5, 0.95));
 
     card(ctx, x, y, leftW, h);
-    spendCopy(ctx, x, y, leftW, h, "Average household spend", "$32,472", "/ mo", rise);
+    spendCopy(ctx, x, y, leftW, h, "Average household spend", "$32,472", "/ mo", rise, mark);
     if (rightW > 1) {
       card(ctx, rightX, y, rightW, h);
-      spendCopy(ctx, rightX, y, rightW, h, "Median spend", "$26,000", "", 0);
+      spendCopy(ctx, rightX, y, rightW, h, "Median spend", "$26,000", "", 0, 0);
     }
   }
 
@@ -432,6 +475,10 @@ function drawWhere(ctx, local) {
       var yLabel = 180 + i * 152;
       var yBar = yLabel + 48;
       var lp = cubicOut(seg(local, 0.08 + i * 0.1, 0.48 + i * 0.1));
+      var houseMark = i === 0 ? cubicOut(seg(local, 1, 1.5)) : 0;
+      if (houseMark > 0) {
+        highlighter(ctx, x, yLabel - 16, measure(ctx, row.label, 24, 600), 32, houseMark);
+      }
       ctx.save();
       ctx.globalAlpha = lp;
       txt(ctx, row.label, x, yLabel + (1 - lp) * 12, 24, 600, INK, "left", "middle");
@@ -448,6 +495,15 @@ function drawWhere(ctx, local) {
         ctx.moveTo(x, yBar);
         ctx.lineTo(x + len, yBar);
         ctx.stroke();
+      }
+      if (i === 0 && houseMark > 0.01) {
+        ctx.strokeStyle = "rgba(255,255,255,0.78)";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(x, yBar);
+        ctx.lineTo(x + track * row.share * houseMark, yBar);
+        ctx.stroke();
+        ctx.lineWidth = 16;
       }
     }
     ctx.restore();
@@ -523,19 +579,174 @@ function drawWhere(ctx, local) {
     var srcA = cubicOut(seg(local, 0.12, 0.48));
     ctx.save();
     ctx.globalAlpha = srcA;
-    txt(ctx, SOURCE_LINES[0], W / 2, 392, 16, 500, MUTED, "center", "middle");
-    txt(ctx, SOURCE_LINES[1], W / 2, 416, 16, 500, MUTED, "center", "middle");
+    txt(ctx, SOURCE_LINES[0], W / 2, 372, 16, 500, MUTED, "center", "middle");
+    txt(ctx, SOURCE_LINES[1], W / 2, 396, 16, 500, MUTED, "center", "middle");
     ctx.restore();
+  }
 
-    var fade = quadIO(seg(local, 1.45, 2));
+  function drawSubtitles(ctx, beat) {
+    var enSize = fitSteps(ctx, beat.en, 600, [18, 16, 14], 1120, "0px");
+    var yueSize = fitSteps(ctx, beat.yue, 500, [16, 14], 1120, "0px", FONT_YUE);
+    ctx.fillStyle = PAGE;
+    ctx.fillRect(0, 624, W, 96);
+    ctx.fillStyle = LINE;
+    ctx.fillRect(64, 624, W - 128, 1);
+    txt(ctx, beat.en, W / 2, 656, enSize, 600, INK, "center", "middle");
+    txt(ctx, beat.yue, W / 2, 686, yueSize, 500, MUTED, "center", "middle", "0px", FONT_YUE);
+  }
+
+  function fadeAmount(time) {
+    if (time < 14) return 0;
+    return quadIO(seg(time - 14, 1.45, 2));
+  }
+
+  function paintScene(c, time) {
+    var shown = clamp(time, 0, DURATION);
+    var beat = beatAt(Math.min(shown, DURATION - 0.0001));
+    c.setTransform(1, 0, 0, 1, 0, 0);
+    c.globalAlpha = 1;
+    c.globalCompositeOperation = "source-over";
+    c.lineCap = "butt";
+    c.lineJoin = "miter";
+    c.fillStyle = PAGE;
+    c.fillRect(0, 0, W, H);
+    DRAW[beat.id](c, shown);
+    drawSubtitles(c, beat);
+    var fade = fadeAmount(shown);
     if (fade > 0) {
-      ctx.save();
-      ctx.globalAlpha = fade;
-      ctx.fillStyle = INK;
-      ctx.fillRect(0, 0, W, H);
-      ctx.restore();
+      c.save();
+      c.globalAlpha = fade;
+      c.fillStyle = INK;
+      c.fillRect(0, 0, W, H);
+      c.restore();
     }
   }
+
+  function activeTransition(time) {
+    var i;
+    for (i = 0; i < CUTS.length; i++) {
+      var cut = CUTS[i];
+      if (time >= cut.t0 && time < cut.t0 + cut.dur) {
+        return {
+          id: cut.id,
+          p: (time - cut.t0) / cut.dur,
+          outTime: cut.t0 - 0.001,
+          inTime: time
+        };
+      }
+    }
+    return null;
+  }
+
+  /* #017 Mask transition: the next scene opens inside a growing circle. */
+  function compositeMask(main, a, b, p) {
+    var e = cubicIO(p);
+    var radius = lerp(0, 820, e);
+    main.drawImage(a, 0, 0, W, H);
+    if (e <= 0) return;
+    main.save();
+    main.beginPath();
+    main.arc(W / 2, H / 2 - 24, radius, 0, Math.PI * 2);
+    main.clip();
+    main.drawImage(b, 0, 0, W, H);
+    main.restore();
+    if (e < 0.995) {
+      main.beginPath();
+      main.arc(W / 2, H / 2 - 24, radius, 0, Math.PI * 2);
+      main.strokeStyle = CARD;
+      main.lineWidth = 3;
+      main.stroke();
+    }
+  }
+
+  /* #018 Shape transition: bands cover the frame, then leave on the next scene. */
+  function compositeShape(main, a, b, p) {
+    var cover = cubicIO(clamp(p / 0.5, 0, 1));
+    var reveal = cubicIO(clamp((p - 0.5) / 0.5, 0, 1));
+    main.drawImage(reveal > 0 ? b : a, 0, 0, W, H);
+    var colors = [INK, "rgba(28,28,34,0.72)", MUTED, "rgba(28,28,34,0.42)"];
+    var n = 4;
+    var i;
+    for (i = 0; i < n; i++) {
+      var delay = i * 0.1;
+      var enter = cubicIO(clamp((cover - delay) / 0.7, 0, 1));
+      var leave = cubicIO(clamp((reveal - delay) / 0.7, 0, 1));
+      if (enter <= 0 || leave >= 1) continue;
+      var bh = H / n + 16;
+      var y = i * (H / n) - 8;
+      var span = W + 160;
+      var xa = -100 + leave * span;
+      var xb = -100 + enter * span;
+      var skew = 36;
+      main.fillStyle = colors[i];
+      main.beginPath();
+      main.moveTo(xa + skew, y);
+      main.lineTo(xb + skew, y);
+      main.lineTo(xb, y + bh);
+      main.lineTo(xa, y + bh);
+      main.closePath();
+      main.fill();
+    }
+  }
+
+  /* #137 Push transition: the next scene pushes the current one off. */
+  function compositePush(main, a, b, p) {
+    var e = cubicIO(p);
+    main.save();
+    main.beginPath();
+    main.rect(0, 0, W, H);
+    main.clip();
+    main.drawImage(a, -e * W, 0, W, H);
+    main.drawImage(b, (1 - e) * W, 0, W, H);
+    main.fillStyle = INK;
+    main.fillRect((1 - e) * W - 2, 0, 4, H);
+    main.restore();
+  }
+
+  /* #020 Zoom through: the frame moves into the picture and the next scene arrives inside it. */
+  function compositeZoom(main, a, b, p) {
+    var e = cubicIO(p);
+    if (e >= 0.995) {
+      main.drawImage(b, 0, 0, W, H);
+      return;
+    }
+    var zoom = lerp(1, 2.2, e);
+    main.save();
+    main.translate(W / 2, H / 2);
+    main.scale(zoom, zoom);
+    main.translate(-W / 2, -H / 2);
+    main.drawImage(a, 0, 0, W, H);
+    main.restore();
+    var radius = lerp(0, 860, e);
+    var inner = lerp(0.62, 1, e);
+    main.save();
+    main.beginPath();
+    main.arc(W / 2, H / 2, radius, 0, Math.PI * 2);
+    main.clip();
+    main.translate(W / 2, H / 2);
+    main.scale(inner, inner);
+    main.translate(-W / 2, -H / 2);
+    main.drawImage(b, 0, 0, W, H);
+    main.restore();
+  }
+
+  /* #044 Cross dissolve: one shot blends into the next. */
+  function compositeDissolve(main, a, b, p) {
+    var e = quadIO(p);
+    main.drawImage(a, 0, 0, W, H);
+    main.save();
+    main.globalAlpha = e;
+    main.drawImage(b, 0, 0, W, H);
+    main.restore();
+  }
+
+  var COMPOSITE = {
+    "017": compositeMask,
+    "018": compositeShape,
+    "137": compositePush,
+    "020": compositeZoom,
+    "044": compositeDissolve
+  };
 
   var DRAW = {
     hook: function (ctx, t) { drawHook(ctx, t); },
@@ -574,6 +785,14 @@ function drawWhere(ctx, local) {
   var effectName = document.getElementById("effect-name");
   var live = document.getElementById("live");
   var ctx = canvas.getContext("2d", { alpha: false });
+  var bufA = document.createElement("canvas");
+  var bufB = document.createElement("canvas");
+  bufA.width = W;
+  bufA.height = H;
+  bufB.width = W;
+  bufB.height = H;
+  var ctxA = bufA.getContext("2d", { alpha: false });
+  var ctxB = bufB.getContext("2d", { alpha: false });
   var view = { sx: 1, sy: 1 };
   var t = 0;
   var playing = true;
@@ -613,16 +832,22 @@ function drawWhere(ctx, local) {
   }
 
 function render() {
-  var beat = beatAt(t);
-  ctx.setTransform(view.sx, 0, 0, view.sy, 0, 0);
-  ctx.lineCap = "butt";
-  ctx.lineJoin = "miter";
-  ctx.globalAlpha = 1;
-  ctx.fillStyle = PAGE;
-  ctx.fillRect(0, 0, W, H);
-    DRAW[beat.id](ctx, t);
+    var beat = beatAt(Math.min(t, DURATION - 0.0001));
+    var cut = activeTransition(t);
+    var ids = beat.effects.slice();
+    paintScene(ctxA, cut ? cut.outTime : t);
+    ctx.setTransform(view.sx, 0, 0, view.sy, 0, 0);
+    ctx.globalAlpha = 1;
+    if (!cut) {
+      ctx.drawImage(bufA, 0, 0, W, H);
+    } else {
+      paintScene(ctxB, cut.inTime);
+      COMPOSITE[cut.id](ctx, bufA, bufB, cut.p);
+      ids = [cut.id].concat(ids);
+    }
     canvas.setAttribute("data-beat", beat.id);
-    canvas.setAttribute("data-effects", beat.effects.join(" "));
+    canvas.setAttribute("data-effects", ids.join(" "));
+    canvas.setAttribute("data-cut", cut ? cut.id : "");
     canvas.setAttribute("data-time", t.toFixed(3));
   }
 
@@ -634,9 +859,11 @@ function render() {
     playBtn.setAttribute("aria-pressed", playing ? "true" : "false");
     if (!dragging) scrub.value = String(Math.round(t * 100) / 100);
     var beat = beatAt(Math.min(t, DURATION - 0.001));
+    var cut = activeTransition(t);
+    var shownEffects = cut ? [cut.id].concat(beat.effects) : beat.effects;
     clockEl.textContent = clock(t) + " / 0:16";
     beatName.textContent = beat.label;
-    effectName.textContent = effectLine(beat.effects);
+    effectName.textContent = effectLine(shownEffects);
     scrub.setAttribute("aria-valuetext", clock(t) + ", " + beat.label + ". " + beat.live);
     scrub.setAttribute("aria-valuenow", String(Math.round(t * 100) / 100));
     var i;
