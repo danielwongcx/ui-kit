@@ -1266,7 +1266,519 @@
       "</p>" + deltaHTML(fig.delta, hidden).replace("<p class=\"delta", follow ? '<p data-follow-delta="1" class="delta' : '<p class="delta') + "</div>";
   }
 
+  var TX_H = 163;
+  var TX_AREA = 1.5;
+  var TX_ICON_CARD = '<svg viewBox="0 0 20 20" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M16.4226 11.9107C16.2663 11.7545 16.0543 11.6667 15.8333 11.6667C15.6123 11.6667 15.4004 11.7545 15.2441 11.9107L12.7441 14.4107C12.4186 14.7362 12.4186 15.2638 12.7441 15.5893C13.0695 15.9147 13.5972 15.9147 13.9226 15.5893L15 14.5118L15 17.5C15 17.9602 15.3731 18.3333 15.8333 18.3333C16.2936 18.3333 16.6667 17.9602 16.6667 17.5V14.5118L17.7441 15.5893C18.0695 15.9147 18.5972 15.9147 18.9226 15.5893C19.248 15.2638 19.248 14.7362 18.9226 14.4107L16.4226 11.9107Z"/><path d="M15.6988 3.33334L4.30122 3.33333C3.86196 3.33332 3.48294 3.33331 3.17081 3.35881C2.84136 3.38573 2.51368 3.44516 2.19836 3.60582C1.72795 3.8455 1.3455 4.22795 1.10582 4.69836C0.945158 5.01368 0.885728 5.34136 0.858811 5.67081C0.833309 5.98293 0.833321 6.3619 0.833333 6.80115C0.833333 7.1871 1.14621 7.5 1.53216 7.5H18.4679C18.8538 7.5 19.1667 7.18714 19.1667 6.8012C19.1667 6.36192 19.1667 5.98295 19.1412 5.67081C19.1143 5.34136 19.0548 5.01368 18.8942 4.69836C18.6545 4.22796 18.272 3.8455 17.8016 3.60582C17.4863 3.44516 17.1586 3.38573 16.8292 3.35881C16.517 3.33331 16.1381 3.33332 15.6988 3.33334Z"/><path d="M1.28834 9.2575C1.4666 9.16667 1.69996 9.16667 2.16667 9.16667H17.8333C18.3 9.16667 18.5334 9.16667 18.7117 9.2575C18.8685 9.33739 18.9959 9.46487 19.0758 9.62168C19.1667 9.79994 19.1667 10.0333 19.1667 10.5V10.6883C19.1667 11.1932 19.1667 11.4456 19.0668 11.5625C18.9802 11.6639 18.8503 11.7177 18.7173 11.7073C18.5641 11.6952 18.3856 11.5167 18.0286 11.1597L17.6011 10.7322C17.1323 10.2634 16.4964 10 15.8333 10C15.1703 10 14.5344 10.2634 14.0656 10.7322L11.5656 13.2322C10.993 13.8048 10.7562 14.5859 10.8552 15.331C10.9413 15.979 10.9843 16.303 10.9441 16.4041C10.8959 16.525 10.8742 16.5498 10.7607 16.6135C10.6658 16.6667 10.4363 16.6667 9.97743 16.6667L4.30108 16.6667C3.86187 16.6667 3.48291 16.6667 3.17081 16.6412C2.84136 16.6143 2.51368 16.5548 2.19836 16.3942C1.72795 16.1545 1.3455 15.772 1.10582 15.3016C0.945158 14.9863 0.885728 14.6586 0.858811 14.3292C0.833309 14.0171 0.83332 13.6381 0.833333 13.1988V10.5C0.833333 10.0333 0.833333 9.79994 0.924162 9.62168C1.00406 9.46487 1.13154 9.33739 1.28834 9.2575Z"/></svg>';
+  var TX_CHEVRON = '<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.333" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6L8 10L12 6"/></svg>';
+  var TX_DOTS = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12C11 11.4477 11.4477 11 12 11C12.5523 11 13 11.4477 13 12ZM20 12C20 12.5523 19.5523 13 19 13C18.4477 13 18 12.5523 18 12C18 11.4477 18.4477 11 19 11C19.5523 11 20 11.4477 20 12ZM6 12C6 12.5523 5.55228 13 5 13C4.44772 13 4 12.5523 4 12C4 11.4477 4.44772 11 5 11C5.55228 11 6 11.4477 6 12Z"/></svg>';
+  var TX_CHECK = '<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.333" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.333 4L6 11.333 2.667 8"/></svg>';
+  var TX_UP = '<svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.167" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.8333 4.08333L8.2433 8.67337C8.01229 8.90438 7.89679 9.01988 7.76359 9.06316C7.64644 9.10123 7.52023 9.10123 7.40307 9.06316C7.26988 9.01988 7.15438 8.90438 6.92337 8.67337L5.32663 7.07663C5.09562 6.84562 4.98012 6.73012 4.84693 6.68684C4.72977 6.64877 4.60357 6.64877 4.48641 6.68684C4.35322 6.73012 4.23771 6.84562 4.0067 7.07663L1.16667 9.91667M12.8333 8.16667V4.08333H8.75"/></svg>';
+  var TX_DOWN = '<svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.167" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.8333 9.91667L8.2433 5.32663C8.01229 5.09562 7.89679 4.98012 7.76359 4.93684C7.64644 4.89877 7.52023 4.89877 7.40307 4.93684C7.26988 4.98012 7.15438 5.09562 6.92337 5.32663L5.32663 6.92337C5.09562 7.15438 4.98012 7.26988 4.84693 7.31316C4.72977 7.35123 4.60357 7.35123 4.48641 7.31316C4.35322 7.26988 4.23771 7.15438 4.0067 6.92337L1.16667 4.08333M12.8333 5.83333V9.91667H8.75"/></svg>';
+  var txMoneyFmt = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  var txPctFmt = new Intl.NumberFormat("en-US", { style: "percent", maximumFractionDigits: 2 });
+  var TX_PERIODS = [
+    {
+      value: "weekly",
+      label: "Weekly",
+      total: 74820.4,
+      change: 0.84,
+      changeLabel: "Today",
+      categories: [
+        { id: "shopping", label: "Shopping", amount: 1020, change: 2.1, changeLabel: "this week", color: "#097df6" },
+        { id: "subscriptions", label: "Subscriptions", amount: 211.7, change: 0.52, changeLabel: "this week", color: "#fa7319" },
+        { id: "investment", label: "Investment", amount: 688.26, change: -0.96, changeLabel: "this week", color: "#a22dff" }
+      ],
+      points: [180, 240, 205, 290, 260, 330, 310].map(function (value, i) { return { x: i / 6, value: value }; }),
+      axis: ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
+    },
+    {
+      value: "monthly",
+      label: "Monthly",
+      total: 320418.16,
+      change: 1.16,
+      changeLabel: "Today",
+      categories: [
+        { id: "shopping", label: "Shopping", amount: 4250, change: 4.82, changeLabel: "this month", color: "#097df6" },
+        { id: "subscriptions", label: "Subscriptions", amount: 846.85, change: 2.64, changeLabel: "this month", color: "#fa7319" },
+        { id: "investment", label: "Investment", amount: 2753.04, change: -1.64, changeLabel: "this month", color: "#a22dff" }
+      ],
+      points: [[0, 925], [45.5, 1140], [84, 1025], [123.5, 1065], [187, 965], [226, 1065], [257, 1235], [309, 1160], [356, 1290], [402, 1455], [437, 1630]].map(function (pair) {
+        return { x: pair[0] / 437, value: pair[1] };
+      }),
+      axis: ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
+    },
+    {
+      value: "yearly",
+      label: "Yearly",
+      total: 3845017.92,
+      change: 12.4,
+      changeLabel: "This year",
+      categories: [
+        { id: "shopping", label: "Shopping", amount: 51000, change: 9.2, changeLabel: "this year", color: "#097df6" },
+        { id: "subscriptions", label: "Subscriptions", amount: 10162.2, change: 3.1, changeLabel: "this year", color: "#fa7319" },
+        { id: "investment", label: "Investment", amount: 33036.48, change: -4.8, changeLabel: "this year", color: "#a22dff" }
+      ],
+      points: [8.2, 9.1, 8.7, 10.4, 11.2, 10.8, 12.6, 13.1, 12.2, 14, 13.6, 15.4].map(function (value, i) {
+        return { x: i / 11, value: value * 1000 };
+      }),
+      axis: ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
+    }
+  ];
+
+  function txMoney(n) { return txMoneyFmt.format(n); }
+  function txPct(n) { return txPctFmt.format(Math.abs(Number(n)) / 100); }
+  function txParts(n) {
+    var parts = txMoneyFmt.formatToParts(n);
+    var symbol = "";
+    var number = "";
+    parts.forEach(function (part) {
+      if (part.type === "currency") symbol = part.value;
+      else number += part.value;
+    });
+    return { symbol: symbol, number: number.trim() };
+  }
+  function txFormatCount(kind, n) {
+    if (kind === "parts") return txParts(n).number;
+    if (kind === "pct") return txPct(n);
+    return txMoney(n);
+  }
+  function txR(n) { return Math.round(n * 1000) / 1000; }
+  function txPixels(points, width, height) {
+    var max = 0;
+    var i;
+    for (i = 0; i < points.length; i++) if (points[i].value > max) max = points[i].value;
+    var out = [];
+    for (i = 0; i < points.length; i++) {
+      var p = points[i];
+      out.push({ x: p.x * width, y: max > 0 ? height * (1 - p.value / max) : height });
+    }
+    return out;
+  }
+  function txLine(pts) {
+    return pts.map(function (p, i) { return (i ? "L " : "M ") + txR(p.x) + " " + txR(p.y); }).join(" ");
+  }
+  function txArea(pts, height, offset) {
+    if (!pts.length) return "";
+    var top = pts.map(function (p) { return { x: p.x, y: Math.min(p.y + offset, height) }; });
+    return txLine(top) + " L " + txR(top[top.length - 1].x) + " " + txR(height) + " L " + txR(top[0].x) + " " + txR(height) + " Z";
+  }
+  function txValueAt(pts, x) {
+    if (!pts.length) return 0;
+    if (x <= pts[0].x) return pts[0].y;
+    var i;
+    for (i = 1; i < pts.length; i++) {
+      var a = pts[i - 1];
+      var b = pts[i];
+      if (x <= b.x) return b.x === a.x ? b.y : a.y + ((b.y - a.y) * (x - a.x)) / (b.x - a.x);
+    }
+    return pts[pts.length - 1].y;
+  }
+  function txAlign(from, to) {
+    var left = Math.min(from[0].x, to[0].x);
+    var right = Math.max(from[from.length - 1].x, to[to.length - 1].x);
+    var xs = [];
+    from.forEach(function (p) { xs.push(p.x); });
+    to.forEach(function (p) { xs.push(p.x); });
+    var i;
+    for (i = 0; i <= 24; i++) xs.push(left + ((right - left) * i) / 24);
+    xs.sort(function (a, b) { return a - b; });
+    var unique = [];
+    xs.forEach(function (x) {
+      if (!unique.length || Math.abs(unique[unique.length - 1] - x) > 0.05) unique.push(x);
+    });
+    return {
+      xs: unique,
+      from: unique.map(function (x) { return txValueAt(from, x); }),
+      to: unique.map(function (x) { return txValueAt(to, x); })
+    };
+  }
+  function txFitTitle(article) {
+    var title = article.querySelector(".card-title");
+    var drop = article.querySelector(".tx-drop");
+    if (!title) return;
+    function over() { return title.scrollWidth > title.clientWidth + 1; }
+    if (!over()) return;
+    if (drop) {
+      drop.style.padding = "6px 8px";
+      drop.style.fontSize = "13px";
+    }
+    var more = article.querySelector(".tx-more");
+    if (more) {
+      more.style.width = "32px";
+      more.style.height = "32px";
+    }
+    var icon = article.querySelector(".tx-icon");
+    if (icon) {
+      icon.style.width = "36px";
+      icon.style.height = "36px";
+    }
+    if (!over()) return;
+    var size = parseFloat(window.getComputedStyle(title).fontSize) || 16;
+    var guard = 0;
+    while (guard < 8 && size > 14 && over()) {
+      size -= 0.5;
+      title.style.fontSize = size + "px";
+      guard += 1;
+    }
+  }
+  function txFitAxis(axis) {
+    if (!axis) return;
+    var spans = axis.querySelectorAll("span");
+    if (spans.length <= 7) return;
+    var size = parseFloat(window.getComputedStyle(spans[0]).fontSize) || 11;
+    var guard = 0;
+    function clips() {
+      var i;
+      for (i = 0; i < spans.length; i++) {
+        if (spans[i].scrollWidth > spans[i].clientWidth + 1) return true;
+      }
+      return false;
+    }
+    while (guard < 10 && size > 8 && clips()) {
+      size -= 1;
+      axis.style.setProperty("--tx-axis-size", size + "px");
+      guard += 1;
+    }
+    if (clips()) axis.style.gap = "0px";
+  }
+  function txPointLabel(period, index) {
+    var point = period.points[index];
+    if (point && point.label) return point.label;
+    var n = period.axis.length;
+    if (!n || !point) return "";
+    return period.axis[Math.min(n - 1, Math.floor(point.x * n))];
+  }
+  function txTrendHTML(change, label, countKind) {
+    var down = change < 0;
+    return '<span class="tx-trend ' + (down ? "down" : "up") + (countKind === "total" ? " tx-total-trend" : " tx-trend-cat") + '">' +
+      (down ? TX_DOWN : TX_UP) +
+      '<span class="tx-pct" data-tx-count="' + change + '" data-tx-kind="pct">' + esc(txPct(change)) + "</span>" +
+      (label ? '<span class="tx-soft">' + esc(label) + "</span>" : "") +
+      "</span>";
+  }
+
+  function paintTotalExpenses(article, chart) {
+    try {
+      if (article._txRaf) cancelAnimationFrame(article._txRaf);
+      if (article._txMorph) cancelAnimationFrame(article._txMorph);
+      article._txRaf = 0;
+      article._txMorph = 0;
+      if (article._txDoc) {
+        document.removeEventListener("pointerdown", article._txDoc, true);
+        article._txDoc = null;
+      }
+      var state = article._state || { seg: "monthly" };
+      var period = TX_PERIODS.filter(function (item) { return item.value === state.seg; })[0] || TX_PERIODS[1];
+      state.seg = period.value;
+      article._state = state;
+      article.classList.add("tx");
+      article.dataset.period = period.value;
+      var seen = article._txGeom;
+      var inView = article.classList.contains("is-in");
+      if (!reduce && !inView) article.classList.add("tx-draw");
+      else article.classList.remove("tx-draw");
+      var parts = txParts(period.total);
+      var title = chart.title || "Total Expenses";
+      var listId = "tx-period-" + chart.id;
+      var options = TX_PERIODS.map(function (item) {
+        var on = item.value === period.value;
+        return '<button type="button" role="option" data-period="' + esc(item.value) + '" aria-selected="' + (on ? "true" : "false") + '">' +
+          "<span>" + esc(item.label) + "</span>" + TX_CHECK + "</button>";
+      }).join("");
+      var cats = period.categories.map(function (cat) {
+        return '<div class="tx-cat" data-slot="total-expenses-chart-category">' +
+          '<span class="tx-swatch" style="background:' + esc(cat.color) + '"></span>' +
+          '<span class="tx-cat-label">' + esc(cat.label) + "</span>" +
+          '<span class="tx-cat-amt" data-tx-count="' + cat.amount + '" data-tx-kind="money">' + esc(txMoney(cat.amount)) + "</span>" +
+          txTrendHTML(cat.change, cat.changeLabel) +
+          "</div>";
+      }).join("");
+      var axis = period.axis.map(function (label, i) {
+        return '<span style="--tx-i:' + i + '">' + esc(label) + "</span>";
+      }).join("");
+      article.setAttribute("role", "group");
+      article.setAttribute("aria-label", title);
+      article.innerHTML =
+        '<div class="tx-glow" aria-hidden="true"><i class="tx-glow-a"></i><i class="tx-glow-b"></i></div>' +
+        '<div class="tx-head">' +
+          '<div class="tx-id">' +
+            '<span class="tx-icon">' + TX_ICON_CARD + "</span>" +
+            '<div class="tx-names">' +
+              '<p class="tx-eyebrow">Spending</p>' +
+              '<h2 class="card-title">' + esc(title) + "</h2>" +
+            "</div>" +
+          "</div>" +
+          '<div class="tx-controls">' +
+            '<div class="tx-menu">' +
+              '<button type="button" class="tx-drop" aria-expanded="false" aria-haspopup="listbox" aria-controls="' + listId + '">' +
+                "<span>" + esc(period.label) + "</span>" + TX_CHEVRON +
+              "</button>" +
+              '<div class="tx-list" id="' + listId + '" role="listbox" aria-label="Period" hidden>' + options + "</div>" +
+            "</div>" +
+            '<button type="button" class="tx-more" aria-label="More options">' + TX_DOTS + "</button>" +
+          "</div>" +
+        "</div>" +
+        '<div class="tx-total">' +
+          '<p class="tx-sum"><span class="tx-sym">' + esc(parts.symbol) + '</span><span class="tx-num" data-tx-count="' + period.total + '" data-tx-kind="parts">' + esc(parts.number) + "</span></p>" +
+          txTrendHTML(period.change, period.changeLabel, "total") +
+        "</div>" +
+        '<div class="tx-cats">' + cats + "</div>" +
+        '<div class="tx-div" aria-hidden="true"><div class="tx-div-line"></div></div>' +
+        '<div class="tx-chart">' +
+          '<div class="tx-plot-pad">' +
+            '<div class="tx-plot" data-plot="1" role="group" tabindex="0" aria-label="' + esc(title + ", " + period.label + ": use the arrow keys to read the values") + '">' +
+              '<svg class="tx-svg" aria-hidden="true"></svg>' +
+              '<div class="tx-guide" aria-hidden="true"></div>' +
+              '<div class="tx-dot" aria-hidden="true"></div>' +
+              '<div class="tx-pill" aria-hidden="true"><span class="tx-pill-l"></span><span class="tx-pill-r"></span></div>' +
+            "</div>" +
+          "</div>" +
+          '<div class="tx-axis" aria-hidden="true">' + axis + "</div>" +
+        "</div>" +
+        '<p class="sr" aria-live="polite" data-tx-live></p>';
+
+      var host = article.querySelector("[data-plot='1']");
+      var width = Math.max(2, host.clientWidth || article.clientWidth || 320);
+      host.dataset.drawn = String(width);
+      var pixels = txPixels(period.points, width, TX_H);
+      var fromPx = seen ? txPixels(seen.points, width, TX_H) : null;
+      var doMorph = !!(fromPx && fromPx.length && seen.key !== period.value && !reduce && inView);
+      var lineD = txLine(doMorph ? fromPx : pixels);
+      var areaD = txArea(doMorph ? fromPx : pixels, TX_H, TX_AREA);
+      var gid = "txg" + (paintTotalExpenses.uid = (paintTotalExpenses.uid || 0) + 1);
+      var plotSvg = host.querySelector("svg");
+      plotSvg.setAttribute("viewBox", "0 0 " + width + " " + TX_H);
+      plotSvg.setAttribute("width", "100%");
+      plotSvg.setAttribute("height", String(TX_H));
+      plotSvg.setAttribute("preserveAspectRatio", "none");
+      var defs = svg("defs");
+      var grad = svg("linearGradient", { id: gid + "-area", x1: "0", y1: "0", x2: "0", y2: "1" });
+      grad.appendChild(svg("stop", { offset: "0", "stop-color": "#097df6", "stop-opacity": "0.18" }));
+      grad.appendChild(svg("stop", { offset: "1", "stop-color": "#097df6", "stop-opacity": "0" }));
+      defs.appendChild(grad);
+      plotSvg.appendChild(defs);
+      var areaEl = svg("path", { class: "tx-area", d: areaD, fill: "url(#" + gid + "-area)" });
+      var lineEl = svg("path", {
+        class: "tx-line",
+        d: lineD,
+        fill: "none",
+        stroke: "#097df6",
+        "stroke-width": "2",
+        "stroke-linejoin": "round",
+        "stroke-linecap": "round"
+      });
+      if (article.classList.contains("tx-draw")) lineEl.setAttribute("pathLength", "1");
+      plotSvg.appendChild(areaEl);
+      plotSvg.appendChild(lineEl);
+
+      var divLine = article.querySelector(".tx-div-line");
+      var dw = Math.max(2, divLine.clientWidth || width);
+      var divSvg = svg("svg", { viewBox: "0 0 " + dw + " 1", width: "100%", height: "1", preserveAspectRatio: "none", "aria-hidden": "true" });
+      var divDefs = svg("defs");
+      var divGrad = svg("linearGradient", { id: gid + "-div", gradientUnits: "userSpaceOnUse", x1: "0", y1: "0", x2: String(dw), y2: "0" });
+      divGrad.appendChild(svg("stop", { offset: "0", "stop-color": "#ececec", "stop-opacity": "0" }));
+      divGrad.appendChild(svg("stop", { offset: "0.2548", "stop-color": "#ececec", "stop-opacity": "1" }));
+      divGrad.appendChild(svg("stop", { offset: "0.7692", "stop-color": "#ececec", "stop-opacity": "1" }));
+      divGrad.appendChild(svg("stop", { offset: "1", "stop-color": "#ececec", "stop-opacity": "0" }));
+      divDefs.appendChild(divGrad);
+      divSvg.appendChild(divDefs);
+      divSvg.appendChild(svg("line", {
+        x1: "0",
+        y1: "0.5",
+        x2: String(dw),
+        y2: "0.5",
+        stroke: "url(#" + gid + "-div)",
+        "stroke-width": "1",
+        "stroke-dasharray": "4 4",
+        "stroke-dashoffset": "2"
+      }));
+      divLine.appendChild(divSvg);
+
+      article._txGeom = {
+        key: period.value,
+        points: period.points.map(function (p) { return { x: p.x, value: p.value }; })
+      };
+
+      if (doMorph) {
+        var aligned = txAlign(fromPx, pixels);
+        var morphStart = performance.now();
+        var morphDur = 900;
+        (function step(now) {
+          var t = Math.min(1, (now - morphStart) / morphDur);
+          var e = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+          var framePts = aligned.xs.map(function (x, i) {
+            return { x: x, y: aligned.from[i] + (aligned.to[i] - aligned.from[i]) * e };
+          });
+          lineEl.setAttribute("d", txLine(framePts));
+          areaEl.setAttribute("d", txArea(framePts, TX_H, TX_AREA));
+          if (t < 1) article._txMorph = requestAnimationFrame(step);
+          else {
+            lineEl.setAttribute("d", txLine(pixels));
+            areaEl.setAttribute("d", txArea(pixels, TX_H, TX_AREA));
+            article._txMorph = 0;
+          }
+        })(morphStart);
+      }
+
+      var animateNums = !reduce && (!seen || seen.key !== period.value);
+      if (animateNums) {
+        var jobs = Array.prototype.map.call(article.querySelectorAll("[data-tx-count]"), function (node) {
+          node.setAttribute("data-tx-final", node.textContent);
+          return { node: node, to: Number(node.getAttribute("data-tx-count")), kind: node.getAttribute("data-tx-kind") };
+        });
+        jobs.forEach(function (job) { job.node.textContent = txFormatCount(job.kind, 0); });
+        var countStart = performance.now();
+        (function tick(now) {
+          var t = Math.min(1, (now - countStart) / 900);
+          var e = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+          jobs.forEach(function (job) {
+            job.node.textContent = t === 1 ? job.node.getAttribute("data-tx-final") : txFormatCount(job.kind, job.to * e);
+          });
+          if (t < 1) article._txRaf = requestAnimationFrame(tick);
+          else article._txRaf = 0;
+        })(countStart);
+      }
+
+      txFitTitle(article);
+      txFitAxis(article.querySelector(".tx-axis"));
+
+      var trigger = article.querySelector(".tx-drop");
+      var list = article.querySelector(".tx-list");
+      function closeMenu() {
+        list.hidden = true;
+        trigger.setAttribute("aria-expanded", "false");
+        if (article._txDoc) {
+          document.removeEventListener("pointerdown", article._txDoc, true);
+          article._txDoc = null;
+        }
+      }
+      function openMenu(focusOpt) {
+        list.hidden = false;
+        trigger.setAttribute("aria-expanded", "true");
+        if (article._txDoc) document.removeEventListener("pointerdown", article._txDoc, true);
+        article._txDoc = function (event) {
+          if (!article.contains(event.target)) closeMenu();
+        };
+        document.addEventListener("pointerdown", article._txDoc, true);
+        if (focusOpt) {
+          var selected = list.querySelector('[aria-selected="true"]') || list.querySelector("[role='option']");
+          if (selected) selected.focus();
+        }
+      }
+      trigger.addEventListener("click", function () {
+        if (trigger.getAttribute("aria-expanded") === "true") closeMenu();
+        else openMenu(false);
+      });
+      trigger.addEventListener("keydown", function (event) {
+        if (event.key === "ArrowDown") {
+          event.preventDefault();
+          openMenu(true);
+        } else if (event.key === "Escape") {
+          closeMenu();
+        }
+      });
+      list.addEventListener("keydown", function (event) {
+        var buttons = Array.prototype.slice.call(list.querySelectorAll("[role='option']"));
+        var current = buttons.indexOf(document.activeElement);
+        if (event.key === "ArrowDown" || event.key === "ArrowRight") {
+          event.preventDefault();
+          buttons[Math.min(buttons.length - 1, Math.max(0, current) + 1)].focus();
+        } else if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+          event.preventDefault();
+          buttons[Math.max(0, current < 0 ? 0 : current - 1)].focus();
+        } else if (event.key === "Home") {
+          event.preventDefault();
+          buttons[0].focus();
+        } else if (event.key === "End") {
+          event.preventDefault();
+          buttons[buttons.length - 1].focus();
+        } else if (event.key === "Escape") {
+          event.preventDefault();
+          closeMenu();
+          trigger.focus();
+        }
+      });
+      list.querySelectorAll("[data-period]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          state.seg = button.getAttribute("data-period");
+          closeMenu();
+          paint(article, chart);
+        });
+      });
+
+      var guide = host.querySelector(".tx-guide");
+      var dot = host.querySelector(".tx-dot");
+      var pill = host.querySelector(".tx-pill");
+      var pillL = host.querySelector(".tx-pill-l");
+      var pillR = host.querySelector(".tx-pill-r");
+      var live = article.querySelector("[data-tx-live]");
+      var active = null;
+      function clearHot() {
+        active = null;
+        host.classList.remove("is-hot");
+        if (live) live.textContent = "";
+      }
+      function showAt(i) {
+        if (i < 0 || i >= pixels.length) return;
+        var p = pixels[i];
+        var label = txPointLabel(period, i);
+        var money = txMoney(period.points[i].value);
+        pillL.textContent = label;
+        pillR.textContent = money;
+        var was = host.classList.contains("is-hot");
+        if (!was) host.classList.add("tx-jump");
+        guide.style.left = p.x + "px";
+        dot.style.left = p.x + "px";
+        dot.style.top = p.y + "px";
+        var half = pill.offsetWidth / 2;
+        var tipX = Math.min(Math.max(p.x, half - 8), Math.max(half, width - half + 8));
+        pill.style.left = tipX + "px";
+        pill.style.top = (p.y - 14) + "px";
+        host.classList.add("is-hot");
+        if (!was) requestAnimationFrame(function () { host.classList.remove("tx-jump"); });
+        if (live) live.textContent = label + ": " + money;
+        active = i;
+      }
+      function pickAt(event) {
+        if (!pixels.length) return;
+        var box = host.getBoundingClientRect();
+        var zoom = box.width / (host.offsetWidth || box.width || 1) || 1;
+        var x = (event.clientX - box.left) / zoom;
+        var best = 0;
+        var i;
+        for (i = 1; i < pixels.length; i++) {
+          if (Math.abs(pixels[i].x - x) < Math.abs(pixels[best].x - x)) best = i;
+        }
+        showAt(best);
+      }
+      host.addEventListener("pointermove", pickAt);
+      host.addEventListener("pointerdown", pickAt);
+      host.addEventListener("pointerleave", clearHot);
+      host.addEventListener("blur", clearHot);
+      host.addEventListener("keydown", function (event) {
+        var last = pixels.length - 1;
+        var current = active == null ? last : active;
+        var next = { ArrowRight: current + 1, ArrowLeft: current - 1, Home: 0, End: last }[event.key];
+        if (event.key === "Escape") {
+          clearHot();
+          return;
+        }
+        if (next == null) return;
+        event.preventDefault();
+        showAt(Math.max(0, Math.min(last, next)));
+      });
+    } catch (err) {
+      errors.push((chart.id || "charts-total-expenses") + ": " + (err && err.message ? err.message : err));
+      article.classList.add("tx");
+      article.innerHTML = '<h2 class="card-title">' + esc(chart.title || "Total Expenses") + '</h2><p class="note">Could not draw this chart</p>';
+    }
+  }
+
   function paint(article, chart) {
+    if (chart.id === "charts-total-expenses") {
+      paintTotalExpenses(article, chart);
+      return;
+    }
     var state = article._state;
     var view = viewOf(chart, state);
     if (!view) return;
@@ -1449,6 +1961,14 @@
       low: null,
       high: null
     };
+    if (chart.id === "charts-total-expenses") {
+      article.classList.add("tx");
+      article._state.seg = "monthly";
+      article._chart = chart;
+      article.setAttribute("role", "group");
+      article.setAttribute("aria-label", chart.title || "Total Expenses");
+      return article;
+    }
     var head = el("div", "card-head");
     var titles = el("div");
     if (chart.kicker) {
