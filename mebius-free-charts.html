@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mebius finance charts · ui-kit</title>
+<meta name="description" content="All 62 free Mebius finance chart cards, redrawn as a static gallery with the sample data from each chart.">
+<script>
+  (function () {
+    var q = location.search || "";
+    var forceReduce = /(?:^|[?&])reduce=1(?:&|$)/.test(q);
+    var forceMotion = /(?:^|[?&])motion=1(?:&|$)/.test(q);
+    var reduce = false;
+    try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+    if (forceMotion) reduce = false;
+    if (forceReduce) reduce = true;
+    if (reduce) document.documentElement.setAttribute("data-motion", "reduce");
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/site-header.css?v=7">
+<link rel="stylesheet" href="mebius-free-charts.css">
+</head>
+<body class="mebius-page" data-page="mebius-free-charts">
+<main class="mebius-main">
+  <header class="page-head">
+    <p class="eyebrow">Free charts</p>
+    <h1>Mebius finance charts</h1>
+    <p class="lede">62 cards from the Mebius freebies, drawn with each chart’s sample data.</p>
+  </header>
+  <div class="toolbar">
+    <label class="search">
+      <span class="sr">Search charts by title</span>
+      <input id="chart-search" type="search" placeholder="Search charts" autocomplete="off">
+    </label>
+    <div class="filter-row">
+      <div class="filters" id="chart-filters" role="toolbar" aria-label="Chart types"></div>
+      <p class="count" id="chart-count">62 charts</p>
+    </div>
+  </div>
+  <p class="empty" id="chart-empty" hidden>No charts match.</p>
+  <div class="grid" id="chart-grid"></div>
+</main>
+<script src="mebius-free-charts-data.js" defer></script>
+<script src="mebius-free-charts.js" defer></script>
+<script src="shared/site-header.js?v=19" defer></script>
+</body>
+</html>

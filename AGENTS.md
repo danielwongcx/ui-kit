@@ -26,6 +26,7 @@ Multi-page **static** UI kit published on GitHub Pages from the `main` branch ro
 - Wave grid: https://danielwongcx.github.io/ui-kit/wave-card-grid.html (`wave-card-grid.html`) — Explainer. Responsive SaaS card grid that fades, rises, and scales in as a staggered wave. Delay follows the diagonal (row + column), the row, or the column. Replay restarts the wave. `prefers-reduced-motion` shows every card at rest. GSAP (`vendor/gsap.min.js`). No build step.
 - Motion prompt: https://danielwongcx.github.io/ui-kit/kinetic-typography.html (`kinetic-typography.html`) — Explainer. All 192 effects from Shohei Ohtaki’s Motion Prompt gallery (MIT), vendored in `vendor/motion-prompt/` (runtime, eight packs, `catalog-slim.json`, LICENSE). Pack chips filter the looping canvas cards. `#008` and `#kinetic-typography` scroll to kinetic typography. `prefers-reduced-motion` and `?reduce=1` hold every card at `u = cycle * 0.35`. Packs declare no web fonts. No build step.
 - HK middle spend: https://danielwongcx.github.io/ui-kit/hk-middle-household-income-spend.html (`hk-middle-household-income-spend.html`) — Explainer. Full-viewport ~16s data film on what “middle” Hong Kong households earn and spend. Censtatd proxy: median monthly income Q4 2025 (HK$30,000 all domestic; HK$40,000 economically active) and 2024/25 household expenditure (average HK$32,472; median HK$26,000). No official middle-class line. Motion Prompt effects #183, #007, #002, #005, #144, #004, #027, #071, #006, and #187, with beat cuts #017, #018, #137, #020, and #044, and a #080 highlighter on the landed figures (`vendor/motion-prompt/`). English and written Cantonese subtitles sit on every beat. Seek with `?t=`. `prefers-reduced-motion` and `?reduce=1` show static cards with those lines. No build step.
+- Mebius charts: https://danielwongcx.github.io/ui-kit/mebius-free-charts.html (`mebius-free-charts.html`) — Explainer. Gallery of the 62 free Mebius finance chart cards, redrawn in HTML, CSS, and SVG from each chart’s sample data. Sticky search and type filters. `prefers-reduced-motion` holds entrance motion. No build step.
 
 No build step. Plain HTML / CSS / JS.
 
@@ -56,6 +57,7 @@ Top-level pages: Gallery, Digest, Taste, Piano, ASCII, Ferry, MTR, Transition.
 - Wave grid → `wave-card-grid.html`
 - Motion prompt → `kinetic-typography.html`
 - HK middle spend → `hk-middle-household-income-spend.html`
+- Mebius charts → `mebius-free-charts.html`
 
 When you add a new page:
 

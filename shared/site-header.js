@@ -31,7 +31,8 @@
         { id: 'dub-promo-showreel', label: 'Dub promo', href: 'dub-promo-showreel.html' },
         { id: 'wave-card-grid', label: 'Wave grid', href: 'wave-card-grid.html' },
         { id: 'kinetic-typography', label: 'Motion prompt', href: 'kinetic-typography.html' },
-        { id: 'hk-middle-household-income-spend', label: 'HK middle spend', href: 'hk-middle-household-income-spend.html' }
+        { id: 'hk-middle-household-income-spend', label: 'HK middle spend', href: 'hk-middle-household-income-spend.html' },
+        { id: 'mebius-free-charts', label: 'Mebius charts', href: 'mebius-free-charts.html' }
       ]
     }
   ];
