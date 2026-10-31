@@ -24,8 +24,17 @@
   --card-radius: 24px;
 }
 
+/* Keep the page itself from growing with the filter pills (v2). */
+html {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 .mebius-page {
   margin: 0;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
   background: var(--surface-base);
   color: var(--fg-loud);
   font-family: var(--font-charts);
@@ -35,6 +44,8 @@
 
 .mebius-main {
   width: min(1180px, calc(100% - 32px));
+  max-width: 100%;
+  min-width: 0;
   margin: 0 auto;
   padding: var(--space-24) 0 var(--space-32);
 }
@@ -73,11 +84,20 @@
   top: var(--site-header-h, 56px);
   z-index: 30;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-12);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   margin: 0 0 var(--space-16);
   padding: var(--space-12) 0;
   background: color-mix(in srgb, var(--surface-base) 92%, transparent);
   backdrop-filter: blur(10px);
+}
+
+.toolbar > * {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .filter-row {
@@ -85,6 +105,9 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-8);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .search {
@@ -130,16 +153,19 @@
 
 .filters {
   display: flex;
-  flex: 1 1 auto;
+  flex: 1 1 0%;
   flex-wrap: nowrap;
   gap: var(--space-8);
   align-items: center;
-  min-width: 0;
+  box-sizing: border-box;
+  width: 100%;
   max-width: 100%;
+  min-width: 0;
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior-x: contain;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
   scrollbar-width: none;
   padding-block: var(--space-4);
   scroll-padding-inline: var(--space-4);
@@ -193,8 +219,11 @@
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-16);
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .card[hidden] { display: none; }
@@ -664,6 +693,8 @@
 @media (max-width: 719px) {
   .mebius-main {
     width: min(1180px, calc(100% - 32px));
+    max-width: 100%;
+    min-width: 0;
     padding: var(--space-16) 0 var(--space-24);
   }
   .page-head {
@@ -680,8 +711,16 @@
     flex-direction: column;
     align-items: stretch;
     gap: var(--space-8);
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
   }
-  .filters { width: 100%; }
+  .filters {
+    flex: 1 1 0%;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
   .count { align-self: flex-start; }
   .grid { gap: var(--space-16); }
   .card {
@@ -695,11 +734,11 @@
   .mebius-main { width: min(1180px, calc(100% - 48px)); }
   .page-head h1 { font-size: 40px; }
   .fig-value { font-size: 32px; }
-  .grid { grid-template-columns: 1fr 1fr; gap: var(--space-24); }
+  .grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-24); }
 }
 
 @media (min-width: 1100px) {
-  .grid { grid-template-columns: 1fr 1fr 1fr; }
+  .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .card.wide { grid-column: span 2; }
 }
 
