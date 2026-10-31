@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HK middle spend · ui-kit</title>
+<meta name="description" content="Sixteen-second data film: what middle Hong Kong households earn and spend. Census and Statistics Department medians for Q4 2025, and the 2024/25 Household Expenditure Survey. No official middle-class line.">
+<!--
+  Rank: primary = the figure on the current beat. Secondary = the comparison line.
+  Tertiary = effect name, clock, source.
+  Primary action = play / pause.
+  Tokens: space 4–64, type 12–64, ink / muted / page / card / track, radius 12, line.
+  Effects: vendored Motion Prompt ids #183 #007 #002 #005 #144 #004 #027 #071 #006 #187.
+-->
+<script>
+  (function () {
+    var q = location.search || "";
+    var forceReduce = /(?:^|[?&])reduce=1(?:&|$)/.test(q);
+    var forceMotion = /(?:^|[?&])motion=1(?:&|$)/.test(q);
+    var reduce = false;
+    try {
+      reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    } catch (e) {}
+    if (forceMotion) reduce = false;
+    if (forceReduce) reduce = true;
+    document.documentElement.setAttribute("data-motion", reduce ? "reduce" : "play");
+  })();
+</script>
+<link rel="stylesheet" href="shared/site-header.css?v=7">
+<style>
+  :root {
+    --space-4: 4px;
+    --space-8: 8px;
+    --space-12: 12px;
+    --space-16: 16px;
+    --space-24: 24px;
+    --space-32: 32px;
+    --space-48: 48px;
+    --space-64: 64px;
+    --text-12: 12px;
+    --text-14: 14px;
+    --text-16: 16px;
+    --text-18: 18px;
+    --text-20: 20px;
+    --text-24: 24px;
+    --text-30: 30px;
+    --text-36: 36px;
+    --ink: #1c1c22;
+    --muted: #5c5c66;
+    --page: #f6f5f3;
+    --card: #ffffff;
+    --line: rgba(28, 28, 34, 0.1);
+    --track: #eceae6;
+    --radius: 12px;
+    --sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  html, body {
+    margin: 0;
+    background: var(--page);
+    color: var(--ink);
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    overflow: hidden;
+    font-family: var(--sans);
+    font-size: var(--text-16);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body > .site-header {
+    flex: 0 0 auto;
+  }
+
+  .film {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stage-wrap {
+    flex: 1 1 auto;
+    min-height: 0;
+    box-sizing: border-box;
+    display: grid;
+    place-items: center;
+    padding: var(--space-16) var(--space-24) var(--space-8);
+  }
+
+  .frame {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--page);
+  }
+
+  .frame canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .beats {
+    display: flex;
+    gap: var(--space-8);
+    overflow-x: auto;
+    padding: var(--space-8) var(--space-24) var(--space-4);
+    scrollbar-width: thin;
+    user-select: none;
+  }
+
+  .beat {
+    flex: 0 0 auto;
+    min-height: 44px;
+    padding: var(--space-8) var(--space-16);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--card);
+    color: var(--ink);
+    font: 600 var(--text-14)/1.2 var(--sans);
+    cursor: pointer;
+  }
+
+  .beat:hover {
+    background: var(--track);
+  }
+
+  .beat[aria-current="true"] {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--card);
+  }
+
+  .beat[aria-current="true"]:hover {
+    background: var(--ink);
+  }
+
+  .transport {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-8) var(--space-12);
+    padding: var(--space-8) var(--space-24) var(--space-4);
+    user-select: none;
+  }
+
+  .transport button {
+    min-height: 44px;
+    min-width: 80px;
+    padding: 0 var(--space-16);
+    border: 0;
+    border-radius: var(--radius);
+    background: var(--ink);
+    color: var(--card);
+    font: 600 var(--text-14)/1 var(--sans);
+    cursor: pointer;
+  }
+
+  .transport button:hover {
+    opacity: 0.88;
+  }
+
+  .scrub {
+    flex: 1 1 160px;
+    min-width: 0;
+    height: 44px;
+    margin: 0;
+    accent-color: var(--ink);
+    cursor: pointer;
+  }
+
+  .clock {
+    flex: 0 0 auto;
+    min-width: 9em;
+    font-size: var(--text-14);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+  }
+
+  .now {
+    flex: 1 1 100%;
+    display: flex;
+    gap: var(--space-12);
+    align-items: baseline;
+    min-width: 0;
+    margin: 0;
+  }
+
+  .now strong {
+    font-size: var(--text-14);
+    font-weight: 600;
+  }
+
+  .now span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: var(--text-12);
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  .beat:focus-visible,
+  .transport button:focus-visible,
+  .transport input:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 3px;
+  }
+
+  .source {
+    box-sizing: border-box;
+    width: min(720px, 100%);
+    margin: 0 auto;
+    padding: var(--space-4) var(--space-24) var(--space-16);
+    color: var(--muted);
+    font-size: var(--text-12);
+    line-height: 1.5;
+  }
+
+  .source p {
+    margin: 0 0 var(--space-8);
+  }
+
+  .source p:last-child {
+    margin-bottom: 0;
+  }
+
+  .cards {
+    display: none;
+    box-sizing: border-box;
+    width: min(720px, 100%);
+    margin: 0 auto;
+    padding: var(--space-48) var(--space-24) var(--space-32);
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  .cards *,
+  .cards *::before,
+  .cards *::after,
+  .source,
+  .film,
+  .film * {
+    box-sizing: border-box;
+  }
+
+  .beat-block {
+    padding: var(--space-24);
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+
+  .meta {
+    margin: 0;
+    font-size: var(--text-12);
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--muted);
+  }
+
+  .cards h1,
+  .cards h2,
+  .cards p {
+    margin: 0;
+  }
+
+  .cards h1 {
+    margin-top: var(--space-8);
+    font-size: var(--text-30);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .cards h2 {
+    margin-top: var(--space-8);
+    font-size: var(--text-18);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+  }
+
+  .figure {
+    margin-top: var(--space-8);
+    font-size: var(--text-36);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .figure-line {
+    font-size: var(--text-30);
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+
+  .unit {
+    font-size: var(--text-18);
+    font-weight: 500;
+    letter-spacing: 0;
+    color: var(--muted);
+  }
+
+  .secondary {
+    margin-top: var(--space-16);
+    font-size: var(--text-18);
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  .secondary strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .kicker {
+    margin-top: var(--space-8);
+    font-size: var(--text-18);
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-24);
+  }
+
+  .statement {
+    margin-top: var(--space-8);
+    font-size: var(--text-24);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.35;
+  }
+
+  .cite {
+    margin-top: var(--space-16);
+    font-size: var(--text-14);
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .shares {
+    list-style: none;
+    margin: var(--space-16) 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  .shares li {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .shares span:first-child {
+    font-size: var(--text-16);
+    font-weight: 600;
+  }
+
+  .track {
+    display: block;
+    height: var(--space-12);
+    background: var(--track);
+    border-radius: var(--space-4);
+    overflow: hidden;
+  }
+
+  .fill {
+    display: block;
+    height: 100%;
+    background: var(--ink);
+    border-radius: var(--space-4);
+  }
+
+  .badge {
+    display: inline-block;
+    margin-left: var(--space-12);
+    padding: var(--space-8) var(--space-16);
+    border-radius: var(--radius);
+    background: var(--ink);
+    color: var(--card);
+    font-size: var(--text-16);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    vertical-align: middle;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  html[data-motion="reduce"] .film {
+    display: none;
+  }
+
+  html[data-motion="reduce"] .cards {
+    display: flex;
+  }
+
+  html[data-motion="reduce"] body {
+    display: block;
+    height: auto;
+    overflow: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="play"]) .film {
+      display: none;
+    }
+
+    html:not([data-motion="play"]) .cards {
+      display: flex;
+    }
+
+    html:not([data-motion="play"]) body {
+      display: block;
+      height: auto;
+      overflow: auto;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .split {
+      grid-template-columns: 1fr;
+    }
+
+    .stage-wrap,
+    .beats,
+    .transport {
+      padding-left: var(--space-16);
+      padding-right: var(--space-16);
+    }
+  }
+</style>
+<noscript>
+  <style>
+    .film { display: none !important; }
+    .cards { display: flex !important; }
+    body { display: block !important; height: auto !important; overflow: auto !important; }
+  </style>
+</noscript>
+</head>
+<body data-page="hk-middle-household-income-spend">
+<div class="film">
+  <h1 class="sr-only">Hong Kong middle household income and spend</h1>
+  <p class="sr-only">A sixteen-second film. Median monthly household income is $30,000, or $40,000 for economically active households. Average monthly spend is $32,472. Median spend is $26,000. Housing is 39 percent at $12,775, food 24 percent at $7,836, and transport 8 percent at $2,499. Average household size is 2.6 people. The third-quartile spend band is about $32,000. There is no official middle-class line. Press space to pause. Arrow keys move the playhead.</p>
+  <div class="stage-wrap" id="stage-wrap">
+    <div class="frame" id="frame">
+      <canvas id="stage" width="1280" height="720" aria-hidden="true"></canvas>
+    </div>
+  </div>
+  <nav class="beats" id="beats" aria-label="Beat map"></nav>
+  <div class="transport">
+    <button type="button" id="play">Pause</button>
+    <input class="scrub" id="scrub" type="range" min="0" max="16" step="0.01" value="0" aria-label="Scrub the film" aria-valuemin="0" aria-valuemax="16">
+    <span class="clock" id="clock">0:00.0 / 0:16</span>
+    <p class="now" id="now">
+      <strong id="beat-name">Hook</strong>
+      <span id="effect-name">#183 Establishing shot</span>
+    </p>
+  </div>
+  <p id="live" class="sr-only" aria-live="polite"></p>
+</div>
+
+<main class="cards">
+  <header class="beat-block">
+    <p class="meta">0:00–0:02 · Establishing shot · #183</p>
+    <h1>Hong Kong · middle of the pack</h1>
+  </header>
+
+  <article class="beat-block">
+    <p class="meta">0:02–0:05 · Count-up · #007 · Stagger · #002</p>
+    <h2>Median household income</h2>
+    <p class="figure">$30,000 <span class="unit">/ mo</span></p>
+    <p class="secondary">Economically active · <strong>$40,000</strong></p>
+  </article>
+
+  <article class="beat-block">
+    <p class="meta">0:05–0:08 · Mask reveal · #005 · Split screen · #144</p>
+    <div class="split">
+      <div>
+        <h2>Average household spend</h2>
+        <p class="figure">$32,472 <span class="unit">/ mo</span></p>
+      </div>
+      <div>
+        <h2>Median spend</h2>
+        <p class="figure">$26,000</p>
+      </div>
+    </div>
+  </article>
+
+  <article class="beat-block">
+    <p class="meta">0:08–0:12 · Line draw · #004 · Stagger · #002</p>
+    <h2 class="sr-only">Where it goes</h2>
+    <ul class="shares">
+      <li>
+        <span>Housing 39% · $12,775</span>
+        <span class="track"><span class="fill" style="width: 39.3%" title="39.3% of average monthly expenditure"></span></span>
+      </li>
+      <li>
+        <span>Food 24% · $7,836</span>
+        <span class="track"><span class="fill" style="width: 24.1%" title="24.1% of average monthly expenditure"></span></span>
+      </li>
+      <li>
+        <span>Transport 8% · $2,499</span>
+        <span class="track"><span class="fill" style="width: 7.7%" title="7.7% of average monthly expenditure"></span></span>
+      </li>
+    </ul>
+  </article>
+
+  <article class="beat-block">
+    <p class="meta">0:12–0:14 · Dolly in · #027 · Badge · #071</p>
+    <h2 class="sr-only">Household scale</h2>
+    <p class="figure figure-line">Avg household · 2.6 people</p>
+    <p class="secondary">Third-quartile spend band <span class="badge">~$32k</span></p>
+  </article>
+
+  <article class="beat-block">
+    <p class="meta">0:14–0:16 · Typewriter · #006 · Fade to black · #187</p>
+    <h2 class="statement">No official “middle class” line · Censtatd medians</h2>
+    <p class="cite">Census &amp; Statistics Department — Quarterly Report on General Household Survey Q4 2025; Report on 2024/25 Household Expenditure Survey.</p>
+  </article>
+</main>
+
+<footer class="source">
+  <p>Survey shares of average monthly expenditure: housing 39.3% (HK$12,775), food 24.1% (HK$7,836), transport 7.7% (HK$2,499). Third-quartile expenditure group average about HK$32,105. Average household size 2.6. No official middle-class line.</p>
+  <p>Census &amp; Statistics Department — Quarterly Report on General Household Survey Q4 2025; Report on 2024/25 Household Expenditure Survey.</p>
+</footer>
+
+<script src="shared/site-header.js?v=18" defer></script>
+<script src="vendor/motion-prompt/runtime.js" defer></script>
+<script src="vendor/motion-prompt/pack-motion.js" defer></script>
+<script src="vendor/motion-prompt/pack-motion2.js" defer></script>
+<script src="vendor/motion-prompt/pack-camera.js" defer></script>
+<script src="vendor/motion-prompt/pack-camera2.js" defer></script>
+<script src="vendor/motion-prompt/pack-ui.js" defer></script>
+<script src="hk-middle-household-income-spend.js" defer></script>
+</body>
+</html>
