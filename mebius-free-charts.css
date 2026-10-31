@@ -387,6 +387,11 @@ html {
   color: var(--fg-white);
 }
 
+/* Two filter groups: 24px between rows, 4px inside a row. */
+.modes + .segs {
+  margin-top: var(--space-24);
+}
+
 .stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
