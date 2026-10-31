@@ -14,13 +14,14 @@ Static component gallery and digest catalog for Daniel Wong — served from GitH
 | Ferry | https://danielwongcx.github.io/ui-kit/ferry.html |
 | MTR | https://danielwongcx.github.io/ui-kit/mtr.html |
 | Transition | https://danielwongcx.github.io/ui-kit/transition.html |
+| Atelier | https://danielwongcx.github.io/ui-kit/atelier.html |
 | One prompt | https://danielwongcx.github.io/ui-kit/one-prompt.html |
 | Motion studio | https://danielwongcx.github.io/ui-kit/motion-studio.html |
 | UI aesthetic | https://danielwongcx.github.io/ui-kit/ui-aesthetic.html |
 | Fix your life | https://danielwongcx.github.io/ui-kit/fix-life.html |
 | HK middle spend | https://danielwongcx.github.io/ui-kit/hk-middle-household-income-spend.html |
 
-Local mirrors: `index.html`, `digest.html`, `taste.html`, `learn-piano-101.html`, `ascii-sharks.html`, `ferry.html`, `mtr.html`, `transition.html`, `one-prompt.html`, `motion-studio.html`, `ui-aesthetic.html`, `refactor-ui.html`, `fix-life.html`, and `hk-middle-household-income-spend.html`. `ui-combo.html` is a byte-identical copy of `index.html`. One prompt, Motion studio, UI aesthetic, Refactor UI, Fix your life, and HK middle spend sit under the Explainer category in the site header.
+Local mirrors: `index.html`, `digest.html`, `taste.html`, `learn-piano-101.html`, `ascii-sharks.html`, `ferry.html`, `mtr.html`, `transition.html`, `atelier.html`, `one-prompt.html`, `motion-studio.html`, `ui-aesthetic.html`, `refactor-ui.html`, `fix-life.html`, and `hk-middle-household-income-spend.html`. Atelier’s style bible is `atelier/DESIGN.md` (the page downloads it). Root `DESIGN.md` remains the Refactor UI rulebook. `ui-combo.html` is a byte-identical copy of `index.html`. One prompt, Motion studio, UI aesthetic, Refactor UI, Fix your life, and HK middle spend sit under the Explainer category in the site header.
 
 Gallery sections: Digits, Buttons, Cards, Nested radius (invite dialog: shared 24px versus `inner = outer − padding`, with `corner-shape: superellipse(1.25)` where supported), Palettes, Select (native `appearance: base-select`), Glow border (pure-CSS `@property` angle + rotating `conic-gradient` rim), Folder (frosted SVG glass folder card), and Color combos (six reciprocal two-colour posters; click a hex to copy it — they do not recolour the page). Palettes holds ten page-shell themes plus twenty reference colour pairings (name, four swatches, mood; click a swatch to copy the hex — pairings do not recolour the page). Index stays the original gallery.
 
@@ -28,7 +29,7 @@ Taste sections: Motion, App/Data, Buttons+, States, Forms, Cards+, Taste palette
 
 ## Shared chrome
 
-- **Site header** (`shared/site-header.css` + `shared/site-header.js`) — sticky, mobile hamburger. Top-level links: Gallery · Digest · Taste · Piano · ASCII · Ferry · MTR · Transition. **Explainer** is a category (One prompt, Motion studio, UI aesthetic, Refactor UI, Fix your life, HK middle spend): a dropdown on desktop, a labeled group in the mobile panel. Every page must load it; see `AGENTS.md`.
+- **Site header** (`shared/site-header.css` + `shared/site-header.js`) — sticky, mobile hamburger. Top-level links: Gallery · Digest · Taste · Piano · ASCII · Ferry · MTR · Transition · Atelier. **Explainer** is a category (One prompt, Motion studio, UI aesthetic, Refactor UI, Fix your life, HK middle spend): a dropdown on desktop, a labeled group in the mobile panel. Every page must load it; see `AGENTS.md`.
 - **Section FAB** (`shared/section-fab.*`) — gallery + taste. Collapsible sections + floating speed-dial (page-specific section map).
 
 ## Agents

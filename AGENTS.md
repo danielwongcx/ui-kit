@@ -16,6 +16,7 @@ Multi-page **static** UI kit published on GitHub Pages from the `main` branch ro
 - Ferry: https://danielwongcx.github.io/ui-kit/ferry.html (`ferry.html`) — one full-viewport page. Original night harbour crossing on the same 192×108 halftone-dots grid and 15fps stage as the viaduct train (`vendor/ascii-ferry/harbour.js`). The vessel is Star Ferry Celestial Star: red hull, green promenade, cream cabin. Night only, no theme toggle.
 - MTR: https://danielwongcx.github.io/ui-kit/mtr.html (`mtr.html`) — one full-viewport page. Original night metro on that same stage (`vendor/ascii-mtr/metro.js`): a KCR first-generation EMU, yellow cab and silver body with a thin red stripe, crosses an elevated guideway above the harbour. Night only, no theme toggle.
 - Transition: https://danielwongcx.github.io/ui-kit/transition.html (`transition.html`) — interactive gallery of the 32 free transitions.dev motion recipes. Light chrome (`#fdfdfd`, white cards, Inter), inline CSS/JS, no build step.
+- Atelier: https://danielwongcx.github.io/ui-kit/atelier.html (`atelier.html`) — interaction study in the locked Motion Atelier style: warm bone, dusty pastels, five bands, specimen grid. `atelier/DESIGN.md` is that style’s bible and is the file the page downloads. The repo-root `DESIGN.md` stays the Refactor UI rulebook.
 - One prompt: https://danielwongcx.github.io/ui-kit/one-prompt.html (`one-prompt.html`) — Explainer. Plain-language page on seeco’s (@seeconvm) X article about viral “one-prompt” Opus motion videos. Spring-timed hero, a prompt-vs-setup chart, an eight-piece studio diagram, and the piece / without it / fix table. Numbers are the article’s. No build step.
 - Motion studio: https://danielwongcx.github.io/ui-kit/motion-studio.html (`motion-studio.html`) — Explainer. Plain-language page on Movez’s (@0xMovez) X article, a 12-step course for turning a one-line motion prompt into a studio. Light seek(t) hero, a prompt-vs-harness chart, a four-part step diagram, and a without-it / fix table. Numbers are the article’s. No build step.
 - UI aesthetic: https://danielwongcx.github.io/ui-kit/ui-aesthetic.html (`ui-aesthetic.html`) — Explainer. Plain-language page on Xian’s (@Xian0063) X article, eight working principles and five AI design skills, with the article’s 15 images. Numbers and install commands are the article’s. No build step.
@@ -42,7 +43,7 @@ Page links live **ONLY** in `shared/site-header.js` → `PAGE_LINKS`.
 
 `PAGE_LINKS` is the top-level nav, in order. Each item is either a page `{ id, label, href }` or a category `{ id, label, children }`. Children use the same page shape. A page is listed once: top-level **or** under a category, never both.
 
-Top-level pages: Gallery, Digest, Taste, Piano, ASCII, Ferry, MTR, Transition.
+Top-level pages: Gallery, Digest, Taste, Piano, ASCII, Ferry, MTR, Transition, Atelier.
 
 **Explainer** (desktop dropdown, mobile group):
 

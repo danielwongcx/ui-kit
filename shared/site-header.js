@@ -17,6 +17,7 @@
     { id: 'ferry', label: 'Ferry', href: 'ferry.html' },
     { id: 'mtr', label: 'MTR', href: 'mtr.html' },
     { id: 'transition', label: 'Transition', href: 'transition.html' },
+    { id: 'atelier', label: 'Atelier', href: 'atelier.html' },
     {
       id: 'explainer',
       label: 'Explainer',
