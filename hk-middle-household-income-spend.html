@@ -399,6 +399,39 @@
     vertical-align: middle;
   }
 
+  .sub {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-top: var(--space-16);
+  }
+
+  .sub-en {
+    font-size: var(--text-16);
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .sub-yue {
+    font-family: "PingFang HK", "PingFang TC", "Noto Sans CJK HK", "Noto Sans CJK TC", "WenQuanYi Micro Hei", "Heiti TC", "Microsoft JhengHei", sans-serif;
+    font-size: var(--text-16);
+    font-weight: 500;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+
+  .mark {
+    background-image: linear-gradient(transparent 58%, rgba(28, 28, 34, 0.16) 58%, rgba(28, 28, 34, 0.16) 90%, transparent 90%);
+  }
+
+  .fill.is-mark {
+    background-color: var(--ink);
+    background-image: linear-gradient(var(--card), var(--card));
+    background-size: 100% 3px;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
   .sr-only {
     position: absolute;
     width: 1px;
@@ -465,7 +498,7 @@
 <body data-page="hk-middle-household-income-spend">
 <div class="film">
   <h1 class="sr-only">Hong Kong middle household income and spend</h1>
-  <p class="sr-only">A sixteen-second film. Median monthly household income is $30,000, or $40,000 for economically active households. Average monthly spend is $32,472. Median spend is $26,000. Housing is 39 percent at $12,775, food 24 percent at $7,836, and transport 8 percent at $2,499. Average household size is 2.6 people. The third-quartile spend band is about $32,000. There is no official middle-class line. Press space to pause. Arrow keys move the playhead.</p>
+  <p class="sr-only">A sixteen-second film with English and written Cantonese subtitles. Median monthly household income is $30,000, or $40,000 for economically active households. Average monthly spend is $32,472. Median spend is $26,000. Housing is 39 percent at $12,775, food 24 percent at $7,836, and transport 8 percent at $2,499. Average household size is 2.6 people. The third-quartile spend band is about $32,000. There is no official middle-class line. Press space to pause. Arrow keys move the playhead.</p>
   <div class="stage-wrap" id="stage-wrap">
     <div class="frame" id="frame">
       <canvas id="stage" width="1280" height="720" aria-hidden="true"></canvas>
@@ -488,13 +521,15 @@
   <header class="beat-block">
     <p class="meta">0:00–0:02 · Establishing shot · #183</p>
     <h1>Hong Kong · middle of the pack</h1>
+    <p class="sub"><span class="sub-en">Hong Kong · middle of the pack</span><span class="sub-yue" lang="zh-HK">香港 · 中產水平一瞥</span></p>
   </header>
 
   <article class="beat-block">
     <p class="meta">0:02–0:05 · Count-up · #007 · Stagger · #002</p>
     <h2>Median household income</h2>
-    <p class="figure">$30,000 <span class="unit">/ mo</span></p>
+    <p class="figure"><span class="mark">$30,000</span> <span class="unit">/ mo</span></p>
     <p class="secondary">Economically active · <strong>$40,000</strong></p>
+    <p class="sub"><span class="sub-en">Median household income $30,000/mo · economically active $40,000</span><span class="sub-yue" lang="zh-HK">住戶入息中位數每月三萬 · 有工作住戶四萬</span></p>
   </article>
 
   <article class="beat-block">
@@ -502,13 +537,14 @@
     <div class="split">
       <div>
         <h2>Average household spend</h2>
-        <p class="figure">$32,472 <span class="unit">/ mo</span></p>
+        <p class="figure"><span class="mark">$32,472</span> <span class="unit">/ mo</span></p>
       </div>
       <div>
         <h2>Median spend</h2>
         <p class="figure">$26,000</p>
       </div>
     </div>
+    <p class="sub"><span class="sub-en">Average spend $32,472 · median $26,000</span><span class="sub-yue" lang="zh-HK">平均開支三萬二千 · 中位數二萬六千</span></p>
   </article>
 
   <article class="beat-block">
@@ -516,8 +552,8 @@
     <h2 class="sr-only">Where it goes</h2>
     <ul class="shares">
       <li>
-        <span>Housing 39% · $12,775</span>
-        <span class="track"><span class="fill" style="width: 39.3%" title="39.3% of average monthly expenditure"></span></span>
+        <span class="mark">Housing 39% · $12,775</span>
+        <span class="track"><span class="fill is-mark" style="width: 39.3%" title="39.3% of average monthly expenditure"></span></span>
       </li>
       <li>
         <span>Food 24% · $7,836</span>
@@ -528,6 +564,7 @@
         <span class="track"><span class="fill" style="width: 7.7%" title="7.7% of average monthly expenditure"></span></span>
       </li>
     </ul>
+    <p class="sub"><span class="sub-en">Housing 39% · food 24% · transport 8%</span><span class="sub-yue" lang="zh-HK">住屋三成九 · 食物兩成四 · 交通約一成</span></p>
   </article>
 
   <article class="beat-block">
@@ -535,12 +572,14 @@
     <h2 class="sr-only">Household scale</h2>
     <p class="figure figure-line">Avg household · 2.6 people</p>
     <p class="secondary">Third-quartile spend band <span class="badge">~$32k</span></p>
+    <p class="sub"><span class="sub-en">Avg household 2.6 people · third-quartile spend ~$32k</span><span class="sub-yue" lang="zh-HK">平均住戶二點六人 · 第三四分位開支約三萬二</span></p>
   </article>
 
   <article class="beat-block">
     <p class="meta">0:14–0:16 · Typewriter · #006 · Fade to black · #187</p>
     <h2 class="statement">No official “middle class” line · Censtatd medians</h2>
     <p class="cite">Census &amp; Statistics Department — Quarterly Report on General Household Survey Q4 2025; Report on 2024/25 Household Expenditure Survey.</p>
+    <p class="sub"><span class="sub-en">No official middle-class line · Censtatd medians</span><span class="sub-yue" lang="zh-HK">官方無「中產」定義 · 用統計處中位數</span></p>
   </article>
 </main>
 
@@ -556,6 +595,7 @@
 <script src="vendor/motion-prompt/pack-camera.js" defer></script>
 <script src="vendor/motion-prompt/pack-camera2.js" defer></script>
 <script src="vendor/motion-prompt/pack-ui.js" defer></script>
+<script src="vendor/motion-prompt/pack-lp.js" defer></script>
 <script src="hk-middle-household-income-spend.js" defer></script>
 </body>
 </html>
