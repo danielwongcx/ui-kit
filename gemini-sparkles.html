@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gemini Sparkles - 1 Div</title>
+<link rel="stylesheet" href="shared/site-header.css?v=7">
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: #0f0f0f;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+
+  .gemini-sparkles {
+    width: 400px;
+    height: 250px;
+    border-radius: 24px;
+    background-color: #1a1a1a;
+    
+    /* 3 layers of sparkles - 1 dot per layer */
+    background-image: 
+      radial-gradient(circle, white 1.2px, transparent 2px),
+      radial-gradient(circle, #8ab4f8 1px, transparent 2px),
+      radial-gradient(circle, #aecbfa 1px, transparent 1.8px);
+
+    /* Different grid sizes = parallax */
+    background-size: 
+      65px 65px,
+      95px 95px,
+      140px 140px;
+
+    background-position: 
+      0 0,
+      20px 30px,
+      50px 10px;
+
+    /* Animate all 3 layers at different speeds */
+    animation: 
+      sparkle-move-1 12s linear infinite,
+      sparkle-move-2 18s linear infinite,
+      sparkle-move-3 25s linear infinite;
+
+    /* Need to animate multiple backgrounds - use keyframes that move all */
+    animation-name: sparkleFloat;
+  }
+
+  @keyframes sparkleFloat {
+    0% {
+      background-position: 
+        0px 0px,
+        20px 30px,
+        50px 10px;
+    }
+    100% {
+      background-position: 
+        0px 400px,      /* Layer 1 fast */
+        20px 600px,     /* Layer 2 medium */
+        50px 900px;     /* Layer 3 slow + far = parallax */
+    }
+  }
+
+  /* Optional glow like Gemini */
+  .gemini-sparkles {
+    box-shadow: 
+      0 0 30px rgba(138, 180, 248, 0.15),
+      inset 0 0 20px rgba(138, 180, 248, 0.05);
+  }
+
+  /* Header overlays the full-bleed stage so the centering grid stays intact. */
+  body[data-page="gemini-sparkles"] {
+    --site-ink: #e8eef8;
+    --site-muted: #9aa8b8;
+    --site-line: rgba(255, 255, 255, 0.14);
+    --site-bar-bg: color-mix(in srgb, #0f0f0f 72%, transparent);
+    --site-pill: rgba(255, 255, 255, 0.08);
+    --site-accent: #8ab4f8;
+  }
+  body[data-page="gemini-sparkles"] > .site-header {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    height: calc(var(--site-header-h, 56px) + env(safe-area-inset-top, 0px));
+  }
+  body[data-page="gemini-sparkles"] .site-header__panel {
+    background: color-mix(in srgb, #0f0f0f 94%, transparent);
+  }
+</style>
+</head>
+<body data-page="gemini-sparkles">
+  <div class="gemini-sparkles"></div>
+<script src="shared/site-header.js?v=21" defer></script>
+</body>
+</html>
