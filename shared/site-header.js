@@ -27,6 +27,7 @@
         { id: 'motion-studio', label: 'Motion studio', href: 'motion-studio.html' },
         { id: 'ui-aesthetic', label: 'UI aesthetic', href: 'ui-aesthetic.html' },
         { id: 'refactor-ui', label: 'Refactor UI', href: 'refactor-ui.html' },
+        { id: 'frontend', label: 'Frontend', href: 'frontend.html' },
         { id: 'fix-life', label: 'Fix your life', href: 'fix-life.html' },
         { id: 'design-with-ai', label: 'Design with AI', href: 'design-with-ai.html' },
         { id: 'grok-bot-showreel', label: 'Grok Bot reel', href: 'grok-bot-showreel.html' },
