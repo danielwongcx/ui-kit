@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Frontend · ui-kit</title>
+  <meta name="description" content="Interactive handbook of the frontend design, spacing, and motion engine: axioms, tokens, spatial laws, and twelve kinetic recipes." />
+  <link rel="stylesheet" href="shared/site-header.css?v=7" />
+  <link rel="stylesheet" href="shared/frontend.css?v=1" />
+</head>
+<body data-page="frontend">
+  <input type="checkbox" id="toc-toggle" class="sr" />
+  <label class="toc-bar" for="toc-toggle" aria-controls="toc">
+    <span class="toc-bar__k">Parts</span>
+    <span class="toc-bar__current" id="toc-current">Foundational axioms</span>
+  </label>
+
+  <div class="shell">
+    <nav class="toc" id="toc" aria-label="Parts">
+      <p class="toc__label" aria-hidden="true">Parts</p>
+      <a href="#part-axioms"><span>01</span> Axioms</a>
+      <a href="#part-tokens"><span>02</span> Tokens</a>
+      <a href="#part-laws"><span>03</span> Spatial laws</a>
+      <a href="#part-pipeline"><span>04</span> Dual-pass</a>
+      <a href="#part-recipes"><span>05</span> Recipes</a>
+      <a href="#part-matrix"><span>06</span> Anti-patterns</a>
+    </nav>
+
+    <main class="main" id="content">
+      <header class="hero">
+        <div>
+          <h1>Frontend</h1>
+          <p class="lede">A spacing and motion engine you can operate. Type stays on a fluid curve, boxes keep a hierarchy, and movement carries physical mass on the compositor.</p>
+          <p class="credit">Handbook for the <cite>Frontend Design, Spacing &amp; Motion Engine</cite>, version 3. Six parts: axioms, tokens, ten spatial laws, a two-pass pipeline, twelve live recipes, and the diagnostic matrix.</p>
+          <a class="dl" href="FRONTEND.md" download="FRONTEND.md">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path fill="currentColor" d="M8 1.5a.75.75 0 0 1 .75.75v6.19l1.72-1.72a.75.75 0 1 1 1.06 1.06l-3 3a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 1 1 1.06-1.06l1.72 1.72V2.25A.75.75 0 0 1 8 1.5ZM3 12.25a.75.75 0 0 0 0 1.5h10a.75.75 0 0 0 0-1.5H3Z"/>
+            </svg>
+            Download FRONTEND.md
+          </a>
+        </div>
+        <div class="hero__preview" aria-hidden="true">
+          <div class="specimen">
+            <p class="specimen__k">space-sm → space-xl</p>
+            <div class="specimen__bars"><i></i><i></i><i></i><i></i></div>
+            <p class="specimen__type">Fluid</p>
+            <span class="specimen__btn">Save changes</span>
+          </div>
+        </div>
+      </header>
+
+      <section class="part" id="part-axioms" data-title="Foundational axioms">
+        <h2><span>01</span> Foundational axioms</h2>
+        <p class="dek">Four rules sit under every layout and every animation in this handbook.</p>
+        <div class="axioms">
+          <article class="axiom">
+            <p class="kicker">Spatial</p>
+            <h3>Proximity dictates meaning</h3>
+            <p>Spacing is visual syntax. Elements that work together sit in a cluster. Distinct tiers keep a clear, repeatable gap.</p>
+            <div class="axiom__vis" aria-hidden="true">
+              <div class="prox">
+                <span><i></i><i></i><i></i></span>
+                <span><i></i><i></i></span>
+              </div>
+            </div>
+          </article>
+          <article class="axiom">
+            <p class="kicker">Fluidity</p>
+            <h3>Continuity over stepped snapping</h3>
+            <p>Type and structural bounds scale with <code>clamp()</code>. The size eases across the viewport instead of jumping at a breakpoint.</p>
+            <div class="axiom__vis" aria-hidden="true">
+              <div class="flow-vis">
+                <svg viewBox="0 0 240 36" fill="none">
+                  <path d="M2 28 H50 V18 H110 V10 H170 V6 H238" stroke="#c4bfb6" stroke-width="2"/>
+                  <path d="M2 30 C 70 30, 120 8, 238 6" stroke="#1c1c22" stroke-width="2"/>
+                </svg>
+              </div>
+            </div>
+          </article>
+          <article class="axiom">
+            <p class="kicker">Box-tree</p>
+            <h3>Top-down containment</h3>
+            <p>A screen is a tree: parent, then a row or column cluster, then the leaf. Draw that tree before writing declarations.</p>
+            <div class="axiom__vis" aria-hidden="true">
+              <div class="tree">
+                Parent
+                <div class="tree__row">
+                  Cluster
+                  <b>Leaf</b>
+                  <b>Leaf</b>
+                </div>
+              </div>
+            </div>
+          </article>
+          <article class="axiom">
+            <p class="kicker">Kinetic</p>
+            <h3>Motion has physical mass</h3>
+            <p>Feedback shows origin, momentum, and state. Curves decelerate. The animated properties stay <code>transform</code> and <code>opacity</code>.</p>
+            <div class="axiom__vis" aria-hidden="true">
+              <div class="mass"><i></i></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="part" id="part-tokens" data-title="Token systems">
+        <h2><span>02</span> Mathematical token systems</h2>
+        <p class="dek">Spacing, type, and motion each come from a short scale. 1rem is 16px. Space grows in 0.25rem steps.</p>
+
+        <article class="lesson" id="token-space">
+          <h3>Spacing triad</h3>
+          <p class="tip">Four stops cover grouping, padding, separation, and the outer frame. Declare them in rem so browser zoom keeps the rhythm.</p>
+          <div class="stage stage--live">
+            <div class="triad">
+              <div class="triad__row">
+                <i class="triad__bar" style="--w: 0.5rem"></i>
+                <div><strong>space-sm · 0.5rem · 8px</strong><span>Icon and label, title and subtitle, label and input</span></div>
+              </div>
+              <div class="triad__row">
+                <i class="triad__bar" style="--w: 1rem"></i>
+                <div><strong>space-md · 1rem · 16px</strong><span>Container padding, button groups, card padding</span></div>
+              </div>
+              <div class="triad__row">
+                <i class="triad__bar" style="--w: 1.5rem"></i>
+                <div><strong>space-lg · 1.5rem · 24px</strong><span>Between clusters, form blocks, card grids</span></div>
+              </div>
+              <div class="triad__row">
+                <i class="triad__bar" style="--w: 2rem"></i>
+                <div><strong>space-xl · 2rem · 32px</strong><span>Section boundaries, modal padding, screen margins</span></div>
+              </div>
+            </div>
+            <div class="space-used" aria-label="Spacing used together">
+              <p class="tag">xl outer padding</p>
+              <div class="cluster">
+                <p class="tag">sm inside the cluster</p>
+                <strong>Passcode</strong>
+                <span class="fake-input"></span>
+              </div>
+              <div class="cluster">
+                <p class="tag">lg between clusters</p>
+                <strong>Hardware key</strong>
+                <span class="fake-input"></span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="token-type">
+          <h3>Fluid type</h3>
+          <p class="tip">Each tier is <span class="formula">clamp(min, preferred vw, max)</span>. Drag the simulated viewport. The sample and the table use that width, so the sizes move even when this window stays still.</p>
+          <p class="live-read">This window is <strong id="win-px">—</strong>. The sentence below is <strong id="win-font">—</strong> from <code>clamp(1rem, 2vw, 1.125rem)</code>.</p>
+          <p class="win-sample" id="win-sample">Continuous type on the real viewport.</p>
+          <div class="stage stage--live">
+            <label class="scrub">Simulated viewport
+              <input id="fluid-range" type="range" min="320" max="1280" value="960" />
+              <output id="fluid-out" for="fluid-range">960px</output>
+            </label>
+            <div class="fluid-layout">
+              <div class="frame-view">
+                <div class="fluid-frame" id="fluid-frame">
+                  <p class="fluid-frame__hero">Type</p>
+                  <p class="fluid-frame__body">Continuous type, with a floor and a ceiling.</p>
+                </div>
+              </div>
+              <dl class="tiers" id="tier-read">
+                <div><dt>Caption</dt><dd>—</dd></div>
+                <div><dt>Body</dt><dd>—</dd></div>
+                <div><dt>Subhead</dt><dd>—</dd></div>
+                <div><dt>Section</dt><dd>—</dd></div>
+                <div><dt>Hero</dt><dd>—</dd></div>
+              </dl>
+            </div>
+            <p class="cap">Caption clamp(0.875rem, 1.5vw, 1rem) · Body clamp(1rem, 2vw, 1.125rem) · Subhead clamp(1.25rem, 3vw, 1.75rem) · Section clamp(1.5rem, 4vw, 2.5rem) · Hero clamp(2.25rem, 6vw, 4.5rem).</p>
+          </div>
+        </article>
+
+        <article class="lesson" id="token-motion">
+          <h3>Kinetic tokens</h3>
+          <p class="tip">Durations carry the weight. Curves carry the character: decelerate on the way in, accelerate on the way out, overshoot when the control should feel sprung.</p>
+          <div class="stage stage--live">
+            <div class="durs" aria-label="Duration tokens">
+              <div class="dur"><b>micro</b><i style="--w: 21%"></i><span>150ms</span></div>
+              <div class="dur"><b>base</b><i style="--w: 43%"></i><span>300ms</span></div>
+              <div class="dur"><b>spring</b><i style="--w: 71%"></i><span>500ms</span></div>
+              <div class="dur"><b>ballistic</b><i style="--w: 100%"></i><span>700ms</span></div>
+            </div>
+            <div class="eases">
+              <button type="button" class="ease" data-ease="standard">
+                <span><strong>ease-standard</strong><em>Entrance · deceleration</em></span>
+                <svg viewBox="0 -4 100 48" aria-hidden="true"><path d="M0 36 C 20 36, 0 8, 100 8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                <span class="ease__track"><i></i></span>
+              </button>
+              <button type="button" class="ease" data-ease="accelerate">
+                <span><strong>ease-accelerate</strong><em>Exit · acceleration</em></span>
+                <svg viewBox="0 -4 100 48" aria-hidden="true"><path d="M0 36 C 30 36, 100 8, 100 8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                <span class="ease__track"><i></i></span>
+              </button>
+              <button type="button" class="ease" data-ease="fluid">
+                <span><strong>ease-fluid</strong><em>Ghost tabs · slide</em></span>
+                <svg viewBox="0 -4 100 48" aria-hidden="true"><path d="M0 36 C 25 8, 50 8, 100 8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                <span class="ease__track"><i></i></span>
+              </button>
+              <button type="button" class="ease" data-ease="overshoot">
+                <span><strong>ease-overshoot</strong><em>Springs · popovers</em></span>
+                <svg viewBox="0 -12 100 56" aria-hidden="true"><path d="M0 40 C 34 -8, 64 12, 100 12" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                <span class="ease__track"><i></i></span>
+              </button>
+              <button type="button" class="ease" data-ease="ballistic">
+                <span><strong>ease-ballistic</strong><em>Long travel · fly-to-cart</em></span>
+                <svg viewBox="0 -4 100 48" aria-hidden="true"><path d="M0 36 C 25 33, 25 8, 100 8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                <span class="ease__track"><i></i></span>
+              </button>
+            </div>
+            <button type="button" class="replay" id="ease-all">Play all curves</button>
+            <details class="src">
+              <summary>Token declarations</summary>
+              <pre>:root {
+  --duration-micro: 150ms;
+  --duration-base: 300ms;
+  --duration-spring: 500ms;
+  --duration-ballistic: 700ms;
+  --ease-standard: cubic-bezier(0.2, 0.0, 0.0, 1.0);
+  --ease-accelerate: cubic-bezier(0.3, 0.0, 1.0, 1.0);
+  --ease-fluid: cubic-bezier(0.25, 1.0, 0.5, 1.0);
+  --ease-overshoot: cubic-bezier(0.34, 1.56, 0.64, 1.0);
+  --ease-ballistic: cubic-bezier(0.25, 0.1, 0.25, 1.0);
+}</pre>
+            </details>
+          </div>
+        </article>
+      </section>
+
+      <section class="part" id="part-laws" data-title="Spatial laws">
+        <h2><span>03</span> Invariant architectural and spatial laws</h2>
+        <p class="dek">Ten constraints. Break one and the group, the column, or the motion stops reading as a single object.</p>
+        <nav class="jumps" aria-label="Laws">
+          <a href="#law-1">01 Inner ≤ outer</a>
+          <a href="#law-2">02 Buttons</a>
+          <a href="#law-3">03 Expansion</a>
+          <a href="#law-4">04 Radii</a>
+          <a href="#law-5">05 Flex and grid</a>
+          <a href="#law-6">06 min-width</a>
+          <a href="#law-7">07 Sticky flex</a>
+          <a href="#law-8">08 Drawer</a>
+          <a href="#law-9">09 Ballistics</a>
+          <a href="#law-10">10 Path parity</a>
+        </nav>
+
+        <article class="lesson" id="law-1">
+          <h3>Law 1 · Inner ≤ outer</h3>
+          <p class="tip">The gap inside a container stays at or under the container’s padding, so the frame still reads as one group.</p>
+          <p class="formula">Gap<sub>internal</sub> ≤ Padding<sub>container</sub></p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare inner and outer spacing">
+              <label class="seg"><input type="radio" name="l1" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="l1" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="law-card law-card--bad">
+                    <div class="law-card__pad">
+                      <span class="chip">Title</span>
+                      <span class="chip">Field</span>
+                      <span class="chip">Action</span>
+                    </div>
+                  </div>
+                  <p class="measure">Padding 8px · gap 28px</p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="law-card law-card--good">
+                    <div class="law-card__pad">
+                      <span class="chip">Title</span>
+                      <span class="chip">Field</span>
+                      <span class="chip">Action</span>
+                    </div>
+                  </div>
+                  <p class="measure">Padding 24px · gap 8px</p>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="law-2">
+          <h3>Law 2 · Asymmetrical buttons</h3>
+          <p class="tip">Horizontal padding runs about two to three times the vertical padding. A label is wide and short; equal padding makes the control look square.</p>
+          <p class="formula">Padding<sub>horizontal</sub> = 2× to 3× Padding<sub>vertical</sub></p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare button padding">
+              <label class="seg"><input type="radio" name="l2" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="l2" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <button type="button" class="demo-btn demo-btn--square">Continue</button>
+                  <p class="ratio">16px / 16px · equal padding</p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <button type="button" class="demo-btn demo-btn--asym">Continue</button>
+                  <p class="ratio">10px vertical · 24px horizontal</p>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="law-3">
+          <h3>Law 3 · Expansion first</h3>
+          <p class="tip">Start at 1.5rem to 2rem. Tighten toward 1rem only when a cluster starts to feel disconnected. Cramped type fails sooner than open space.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare cramped and generous spacing">
+              <label class="seg"><input type="radio" name="l3" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="l3" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="tight">
+                    <h4>Credentials</h4>
+                    <p>Update authentication.</p>
+                    <span class="fake-input"></span>
+                    <button type="button" class="demo-btn demo-btn--square">Save</button>
+                  </div>
+                  <p class="measure">8px on every edge and every gap</p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="open">
+                    <div class="open__cluster">
+                      <h4>Credentials</h4>
+                      <p>Update authentication.</p>
+                    </div>
+                    <div class="open__cluster">
+                      <span class="fake-input"></span>
+                      <button type="button" class="demo-btn demo-btn--asym">Save</button>
+                    </div>
+                  </div>
+                  <p class="measure">Outer 32px · between clusters 24px · inside 8px</p>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="law-4">
+          <h3>Law 4 · Concentric radii</h3>
+          <p class="tip">The inner radius is the outer radius minus the padding, and it never drops below zero. Nested corners then share a center.</p>
+          <p class="formula">Radius<sub>inner</sub> = max(0, Radius<sub>outer</sub> − Padding)</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare nested radii">
+              <label class="seg"><input type="radio" name="l4" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="l4" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="nest nest--bad"><div class="nest__in">Same radius on both frames</div></div>
+                  <p class="measure">Outer 28px · padding 16px · inner 28px</p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="nest nest--good"><div class="nest__in">Inner radius tracks the padding</div></div>
+                  <p class="measure">Outer 28px · padding 16px · inner 12px</p>
+                </div>
+              </figure>
+            </div>
+          </div>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare grid gap and card padding">
+              <label class="seg"><input type="radio" name="l4b" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="l4b" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="gap-demo gap-demo--bad">
+                    <article>Latency</article>
+                    <article>Throughput</article>
+                  </div>
+                  <p class="measure">Card padding 20px · grid gap 8px</p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="gap-demo gap-demo--good">
+                    <article>Latency</article>
+                    <article>Throughput</article>
+                  </div>
+                  <p class="measure">Card padding 20px · grid gap 20px</p>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="law-5">
+          <h3>Law 5 · Flex for one axis, grid for two</h3>
+          <p class="tip">Flexbox is the default for a toolbar, a row, or any cluster whose children size themselves. Grid is for a two-dimensional frame where the parent places every child.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare flex and grid">
+              <label class="seg"><input type="radio" name="l5" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="l5" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="tool tool--grid">
+                    <span>Files</span>
+                    <span class="tool__search">Search</span>
+                    <button type="button" class="demo-btn demo-btn--asym">New</button>
+                  </div>
+                  <div class="cards cards--flex">
+                    <article>Latency</article>
+                    <article>Throughput</article>
+                    <article>Errors</article>
+                  </div>
+                  <p class="measure">Equal grid cells on a toolbar · flex wrap on the cards</p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="tool">
+                    <span>Files</span>
+                    <span class="tool__search" style="flex:1">Search</span>
+                    <button type="button" class="demo-btn demo-btn--asym">New</button>
+                  </div>
+                  <div class="cards cards--fit">
+                    <article>Latency</article>
+                    <article>Throughput</article>
+                    <article>Errors</article>
+                  </div>
+                  <p class="measure">Flex toolbar · auto-fit grid</p>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="law-6">
+          <h3>Law 6 · flex-basis and min-width: 0</h3>
+          <p class="tip">Equal columns use <code>flex: 1 1 0%</code> and <code>min-width: 0</code>. Without both, a long token sets the column minimum and the row overflows.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare flex minimum sizes">
+              <label class="seg"><input type="radio" name="l6" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="l6" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body pane__body--x">
+                  <div class="blow blow--bad">
+                    <div class="blow__col">
+                      <strong>Logs</strong>
+                      <code>ap-east-1.billing-gateway.revision.2026-11-01-rc14</code>
+                    </div>
+                    <div class="blow__col">
+                      <strong>Notes</strong>
+                      <code>Quiet column</code>
+                    </div>
+                  </div>
+                  <p class="measure">flex: 1 1 auto · min-width: auto</p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="blow blow--good">
+                    <div class="blow__col">
+                      <strong>Logs</strong>
+                      <code>ap-east-1.billing-gateway.revision.2026-11-01-rc14</code>
+                    </div>
+                    <div class="blow__col">
+                      <strong>Notes</strong>
+                      <code>Quiet column</code>
+                    </div>
+                  </div>
+                  <p class="measure">flex: 1 1 0% · min-width: 0</p>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="law-7">
+          <h3>Law 7 · Sticky flex anchoring</h3>
+          <p class="tip">A sticky item in a flex row needs <code>align-self: flex-start</code>. Stretch makes it as tall as the row, so the links travel with the scroll instead of pinning.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare sticky flex">
+              <label class="seg"><input type="radio" name="l7" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="l7" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="pin" tabindex="0" aria-label="Scroll the stretched sidebar">
+                    <div class="pin__row">
+                      <aside class="pin__nav">
+                        <strong>Contents</strong>
+                        <span>Introduction</span>
+                        <span>Configuration</span>
+                        <span>Deployment</span>
+                        <span class="pin__end">End of nav</span>
+                      </aside>
+                      <article class="pin__article">
+                        <h4>Specification</h4>
+                        <p>The sidebar is a flex item with the default stretch, so its box is as tall as this article.</p>
+                        <p>Scroll. The word Contents leaves the top. End of nav sits at the bottom of that tall box.</p>
+                        <p>Sticky has no free distance to travel inside a box that already fills the scroll height.</p>
+                        <p>Outer bounds land before type. Clusters land before motion.</p>
+                        <p>Phase two never repairs a broken tree.</p>
+                        <p>Keep scrolling until the end label arrives.</p>
+                      </article>
+                    </div>
+                  </div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="pin" tabindex="0" aria-label="Scroll the pinned sidebar">
+                    <div class="pin__row">
+                      <aside class="pin__nav" style="align-self: flex-start">
+                        <strong>Contents</strong>
+                        <span>Introduction</span>
+                        <span>Configuration</span>
+                        <span>Deployment</span>
+                        <span class="pin__end">End of nav</span>
+                      </aside>
+                      <article class="pin__article">
+                        <h4>Specification</h4>
+                        <p><code>align-self: flex-start</code> lets the nav stay as tall as its links.</p>
+                        <p>Scroll the article. Contents stays pinned to the top of this panel.</p>
+                        <p>End of nav sits directly under the links, because the column has no leftover stretch.</p>
+                        <p>The article can be long. The nav does not have to match it.</p>
+                        <p>That is the whole fix.</p>
+                        <p>Keep scrolling. The nav remains.</p>
+                      </article>
+                    </div>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="law-8">
+          <h3>Law 8 · Off-canvas escape</h3>
+          <p class="tip">On a small screen the drawer is <code>position: absolute</code> inside a relative frame. On a wide screen it returns to normal flow. Open each one.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare drawer flow">
+              <label class="seg"><input type="radio" name="l8" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="l8" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="mini mini--flow is-closed" data-drawer>
+                    <div class="mini__bar">
+                      <button type="button" data-drawer-toggle aria-expanded="false">Menu</button>
+                      <span>App</span>
+                    </div>
+                    <div class="mini__body">
+                      <aside class="mini__drawer" data-drawer-panel>
+                        <span>Overview</span>
+                        <span>Clusters</span>
+                        <span>Security</span>
+                      </aside>
+                      <div class="mini__main">
+                        <strong>Dashboard</strong>
+                        <span class="mini__wide">revenue-report-q4-final.pdf</span>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="measure">Drawer is a flex sibling. Opening it squeezes the main column.</p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="mini mini--overlay" data-drawer>
+                    <div class="mini__bar">
+                      <button type="button" data-drawer-toggle aria-expanded="false">Menu</button>
+                      <span>App</span>
+                    </div>
+                    <div class="mini__body">
+                      <div class="mini__scrim" data-drawer-scrim></div>
+                      <aside class="mini__drawer" data-drawer-panel>
+                        <span>Overview</span>
+                        <span>Clusters</span>
+                        <span>Security</span>
+                      </aside>
+                      <div class="mini__main">
+                        <strong>Dashboard</strong>
+                        <span class="mini__wide">revenue-report-q4-final.pdf</span>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="measure">Absolute drawer and a scrim. The filename keeps its line.</p>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="law-9">
+          <h3>Law 9 · Non-destructive ballistics</h3>
+          <p class="tip">A throw across the screen clones the element, flies the clone, and deletes the clone on finish. The original stays in the grid. The counter changes when the flight ends.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare destructive and cloned motion">
+              <label class="seg"><input type="radio" name="l9" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="l9" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body" id="destruct">
+                  <div class="yard">
+                    <div class="yard__grid">
+                      <div class="yard__slot">
+                        <div class="sku" data-destruct-source>
+                          <svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true"><path fill="#1c1c22" d="M8 38c6-1 10-10 18-12 5-1 8 3 14 3 5 0 8-2 12-2 3 0 5 1 7 2v6c-2 5-8 8-16 8-6 0-9 3-16 4-7 1-14-2-19-9z"/><path fill="#1d4ed8" d="M24 28c6 1 7 6 5 12h-8c0-5-1-9 3-12z"/><path stroke="#fff" stroke-width="1.6" fill="none" d="M14 40h24"/></svg>
+                        </div>
+                      </div>
+                      <div class="yard__slot"><div class="sku sku--quiet">Stay</div></div>
+                    </div>
+                    <div class="yard__side">
+                      <button type="button" class="replay" data-destruct-go>Throw original</button>
+                      <div class="cart" data-destruct-target aria-hidden="true">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="button" class="replay" data-destruct-reset>Reset</button>
+                  <p class="measure">The original leaves the grid, so the cell collapses at the start.</p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="yard" data-fly data-fly-when="finish">
+                    <div class="yard__grid">
+                      <div class="yard__slot">
+                        <div class="sku" data-fly-source>
+                          <svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true"><path fill="#1c1c22" d="M8 38c6-1 10-10 18-12 5-1 8 3 14 3 5 0 8-2 12-2 3 0 5 1 7 2v6c-2 5-8 8-16 8-6 0-9 3-16 4-7 1-14-2-19-9z"/><path fill="#1d4ed8" d="M24 28c6 1 7 6 5 12h-8c0-5-1-9 3-12z"/><path stroke="#fff" stroke-width="1.6" fill="none" d="M14 40h24"/></svg>
+                        </div>
+                      </div>
+                      <div class="yard__slot"><div class="sku sku--quiet">Stay</div></div>
+                    </div>
+                    <div class="yard__side">
+                      <button type="button" class="replay" data-fly-btn>Throw a clone</button>
+                      <div class="cart" data-fly-target>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
+                        <span class="cart__badge" data-fly-count>0</span>
+                      </div>
+                    </div>
+                    <p class="sr" data-fly-status aria-live="polite"></p>
+                  </div>
+                  <p class="measure">The source stays put. The badge updates on animation finish.</p>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="law-10">
+          <h3>Law 10 · Path parity</h3>
+          <p class="tip">Two paths can morph when they share the same number and order of commands. Normalize the vertices first. A mismatched pair pops.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare path vertex counts">
+              <label class="seg"><input type="radio" name="l10" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="l10" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="verts">
+                    <figure>
+                      <svg viewBox="0 0 80 56" aria-hidden="true">
+                        <path d="M16 10 L64 28 L16 46 Z" fill="none" stroke="#1c1c22" stroke-width="2"/>
+                        <circle cx="16" cy="10" r="3" fill="#1d4ed8"/><circle cx="64" cy="28" r="3" fill="#1d4ed8"/><circle cx="16" cy="46" r="3" fill="#1d4ed8"/>
+                      </svg>
+                      <figcaption>3 vertices</figcaption>
+                    </figure>
+                    <figure>
+                      <svg viewBox="0 0 80 56" aria-hidden="true">
+                        <path d="M12 8 H28 V48 H12 Z M44 8 H60 V48 H44 Z" fill="none" stroke="#1c1c22" stroke-width="2"/>
+                        <circle cx="12" cy="8" r="3" fill="#1d4ed8"/><circle cx="28" cy="8" r="3" fill="#1d4ed8"/><circle cx="28" cy="48" r="3" fill="#1d4ed8"/><circle cx="12" cy="48" r="3" fill="#1d4ed8"/>
+                        <circle cx="44" cy="8" r="3" fill="#1d4ed8"/><circle cx="60" cy="8" r="3" fill="#1d4ed8"/><circle cx="60" cy="48" r="3" fill="#1d4ed8"/><circle cx="44" cy="48" r="3" fill="#1d4ed8"/>
+                      </svg>
+                      <figcaption>8 vertices</figcaption>
+                    </figure>
+                  </div>
+                  <button type="button" class="morph-btn" id="snap-btn" aria-pressed="false" aria-label="Swap mismatched icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path id="snap-path" fill="currentColor" d="M8,5.14V19.14L19,12.14L8,5.14Z"/></svg>
+                  </button>
+                  <p class="measure">Click the icon. The commands differ, so it swaps in one frame.</p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="verts">
+                    <figure>
+                      <svg viewBox="0 0 80 56" aria-hidden="true">
+                        <path d="M18 12 L62 28 L18 44 Z" fill="none" stroke="#1c1c22" stroke-width="2"/>
+                        <circle cx="18" cy="12" r="3" fill="#1d4ed8"/><circle cx="40" cy="20" r="3" fill="#1d4ed8"/><circle cx="62" cy="28" r="3" fill="#1d4ed8"/><circle cx="40" cy="36" r="3" fill="#1d4ed8"/>
+                      </svg>
+                      <figcaption>4 commands</figcaption>
+                    </figure>
+                    <figure>
+                      <svg viewBox="0 0 80 56" aria-hidden="true">
+                        <path d="M14 10 H30 V46 H14 Z" fill="none" stroke="#1c1c22" stroke-width="2"/>
+                        <circle cx="14" cy="10" r="3" fill="#1d4ed8"/><circle cx="30" cy="10" r="3" fill="#1d4ed8"/><circle cx="30" cy="46" r="3" fill="#1d4ed8"/><circle cx="14" cy="46" r="3" fill="#1d4ed8"/>
+                      </svg>
+                      <figcaption>4 commands</figcaption>
+                    </figure>
+                  </div>
+                  <button type="button" class="morph-btn" data-morph="fe-law-morph" aria-pressed="false" aria-label="Pause">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path id="fe-law-morph" fill="currentColor" d="M7 5L7 5L17 12L7 19ZM17 12L17 12L17 12L17 12Z"/></svg>
+                  </button>
+                  <p class="measure">Same command count. The icon interpolates.</p>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="part" id="part-pipeline" data-title="Dual-pass pipeline">
+        <h2><span>04</span> Dual-pass execution pipeline</h2>
+        <p class="dek">Spatial decisions land before motion. Phase 2 never rescues a broken tree.</p>
+        <div class="stage stage--live">
+          <div class="pipe">
+            <article class="pipe__phase">
+              <p class="pipe__k">Phase 1</p>
+              <h3>Spatial layout pass</h3>
+              <ol>
+                <li><span>01</span> Sketch the box family tree.</li>
+                <li><span>02</span> Set outer bounds at 1.5–2rem.</li>
+                <li><span>03</span> Split headers, controls, and actions.</li>
+                <li><span>04</span> Intra-cluster 0.5rem, inter-cluster 1.5rem.</li>
+                <li><span>05</span> Normalize sibling heights, often 2.5rem.</li>
+                <li><span>06</span> Distribute with space-between.</li>
+                <li><span>07</span> Fluid type and a grid with no breakpoint.</li>
+              </ol>
+            </article>
+            <div class="pipe__arrow" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <path d="M4 14h18M16 7l7 7-7 7" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <article class="pipe__phase">
+              <p class="pipe__k">Phase 2</p>
+              <h3>Kinetic interaction pass</h3>
+              <ol>
+                <li><span>08</span> Attach the motion tokens and curves.</li>
+                <li><span>09</span> Animate transform and opacity only.</li>
+                <li><span>10</span> Measure with getBoundingClientRect.</li>
+                <li><span>11</span> Stagger the sequence.</li>
+                <li><span>12</span> Audit the anti-pattern matrix.</li>
+              </ol>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="part" id="part-recipes" data-title="Production recipes">
+        <h2><span>05</span> Production recipes</h2>
+        <p class="dek">Twelve patterns from the guide, rewritten in plain CSS. Each one runs here.</p>
+        <nav class="jumps" aria-label="Recipes">
+          <a href="#recipe-1">01 Form</a>
+          <a href="#recipe-2">02 Fluid grid</a>
+          <a href="#recipe-3">03 Drawer</a>
+          <a href="#recipe-4">04 Sticky</a>
+          <a href="#recipe-5">05 Tabs</a>
+          <a href="#recipe-6">06 Speed dial</a>
+          <a href="#recipe-7">07 Shine</a>
+          <a href="#recipe-8">08 Card flip</a>
+          <a href="#recipe-9">09 Fly to cart</a>
+          <a href="#recipe-10">10 Track</a>
+          <a href="#recipe-11">11 Ring</a>
+          <a href="#recipe-12">12 Morph</a>
+        </nav>
+
+        <article class="lesson" id="recipe-1">
+          <h3>1 · Hierarchical form stack</h3>
+          <p class="tip">Three clusters: heading, controls, actions. Intra-cluster gap is 0.5rem. Fields sit 1rem apart. Clusters sit 1.5rem apart. The primary button uses 10px by 24px padding. Controls share a 2.5rem height.</p>
+          <div class="stage stage--live">
+            <form class="form" id="cred-form">
+              <div class="form__intro">
+                <p class="form__title">Security credentials</p>
+                <p>Update your account authentication details.</p>
+              </div>
+              <div class="form__fields">
+                <label class="field">
+                  <span>Account passcode</span>
+                  <input type="password" name="passcode" autocomplete="off" />
+                </label>
+                <div class="checkrow">
+                  <div>
+                    <strong id="twofa-label">Hardware 2FA key</strong>
+                    <p class="form__hint" id="twofa-hint">Enforce physical token verification.</p>
+                  </div>
+                  <input type="checkbox" aria-labelledby="twofa-label" aria-describedby="twofa-hint" />
+                </div>
+              </div>
+              <div class="form__actions">
+                <button type="button" class="btn-quiet" id="form-cancel">Cancel</button>
+                <button type="submit" class="btn-primary">Save changes</button>
+              </div>
+              <p class="form__status" id="form-status" role="status"></p>
+            </form>
+          </div>
+        </article>
+
+        <article class="lesson" id="recipe-2">
+          <h3>2 · Fluid hero and auto-fit grid</h3>
+          <p class="tip">The heading uses clamp. The cards use <code>repeat(auto-fit, minmax(...))</code>. Narrow the frame and the grid reflows without a media query.</p>
+          <div class="stage stage--live">
+            <label class="scrub">Frame
+              <input type="range" min="160" max="1100" value="720" data-frame-range="r2-frame" data-frame-out="r2-out" />
+              <output id="r2-out">720px</output>
+            </label>
+            <div class="frame-view">
+              <div class="r2-frame" id="r2-frame">
+                <h4 class="r2__hero">Analytics infrastructure</h4>
+                <p class="r2__dek">Continuous fluid typography adjusts across the frame without a breakpoint snap.</p>
+                <div class="r2__grid">
+                  <article><p class="r2__label">P99 response</p><p>14.2 ms</p></article>
+                  <article><p class="r2__label">Throughput</p><p>1.84M</p></article>
+                  <article><p class="r2__label">Error rate</p><p>0.04%</p></article>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="recipe-3">
+          <h3>3 · App shell with a drawer</h3>
+          <p class="tip">Under 680px of frame width the sidebar is off-canvas. At 680px and above it sits in flow, the menu button hides, and search can grow. The path truncates because the main column has <code>min-width: 0</code>.</p>
+          <div class="stage stage--live">
+            <label class="scrub">Frame
+              <input id="r3-range" type="range" min="160" max="1100" value="400" data-frame-range="r3-frame" data-frame-out="r3-out" />
+              <output id="r3-out">400px</output>
+            </label>
+            <div class="frame-view">
+              <div class="r3" id="r3-frame" data-drawer>
+                <header class="r3__head">
+                  <button type="button" class="r3__menu" data-drawer-toggle aria-expanded="false" aria-controls="r3-panel" aria-label="Open navigation">☰</button>
+                  <span class="r3__brand">SystemCore</span>
+                  <label class="r3__search">
+                    <span class="sr">Search systems</span>
+                    <input type="search" placeholder="Search systems" />
+                  </label>
+                  <button type="button" class="r3__deploy">Deploy</button>
+                </header>
+                <div class="r3__body">
+                  <div class="r3__scrim" data-drawer-scrim></div>
+                  <aside class="r3__aside" id="r3-panel" data-drawer-panel>
+                    <button type="button" class="is-on" data-nav>Overview</button>
+                    <button type="button" data-nav>Clusters</button>
+                    <button type="button" data-nav>Security</button>
+                  </aside>
+                  <div class="r3__main">
+                    <div class="r3__card">
+                      <p class="demo-title">Main console</p>
+                      <p>Flex child with min-width: 0, so a long path truncates instead of stretching the shell.</p>
+                      <p class="r3__path">deploy/prod/regions/ap-east-1/services/billing-gateway/revision/2026-11-01-rc14</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="recipe-4">
+          <h3>4 · Sticky flex sidebar</h3>
+          <p class="tip">The nav uses <code>align-self: flex-start</code> and <code>position: sticky</code>. Turn on the stretch trap and scroll again. The links leave with the article.</p>
+          <div class="stage stage--live">
+            <div class="r4__bar">
+              <span>Scroll the panel</span>
+              <label><input type="checkbox" id="r4-trap" /> Stretch trap</label>
+            </div>
+            <div class="pin pin--fix r4__scroll" id="r4" tabindex="0">
+              <div class="pin__row">
+                <aside class="pin__nav">
+                  <strong>Contents</strong>
+                  <span>Introduction</span>
+                  <span>Configuration</span>
+                  <span>Deployment</span>
+                  <span class="pin__end">End of nav</span>
+                </aside>
+                <article class="pin__article">
+                  <h4>Architecture specification</h4>
+                  <p>The sticky column is only as tall as its links, so it can pin while this article moves.</p>
+                  <p>Phase 1 sets the outer frame, the clusters, and the fluid type before any curve is chosen.</p>
+                  <p>Phase 2 attaches tokens, keeps animation on the compositor, and checks the matrix.</p>
+                  <p>A stretched flex item matches this article’s height. Sticky then has nowhere to stick.</p>
+                  <p>Turn the trap on to watch Contents scroll away.</p>
+                  <p>Turn it off and the nav returns to the top of the panel.</p>
+                  <p>The article keeps its own minimum of zero so a long line cannot blow the row out.</p>
+                </article>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="recipe-5">
+          <h3>5 · Liquid magnet tabs</h3>
+          <p class="tip">Hover or focus a tab. The ghost translates to that box and resizes to match, on <code>ease-fluid</code>. Leaving the row returns it to the selected tab.</p>
+          <div class="stage stage--live">
+            <nav class="magnet" data-magnet aria-label="Project sections">
+              <div class="magnet__ghost" aria-hidden="true"></div>
+              <button type="button" data-tab aria-current="true">Overview</button>
+              <button type="button" data-tab>Deployments</button>
+              <button type="button" data-tab>Analytics</button>
+              <button type="button" data-tab>Settings</button>
+            </nav>
+          </div>
+        </article>
+
+        <article class="lesson" id="recipe-6">
+          <h3>6 · Radial speed dial</h3>
+          <p class="tip">Secondary actions sit under the trigger and travel out on an overshoot curve. Escape or a second click closes the dial.</p>
+          <div class="stage stage--live">
+            <div class="fab-stage">
+              <div class="fab" id="fab">
+                <button type="button" class="fab__child" style="--x: -68px; --y: -36px; --d: 40ms; --fab: #7c3aed" data-label="Bookmark added" aria-label="Add bookmark">
+                  <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6 3h12a1 1 0 011 1v17l-7-4-7 4V4a1 1 0 011-1z"/></svg>
+                </button>
+                <button type="button" class="fab__child" style="--x: 0px; --y: -76px; --d: 0ms; --fab: #059669" data-label="Image added" aria-label="Add image">
+                  <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19 5H5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V7a2 2 0 00-2-2zm-8 10l-2.5-3-2 2.5h10l-3.2-4.2L11 15z"/></svg>
+                </button>
+                <button type="button" class="fab__child" style="--x: 68px; --y: -36px; --d: 80ms; --fab: #d97706" data-label="Note added" aria-label="Add note">
+                  <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6 2h9l5 5v15a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2zm8 1.5V8h4.5"/></svg>
+                </button>
+                <button type="button" class="fab__trigger" id="fab-trigger" aria-expanded="false" aria-label="Expand actions">
+                  <span aria-hidden="true">+</span>
+                </button>
+              </div>
+              <p class="fab-status" id="fab-status" role="status">Actions closed</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="recipe-7">
+          <h3>7 · Specular shine</h3>
+          <p class="tip">A skewed gradient crosses the button on hover, focus, or click. The sweep is a pseudo-element, so the label stays still.</p>
+          <div class="stage stage--live">
+            <button type="button" class="shine"><span>Confirm payment</span></button>
+          </div>
+        </article>
+
+        <article class="lesson" id="recipe-8">
+          <h3>8 · True 3D card flip</h3>
+          <p class="tip">The scene sets perspective. The inner wrapper preserves 3D. Each face hides its back. Click the card.</p>
+          <div class="stage stage--live">
+            <button type="button" class="flip" data-toggle="is-flipped" aria-pressed="false" aria-label="Flip member pass">
+              <span class="flip__inner">
+                <span class="flip__face flip__face--front">
+                  <span>
+                    <span class="flip__kicker">Platinum tier</span>
+                    <span class="flip__title">Member pass</span>
+                  </span>
+                  <p>Tap to reveal the verification code.</p>
+                </span>
+                <span class="flip__face flip__face--back">
+                  <span>
+                    <span class="flip__title">Authentication code</span>
+                    <p>Scan at the gate.</p>
+                  </span>
+                  <span class="barcode">#8829-XFD-01</span>
+                </span>
+              </span>
+            </button>
+          </div>
+        </article>
+
+        <article class="lesson" id="recipe-9">
+          <h3>9 · Fly to cart</h3>
+          <p class="tip">The button clones the thumbnail, flies that clone with the Web Animations API, and removes it on finish. The badge waits for <code>onfinish</code>, then the cart springs.</p>
+          <div class="stage stage--live">
+            <div class="cart-row" data-fly data-fly-when="finish">
+              <div class="cart-row__product">
+                <div class="sku" data-fly-source aria-hidden="true">
+                  <svg viewBox="0 0 64 64" width="64" height="64"><path fill="#1c1c22" d="M8 38c6-1 10-10 18-12 5-1 8 3 14 3 5 0 8-2 12-2 3 0 5 1 7 2v6c-2 5-8 8-16 8-6 0-9 3-16 4-7 1-14-2-19-9z"/><path fill="#1d4ed8" d="M24 28c6 1 7 6 5 12h-8c0-5-1-9 3-12z"/><path stroke="#fff" stroke-width="1.6" fill="none" d="M14 40h24"/></svg>
+                </div>
+                <div>
+                  <p class="cart-row__name">Swift Pro sneaker</p>
+                  <button type="button" class="btn-dark" data-fly-btn>Add to order</button>
+                </div>
+              </div>
+              <div class="cart" data-fly-target aria-label="Cart">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
+                <span class="cart__badge" data-fly-count>0</span>
+              </div>
+              <p class="sr" data-fly-status aria-live="polite"></p>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="recipe-10">
+          <h3>10 · Offset-path track</h3>
+          <p class="tip">The dot’s <code>offset-path</code> is the same curve drawn behind it. Distance runs from 0% to 100% and back. Reduced motion holds the dot at the end of the curve.</p>
+          <div class="stage stage--live">
+            <div class="track">
+              <svg viewBox="0 0 240 140" aria-hidden="true">
+                <path d="M 16 70 C 60 18, 160 122, 224 70" fill="none" stroke="#d4d0c8" stroke-width="2" stroke-dasharray="4 6"/>
+              </svg>
+              <div class="follower"></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="recipe-11">
+          <h3>11 · Self-drawing ring</h3>
+          <p class="tip">The circle normalizes its length with <code>pathLength="1"</code>. Dash offset eases from 1 to 0. The stroke gradient revolves in user space. Reduced motion shows the finished ring.</p>
+          <div class="stage stage--live">
+            <div class="ring-wrap">
+              <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+                <defs>
+                  <linearGradient id="fe-ring-grad" gradientUnits="userSpaceOnUse" x1="12" y1="12" x2="108" y2="108">
+                    <stop offset="0%" stop-color="#3b82f6" />
+                    <stop offset="100%" stop-color="#10b981" />
+                    <animateTransform attributeName="gradientTransform" type="rotate" from="0 60 60" to="360 60 60" dur="4s" repeatCount="indefinite" />
+                  </linearGradient>
+                </defs>
+                <circle class="ring__stroke" cx="60" cy="60" r="48" fill="none" stroke="url(#fe-ring-grad)" stroke-width="6" stroke-linecap="round" pathLength="1" />
+              </svg>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="recipe-12">
+          <h3>12 · Morph and error shake</h3>
+          <p class="tip">Play and pause share a command list, so <code>d</code> can interpolate. The same click replays a horizontal shake on the error chip, using transform only.</p>
+          <div class="stage stage--live">
+            <div class="morph-col">
+              <button type="button" class="morph-btn" data-morph="fe-morph" aria-pressed="false" aria-label="Pause">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path id="fe-morph" fill="currentColor" d="M7 5L7 5L17 12L7 19ZM17 12L17 12L17 12L17 12Z"/></svg>
+              </button>
+              <div class="shake" data-shake>Authentication blocked</div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="part" id="part-matrix" data-title="Anti-patterns">
+        <h2><span>06</span> Anti-pattern diagnostic matrix</h2>
+        <p class="dek">Four failures you can drag or flip, then the full matrix.</p>
+
+        <article class="lesson" id="anti-step">
+          <h3>Stepped type</h3>
+          <p class="tip">Drag across 640, 768, and 1024. The left sample jumps. The right sample is <code>clamp(1.5rem, 4vw, 3rem)</code> against the same width.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare stepped and fluid type">
+              <label class="seg"><input type="radio" name="a-step" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="a-step" value="after" /> After</label>
+            </div>
+            <label class="scrub">Viewport
+              <input id="step-range" type="range" min="320" max="1280" value="600" />
+              <output id="step-out">600px</output>
+            </label>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <p class="step-sample" id="step-before">Harbour notes</p>
+                  <p class="measure" id="step-before-px"></p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <p class="step-sample" id="step-after">Harbour notes</p>
+                  <p class="measure" id="step-after-px"></p>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="anti-bloat">
+          <h3>Button bloat</h3>
+          <p class="tip">Equal padding fights the shape of a word. The corrected control keeps the 2×–3× ratio from Law 2.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare button padding in a footer">
+              <label class="seg"><input type="radio" name="a-bloat" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="a-bloat" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="checkrow">
+                    <span>Discard draft?</span>
+                    <button type="button" class="demo-btn demo-btn--square">Keep</button>
+                  </div>
+                  <p class="measure">padding: 16px</p>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="checkrow">
+                    <span>Discard draft?</span>
+                    <button type="button" class="demo-btn demo-btn--asym">Keep</button>
+                  </div>
+                  <p class="measure">10px × 24px</p>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="anti-thrash">
+          <h3>Layout thrash versus transform</h3>
+          <p class="tip">The left box animates <code>left</code>. The right box animates <code>translate3d</code>. Replay both. Only the transform stays off the layout thread.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare layout and transform motion">
+              <label class="seg"><input type="radio" name="a-thrash" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="a-thrash" value="after" /> After</label>
+            </div>
+            <button type="button" class="replay" id="thrash-run">Replay</button>
+            <div class="stage__grid" style="margin-top: 0.7rem">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <p class="lane__name">left</p>
+                  <div class="lane__track"><span class="lane__box" data-thrash="left"></span></div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <p class="lane__name">translate3d</p>
+                  <div class="lane__track"><span class="lane__box lane__box--good" data-thrash="transform"></span></div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="anti-flip">
+          <h3>Flatland flip versus 3D</h3>
+          <p class="tip">Without perspective, a turn is a horizontal squash. With perspective and preserved 3D, the card occupies depth.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare flat and 3D flips">
+              <label class="seg"><input type="radio" name="a-flip" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="a-flip" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <button type="button" class="flat" data-toggle="is-flipped" aria-pressed="false" aria-label="Flip the flat card">
+                    <span class="flat__face flat__face--front">
+                      <strong>Front</strong>
+                      <p>scaleX through zero.</p>
+                    </span>
+                    <span class="flat__face flat__face--back">
+                      <strong>Back</strong>
+                      <p>Still a flat sticker.</p>
+                    </span>
+                  </button>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <button type="button" class="flip" data-toggle="is-flipped" aria-pressed="false" aria-label="Flip the 3D card">
+                    <span class="flip__inner">
+                      <span class="flip__face flip__face--front">
+                        <span>
+                          <span class="flip__kicker">Depth</span>
+                          <span class="flip__title">Front</span>
+                        </span>
+                        <p>perspective: 1000px</p>
+                      </span>
+                      <span class="flip__face flip__face--back">
+                        <span>
+                          <span class="flip__title">Back</span>
+                          <p>preserve-3d</p>
+                        </span>
+                        <span class="barcode">rotateY</span>
+                      </span>
+                    </span>
+                  </button>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson" id="anti-early">
+          <h3>Premature counter</h3>
+          <p class="tip">The left badge changes on click. The right badge changes when the clone arrives. The cart should agree with the eye.</p>
+          <div class="stage stage--pair">
+            <div class="stage__switch" role="radiogroup" aria-label="Compare counter timing">
+              <label class="seg"><input type="radio" name="a-early" value="before" checked /> Before</label>
+              <label class="seg"><input type="radio" name="a-early" value="after" /> After</label>
+            </div>
+            <div class="stage__grid">
+              <figure class="pane" data-pane="before">
+                <figcaption>Before</figcaption>
+                <div class="pane__body">
+                  <div class="yard" data-fly data-fly-when="start">
+                    <div class="sku" data-fly-source aria-hidden="true">
+                      <svg viewBox="0 0 64 64" width="48" height="48"><circle cx="32" cy="32" r="18" fill="#1c1c22"/></svg>
+                    </div>
+                    <button type="button" class="replay" data-fly-btn>Add early</button>
+                    <div class="cart" data-fly-target>
+                      <span class="cart__badge" data-fly-count>0</span>
+                    </div>
+                    <p class="sr" data-fly-status aria-live="polite"></p>
+                  </div>
+                </div>
+              </figure>
+              <figure class="pane" data-pane="after">
+                <figcaption>After</figcaption>
+                <div class="pane__body">
+                  <div class="yard" data-fly data-fly-when="finish">
+                    <div class="sku" data-fly-source aria-hidden="true">
+                      <svg viewBox="0 0 64 64" width="48" height="48"><circle cx="32" cy="32" r="18" fill="#1d4ed8"/></svg>
+                    </div>
+                    <button type="button" class="replay" data-fly-btn>Add on finish</button>
+                    <div class="cart" data-fly-target>
+                      <span class="cart__badge" data-fly-count>0</span>
+                    </div>
+                    <p class="sr" data-fly-status aria-live="polite"></p>
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <h3 style="margin-top: 1.4rem">Full matrix</h3>
+        <div class="matrix-wrap">
+          <table class="matrix">
+            <thead>
+              <tr>
+                <th scope="col">Defect</th>
+                <th scope="col">Symptom</th>
+                <th scope="col">Corrective action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row"><a href="#anti-step">Stepped breakpoint type</a></th>
+                <td>The font snaps at a viewport threshold.</td>
+                <td>Replace the stack with a clamp() tier.</td>
+              </tr>
+              <tr>
+                <th scope="row"><a href="#law-3">Uniform spacing</a></th>
+                <td>One gap everywhere. Hierarchy disappears.</td>
+                <td>0.5rem inside a cluster, 1.5rem between clusters, 2rem on the frame.</td>
+              </tr>
+              <tr>
+                <th scope="row"><a href="#anti-bloat">Symmetrical button bloat</a></th>
+                <td>The control looks tall and square.</td>
+                <td>Horizontal padding is 2×–3× the vertical padding.</td>
+              </tr>
+              <tr>
+                <th scope="row"><a href="#law-1">Inner gap exceeds padding</a></th>
+                <td>The frame stops holding the group.</td>
+                <td>Keep the inner gap at or under the container padding.</td>
+              </tr>
+              <tr>
+                <th scope="row"><a href="#anti-thrash">Layout thrashing</a></th>
+                <td>Animating top, left, width, height, or margin drops frames.</td>
+                <td>Animate translate3d and opacity.</td>
+              </tr>
+              <tr>
+                <th scope="row"><a href="#anti-flip">Flatland 3D flip</a></th>
+                <td>The card squashes like a sticker.</td>
+                <td>perspective on the scene, preserve-3d on the flipper, hidden backfaces.</td>
+              </tr>
+              <tr>
+                <th scope="row"><a href="#law-7">Sticky flex stretch</a></th>
+                <td>The sticky column scrolls away with the article.</td>
+                <td>align-self: flex-start on the sticky item.</td>
+              </tr>
+              <tr>
+                <th scope="row"><a href="#law-6">Flex content blowout</a></th>
+                <td>A long token forces horizontal scroll.</td>
+                <td>flex: 1 1 0% and min-width: 0 on the children.</td>
+              </tr>
+              <tr>
+                <th scope="row"><a href="#law-8">Drawer shoving</a></th>
+                <td>Opening the drawer crushes the content.</td>
+                <td>Absolute on small screens, static in flow on wide screens.</td>
+              </tr>
+              <tr>
+                <th scope="row"><a href="#law-9">Destructive projectile</a></th>
+                <td>The grid cell leaves with the item.</td>
+                <td>Clone, position fixed, animate the clone, remove it on finish.</td>
+              </tr>
+              <tr>
+                <th scope="row"><a href="#law-10">Vector morph glitch</a></th>
+                <td>The icon pops or tears.</td>
+                <td>Match vertex count and command order before animating d.</td>
+              </tr>
+              <tr>
+                <th scope="row"><a href="#anti-early">Premature state</a></th>
+                <td>The counter changes before the item arrives.</td>
+                <td>Update the badge in animation.onfinish.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="shared/frontend.js?v=1" defer></script>
+  <script src="shared/site-header.js?v=22" defer></script>
+</body>
+</html>
