@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Motion vocab · ui-kit</title>
+  <meta name="description" content="awe0’s motion prompt lexicon: casual phrases mapped to Count Up, Marquee, Typewriter, Stagger, Hover Lift, Morph, Easing, Ripple, and Flip Card, with live demos." />
+  <script>
+    /* Match the gallery page shell before paint. Palettes change --page only. */
+    (function () {
+      try {
+        document.documentElement.classList.add('js');
+        var params = new URLSearchParams(location.search);
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches || params.get('reduce') === '1';
+        document.documentElement.setAttribute('data-motion', reduce ? 'reduce' : 'ok');
+        var id = localStorage.getItem('ui-kit-palette') || 'forest';
+        var pages = {
+          forest: '#f5f1ee', navy: '#eef2f6', terracotta: '#faf3ef',
+          plum: '#f6f1f8', ocean: '#eef6f6', amber: '#faf6ee',
+          slate: '#f0f1f3', rosewood: '#f8f1f3', olive: '#f4f3ea',
+          ink: '#ececf0'
+        };
+        document.documentElement.setAttribute('data-theme', id);
+        document.documentElement.style.setProperty('--page', pages[id] || pages.forest);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="shared/site-header.css?v=7" />
+  <style>
+    :root {
+      --page: #f5f1ee;
+      --canvas: #ffffff;
+      --ink: #1c1c22;
+      --muted: #5e5e6a;
+      --line: #e4e4ea;
+      --accent: #5b5bf0;
+      --brand: #1e6851;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Noto Sans CJK SC", "Microsoft YaHei", "WenQuanYi Micro Hei", "Droid Sans Fallback", sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --bar-h: 8.5rem;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      background: var(--page);
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: calc(var(--bar-h) + 1.25rem);
+    }
+
+    .sr {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 2.25rem 1.25rem 2.5rem;
+    }
+
+    .hero { max-width: 40rem; margin: 0 0 2rem; }
+
+    h1 {
+      margin: 0 0 0.7rem;
+      font-size: clamp(2.15rem, 5vw, 3.15rem);
+      font-weight: 700;
+      letter-spacing: -0.045em;
+      line-height: 0.98;
+    }
+
+    .lede {
+      margin: 0;
+      font-size: 1.125rem;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    .by {
+      margin: 0.9rem 0 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    a { color: var(--brand); text-underline-offset: 0.16em; }
+    a:hover { color: var(--ink); }
+
+    a:focus-visible,
+    .btn:focus-visible,
+    .stage[role="button"]:focus-visible,
+    .lift:focus-visible,
+    .press:focus-visible,
+    .flip:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.85rem;
+    }
+
+    @media (min-width: 700px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+      .phrase { min-height: 4.8rem; }
+    }
+
+    @media (min-width: 1020px) {
+      .grid { grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      min-width: 0;
+      padding: 1rem 1rem 0.85rem;
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+    }
+
+    .zh {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+      line-height: 1.35;
+    }
+
+    .gloss {
+      margin: 0.22rem 0 0;
+      font-size: 0.82rem;
+      line-height: 1.4;
+      color: var(--muted);
+    }
+
+    .termline {
+      display: flex;
+      align-items: baseline;
+      gap: 0.4rem;
+      margin-top: auto;
+    }
+
+    .arrow {
+      color: var(--brand);
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .termline h2 {
+      margin: 0;
+      font-size: 1.18rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    .stage {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 132px;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      border: 0;
+      border-radius: 12px;
+      background: color-mix(in srgb, var(--ink) 4.5%, var(--canvas));
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 6%, transparent);
+      color: inherit;
+      font: inherit;
+      text-align: left;
+    }
+
+    .stage[role="button"] { cursor: pointer; }
+
+    .replay-chip {
+      position: absolute;
+      z-index: 2;
+      top: 8px;
+      right: 8px;
+      padding: 0.15rem 0.4rem;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--canvas) 82%, transparent);
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    .actions { display: flex; justify-content: flex-end; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      min-width: 6.75rem;
+      padding: 0.4rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      color: var(--ink);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 650;
+      line-height: 1;
+      white-space: nowrap;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .btn:hover { border-color: color-mix(in srgb, var(--ink) 28%, var(--line)); }
+
+    .btn--primary {
+      min-width: 8.75rem;
+      border-color: var(--ink);
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .btn--primary:hover { background: #2c2c34; border-color: #2c2c34; }
+
+    .btn.is-copied,
+    .btn--primary.is-copied {
+      border-color: var(--brand);
+      background: var(--brand);
+      color: #fff;
+    }
+
+    /* Count Up */
+    .count {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      gap: 0.15rem;
+    }
+
+    .count__num {
+      font-size: clamp(2rem, 4vw, 2.55rem);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.045em;
+      line-height: 1;
+    }
+
+    .count__unit {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    /* Marquee */
+    .marquee {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      mask-image: linear-gradient(90deg, transparent, #000 14px, #000 calc(100% - 14px), transparent);
+    }
+
+    .marquee__track {
+      display: flex;
+      width: max-content;
+      animation: marquee 16s linear infinite;
+    }
+
+    .marquee__set {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding-right: 0.5rem;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      height: 36px;
+      padding: 0 0.8rem 0 0.4rem;
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 8%, transparent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+
+    .logo i {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--brand);
+      display: block;
+      flex: none;
+    }
+
+    .logo:nth-child(2) i { border-radius: 4px; background: var(--ink); }
+    .logo:nth-child(3) i { background: #c4554d; }
+    .logo:nth-child(4) i { border-radius: 3px; background: #c4922a; }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* Typewriter */
+    .type {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      padding: 0 1rem;
+      font-family: var(--mono);
+      font-size: 1.05rem;
+      letter-spacing: -0.03em;
+    }
+
+    .caret {
+      display: inline-block;
+      width: 1.5px;
+      height: 1.05em;
+      margin-left: 2px;
+      background: var(--ink);
+      vertical-align: -0.15em;
+      animation: blink 1s steps(1) infinite;
+    }
+
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* Stagger */
+    .stag {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+      height: 100%;
+      width: min(100% - 2rem, 220px);
+      margin: 0 auto;
+    }
+
+    .stag__item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 8%, transparent);
+    }
+
+    .stag__item i {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-style: normal;
+      font-weight: 700;
+      color: var(--brand);
+    }
+
+    .stag__item b {
+      display: block;
+      height: 6px;
+      border-radius: 99px;
+      background: color-mix(in srgb, var(--ink) 16%, #fff);
+    }
+
+    .stag__item:nth-child(1) b { width: 72%; }
+    .stag__item:nth-child(2) b { width: 46%; }
+    .stag__item:nth-child(3) b { width: 84%; }
+
+    html.js:not([data-motion="reduce"]) .stag__item {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    html.js:not([data-motion="reduce"]) .stage.is-in .stag__item {
+      opacity: 1;
+      transform: none;
+      transition: opacity 0.5s ease, transform 0.55s var(--ease-out);
+    }
+
+    html.js:not([data-motion="reduce"]) .stage.is-in .stag__item:nth-child(2) { transition-delay: 0.1s; }
+    html.js:not([data-motion="reduce"]) .stage.is-in .stag__item:nth-child(3) { transition-delay: 0.2s; }
+
+    /* Hover Lift */
+    .stage--lift {
+      display: grid;
+      place-items: center;
+      overflow: visible;
+    }
+
+    .lift {
+      width: min(100% - 1.5rem, 188px);
+      padding: 0.8rem 0.9rem;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 1px 2px rgba(28, 28, 34, 0.05);
+      color: inherit;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .lift strong {
+      display: block;
+      font-size: 0.95rem;
+      letter-spacing: -0.02em;
+    }
+
+    .lift span {
+      display: block;
+      margin-top: 0.15rem;
+      font-size: 12px;
+      font-weight: 650;
+      color: var(--muted);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .lift { transition: transform 0.45s var(--ease-out), box-shadow 0.45s ease; }
+      .lift:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 14px 28px rgba(28, 28, 34, 0.12);
+      }
+    }
+
+    .lift:focus-visible,
+    .lift.is-on {
+      transform: translateY(-8px);
+      box-shadow: 0 14px 28px rgba(28, 28, 34, 0.12);
+    }
+
+    /* Morph */
+    .morph {
+      display: grid;
+      place-items: center;
+      height: 100%;
+    }
+
+    .shape {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--brand);
+    }
+
+    html.js:not([data-motion="reduce"]) .stage.is-play .shape {
+      animation: morph 1.35s var(--ease-out) forwards;
+    }
+
+    @keyframes morph {
+      to {
+        border-radius: 16px;
+        transform: scale(1.2, 0.7);
+      }
+    }
+
+    /* Easing */
+    .ease {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.7rem;
+      height: 100%;
+      padding: 0 0.85rem;
+    }
+
+    .ease__row {
+      display: grid;
+      grid-template-columns: 4.5rem 1fr;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .ease__row span:first-child {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .ease__track {
+      container-type: inline-size;
+      position: relative;
+      height: 18px;
+      border-radius: 99px;
+      background: color-mix(in srgb, var(--ink) 8%, transparent);
+    }
+
+    .puck {
+      position: absolute;
+      left: 2px;
+      top: 2px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--brand);
+    }
+
+    .puck--lin { background: color-mix(in srgb, var(--ink) 45%, #fff); }
+
+    html.js:not([data-motion="reduce"]) .stage.is-play .puck--out {
+      animation: travel 1.2s var(--ease-out) forwards;
+    }
+
+    html.js:not([data-motion="reduce"]) .stage.is-play .puck--lin {
+      animation: travel 1.2s linear forwards;
+    }
+
+    @keyframes travel {
+      to { transform: translateX(calc(100cqw - 18px)); }
+    }
+
+    /* Ripple */
+    .stage--center {
+      display: grid;
+      place-items: center;
+      overflow: visible;
+    }
+
+    .press {
+      position: relative;
+      overflow: hidden;
+      min-width: 7.5rem;
+      min-height: 44px;
+      padding: 0.45rem 1.2rem;
+      border: 0;
+      border-radius: 999px;
+      background: var(--brand);
+      color: #fff;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .press:active { filter: brightness(0.94); }
+
+    .ripple {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      margin: -8px 0 0 -8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.55);
+      pointer-events: none;
+      animation: ripple 650ms ease-out forwards;
+    }
+
+    @keyframes ripple {
+      from { transform: scale(0.25); opacity: 0.7; }
+      to { transform: scale(16); opacity: 0; }
+    }
+
+    /* Flip Card */
+    .flip {
+      display: block;
+      width: 148px;
+      height: 88px;
+      padding: 0;
+      border: 0;
+      background: none;
+      perspective: 800px;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .flip__inner {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.7s var(--ease-out);
+    }
+
+    .flip.is-flipped .flip__inner { transform: rotateY(180deg); }
+
+    .flip__face {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      backface-visibility: hidden;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .flip__face--front {
+      background: #fff;
+      color: var(--ink);
+      box-shadow: inset 0 0 0 1px var(--line);
+    }
+
+    .flip__face--back {
+      background: var(--brand);
+      color: #fff;
+      transform: rotateY(180deg);
+    }
+
+    .stock {
+      position: fixed;
+      z-index: 40;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
+      background: color-mix(in srgb, var(--canvas) 90%, transparent);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-top: 1px solid var(--line);
+    }
+
+    .stock__inner {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .stock__copy { min-width: 0; flex: 1; }
+
+    .stock__zh,
+    .stock__en { margin: 0; }
+
+    .stock__zh {
+      font-size: 0.82rem;
+      line-height: 1.4;
+      color: var(--muted);
+    }
+
+    .stock__en {
+      margin-top: 0.15rem;
+      font-size: 0.95rem;
+      font-weight: 650;
+      letter-spacing: -0.015em;
+      line-height: 1.35;
+    }
+
+    @media (max-width: 720px) {
+      .stock__inner { flex-direction: column; align-items: stretch; gap: 0.65rem; }
+      .btn--primary { width: 100%; }
+    }
+
+    html[data-motion="reduce"] .marquee__track { animation: none; }
+    html[data-motion="reduce"] .caret { animation: none; opacity: 0; }
+    html[data-motion="reduce"] .replay-chip { display: none; }
+    html[data-motion="reduce"] .shape {
+      border-radius: 16px;
+      transform: scale(1.2, 0.7);
+    }
+    html[data-motion="reduce"] .puck { transform: translateX(calc(100cqw - 18px)); }
+    html[data-motion="reduce"] .lift,
+    html[data-motion="reduce"] .flip__inner { transition: none; }
+    html[data-motion="reduce"] .flip__inner { transform: none !important; }
+    html[data-motion="reduce"] .flip__face { transform: none; backface-visibility: visible; }
+    html[data-motion="reduce"] .flip:not(.is-flipped) .flip__face--back { visibility: hidden; }
+    html[data-motion="reduce"] .flip.is-flipped .flip__face--front { visibility: hidden; }
+    html[data-motion="reduce"] .marquee__set + .marquee__set { display: none; }
+    html[data-motion="reduce"] .marquee__track {
+      width: auto;
+      max-width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    html[data-motion="reduce"] .marquee__set {
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 0.4rem;
+    }
+    html[data-motion="reduce"] .marquee { mask-image: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .marquee__track,
+      .caret,
+      .shape,
+      .puck,
+      .stag__item,
+      .lift,
+      .flip__inner,
+      .ripple {
+        animation: none !important;
+        transition: none !important;
+      }
+      .caret { opacity: 0; }
+      .replay-chip { display: none; }
+      .shape { border-radius: 16px; transform: scale(1.2, 0.7); }
+      .puck { transform: translateX(calc(100cqw - 18px)); }
+      .flip__inner { transform: none !important; }
+      .flip__face { transform: none; backface-visibility: visible; }
+      .flip:not(.is-flipped) .flip__face--back { visibility: hidden; }
+      .flip.is-flipped .flip__face--front { visibility: hidden; }
+      .marquee__set + .marquee__set { display: none; }
+      .marquee { mask-image: none; }
+      .marquee__track { width: auto; max-width: 100%; flex-wrap: wrap; justify-content: center; }
+      .marquee__set { flex-wrap: wrap; justify-content: center; padding: 0.4rem; }
+    }
+  </style>
+</head>
+<body data-page="motion-vocab">
+  <main class="wrap">
+    <header class="hero">
+      <h1>Motion vocab</h1>
+      <p class="lede">Vague 'make it alive' makes everything fly. Name which thing moves, with terms AI already knows.</p>
+      <p class="by">Lexicon by <a href="https://x.com/awe0_io/status/2116895669428613390" target="_blank" rel="noopener noreferrer">awe0<span class="sr"> (opens in a new tab)</span></a>.</p>
+    </header>
+
+    <section class="grid" aria-label="Motion terms">
+      <article class="card" id="count-up" aria-labelledby="term-count-up">
+        <div class="phrase">
+          <p class="zh" lang="zh-Hans">数字从 0 一路跳上去</p>
+          <p class="gloss">numbers jump from 0 up</p>
+        </div>
+        <div class="termline">
+          <span class="arrow" aria-hidden="true">→</span>
+          <h2 id="term-count-up">Count Up</h2>
+        </div>
+        <div class="stage" data-demo="count" data-label="Replay Count Up">
+          <span class="replay-chip" aria-hidden="true">Replay</span>
+          <span class="count">
+            <span class="count__num">2,480</span>
+            <span class="count__unit">visitors</span>
+          </span>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn" data-copy="Count Up"><span class="btn__label">Copy term</span><span class="sr"> Count Up</span></button>
+        </div>
+      </article>
+
+      <article class="card" id="marquee" aria-labelledby="term-marquee">
+        <div class="phrase">
+          <p class="zh" lang="zh-Hans">一排 Logo 一直往旁边跑</p>
+          <p class="gloss">a row of logos keeps scrolling sideways</p>
+        </div>
+        <div class="termline">
+          <span class="arrow" aria-hidden="true">→</span>
+          <h2 id="term-marquee">Marquee</h2>
+        </div>
+        <div class="stage" data-demo="marquee" data-label="Replay Marquee">
+          <span class="replay-chip" aria-hidden="true">Replay</span>
+          <div class="marquee">
+            <div class="marquee__track">
+              <div class="marquee__set">
+                <span class="logo"><i></i>North</span>
+                <span class="logo"><i></i>Field</span>
+                <span class="logo"><i></i>Lumen</span>
+                <span class="logo"><i></i>Halo</span>
+              </div>
+              <div class="marquee__set" aria-hidden="true">
+                <span class="logo"><i></i>North</span>
+                <span class="logo"><i></i>Field</span>
+                <span class="logo"><i></i>Lumen</span>
+                <span class="logo"><i></i>Halo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn" data-copy="Marquee"><span class="btn__label">Copy term</span><span class="sr"> Marquee</span></button>
+        </div>
+      </article>
+
+      <article class="card" id="typewriter" aria-labelledby="term-typewriter">
+        <div class="phrase">
+          <p class="zh" lang="zh-Hans">字一个一个打出来</p>
+          <p class="gloss">letters appear one by one</p>
+        </div>
+        <div class="termline">
+          <span class="arrow" aria-hidden="true">→</span>
+          <h2 id="term-typewriter">Typewriter</h2>
+        </div>
+        <div class="stage" data-demo="typewriter" data-label="Replay Typewriter">
+          <span class="replay-chip" aria-hidden="true">Replay</span>
+          <span class="type"><span class="type__text">Name the motion</span><span class="caret" aria-hidden="true"></span></span>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn" data-copy="Typewriter"><span class="btn__label">Copy term</span><span class="sr"> Typewriter</span></button>
+        </div>
+      </article>
+
+      <article class="card" id="stagger" aria-labelledby="term-stagger">
+        <div class="phrase">
+          <p class="zh" lang="zh-Hans">一个接一个轮流出场</p>
+          <p class="gloss">items enter one after another</p>
+        </div>
+        <div class="termline">
+          <span class="arrow" aria-hidden="true">→</span>
+          <h2 id="term-stagger">Stagger</h2>
+        </div>
+        <div class="stage" data-demo="stagger" data-label="Replay Stagger">
+          <span class="replay-chip" aria-hidden="true">Replay</span>
+          <span class="stag">
+            <span class="stag__item"><i>1</i><b></b></span>
+            <span class="stag__item"><i>2</i><b></b></span>
+            <span class="stag__item"><i>3</i><b></b></span>
+          </span>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn" data-copy="Stagger"><span class="btn__label">Copy term</span><span class="sr"> Stagger</span></button>
+        </div>
+      </article>
+
+      <article class="card" id="hover-lift" aria-labelledby="term-hover-lift">
+        <div class="phrase">
+          <p class="zh" lang="zh-Hans">鼠标移上去卡片浮起来</p>
+          <p class="gloss">card lifts on hover</p>
+        </div>
+        <div class="termline">
+          <span class="arrow" aria-hidden="true">→</span>
+          <h2 id="term-hover-lift">Hover Lift</h2>
+        </div>
+        <div class="stage stage--lift">
+          <button type="button" class="lift" aria-pressed="false" aria-label="Ceramic cup, $28. Hover or focus to lift.">
+            <strong>Ceramic cup</strong>
+            <span>$28</span>
+          </button>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn" data-copy="Hover Lift"><span class="btn__label">Copy term</span><span class="sr"> Hover Lift</span></button>
+        </div>
+      </article>
+
+      <article class="card" id="morph" aria-labelledby="term-morph">
+        <div class="phrase">
+          <p class="zh" lang="zh-Hans">形状慢慢变成另一个形状</p>
+          <p class="gloss">one shape slowly becomes another</p>
+        </div>
+        <div class="termline">
+          <span class="arrow" aria-hidden="true">→</span>
+          <h2 id="term-morph">Morph</h2>
+        </div>
+        <div class="stage" data-demo="morph" data-label="Replay Morph" aria-label="Circle becoming a rounded bar">
+          <span class="replay-chip" aria-hidden="true">Replay</span>
+          <span class="morph" aria-hidden="true"><span class="shape"></span></span>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn" data-copy="Morph"><span class="btn__label">Copy term</span><span class="sr"> Morph</span></button>
+        </div>
+      </article>
+
+      <article class="card" id="easing" aria-labelledby="term-easing">
+        <div class="phrase">
+          <p class="zh" lang="zh-Hans">动作先快后慢很顺滑</p>
+          <p class="gloss">motion starts fast then eases out</p>
+        </div>
+        <div class="termline">
+          <span class="arrow" aria-hidden="true">→</span>
+          <h2 id="term-easing">Easing</h2>
+        </div>
+        <div class="stage" data-demo="easing" data-label="Replay Easing">
+          <span class="replay-chip" aria-hidden="true">Replay</span>
+          <span class="ease">
+            <span class="ease__row"><span>ease-out</span><span class="ease__track"><i class="puck puck--out"></i></span></span>
+            <span class="ease__row"><span>linear</span><span class="ease__track"><i class="puck puck--lin"></i></span></span>
+          </span>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn" data-copy="Easing"><span class="btn__label">Copy term</span><span class="sr"> Easing</span></button>
+        </div>
+      </article>
+
+      <article class="card" id="ripple" aria-labelledby="term-ripple">
+        <div class="phrase">
+          <p class="zh" lang="zh-Hans">按下去有一圈水波散开</p>
+          <p class="gloss">press shows a spreading ripple</p>
+        </div>
+        <div class="termline">
+          <span class="arrow" aria-hidden="true">→</span>
+          <h2 id="term-ripple">Ripple</h2>
+        </div>
+        <div class="stage stage--center">
+          <button type="button" class="press" aria-label="Press for a ripple">Press</button>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn" data-copy="Ripple"><span class="btn__label">Copy term</span><span class="sr"> Ripple</span></button>
+        </div>
+      </article>
+
+      <article class="card" id="flip-card" aria-labelledby="term-flip-card">
+        <div class="phrase">
+          <p class="zh" lang="zh-Hans">卡片翻过来看背面</p>
+          <p class="gloss">card flips to show the back</p>
+        </div>
+        <div class="termline">
+          <span class="arrow" aria-hidden="true">→</span>
+          <h2 id="term-flip-card">Flip Card</h2>
+        </div>
+        <div class="stage stage--center">
+          <button type="button" class="flip" aria-pressed="false" aria-label="Flip card">
+            <span class="flip__inner">
+              <span class="flip__face flip__face--front">Front</span>
+              <span class="flip__face flip__face--back">Back</span>
+            </span>
+          </button>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn" data-copy="Flip Card"><span class="btn__label">Copy term</span><span class="sr"> Flip Card</span></button>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <aside class="stock" aria-label="Stock prompt">
+    <div class="stock__inner">
+      <div class="stock__copy">
+        <p class="stock__zh" lang="zh-Hans">首页数字用 Count Up，合作品牌做 Marquee，商品卡片加 Hover Lift，全部用 Ease-out</p>
+        <p class="stock__en" id="stock-en" lang="en">Hero stats: Count Up. Partner logos: Marquee. Product cards: Hover Lift. All easing: Ease-out.</p>
+      </div>
+      <button type="button" class="btn btn--primary" id="copy-prompt" aria-describedby="copy-note">
+        <span class="btn__label">Copy prompt</span>
+      </button>
+      <span id="copy-note" class="sr">Copies the English stock prompt.</span>
+    </div>
+  </aside>
+
+  <script>
+    (function () {
+      'use strict';
+
+      /* Copy prompt writes stockPromptEn — the AI-ready English line. The bar also shows awe0’s Chinese sentence. */
+      var STOCK_PROMPT_EN = 'Hero stats: Count Up. Partner logos: Marquee. Product cards: Hover Lift. All easing: Ease-out.';
+      var reduce = document.documentElement.getAttribute('data-motion') === 'reduce';
+      var timers = new WeakMap();
+
+      function legacyCopy(text) {
+        return new Promise(function (resolve, reject) {
+          var prev = document.activeElement;
+          var ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly', '');
+          ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          ta.setSelectionRange(0, text.length);
+          var ok = false;
+          try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+          document.body.removeChild(ta);
+          if (prev && prev.focus) prev.focus();
+          if (ok) resolve();
+          else reject(new Error('copy failed'));
+        });
+      }
+
+      function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext && navigator.clipboard.writeText) {
+          return navigator.clipboard.writeText(text).catch(function () { return legacyCopy(text); });
+        }
+        return legacyCopy(text);
+      }
+
+      function flash(btn) {
+        var label = btn.querySelector('.btn__label');
+        if (!label) return;
+        if (!label.hasAttribute('data-label')) label.setAttribute('data-label', label.textContent);
+        label.textContent = 'Copied';
+        btn.classList.add('is-copied');
+        var prev = timers.get(btn);
+        if (prev) clearTimeout(prev);
+        timers.set(btn, setTimeout(function () {
+          label.textContent = label.getAttribute('data-label');
+          btn.classList.remove('is-copied');
+        }, 1500));
+      }
+
+      function bindCopy(btn, text) {
+        btn.addEventListener('click', function () {
+          copyText(text).then(function () { flash(btn); }).catch(function () {});
+        });
+      }
+
+      document.querySelectorAll('[data-copy]').forEach(function (btn) {
+        bindCopy(btn, btn.getAttribute('data-copy'));
+      });
+
+      var promptBtn = document.getElementById('copy-prompt');
+      if (promptBtn) bindCopy(promptBtn, STOCK_PROMPT_EN);
+
+      function arm(stage) {
+        var label = stage.getAttribute('data-label');
+        stage.setAttribute('role', 'button');
+        stage.tabIndex = 0;
+        if (label) stage.setAttribute('aria-label', label);
+        stage.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            stage.click();
+          }
+        });
+      }
+
+      function whenSeen(el, play) {
+        if (reduce) return;
+        if (!('IntersectionObserver' in window)) {
+          play();
+          return;
+        }
+        var done = false;
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting || done) return;
+            done = true;
+            play();
+            io.disconnect();
+          });
+        }, { threshold: 0.45 });
+        io.observe(el);
+      }
+
+      function restartClass(el, name) {
+        el.classList.remove(name);
+        void el.offsetWidth;
+        el.classList.add(name);
+      }
+
+      var countStage = document.querySelector('[data-demo="count"]');
+      if (countStage) {
+        var countNum = countStage.querySelector('.count__num');
+        var countToken = 0;
+        function playCount() {
+          var token = ++countToken;
+          var target = 2480;
+          var start = performance.now();
+          var dur = 1100;
+          countNum.textContent = '0';
+          function frame(now) {
+            if (token !== countToken) return;
+            var t = Math.min(1, (now - start) / dur);
+            var eased = 1 - Math.pow(1 - t, 3);
+            countNum.textContent = String(Math.round(eased * target)).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            if (t < 1) requestAnimationFrame(frame);
+          }
+          requestAnimationFrame(frame);
+        }
+        if (!reduce) {
+          countNum.textContent = '0';
+          arm(countStage);
+          countStage.addEventListener('click', playCount);
+          whenSeen(countStage, playCount);
+        }
+      }
+
+      var marqueeStage = document.querySelector('[data-demo="marquee"]');
+      if (marqueeStage && !reduce) {
+        var track = marqueeStage.querySelector('.marquee__track');
+        arm(marqueeStage);
+        marqueeStage.addEventListener('click', function () {
+          track.style.animation = 'none';
+          void track.offsetWidth;
+          track.style.animation = '';
+        });
+      }
+
+      var typeStage = document.querySelector('[data-demo="typewriter"]');
+      if (typeStage) {
+        var typeText = typeStage.querySelector('.type__text');
+        var typeFull = 'Name the motion';
+        var typeTimer = 0;
+        function playType() {
+          clearTimeout(typeTimer);
+          var i = 0;
+          typeText.textContent = '';
+          function step() {
+            i += 1;
+            typeText.textContent = typeFull.slice(0, i);
+            if (i < typeFull.length) typeTimer = setTimeout(step, 62);
+          }
+          typeTimer = setTimeout(step, 30);
+        }
+        if (!reduce) {
+          typeText.textContent = '';
+          arm(typeStage);
+          typeStage.addEventListener('click', playType);
+          whenSeen(typeStage, playType);
+        }
+      }
+
+      var staggerStage = document.querySelector('[data-demo="stagger"]');
+      if (staggerStage && !reduce) {
+        function playStagger() { restartClass(staggerStage, 'is-in'); }
+        arm(staggerStage);
+        staggerStage.addEventListener('click', playStagger);
+        whenSeen(staggerStage, playStagger);
+      }
+
+      var lift = document.querySelector('.lift');
+      if (lift) {
+        var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+        if (!fine) {
+          lift.addEventListener('click', function () {
+            var on = lift.classList.toggle('is-on');
+            lift.setAttribute('aria-pressed', on ? 'true' : 'false');
+          });
+        }
+      }
+
+      var morphStage = document.querySelector('[data-demo="morph"]');
+      if (morphStage && !reduce) {
+        function playMorph() { restartClass(morphStage, 'is-play'); }
+        arm(morphStage);
+        morphStage.addEventListener('click', playMorph);
+        whenSeen(morphStage, playMorph);
+      }
+
+      var easeStage = document.querySelector('[data-demo="easing"]');
+      if (easeStage && !reduce) {
+        function playEase() { restartClass(easeStage, 'is-play'); }
+        arm(easeStage);
+        easeStage.addEventListener('click', playEase);
+        whenSeen(easeStage, playEase);
+      }
+
+      var press = document.querySelector('.press');
+      if (press) {
+        function spawn(clientX, clientY) {
+          if (reduce) return;
+          var rect = press.getBoundingClientRect();
+          var x = (clientX == null ? rect.width / 2 : clientX - rect.left);
+          var y = (clientY == null ? rect.height / 2 : clientY - rect.top);
+          var dot = document.createElement('span');
+          dot.className = 'ripple';
+          dot.style.left = x + 'px';
+          dot.style.top = y + 'px';
+          press.appendChild(dot);
+          dot.addEventListener('animationend', function () { dot.remove(); });
+        }
+        press.addEventListener('pointerdown', function (e) {
+          if (e.button !== 0) return;
+          spawn(e.clientX, e.clientY);
+        });
+        press.addEventListener('click', function (e) {
+          if (e.detail === 0) spawn(null, null);
+        });
+      }
+
+      var flip = document.querySelector('.flip');
+      if (flip) {
+        flip.addEventListener('click', function () {
+          var on = flip.classList.toggle('is-flipped');
+          flip.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+      }
+
+      var bar = document.querySelector('.stock');
+      if (bar && 'ResizeObserver' in window) {
+        var syncBar = function () {
+          document.documentElement.style.setProperty('--bar-h', bar.offsetHeight + 'px');
+        };
+        syncBar();
+        new ResizeObserver(syncBar).observe(bar);
+      }
+    })();
+  </script>
+  <script src="shared/site-header.js?v=23" defer></script>
+</body>
+</html>
