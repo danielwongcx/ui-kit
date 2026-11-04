@@ -17,7 +17,8 @@
     { id: 'folder', label: 'Folder' },
     { id: 'spacing', label: 'Spacing' },
     { id: 'hierarchy', label: 'Hierarchy' },
-    { id: 'color-combos', label: 'Color combos' }
+    { id: 'color-combos', label: 'Color combos' },
+    { id: 'transition-keywords', label: 'Transition keywords' }
   ];
 
   var TASTE_SECTION_LINKS = [

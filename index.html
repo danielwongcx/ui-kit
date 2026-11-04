@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>UI Library · Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow · Folder · Spacing · Hierarchy · Combos</title>
+  <title>UI Library · Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow · Folder · Spacing · Hierarchy · Combos · Keywords</title>
   <script>
     /* Apply saved page shell and glow stops before paint */
     (function () {
@@ -25,6 +25,16 @@
               document.documentElement.style.setProperty('--glow-c' + (i + 1), glow.stops[i]);
             }
           }
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <script>
+    /* ?reduce=1 holds transition-keyword demos at rest. OS reduced motion is handled in CSS. */
+    (function () {
+      try {
+        if (new URLSearchParams(location.search).get('reduce') === '1') {
+          document.documentElement.classList.add('tk-still');
         }
       } catch (e) {}
     })();
@@ -6077,6 +6087,702 @@
 </style>
   <link rel="stylesheet" href="shared/site-header.css?v=7" />
   <link rel="stylesheet" href="shared/section-fab.css?v=3" />
+  <style>
+    /* Transition keywords. Resting rules are the settled frame.
+       Motion runs unless html.tk-still (?reduce=1) or prefers-reduced-motion. */
+    #transition-keywords {
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Noto Sans CJK SC", "Source Han Sans SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    }
+
+    #transition-keywords h3 {
+      margin: 0 0 0.55rem;
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    #transition-keywords .tk-band + .tk-band { margin-top: 1.65rem; }
+
+    #transition-keywords .tk-stock {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      column-gap: 1rem;
+      row-gap: 0.28rem;
+      align-items: center;
+      margin: 0 0 0.85rem;
+      padding: 0.8rem 0.9rem;
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+    }
+
+    #transition-keywords .tk-stock-zh,
+    #transition-keywords .tk-stock-en {
+      grid-column: 1;
+      min-width: 0;
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    #transition-keywords .tk-stock-zh {
+      grid-row: 1;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    #transition-keywords .tk-stock-en {
+      grid-row: 2;
+      font-size: 0.82rem;
+      color: var(--ink);
+    }
+
+    #transition-keywords .tk-prompt {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      justify-self: end;
+      appearance: none;
+      -webkit-appearance: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      min-width: 8.25rem;
+      padding: 0.4rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      line-height: 1;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    #transition-keywords .tk-prompt:hover { background: #f6f6f8; }
+
+    #transition-keywords .tk-prompt:focus-visible,
+    #transition-keywords .tk-credit a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    #transition-keywords .tk-prompt.is-copied,
+    #transition-keywords .tk-prompt.is-copied:hover {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: #fff;
+    }
+
+    #transition-keywords .tk-grid {
+      display: grid;
+      gap: 0.85rem;
+      grid-template-columns: 1fr;
+      align-items: stretch;
+    }
+
+    @media (min-width: 640px) {
+      #transition-keywords .tk-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (min-width: 980px) {
+      #transition-keywords .tk-grid { grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+    @media (max-width: 639px) {
+      #transition-keywords .tk-stock { grid-template-columns: 1fr; }
+      #transition-keywords .tk-prompt {
+        grid-column: 1;
+        grid-row: auto;
+        justify-self: start;
+        margin-top: 0.45rem;
+      }
+    }
+
+    #transition-keywords .tk-card {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+      overflow: hidden;
+    }
+
+    #transition-keywords .tk-chrome {
+      background: #fafafa;
+      border-bottom: 1px solid var(--line);
+      padding: 0.1rem 0.55rem 0.1rem 0.7rem;
+    }
+
+    #transition-keywords .tk-term {
+      appearance: none;
+      -webkit-appearance: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      width: 100%;
+      min-height: 44px;
+      margin: 0;
+      padding: 0.35rem 0.15rem;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--ink);
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    #transition-keywords .tk-term:hover .tk-term__name {
+      text-decoration: underline;
+      text-underline-offset: 0.14em;
+    }
+
+    #transition-keywords .tk-term:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+    }
+
+    #transition-keywords .tk-term__name {
+      flex: 1;
+      min-width: 0;
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+
+    #transition-keywords .tk-term__state {
+      flex: none;
+      min-width: 3.6rem;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0.01em;
+      text-align: right;
+      color: var(--muted);
+    }
+
+    #transition-keywords .tk-term.is-copied .tk-term__state { color: #1e6851; }
+
+    #transition-keywords .tk-body {
+      display: flex;
+      flex-direction: column;
+      gap: 0.28rem;
+      padding: 0.7rem 0.85rem 0.9rem;
+    }
+
+    #transition-keywords .tk-desc,
+    #transition-keywords .tk-zh {
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    #transition-keywords .tk-desc {
+      font-size: 0.8rem;
+      color: var(--ink);
+    }
+
+    #transition-keywords .tk-zh,
+    #transition-keywords .tk-desc--zh {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    #transition-keywords .tk-stage {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100px;
+      margin: 0.65rem 0.65rem 0;
+      border: 1px solid #e4e4ea;
+      border-radius: 10px;
+      background: #ececf1;
+      overflow: hidden;
+    }
+
+    #transition-keywords .tk-page,
+    #transition-keywords .tk-scale-sheet {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 10px 12px;
+      box-sizing: border-box;
+    }
+
+    #transition-keywords .tk-page b,
+    #transition-keywords .tk-scale-sheet b {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    #transition-keywords .tk-page i,
+    #transition-keywords .tk-scale-sheet i {
+      display: block;
+      height: 4px;
+      width: 68%;
+      border-radius: 99px;
+      background: currentColor;
+      opacity: 0.4;
+    }
+
+    #transition-keywords .tk-page i + i,
+    #transition-keywords .tk-scale-sheet i + i { width: 42%; }
+
+    #transition-keywords .tk-page--home {
+      background: #f3eee6;
+      color: #1c1c22;
+    }
+
+    #transition-keywords .tk-page--work {
+      background: #1b3330;
+      color: #f4efe8;
+    }
+
+    #transition-keywords .tk-fade .tk-page,
+    #transition-keywords .tk-wipe .tk-page,
+    #transition-keywords .tk-scale .tk-page {
+      position: absolute;
+      inset: 0;
+    }
+
+    #transition-keywords .tk-fade .tk-page--home { opacity: 0; }
+    #transition-keywords .tk-fade .tk-page--work { opacity: 1; }
+
+    #transition-keywords .tk-slide-track {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 200%;
+      display: flex;
+      transform: translateX(-50%);
+    }
+
+    #transition-keywords .tk-slide-track .tk-page {
+      position: relative;
+      flex: 0 0 50%;
+      width: 50%;
+      height: 100%;
+      min-width: 0;
+    }
+
+    #transition-keywords .tk-scale-sheet {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: #fff;
+      color: #1c1c22;
+      transform: scale(1);
+      transform-origin: center center;
+      opacity: 1;
+      box-shadow: 0 14px 30px rgba(16, 16, 24, 0.18);
+    }
+
+    #transition-keywords .tk-wipe .tk-page--work { z-index: 0; }
+
+    #transition-keywords .tk-wipe .tk-page--home {
+      z-index: 1;
+      opacity: 0;
+    }
+
+    #transition-keywords .tk-wipe-slab {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: #141414;
+      transform: translateX(105%);
+    }
+
+    #transition-keywords .tk-share-list {
+      position: absolute;
+      z-index: 0;
+      top: 16px;
+      left: 44px;
+      right: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      opacity: 0;
+    }
+
+    #transition-keywords .tk-share-list span {
+      display: block;
+      height: 5px;
+      border-radius: 99px;
+      background: #a3a3b0;
+    }
+
+    #transition-keywords .tk-share-list span:first-child { width: 78%; }
+    #transition-keywords .tk-share-list span:last-child { width: 48%; }
+
+    #transition-keywords .tk-share-cap {
+      position: absolute;
+      z-index: 2;
+      left: 10px;
+      bottom: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: #1c1c22;
+      opacity: 1;
+    }
+
+    #transition-keywords .tk-share-el {
+      position: absolute;
+      z-index: 1;
+      top: 8px;
+      left: 8px;
+      width: calc(100% - 16px);
+      height: 48px;
+      border-radius: 7px;
+      background-color: #9ec3d4;
+      background-image:
+        radial-gradient(circle at 72% 34%, #f6e4ad 0 12%, transparent 14%),
+        linear-gradient(#6d9860, #6d9860);
+      background-size: auto, 100% 40%;
+      background-position: 0 0, left bottom;
+      background-repeat: no-repeat;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.14);
+    }
+
+    #transition-keywords .tk-morph-shape {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 96px;
+      height: 28px;
+      border-radius: 8px;
+      background: #3f3fd4;
+      transform: translate(-50%, -50%);
+    }
+
+    #transition-keywords .tk-split-mask,
+    #transition-keywords .tk-mask {
+      display: block;
+      overflow: hidden;
+      height: 1.3em;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #1c1c22;
+    }
+
+    #transition-keywords .tk-split {
+      display: flex;
+      align-items: flex-end;
+      gap: 0.01em;
+      height: 1.3em;
+    }
+
+    #transition-keywords .tk-split span {
+      display: block;
+      line-height: 1.15;
+      opacity: 1;
+      transform: none;
+    }
+
+    #transition-keywords .tk-mask-text {
+      display: block;
+      line-height: 1.25;
+      transform: none;
+    }
+
+    #transition-keywords .tk-type {
+      display: inline-flex;
+      align-items: center;
+      width: 7.2ch;
+      color: #1c1c22;
+      font-family: var(--mono);
+      font-size: 1.12rem;
+      font-weight: 650;
+    }
+
+    #transition-keywords .tk-type-text {
+      display: inline-block;
+      overflow: hidden;
+      width: 6ch;
+      white-space: nowrap;
+    }
+
+    #transition-keywords .tk-caret {
+      flex: none;
+      width: 1.5px;
+      height: 1em;
+      margin-left: 2px;
+      background: currentColor;
+      opacity: 0;
+    }
+
+    #transition-keywords .tk-scramble {
+      display: inline-block;
+      width: 5ch;
+      color: #1c1c22;
+      font-family: var(--mono);
+      font-size: 1.12rem;
+      font-weight: 650;
+      text-align: left;
+    }
+
+    #transition-keywords .tk-blur {
+      color: #1c1c22;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      filter: none;
+      opacity: 1;
+    }
+
+    #transition-keywords .tk-grad {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #16356e;
+    }
+
+    #transition-keywords .tk-credit {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.15rem 0.7rem;
+      margin: 1.2rem 0 0;
+      padding: 0.35rem 0 0;
+      border-top: 1px solid var(--line);
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    #transition-keywords .tk-credit a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      color: var(--ink);
+      font-weight: 650;
+      text-underline-offset: 0.16em;
+    }
+
+    #transition-keywords .tk-credit a:hover { color: #3a3ad4; }
+
+    @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+      #transition-keywords .tk-grad {
+        background-image: linear-gradient(105deg, #0e6a4a 0%, #1e4ed8 42%, #b4531a 78%, #0e6a4a 100%);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+      }
+    }
+
+    html:not(.tk-still) #transition-keywords .tk-fade .tk-page--home {
+      animation: tk-fade-home 5.4s ease-in-out infinite;
+    }
+
+    html:not(.tk-still) #transition-keywords .tk-fade .tk-page--work {
+      animation: tk-fade-work 5.4s ease-in-out infinite;
+    }
+
+    html:not(.tk-still) #transition-keywords .tk-slide-track {
+      animation: tk-slide 5.6s ease-in-out infinite;
+    }
+
+    html:not(.tk-still) #transition-keywords .tk-scale-sheet {
+      animation: tk-scale 4.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+
+    html:not(.tk-still) #transition-keywords .tk-wipe .tk-page--home {
+      animation: tk-wipe-home 5.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    }
+
+    html:not(.tk-still) #transition-keywords .tk-wipe-slab {
+      animation: tk-wipe-slab 5.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    }
+
+    html:not(.tk-still) #transition-keywords .tk-share-el {
+      animation: tk-share-el 5.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+
+    html:not(.tk-still) #transition-keywords .tk-share-list {
+      animation: tk-share-list 5.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+
+    html:not(.tk-still) #transition-keywords .tk-share-cap {
+      animation: tk-share-cap 5.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+
+    html:not(.tk-still) #transition-keywords .tk-morph-shape {
+      animation: tk-morph 4.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+
+    html:not(.tk-still) #transition-keywords .tk-split .tk-play {
+      animation: tk-split-in 3.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+
+    html:not(.tk-still) #transition-keywords .tk-split span:nth-child(2) { animation-delay: 0.08s; }
+    html:not(.tk-still) #transition-keywords .tk-split span:nth-child(3) { animation-delay: 0.16s; }
+    html:not(.tk-still) #transition-keywords .tk-split span:nth-child(4) { animation-delay: 0.24s; }
+    html:not(.tk-still) #transition-keywords .tk-split span:nth-child(5) { animation-delay: 0.32s; }
+    html:not(.tk-still) #transition-keywords .tk-split span:nth-child(6) { animation-delay: 0.4s; }
+
+    html:not(.tk-still) #transition-keywords .tk-type-text {
+      animation: tk-type 4.6s infinite;
+    }
+
+    html:not(.tk-still) #transition-keywords .tk-caret {
+      animation: tk-blink 1s steps(1, end) infinite;
+    }
+
+    html:not(.tk-still) #transition-keywords .tk-blur {
+      animation: tk-blur 4s ease-in-out infinite;
+    }
+
+    html:not(.tk-still) #transition-keywords .tk-grad {
+      animation: tk-grad 6s linear infinite;
+    }
+
+    html:not(.tk-still) #transition-keywords .tk-mask-text {
+      animation: tk-mask 3.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+
+    @keyframes tk-fade-home {
+      0%, 16% { opacity: 1; }
+      38%, 66% { opacity: 0; }
+      88%, 100% { opacity: 1; }
+    }
+
+    @keyframes tk-fade-work {
+      0%, 16% { opacity: 0; }
+      38%, 66% { opacity: 1; }
+      88%, 100% { opacity: 0; }
+    }
+
+    @keyframes tk-slide {
+      0%, 10% { transform: translateX(0); }
+      36%, 64% { transform: translateX(-50%); }
+      90%, 100% { transform: translateX(0); }
+    }
+
+    @keyframes tk-scale {
+      0%, 12% { transform: scale(0.34); opacity: 0; }
+      24% { transform: scale(0.55); opacity: 1; }
+      44%, 72% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(0.34); opacity: 0; }
+    }
+
+    @keyframes tk-wipe-home {
+      0%, 30% { opacity: 1; }
+      34%, 78% { opacity: 0; }
+      86%, 100% { opacity: 1; }
+    }
+
+    @keyframes tk-wipe-slab {
+      0%, 8% { transform: translateX(-105%); }
+      30%, 36% { transform: translateX(0); }
+      58%, 70% { transform: translateX(105%); }
+      86%, 90% { transform: translateX(0); }
+      100% { transform: translateX(-105%); }
+    }
+
+    @keyframes tk-share-el {
+      0%, 16% { top: 14px; left: 10px; width: 26px; height: 26px; border-radius: 5px; }
+      46%, 72% { top: 8px; left: 8px; width: calc(100% - 16px); height: 48px; border-radius: 7px; }
+      100% { top: 14px; left: 10px; width: 26px; height: 26px; border-radius: 5px; }
+    }
+
+    @keyframes tk-share-list {
+      0%, 18% { opacity: 1; }
+      44%, 74% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes tk-share-cap {
+      0%, 20% { opacity: 0; }
+      48%, 70% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    @keyframes tk-morph {
+      0%, 14% { width: 34px; height: 34px; border-radius: 50%; }
+      42%, 72% { width: 96px; height: 28px; border-radius: 8px; }
+      100% { width: 34px; height: 34px; border-radius: 50%; }
+    }
+
+    @keyframes tk-split-in {
+      0% { opacity: 0; transform: translateY(120%); }
+      18% { opacity: 1; transform: translateY(0); }
+      68% { opacity: 1; transform: translateY(0); }
+      86%, 100% { opacity: 0; transform: translateY(120%); }
+    }
+
+    @keyframes tk-type {
+      0% { width: 0; animation-timing-function: steps(6, end); }
+      40% { width: 6ch; animation-timing-function: linear; }
+      70% { width: 6ch; animation-timing-function: steps(6, end); }
+      100% { width: 0; }
+    }
+
+    @keyframes tk-blink {
+      0%, 40% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    @keyframes tk-blur {
+      0%, 8% { filter: blur(8px); opacity: 0.35; }
+      36%, 70% { filter: blur(0); opacity: 1; }
+      100% { filter: blur(8px); opacity: 0.35; }
+    }
+
+    @keyframes tk-grad {
+      0% { background-position: 0% 50%; background-size: 240% 100%; }
+      100% { background-position: 100% 50%; background-size: 240% 100%; }
+    }
+
+    @keyframes tk-mask {
+      0% { transform: translateY(110%); }
+      24% { transform: translateY(0); }
+      74% { transform: translateY(0); }
+      96%, 100% { transform: translateY(110%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #transition-keywords .tk-play { animation: none !important; }
+    }
+
+    @media (forced-colors: active) {
+      #transition-keywords .tk-page,
+      #transition-keywords .tk-scale-sheet,
+      #transition-keywords .tk-wipe-slab,
+      #transition-keywords .tk-morph-shape,
+      #transition-keywords .tk-share-el {
+        background: Canvas;
+        color: CanvasText;
+        box-shadow: none;
+        border: 1px solid CanvasText;
+      }
+
+      #transition-keywords .tk-grad {
+        background: none;
+        color: CanvasText;
+        -webkit-text-fill-color: CanvasText;
+      }
+
+      #transition-keywords .tk-prompt.is-copied {
+        background: Canvas;
+        color: CanvasText;
+        border-color: CanvasText;
+        forced-color-adjust: none;
+      }
+    }
+  </style>
 </head>
 <body data-page="gallery">
   <nav class="lib-nav" aria-label="Library sections">
@@ -6093,6 +6799,7 @@
       <a href="#spacing">Spacing</a>
       <a href="#hierarchy">Hierarchy</a>
       <a href="#color-combos">Color combos</a>
+      <a href="#transition-keywords">Transition keywords</a>
     </div>
   </nav>
 
@@ -6100,7 +6807,7 @@
     <header class="lib-hero">
       <h1>Component gallery</h1>
       <p>
-        Self-contained demos: Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos.
+        Self-contained demos: Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords.
         Digit scroll with a natural <code>linear()</code> spring (~10%
         overshoot), hard-coded glow CTAs (violet / teal / slate), nested-radius
         photo cards and a progressive dialog, ten page-shell colour palettes you can switch, twenty reference
@@ -10220,12 +10927,375 @@
       <p class="visually-hidden" id="combo-status" role="status" aria-live="polite"></p>
     </section>
 
+    <!-- ===================== TRANSITION KEYWORDS ===================== -->
+    <!-- Source list: assets/awe0-transition-keywords.json -->
+    <section class="sec" id="transition-keywords" translate="no">
+      <div class="sec-head">
+        <h2>Transition keywords</h2>
+        <p>Page changes and text motion. Click a term to copy the English name.</p>
+      </div>
+
+      <div class="tk-band" role="group" aria-labelledby="tk-page-h">
+        <h3 id="tk-page-h">Page transitions</h3>
+        <div class="tk-stock">
+          <p class="tk-stock-zh" lang="zh-Hans">页面之间使用 Fade Transition，作品卡片进入详情页时采用 Shared Element Transition，弹窗使用 Scale Transition，所有过渡保持流畅自然。</p>
+          <p class="tk-stock-en" id="tk-page-en" lang="en">Use Fade Transition between pages, Shared Element Transition when a work card opens into a detail page, Scale Transition for modals, and keep every transition smooth and natural.</p>
+          <button type="button" class="tk-prompt" data-copy="Use Fade Transition between pages, Shared Element Transition when a work card opens into a detail page, Scale Transition for modals, and keep every transition smooth and natural." data-announce="page prompt" aria-describedby="tk-page-note">
+            <span class="tk-prompt__label">Copy prompt</span>
+          </button>
+        </div>
+        <p id="tk-page-note" class="visually-hidden">Copies the English stock prompt.</p>
+        <div class="tk-grid">
+        <article class="tk-card" aria-labelledby="tk-term-fade">
+          <div class="tk-chrome">
+            <button type="button" class="tk-term" data-copy="Fade Transition" data-announce="Fade Transition" aria-label="Copy Fade Transition">
+              <span class="tk-term__name" id="tk-term-fade">Fade Transition</span>
+              <span class="tk-term__state" aria-hidden="true">Copy</span>
+            </button>
+          </div>
+          <div class="tk-stage tk-fade" aria-hidden="true"><div class="tk-page tk-page--work tk-play"><b>Work</b><i></i><i></i></div><div class="tk-page tk-page--home tk-play"><b>Home</b><i></i><i></i></div></div>
+          <div class="tk-body">
+            <p class="tk-desc" lang="en">Old page fades out as the new page fades in.</p>
+            <p class="tk-zh" lang="zh-Hans">淡入淡出</p>
+            <p class="tk-desc tk-desc--zh" lang="zh-Hans">旧页面逐渐消失，新页面慢慢出现。</p>
+          </div>
+        </article>
+        <article class="tk-card" aria-labelledby="tk-term-slide">
+          <div class="tk-chrome">
+            <button type="button" class="tk-term" data-copy="Slide Transition" data-announce="Slide Transition" aria-label="Copy Slide Transition">
+              <span class="tk-term__name" id="tk-term-slide">Slide Transition</span>
+              <span class="tk-term__state" aria-hidden="true">Copy</span>
+            </button>
+          </div>
+          <div class="tk-stage tk-slide" aria-hidden="true"><div class="tk-slide-track tk-play"><div class="tk-page tk-page--home"><b>Home</b><i></i><i></i></div><div class="tk-page tk-page--work"><b>Work</b><i></i><i></i></div></div></div>
+          <div class="tk-body">
+            <p class="tk-desc" lang="en">New page slides in from the left or right, like a mobile app.</p>
+            <p class="tk-zh" lang="zh-Hans">滑动切换</p>
+            <p class="tk-desc tk-desc--zh" lang="zh-Hans">新页面从左侧或右侧滑入，像手机 App 一样。</p>
+          </div>
+        </article>
+        <article class="tk-card" aria-labelledby="tk-term-scale">
+          <div class="tk-chrome">
+            <button type="button" class="tk-term" data-copy="Scale Transition" data-announce="Scale Transition" aria-label="Copy Scale Transition">
+              <span class="tk-term__name" id="tk-term-scale">Scale Transition</span>
+              <span class="tk-term__state" aria-hidden="true">Copy</span>
+            </button>
+          </div>
+          <div class="tk-stage tk-scale" aria-hidden="true"><div class="tk-page tk-page--home"><b>Home</b><i></i><i></i></div><div class="tk-scale-sheet tk-play"><b>Page</b><i></i><i></i></div></div>
+          <div class="tk-body">
+            <p class="tk-desc" lang="en">Page expands from small to full size for spatial depth.</p>
+            <p class="tk-zh" lang="zh-Hans">缩放过渡</p>
+            <p class="tk-desc tk-desc--zh" lang="zh-Hans">页面从小到大展开，带来空间层次感。</p>
+          </div>
+        </article>
+        <article class="tk-card" aria-labelledby="tk-term-wipe">
+          <div class="tk-chrome">
+            <button type="button" class="tk-term" data-copy="Page Wipe" data-announce="Page Wipe" aria-label="Copy Page Wipe">
+              <span class="tk-term__name" id="tk-term-wipe">Page Wipe</span>
+              <span class="tk-term__state" aria-hidden="true">Copy</span>
+            </button>
+          </div>
+          <div class="tk-stage tk-wipe" aria-hidden="true"><div class="tk-page tk-page--work"><b>Work</b><i></i><i></i></div><div class="tk-page tk-page--home tk-play"><b>Home</b><i></i><i></i></div><div class="tk-wipe-slab tk-play"></div></div>
+          <div class="tk-body">
+            <p class="tk-desc" lang="en">A solid color or shape sweeps across the screen to complete the change.</p>
+            <p class="tk-zh" lang="zh-Hans">遮罩擦除</p>
+            <p class="tk-desc tk-desc--zh" lang="zh-Hans">一整块颜色或图形扫过屏幕，完成页面切换。</p>
+          </div>
+        </article>
+        <article class="tk-card" aria-labelledby="tk-term-share">
+          <div class="tk-chrome">
+            <button type="button" class="tk-term" data-copy="Shared Element Transition" data-announce="Shared Element Transition" aria-label="Copy Shared Element Transition">
+              <span class="tk-term__name" id="tk-term-share">Shared Element Transition</span>
+              <span class="tk-term__state" aria-hidden="true">Copy</span>
+            </button>
+          </div>
+          <div class="tk-stage tk-share" aria-hidden="true"><div class="tk-share-list tk-play"><span></span><span></span></div><span class="tk-share-cap tk-play">Detail</span><span class="tk-share-el tk-play"></span></div>
+          <div class="tk-body">
+            <p class="tk-desc" lang="en">A list image enlarges and continues into the detail page.</p>
+            <p class="tk-zh" lang="zh-Hans">共享元素过渡</p>
+            <p class="tk-desc tk-desc--zh" lang="zh-Hans">列表中的图片放大后，自然衔接到详情页。</p>
+          </div>
+        </article>
+        <article class="tk-card" aria-labelledby="tk-term-morph">
+          <div class="tk-chrome">
+            <button type="button" class="tk-term" data-copy="Morph Transition" data-announce="Morph Transition" aria-label="Copy Morph Transition">
+              <span class="tk-term__name" id="tk-term-morph">Morph Transition</span>
+              <span class="tk-term__state" aria-hidden="true">Copy</span>
+            </button>
+          </div>
+          <div class="tk-stage" aria-hidden="true"><span class="tk-morph-shape tk-play"></span></div>
+          <div class="tk-body">
+            <p class="tk-desc" lang="en">An element smoothly changes shape while staying visually continuous.</p>
+            <p class="tk-zh" lang="zh-Hans">形态变换</p>
+            <p class="tk-desc tk-desc--zh" lang="zh-Hans">元素从一种形状平滑变成另一种形状，视觉上保持连续。</p>
+          </div>
+        </article>
+        </div>
+      </div>
+
+      <div class="tk-band" role="group" aria-labelledby="tk-text-h">
+        <h3 id="tk-text-h">Text motions</h3>
+        <div class="tk-stock">
+          <p class="tk-stock-zh" lang="zh-Hans">首页标题使用 Split Text，副标题采用 Blur Reveal，关键词使用 Gradient Shift，所有动画使用 ease-out 缓动。</p>
+          <p class="tk-stock-en" id="tk-text-en" lang="en">Use Split Text on the homepage title, Blur Reveal on the subtitle, Gradient Shift on keywords, and ease-out easing on every animation.</p>
+          <button type="button" class="tk-prompt" data-copy="Use Split Text on the homepage title, Blur Reveal on the subtitle, Gradient Shift on keywords, and ease-out easing on every animation." data-announce="text prompt" aria-describedby="tk-text-note">
+            <span class="tk-prompt__label">Copy prompt</span>
+          </button>
+        </div>
+        <p id="tk-text-note" class="visually-hidden">Copies the English stock prompt.</p>
+        <div class="tk-grid">
+        <article class="tk-card" aria-labelledby="tk-term-split">
+          <div class="tk-chrome">
+            <button type="button" class="tk-term" data-copy="Split Text" data-announce="Split Text" aria-label="Copy Split Text">
+              <span class="tk-term__name" id="tk-term-split">Split Text</span>
+              <span class="tk-term__state" aria-hidden="true">Copy</span>
+            </button>
+          </div>
+          <div class="tk-stage" aria-hidden="true"><span class="tk-split-mask"><span class="tk-split"><span class="tk-play">M</span><span class="tk-play">o</span><span class="tk-play">t</span><span class="tk-play">i</span><span class="tk-play">o</span><span class="tk-play">n</span></span></span></div>
+          <div class="tk-body">
+            <p class="tk-desc" lang="en">Split the title into characters that enter one by one.</p>
+            <p class="tk-zh" lang="zh-Hans">文字拆分</p>
+            <p class="tk-desc tk-desc--zh" lang="zh-Hans">把标题拆成一个个字符，依次进入画面。</p>
+          </div>
+        </article>
+        <article class="tk-card" aria-labelledby="tk-term-type">
+          <div class="tk-chrome">
+            <button type="button" class="tk-term" data-copy="Typewriter" data-announce="Typewriter" aria-label="Copy Typewriter">
+              <span class="tk-term__name" id="tk-term-type">Typewriter</span>
+              <span class="tk-term__state" aria-hidden="true">Copy</span>
+            </button>
+          </div>
+          <div class="tk-stage" aria-hidden="true"><span class="tk-type"><span class="tk-type-text tk-play">Motion</span><span class="tk-caret tk-play"></span></span></div>
+          <div class="tk-body">
+            <p class="tk-desc" lang="en">Characters appear one after another as if being typed.</p>
+            <p class="tk-zh" lang="zh-Hans">打字机效果</p>
+            <p class="tk-desc tk-desc--zh" lang="zh-Hans">文字一个接一个出现，像有人正在输入。</p>
+          </div>
+        </article>
+        <article class="tk-card" aria-labelledby="tk-term-blur">
+          <div class="tk-chrome">
+            <button type="button" class="tk-term" data-copy="Blur Reveal" data-announce="Blur Reveal" aria-label="Copy Blur Reveal">
+              <span class="tk-term__name" id="tk-term-blur">Blur Reveal</span>
+              <span class="tk-term__state" aria-hidden="true">Copy</span>
+            </button>
+          </div>
+          <div class="tk-stage" aria-hidden="true"><span class="tk-blur tk-play">Focus</span></div>
+          <div class="tk-body">
+            <p class="tk-desc" lang="en">Text goes from blurry to sharp for a soft, premium reveal.</p>
+            <p class="tk-zh" lang="zh-Hans">模糊揭示</p>
+            <p class="tk-desc tk-desc--zh" lang="zh-Hans">文字从模糊逐渐变清晰，过渡自然又高级。</p>
+          </div>
+        </article>
+        <article class="tk-card" aria-labelledby="tk-term-scramble">
+          <div class="tk-chrome">
+            <button type="button" class="tk-term" data-copy="Scramble Text" data-announce="Scramble Text" aria-label="Copy Scramble Text">
+              <span class="tk-term__name" id="tk-term-scramble">Scramble Text</span>
+              <span class="tk-term__state" aria-hidden="true">Copy</span>
+            </button>
+          </div>
+          <div class="tk-stage" aria-hidden="true"><span class="tk-scramble" data-scramble="Focus">Focus</span></div>
+          <div class="tk-body">
+            <p class="tk-desc" lang="en">Random characters resolve into the correct text.</p>
+            <p class="tk-zh" lang="zh-Hans">字符乱序</p>
+            <p class="tk-desc tk-desc--zh" lang="zh-Hans">文字先变成随机字符，再逐渐还原成正确内容。</p>
+          </div>
+        </article>
+        <article class="tk-card" aria-labelledby="tk-term-grad">
+          <div class="tk-chrome">
+            <button type="button" class="tk-term" data-copy="Gradient Shift" data-announce="Gradient Shift" aria-label="Copy Gradient Shift">
+              <span class="tk-term__name" id="tk-term-grad">Gradient Shift</span>
+              <span class="tk-term__state" aria-hidden="true">Copy</span>
+            </button>
+          </div>
+          <div class="tk-stage" aria-hidden="true"><span class="tk-grad tk-play">Aurora</span></div>
+          <div class="tk-body">
+            <p class="tk-desc" lang="en">Colors inside the text drift slowly, like light moving through the letters.</p>
+            <p class="tk-zh" lang="zh-Hans">渐变流动</p>
+            <p class="tk-desc tk-desc--zh" lang="zh-Hans">文字内部的颜色缓慢移动，像有光线从字里穿过。</p>
+          </div>
+        </article>
+        <article class="tk-card" aria-labelledby="tk-term-mask">
+          <div class="tk-chrome">
+            <button type="button" class="tk-term" data-copy="Mask Reveal" data-announce="Mask Reveal" aria-label="Copy Mask Reveal">
+              <span class="tk-term__name" id="tk-term-mask">Mask Reveal</span>
+              <span class="tk-term__state" aria-hidden="true">Copy</span>
+            </button>
+          </div>
+          <div class="tk-stage" aria-hidden="true"><span class="tk-mask"><span class="tk-mask-text tk-play">Rise</span></span></div>
+          <div class="tk-body">
+            <p class="tk-desc" lang="en">Text slides out from a hidden region, like rising from behind a curtain.</p>
+            <p class="tk-zh" lang="zh-Hans">遮罩揭示</p>
+            <p class="tk-desc tk-desc--zh" lang="zh-Hans">文字从隐藏区域滑动出现，像从幕布后升起来。</p>
+          </div>
+        </article>
+        </div>
+      </div>
+
+      <p class="tk-credit">
+        <span>awe0</span>
+        <span aria-hidden="true">·</span>
+        <a href="https://x.com/awe0_io/status/2117588383421943860" target="_blank" rel="noopener noreferrer">Page transitions<span class="visually-hidden"> (opens in a new tab)</span></a>
+        <span aria-hidden="true">·</span>
+        <a href="https://x.com/awe0_io/status/2117588322948436004" target="_blank" rel="noopener noreferrer">Text motions<span class="visually-hidden"> (opens in a new tab)</span></a>
+      </p>
+      <p class="visually-hidden" id="tk-status" role="status" aria-live="polite"></p>
+    </section>
+    <script>
+    (function () {
+      'use strict';
+
+      var root = document.getElementById('transition-keywords');
+      if (!root) return;
+
+      var paramStill = document.documentElement.classList.contains('tk-still');
+      var reduceMq = null;
+      try { reduceMq = window.matchMedia('(prefers-reduced-motion: reduce)'); } catch (err) { reduceMq = null; }
+
+      function motionOff() {
+        return paramStill || !!(reduceMq && reduceMq.matches);
+      }
+
+      var timers = new WeakMap();
+      var status = document.getElementById('tk-status');
+      var announceToken = 0;
+
+      function legacyCopy(text) {
+        return new Promise(function (resolve, reject) {
+          var prev = document.activeElement;
+          var x = window.scrollX;
+          var y = window.scrollY;
+          var ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly', '');
+          ta.setAttribute('aria-hidden', 'true');
+          ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;padding:0;border:0;opacity:0';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          ta.setSelectionRange(0, text.length);
+          var ok = false;
+          try { ok = document.execCommand('copy'); } catch (copyErr) { ok = false; }
+          document.body.removeChild(ta);
+          window.scrollTo(x, y);
+          if (prev && prev.focus) {
+            try { prev.focus({ preventScroll: true }); } catch (focusErr) { prev.focus(); }
+          }
+          if (ok) resolve();
+          else reject(new Error('copy failed'));
+        });
+      }
+
+      function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext && navigator.clipboard.writeText) {
+          return navigator.clipboard.writeText(text).catch(function () { return legacyCopy(text); });
+        }
+        return legacyCopy(text);
+      }
+
+      function flash(btn) {
+        var label = btn.querySelector('.tk-prompt__label, .tk-term__state');
+        if (!label) return;
+        if (!label.getAttribute('data-label')) label.setAttribute('data-label', label.textContent);
+        label.textContent = 'Copied';
+        btn.classList.add('is-copied');
+        var prev = timers.get(btn);
+        if (prev) window.clearTimeout(prev);
+        timers.set(btn, window.setTimeout(function () {
+          label.textContent = label.getAttribute('data-label') || 'Copy';
+          btn.classList.remove('is-copied');
+        }, 1500));
+      }
+
+      function announce(msg) {
+        if (!status) return;
+        var mine = ++announceToken;
+        status.textContent = '';
+        window.setTimeout(function () {
+          if (mine !== announceToken) return;
+          status.textContent = msg;
+        }, 30);
+        window.setTimeout(function () {
+          if (mine !== announceToken) return;
+          status.textContent = '';
+        }, 1600);
+      }
+
+      Array.prototype.forEach.call(root.querySelectorAll('[data-copy]'), function (btn) {
+        btn.addEventListener('click', function (event) {
+          event.preventDefault();
+          var text = btn.getAttribute('data-copy') || '';
+          if (!text) return;
+          var said = btn.getAttribute('data-announce') || text;
+          copyText(text).then(function () {
+            flash(btn);
+            announce('Copied ' + said);
+          }).catch(function () {});
+        });
+      });
+
+      var scramble = root.querySelector('[data-scramble]');
+      if (!scramble) return;
+
+      var word = scramble.getAttribute('data-scramble') || scramble.textContent;
+      var glyphs = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+      var scrambleTimer = 0;
+      var hold = 0;
+
+      function paintScramble() {
+        var shown = '';
+        var settled = true;
+        var i;
+        for (i = 0; i < word.length; i++) {
+          if (hold >= 8 + i * 7) shown += word.charAt(i);
+          else {
+            settled = false;
+            shown += glyphs.charAt(Math.floor(Math.random() * glyphs.length));
+          }
+        }
+        scramble.textContent = shown;
+        hold += 1;
+        if (settled && hold > word.length * 7 + 28) hold = 0;
+      }
+
+      function startScramble() {
+        if (scrambleTimer || motionOff()) return;
+        scrambleTimer = window.setInterval(paintScramble, 80);
+      }
+
+      function pauseScramble() {
+        if (!scrambleTimer) return;
+        window.clearInterval(scrambleTimer);
+        scrambleTimer = 0;
+      }
+
+      function stopScramble() {
+        pauseScramble();
+        hold = 0;
+        scramble.textContent = word;
+      }
+
+      if (reduceMq && reduceMq.addEventListener) {
+        reduceMq.addEventListener('change', function () {
+          if (motionOff()) stopScramble();
+          else startScramble();
+        });
+      }
+
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) pauseScramble();
+        else if (!motionOff()) startScramble();
+      });
+
+      if (!motionOff()) startScramble();
+    })();
+    </script>
+
     <footer class="lib-foot">
-      Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos. Digit-scroll <code>lh</code> + natural
+      Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords. Digit-scroll <code>lh</code> + natural
       <code>linear()</code> spring (~10% overshoot) · hard-coded glow buttons
       (violet / teal / slate) · nested radius · page-shell palettes · colour pairings · color combos · native
       <code>appearance: base-select</code> · rotating <code>conic-gradient</code> rim · SVG glass folder. No CDN.
-      Prefers-reduced-motion disables the spring and holds the glow border still.
+      Prefers-reduced-motion disables the spring and holds the glow border and transition-keyword demos still. ?reduce=1 holds those demos at rest.
     </footer>
   </div>
 
@@ -10897,6 +11967,6 @@
     })();
   </script>
   <script src="shared/site-header.js?v=23" defer></script>
-  <script src="shared/section-fab.js?v=4" defer></script>
+  <script src="shared/section-fab.js?v=5" defer></script>
 </body>
 </html>
