@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>UI Library · Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow · Folder · Spacing · Hierarchy · Combos · Keywords</title>
+  <title>UI Library · Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow · Folder · Spacing · Hierarchy · Combos · Keywords · Backgrounds</title>
   <script>
     /* Apply saved page shell and glow stops before paint */
     (function () {
@@ -30,11 +30,11 @@
     })();
   </script>
   <script>
-    /* ?reduce=1 holds transition-keyword demos at rest. OS reduced motion is handled in CSS. */
+    /* ?reduce=1 holds transition-keyword and background-keyword demos at rest. OS reduced motion is handled in CSS. */
     (function () {
       try {
         if (new URLSearchParams(location.search).get('reduce') === '1') {
-          document.documentElement.classList.add('tk-still');
+          document.documentElement.classList.add('tk-still', 'bk-still');
         }
       } catch (e) {}
     })();
@@ -6782,6 +6782,467 @@
         forced-color-adjust: none;
       }
     }
+
+    /* Background keywords. Resting rules are the settled frame.
+       Motion runs unless html.bk-still (?reduce=1) or prefers-reduced-motion. */
+    #background-keywords {
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Noto Sans CJK SC", "Source Han Sans SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    }
+
+    #background-keywords .bk-stock {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      column-gap: 1rem;
+      row-gap: 0.28rem;
+      align-items: center;
+      margin: 0 0 0.85rem;
+      padding: 0.8rem 0.9rem;
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+    }
+
+    #background-keywords .bk-stock-zh,
+    #background-keywords .bk-stock-en {
+      grid-column: 1;
+      min-width: 0;
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    #background-keywords .bk-stock-zh {
+      grid-row: 1;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    #background-keywords .bk-stock-en {
+      grid-row: 2;
+      font-size: 0.82rem;
+      color: var(--ink);
+    }
+
+    #background-keywords .bk-prompt {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      justify-self: end;
+      appearance: none;
+      -webkit-appearance: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      min-width: 8.25rem;
+      padding: 0.4rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      line-height: 1;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    #background-keywords .bk-prompt:hover { background: #f6f6f8; }
+
+    #background-keywords .bk-prompt:focus-visible,
+    #background-keywords .bk-credit a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    #background-keywords .bk-prompt.is-copied,
+    #background-keywords .bk-prompt.is-copied:hover {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: #fff;
+    }
+
+    #background-keywords .bk-grid {
+      display: grid;
+      gap: 0.85rem;
+      grid-template-columns: 1fr;
+      align-items: stretch;
+    }
+
+    @media (min-width: 640px) {
+      #background-keywords .bk-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (min-width: 980px) {
+      #background-keywords .bk-grid { grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+    @media (max-width: 639px) {
+      #background-keywords .bk-stock { grid-template-columns: 1fr; }
+      #background-keywords .bk-prompt {
+        grid-column: 1;
+        grid-row: auto;
+        justify-self: start;
+        margin-top: 0.45rem;
+      }
+    }
+
+    #background-keywords .bk-card {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+      overflow: hidden;
+    }
+
+    #background-keywords .bk-chrome {
+      background: #fafafa;
+      border-bottom: 1px solid var(--line);
+      padding: 0.1rem 0.55rem 0.1rem 0.7rem;
+    }
+
+    #background-keywords .bk-term {
+      appearance: none;
+      -webkit-appearance: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      width: 100%;
+      min-height: 44px;
+      margin: 0;
+      padding: 0.35rem 0.15rem;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--ink);
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    #background-keywords .bk-term:hover .bk-term__name {
+      text-decoration: underline;
+      text-underline-offset: 0.14em;
+    }
+
+    #background-keywords .bk-term:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+    }
+
+    #background-keywords .bk-term__name {
+      flex: 1;
+      min-width: 0;
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+
+    #background-keywords .bk-term__state {
+      flex: none;
+      min-width: 3.6rem;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0.01em;
+      text-align: right;
+      color: var(--muted);
+    }
+
+    #background-keywords .bk-term.is-copied .bk-term__state { color: #1e6851; }
+
+    #background-keywords .bk-body {
+      display: flex;
+      flex-direction: column;
+      gap: 0.28rem;
+      padding: 0.7rem 0.85rem 0.9rem;
+    }
+
+    #background-keywords .bk-desc,
+    #background-keywords .bk-zh {
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    #background-keywords .bk-desc {
+      font-size: 0.8rem;
+      color: var(--ink);
+    }
+
+    #background-keywords .bk-zh,
+    #background-keywords .bk-desc--zh {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    #background-keywords .bk-stage {
+      position: relative;
+      height: 116px;
+      margin: 0.65rem 0.65rem 0;
+      border: 1px solid #e4e4ea;
+      border-radius: 10px;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    #background-keywords .bk-mesh {
+      background:
+        radial-gradient(circle at 28% 40%, #fff1e8 0%, transparent 62%),
+        #f3eee6;
+    }
+
+    #background-keywords .bk-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(18px);
+      pointer-events: none;
+    }
+
+    #background-keywords .bk-blob--a {
+      width: 110px;
+      height: 110px;
+      left: -18px;
+      top: -28px;
+      background: #ff7a59;
+    }
+
+    #background-keywords .bk-blob--b {
+      width: 120px;
+      height: 100px;
+      right: -24px;
+      top: -16px;
+      background: #7a6cff;
+    }
+
+    #background-keywords .bk-blob--c {
+      width: 130px;
+      height: 110px;
+      left: 18%;
+      bottom: -48px;
+      background: #2ec4b6;
+    }
+
+    #background-keywords .bk-blob--d {
+      width: 84px;
+      height: 84px;
+      right: 12%;
+      bottom: -18px;
+      background: #ffc857;
+      opacity: 0.95;
+    }
+
+    #background-keywords .bk-aurora {
+      background:
+        radial-gradient(80% 42% at 50% 120%, #12325f 0%, transparent 70%),
+        #070b14;
+    }
+
+    #background-keywords .bk-band {
+      position: absolute;
+      left: -18%;
+      width: 136%;
+      height: 20px;
+      border-radius: 999px;
+      filter: blur(7px);
+      pointer-events: none;
+    }
+
+    #background-keywords .bk-band--a {
+      top: 36px;
+      height: 22px;
+      background: linear-gradient(90deg, transparent 0%, #3dffb0 14%, #7af6ff 42%, #c9a6ff 72%, transparent 100%);
+      opacity: 0.95;
+    }
+
+    #background-keywords .bk-band--b {
+      top: 68px;
+      height: 16px;
+      background: linear-gradient(90deg, transparent 0%, #ff5fa2 22%, #7d6bff 58%, #49d6ff 86%, transparent 100%);
+      opacity: 0.8;
+    }
+
+    #background-keywords .bk-band--c {
+      top: 22px;
+      height: 12px;
+      background: linear-gradient(90deg, transparent 10%, #e7fff6 40%, transparent 72%);
+      opacity: 0.7;
+      filter: blur(5px);
+    }
+
+    #background-keywords .bk-noise {
+      background: #d5cfee;
+    }
+
+    #background-keywords .bk-noise-svg {
+      position: absolute;
+      inset: -30%;
+      width: 160%;
+      height: 160%;
+      opacity: 0.72;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+
+    #background-keywords .bk-dots {
+      background-color: #f4f5f8;
+      background-image: radial-gradient(circle, #1c1c22 1.15px, transparent 1.35px);
+      background-size: 14px 14px;
+      background-position: 0 0;
+    }
+
+    #background-keywords .bk-spot {
+      --sx: 38%;
+      --sy: 46%;
+      background: #10131b;
+    }
+
+    html:not(.bk-still) #background-keywords .bk-spot { cursor: none; }
+
+    #background-keywords .bk-spot-light,
+    #background-keywords .bk-spot-dots,
+    #background-keywords .bk-spot-cursor {
+      position: absolute;
+      pointer-events: none;
+    }
+
+    #background-keywords .bk-spot-light {
+      inset: 0;
+      background: radial-gradient(circle 76px at var(--sx) var(--sy), #fff6e0 0%, #ffe3ad 34%, rgba(255, 214, 150, 0.18) 56%, transparent 72%);
+    }
+
+    #background-keywords .bk-spot-dots {
+      inset: 0;
+      background-image: radial-gradient(circle, #fff 1.05px, transparent 1.2px);
+      background-size: 12px 12px;
+      opacity: 0.42;
+    }
+
+    #background-keywords .bk-spot-cursor {
+      left: var(--sx);
+      top: var(--sy);
+      width: 10px;
+      height: 10px;
+      margin: -5px 0 0 -5px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 0 1.5px #14161e, 0 0 0 3px rgba(255, 255, 255, 0.85);
+    }
+
+    #background-keywords .bk-shift {
+      background-color: #4338ca;
+      background-image: linear-gradient(115deg, #4338ca 0%, #db2777 28%, #f59e0b 52%, #059669 78%, #4338ca 100%);
+      background-size: 280% 280%;
+      background-position: 0% 40%;
+    }
+
+    #background-keywords .bk-credit {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.15rem 0.7rem;
+      margin: 1.2rem 0 0;
+      padding: 0.35rem 0 0;
+      border-top: 1px solid var(--line);
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    #background-keywords .bk-credit a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      color: var(--ink);
+      font-weight: 650;
+      text-underline-offset: 0.16em;
+    }
+
+    #background-keywords .bk-credit a:hover { color: #3a3ad4; }
+
+    html:not(.bk-still) #background-keywords .bk-blob--a { animation: bk-mesh-a 11s ease-in-out infinite; }
+    html:not(.bk-still) #background-keywords .bk-blob--b { animation: bk-mesh-b 13s ease-in-out infinite; }
+    html:not(.bk-still) #background-keywords .bk-blob--c { animation: bk-mesh-c 9.5s ease-in-out infinite; }
+    html:not(.bk-still) #background-keywords .bk-blob--d { animation: bk-mesh-d 12s ease-in-out infinite; }
+
+    html:not(.bk-still) #background-keywords .bk-band--a { animation: bk-aurora-a 10s ease-in-out infinite; }
+    html:not(.bk-still) #background-keywords .bk-band--b { animation: bk-aurora-b 13s ease-in-out infinite; }
+    html:not(.bk-still) #background-keywords .bk-band--c { animation: bk-aurora-c 8.5s ease-in-out infinite; }
+
+    html:not(.bk-still) #background-keywords .bk-dots { animation: bk-dots 7s linear infinite; }
+    html:not(.bk-still) #background-keywords .bk-shift { animation: bk-shift 9s ease-in-out infinite; }
+    html:not(.bk-still) #background-keywords .bk-noise-svg { animation: bk-grain 0.55s steps(2) infinite; }
+
+    @keyframes bk-mesh-a {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(28px, 16px); }
+    }
+
+    @keyframes bk-mesh-b {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-22px, 20px); }
+    }
+
+    @keyframes bk-mesh-c {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(18px, -22px); }
+    }
+
+    @keyframes bk-mesh-d {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-16px, -14px); }
+    }
+
+    @keyframes bk-aurora-a {
+      0%, 100% { transform: translateX(-4%) rotate(-4deg); }
+      50% { transform: translateX(6%) rotate(-1deg); }
+    }
+
+    @keyframes bk-aurora-b {
+      0%, 100% { transform: translateX(6%) rotate(3deg); }
+      50% { transform: translateX(-7%) rotate(1deg); }
+    }
+
+    @keyframes bk-aurora-c {
+      0%, 100% { transform: translateX(0) rotate(-3deg); opacity: 0.45; }
+      50% { transform: translateX(-6%) rotate(-1deg); opacity: 0.85; }
+    }
+
+    @keyframes bk-dots {
+      to { background-position: 14px 14px; }
+    }
+
+    @keyframes bk-grain {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-16px, 9px); }
+    }
+
+    @keyframes bk-shift {
+      0%, 100% { background-position: 0% 40%; }
+      50% { background-position: 100% 60%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #background-keywords .bk-play { animation: none !important; }
+      #background-keywords .bk-spot { cursor: auto !important; }
+    }
+
+    @media (forced-colors: active) {
+      #background-keywords .bk-stage {
+        border-color: CanvasText;
+        forced-color-adjust: none;
+      }
+
+      #background-keywords .bk-prompt.is-copied {
+        background: Canvas;
+        color: CanvasText;
+        border-color: CanvasText;
+        forced-color-adjust: none;
+      }
+    }
   </style>
 </head>
 <body data-page="gallery">
@@ -6800,6 +7261,7 @@
       <a href="#hierarchy">Hierarchy</a>
       <a href="#color-combos">Color combos</a>
       <a href="#transition-keywords">Transition keywords</a>
+      <a href="#background-keywords">Background keywords</a>
     </div>
   </nav>
 
@@ -6807,7 +7269,7 @@
     <header class="lib-hero">
       <h1>Component gallery</h1>
       <p>
-        Self-contained demos: Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords.
+        Self-contained demos: Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords.
         Digit scroll with a natural <code>linear()</code> spring (~10%
         overshoot), hard-coded glow CTAs (violet / teal / slate), nested-radius
         photo cards and a progressive dialog, ten page-shell colour palettes you can switch, twenty reference
@@ -11290,12 +11752,360 @@
     })();
     </script>
 
+    <!-- ===================== BACKGROUND KEYWORDS ===================== -->
+    <!-- Source list: assets/awe0-background-keywords.json -->
+    <section class="sec" id="background-keywords" translate="no">
+      <div class="sec-head">
+        <h2>Background keywords</h2>
+        <p>Background effects. Click a term to copy the English name.</p>
+      </div>
+
+      <div class="bk-stock">
+        <p class="bk-stock-zh" lang="zh-Hans">首页使用 Aurora Background，背景叠加轻微 Noise Texture，鼠标交互使用 Spotlight Effect，整体保持简洁高级。</p>
+        <p class="bk-stock-en" id="bk-prompt-en" lang="en">Use Aurora Background on the homepage, overlay a light Noise Texture, add Spotlight Effect for mouse interaction, and keep the overall look clean and premium.</p>
+        <button type="button" class="bk-prompt" data-copy="Use Aurora Background on the homepage, overlay a light Noise Texture, add Spotlight Effect for mouse interaction, and keep the overall look clean and premium." data-announce="background prompt" aria-describedby="bk-prompt-note">
+          <span class="bk-prompt__label">Copy prompt</span>
+        </button>
+      </div>
+      <p id="bk-prompt-note" class="visually-hidden">Copies the English stock prompt.</p>
+
+      <div class="bk-grid">
+        <article class="bk-card" aria-labelledby="bk-term-mesh">
+          <div class="bk-chrome">
+            <button type="button" class="bk-term" data-copy="Mesh Gradient" data-announce="Mesh Gradient" aria-label="Copy Mesh Gradient">
+              <span class="bk-term__name" id="bk-term-mesh">Mesh Gradient</span>
+              <span class="bk-term__state" aria-hidden="true">Copy</span>
+            </button>
+          </div>
+          <div class="bk-stage bk-mesh" aria-hidden="true">
+            <span class="bk-blob bk-blob--a bk-play"></span>
+            <span class="bk-blob bk-blob--b bk-play"></span>
+            <span class="bk-blob bk-blob--c bk-play"></span>
+            <span class="bk-blob bk-blob--d bk-play"></span>
+          </div>
+          <div class="bk-body">
+            <p class="bk-desc" lang="en">Several colors blend like paint so the whole background feels soft and layered.</p>
+            <p class="bk-zh" lang="zh-Hans">网格渐变</p>
+            <p class="bk-desc bk-desc--zh" lang="zh-Hans">多种颜色像颜料一样自然融合，整个背景柔和又有层次。</p>
+          </div>
+        </article>
+
+        <article class="bk-card" aria-labelledby="bk-term-aurora">
+          <div class="bk-chrome">
+            <button type="button" class="bk-term" data-copy="Aurora Background" data-announce="Aurora Background" aria-label="Copy Aurora Background">
+              <span class="bk-term__name" id="bk-term-aurora">Aurora Background</span>
+              <span class="bk-term__state" aria-hidden="true">Copy</span>
+            </button>
+          </div>
+          <div class="bk-stage bk-aurora" aria-hidden="true">
+            <span class="bk-band bk-band--a bk-play"></span>
+            <span class="bk-band bk-band--b bk-play"></span>
+            <span class="bk-band bk-band--c bk-play"></span>
+          </div>
+          <div class="bk-body">
+            <p class="bk-desc" lang="en">Colored light bands drift slowly, like aurora in a night sky.</p>
+            <p class="bk-zh" lang="zh-Hans">极光背景</p>
+            <p class="bk-desc bk-desc--zh" lang="zh-Hans">彩色光带缓慢流动，像夜空中的极光。</p>
+          </div>
+        </article>
+
+        <article class="bk-card" aria-labelledby="bk-term-noise">
+          <div class="bk-chrome">
+            <button type="button" class="bk-term" data-copy="Noise Texture" data-announce="Noise Texture" aria-label="Copy Noise Texture">
+              <span class="bk-term__name" id="bk-term-noise">Noise Texture</span>
+              <span class="bk-term__state" aria-hidden="true">Copy</span>
+            </button>
+          </div>
+          <div class="bk-stage bk-noise" aria-hidden="true">
+            <svg class="bk-noise-svg bk-play" viewBox="0 0 200 120" preserveAspectRatio="none">
+              <filter id="bk-grain-filter" x="-20%" y="-20%" width="140%" height="140%">
+                <feTurbulence id="bk-grain-turb" type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" seed="2" />
+              </filter>
+              <rect width="200" height="120" filter="url(#bk-grain-filter)" />
+            </svg>
+          </div>
+          <div class="bk-body">
+            <p class="bk-desc" lang="en">Fine grain over the background so the surface no longer looks cheap and plastic.</p>
+            <p class="bk-zh" lang="zh-Hans">噪点纹理</p>
+            <p class="bk-desc bk-desc--zh" lang="zh-Hans">在背景上叠加细微颗粒，让画面不再有廉价的塑料感。</p>
+          </div>
+        </article>
+
+        <article class="bk-card" aria-labelledby="bk-term-dots">
+          <div class="bk-chrome">
+            <button type="button" class="bk-term" data-copy="Dot Grid" data-announce="Dot Grid" aria-label="Copy Dot Grid">
+              <span class="bk-term__name" id="bk-term-dots">Dot Grid</span>
+              <span class="bk-term__state" aria-hidden="true">Copy</span>
+            </button>
+          </div>
+          <div class="bk-stage bk-dots bk-play" aria-hidden="true"></div>
+          <div class="bk-body">
+            <p class="bk-desc" lang="en">Evenly spaced small dots form a techy, structured backdrop.</p>
+            <p class="bk-zh" lang="zh-Hans">点阵网格</p>
+            <p class="bk-desc bk-desc--zh" lang="zh-Hans">用整齐排列的小圆点构成背景，科技感十足。</p>
+          </div>
+        </article>
+
+        <article class="bk-card" aria-labelledby="bk-term-spot">
+          <div class="bk-chrome">
+            <button type="button" class="bk-term" data-copy="Spotlight Effect" data-announce="Spotlight Effect" aria-label="Copy Spotlight Effect">
+              <span class="bk-term__name" id="bk-term-spot">Spotlight Effect</span>
+              <span class="bk-term__state" aria-hidden="true">Copy</span>
+            </button>
+          </div>
+          <div class="bk-stage bk-spot" aria-hidden="true">
+            <span class="bk-spot-light"></span>
+            <span class="bk-spot-dots"></span>
+            <span class="bk-spot-cursor"></span>
+          </div>
+          <div class="bk-body">
+            <p class="bk-desc" lang="en">Wherever the cursor moves, that part of the background lights up.</p>
+            <p class="bk-zh" lang="zh-Hans">聚光灯效果</p>
+            <p class="bk-desc bk-desc--zh" lang="zh-Hans">鼠标移动到哪里，哪里的背景就被照亮。</p>
+          </div>
+        </article>
+
+        <article class="bk-card" aria-labelledby="bk-term-shift">
+          <div class="bk-chrome">
+            <button type="button" class="bk-term" data-copy="Animated Gradient" data-announce="Animated Gradient" aria-label="Copy Animated Gradient">
+              <span class="bk-term__name" id="bk-term-shift">Animated Gradient</span>
+              <span class="bk-term__state" aria-hidden="true">Copy</span>
+            </button>
+          </div>
+          <div class="bk-stage bk-shift bk-play" aria-hidden="true"></div>
+          <div class="bk-body">
+            <p class="bk-desc" lang="en">Background colors drift slowly so the scene feels alive.</p>
+            <p class="bk-zh" lang="zh-Hans">动态渐变</p>
+            <p class="bk-desc bk-desc--zh" lang="zh-Hans">让背景颜色缓慢流动，画面更有生命力。</p>
+          </div>
+        </article>
+      </div>
+
+      <p class="bk-credit">
+        <span>awe0</span>
+        <span aria-hidden="true">·</span>
+        <a href="https://x.com/awe0_io/status/2117587542103228612" target="_blank" rel="noopener noreferrer">Background effects<span class="visually-hidden"> (opens in a new tab)</span></a>
+      </p>
+      <p class="visually-hidden" id="bk-status" role="status" aria-live="polite"></p>
+    </section>
+    <script>
+    (function () {
+      'use strict';
+
+      var root = document.getElementById('background-keywords');
+      if (!root) return;
+
+      var paramStill = document.documentElement.classList.contains('bk-still');
+      var reduceMq = null;
+      try { reduceMq = window.matchMedia('(prefers-reduced-motion: reduce)'); } catch (err) { reduceMq = null; }
+
+      function motionOff() {
+        return paramStill || !!(reduceMq && reduceMq.matches);
+      }
+
+      var timers = new WeakMap();
+      var status = document.getElementById('bk-status');
+      var announceToken = 0;
+
+      function legacyCopy(text) {
+        return new Promise(function (resolve, reject) {
+          var prev = document.activeElement;
+          var x = window.scrollX;
+          var y = window.scrollY;
+          var ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly', '');
+          ta.setAttribute('aria-hidden', 'true');
+          ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;padding:0;border:0;opacity:0';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          ta.setSelectionRange(0, text.length);
+          var ok = false;
+          try { ok = document.execCommand('copy'); } catch (copyErr) { ok = false; }
+          document.body.removeChild(ta);
+          window.scrollTo(x, y);
+          if (prev && prev.focus) {
+            try { prev.focus({ preventScroll: true }); } catch (focusErr) { prev.focus(); }
+          }
+          if (ok) resolve();
+          else reject(new Error('copy failed'));
+        });
+      }
+
+      function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext && navigator.clipboard.writeText) {
+          return navigator.clipboard.writeText(text).catch(function () { return legacyCopy(text); });
+        }
+        return legacyCopy(text);
+      }
+
+      function flash(btn) {
+        var label = btn.querySelector('.bk-prompt__label, .bk-term__state');
+        if (!label) return;
+        if (!label.getAttribute('data-label')) label.setAttribute('data-label', label.textContent);
+        label.textContent = 'Copied';
+        btn.classList.add('is-copied');
+        var prev = timers.get(btn);
+        if (prev) window.clearTimeout(prev);
+        timers.set(btn, window.setTimeout(function () {
+          label.textContent = label.getAttribute('data-label') || 'Copy';
+          btn.classList.remove('is-copied');
+        }, 1500));
+      }
+
+      function announce(msg) {
+        if (!status) return;
+        var mine = ++announceToken;
+        status.textContent = '';
+        window.setTimeout(function () {
+          if (mine !== announceToken) return;
+          status.textContent = msg;
+        }, 30);
+        window.setTimeout(function () {
+          if (mine !== announceToken) return;
+          status.textContent = '';
+        }, 1600);
+      }
+
+      Array.prototype.forEach.call(root.querySelectorAll('[data-copy]'), function (btn) {
+        btn.addEventListener('click', function (event) {
+          event.preventDefault();
+          var text = btn.getAttribute('data-copy') || '';
+          if (!text) return;
+          var said = btn.getAttribute('data-announce') || text;
+          copyText(text).then(function () {
+            flash(btn);
+            announce('Copied ' + said);
+          }).catch(function () {});
+        });
+      });
+
+      var turb = document.getElementById('bk-grain-turb');
+      var spot = root.querySelector('.bk-spot');
+      var noiseTimer = 0;
+      var spotRaf = 0;
+      var spotPhase = 0;
+      var spotLast = 0;
+      var spotHeld = false;
+      var grainSeed = 2;
+
+      function tickNoise() {
+        if (!turb) return;
+        grainSeed = grainSeed >= 8 ? 1 : grainSeed + 1;
+        turb.setAttribute('seed', String(grainSeed));
+      }
+
+      function placeSpot(event) {
+        if (!spot || motionOff()) return;
+        var rect = spot.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+        var x = ((event.clientX - rect.left) / rect.width) * 100;
+        var y = ((event.clientY - rect.top) / rect.height) * 100;
+        x = Math.max(0, Math.min(100, x));
+        y = Math.max(0, Math.min(100, y));
+        spot.style.setProperty('--sx', x.toFixed(1) + '%');
+        spot.style.setProperty('--sy', y.toFixed(1) + '%');
+      }
+
+      function spotFrame(now) {
+        if (!spot || motionOff() || document.hidden) {
+          spotRaf = 0;
+          spotLast = 0;
+          return;
+        }
+        spotRaf = window.requestAnimationFrame(spotFrame);
+        if (spotHeld) {
+          spotLast = 0;
+          return;
+        }
+        if (!spotLast) spotLast = now;
+        var dt = Math.min(0.05, (now - spotLast) / 1000);
+        spotLast = now;
+        spotPhase += dt;
+        var x = 50 + Math.cos(spotPhase * 0.7) * 30;
+        var y = 48 + Math.sin(spotPhase * 1.05) * 22;
+        spot.style.setProperty('--sx', x.toFixed(1) + '%');
+        spot.style.setProperty('--sy', y.toFixed(1) + '%');
+      }
+
+      function settleMotion() {
+        if (noiseTimer) {
+          window.clearInterval(noiseTimer);
+          noiseTimer = 0;
+        }
+        if (spotRaf) {
+          window.cancelAnimationFrame(spotRaf);
+          spotRaf = 0;
+        }
+        spotLast = 0;
+        grainSeed = 2;
+        if (turb) turb.setAttribute('seed', '2');
+        if (spot) {
+          spot.style.removeProperty('--sx');
+          spot.style.removeProperty('--sy');
+        }
+      }
+
+      function startMotion() {
+        if (motionOff() || document.hidden) return;
+        if (turb && !noiseTimer) noiseTimer = window.setInterval(tickNoise, 140);
+        if (spot && !spotRaf) spotRaf = window.requestAnimationFrame(spotFrame);
+      }
+
+      if (spot) {
+        spot.addEventListener('pointerdown', function (event) {
+          if (motionOff()) return;
+          spotHeld = true;
+          placeSpot(event);
+        });
+        spot.addEventListener('pointerenter', function (event) {
+          if (motionOff()) return;
+          spotHeld = true;
+          placeSpot(event);
+        });
+        spot.addEventListener('pointermove', function (event) {
+          if (motionOff()) return;
+          spotHeld = true;
+          placeSpot(event);
+        });
+        spot.addEventListener('pointerleave', function () { spotHeld = false; });
+        spot.addEventListener('pointercancel', function () { spotHeld = false; });
+      }
+
+      if (reduceMq && reduceMq.addEventListener) {
+        reduceMq.addEventListener('change', function () {
+          if (motionOff()) settleMotion();
+          else startMotion();
+        });
+      }
+
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) {
+          if (noiseTimer) {
+            window.clearInterval(noiseTimer);
+            noiseTimer = 0;
+          }
+          if (spotRaf) {
+            window.cancelAnimationFrame(spotRaf);
+            spotRaf = 0;
+          }
+          spotLast = 0;
+        } else {
+          startMotion();
+        }
+      });
+
+      if (!motionOff()) startMotion();
+    })();
+    </script>
+
     <footer class="lib-foot">
-      Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords. Digit-scroll <code>lh</code> + natural
+      Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords. Digit-scroll <code>lh</code> + natural
       <code>linear()</code> spring (~10% overshoot) · hard-coded glow buttons
       (violet / teal / slate) · nested radius · page-shell palettes · colour pairings · color combos · native
       <code>appearance: base-select</code> · rotating <code>conic-gradient</code> rim · SVG glass folder. No CDN.
-      Prefers-reduced-motion disables the spring and holds the glow border and transition-keyword demos still. ?reduce=1 holds those demos at rest.
+      Prefers-reduced-motion disables the spring and holds the glow border, transition-keyword demos, and background-keyword demos still. ?reduce=1 holds those demos at rest.
     </footer>
   </div>
 
@@ -11967,6 +12777,6 @@
     })();
   </script>
   <script src="shared/site-header.js?v=23" defer></script>
-  <script src="shared/section-fab.js?v=5" defer></script>
+  <script src="shared/section-fab.js?v=6" defer></script>
 </body>
 </html>
