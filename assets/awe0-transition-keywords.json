@@ -1,0 +1,88 @@
+{
+  "source": [
+    "https://x.com/awe0_io/status/2117588383421943860",
+    "https://x.com/awe0_io/status/2117588322948436004"
+  ],
+  "author": "awe0_io",
+  "savedAt": "2026-11-04",
+  "pageTransitions": [
+    {
+      "term": "Fade Transition",
+      "zh": "淡入淡出",
+      "descEn": "Old page fades out as the new page fades in.",
+      "descZh": "旧页面逐渐消失，新页面慢慢出现。"
+    },
+    {
+      "term": "Slide Transition",
+      "zh": "滑动切换",
+      "descEn": "New page slides in from the left or right, like a mobile app.",
+      "descZh": "新页面从左侧或右侧滑入，像手机 App 一样。"
+    },
+    {
+      "term": "Scale Transition",
+      "zh": "缩放过渡",
+      "descEn": "Page expands from small to full size for spatial depth.",
+      "descZh": "页面从小到大展开，带来空间层次感。"
+    },
+    {
+      "term": "Page Wipe",
+      "zh": "遮罩擦除",
+      "descEn": "A solid color or shape sweeps across the screen to complete the change.",
+      "descZh": "一整块颜色或图形扫过屏幕，完成页面切换。"
+    },
+    {
+      "term": "Shared Element Transition",
+      "zh": "共享元素过渡",
+      "descEn": "A list image enlarges and continues into the detail page.",
+      "descZh": "列表中的图片放大后，自然衔接到详情页。"
+    },
+    {
+      "term": "Morph Transition",
+      "zh": "形态变换",
+      "descEn": "An element smoothly changes shape while staying visually continuous.",
+      "descZh": "元素从一种形状平滑变成另一种形状，视觉上保持连续。"
+    }
+  ],
+  "textMotions": [
+    {
+      "term": "Split Text",
+      "zh": "文字拆分",
+      "descEn": "Split the title into characters that enter one by one.",
+      "descZh": "把标题拆成一个个字符，依次进入画面。"
+    },
+    {
+      "term": "Typewriter",
+      "zh": "打字机效果",
+      "descEn": "Characters appear one after another as if being typed.",
+      "descZh": "文字一个接一个出现，像有人正在输入。"
+    },
+    {
+      "term": "Blur Reveal",
+      "zh": "模糊揭示",
+      "descEn": "Text goes from blurry to sharp for a soft, premium reveal.",
+      "descZh": "文字从模糊逐渐变清晰，过渡自然又高级。"
+    },
+    {
+      "term": "Scramble Text",
+      "zh": "字符乱序",
+      "descEn": "Random characters resolve into the correct text.",
+      "descZh": "文字先变成随机字符，再逐渐还原成正确内容。"
+    },
+    {
+      "term": "Gradient Shift",
+      "zh": "渐变流动",
+      "descEn": "Colors inside the text drift slowly, like light moving through the letters.",
+      "descZh": "文字内部的颜色缓慢移动，像有光线从字里穿过。"
+    },
+    {
+      "term": "Mask Reveal",
+      "zh": "遮罩揭示",
+      "descEn": "Text slides out from a hidden region, like rising from behind a curtain.",
+      "descZh": "文字从隐藏区域滑动出现，像从幕布后升起来。"
+    }
+  ],
+  "stockPromptEnPage": "Use Fade Transition between pages, Shared Element Transition when a work card opens into a detail page, Scale Transition for modals, and keep every transition smooth and natural.",
+  "stockPromptZhPage": "页面之间使用 Fade Transition，作品卡片进入详情页时采用 Shared Element Transition，弹窗使用 Scale Transition，所有过渡保持流畅自然。",
+  "stockPromptEnText": "Use Split Text on the homepage title, Blur Reveal on the subtitle, Gradient Shift on keywords, and ease-out easing on every animation.",
+  "stockPromptZhText": "首页标题使用 Split Text，副标题采用 Blur Reveal，关键词使用 Gradient Shift，所有动画使用 ease-out 缓动。"
+}
