@@ -18,7 +18,8 @@
     { id: 'spacing', label: 'Spacing' },
     { id: 'hierarchy', label: 'Hierarchy' },
     { id: 'color-combos', label: 'Color combos' },
-    { id: 'transition-keywords', label: 'Transition keywords' }
+    { id: 'transition-keywords', label: 'Transition keywords' },
+    { id: 'background-keywords', label: 'Background keywords' }
   ];
 
   var TASTE_SECTION_LINKS = [

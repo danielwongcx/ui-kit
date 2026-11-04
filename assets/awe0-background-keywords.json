@@ -1,0 +1,47 @@
+{
+  "source": [
+    "https://x.com/awe0_io/status/2117587542103228612"
+  ],
+  "author": "awe0_io",
+  "savedAt": "2026-11-04",
+  "backgroundEffects": [
+    {
+      "term": "Mesh Gradient",
+      "zh": "网格渐变",
+      "descEn": "Several colors blend like paint so the whole background feels soft and layered.",
+      "descZh": "多种颜色像颜料一样自然融合，整个背景柔和又有层次。"
+    },
+    {
+      "term": "Aurora Background",
+      "zh": "极光背景",
+      "descEn": "Colored light bands drift slowly, like aurora in a night sky.",
+      "descZh": "彩色光带缓慢流动，像夜空中的极光。"
+    },
+    {
+      "term": "Noise Texture",
+      "zh": "噪点纹理",
+      "descEn": "Fine grain over the background so the surface no longer looks cheap and plastic.",
+      "descZh": "在背景上叠加细微颗粒，让画面不再有廉价的塑料感。"
+    },
+    {
+      "term": "Dot Grid",
+      "zh": "点阵网格",
+      "descEn": "Evenly spaced small dots form a techy, structured backdrop.",
+      "descZh": "用整齐排列的小圆点构成背景，科技感十足。"
+    },
+    {
+      "term": "Spotlight Effect",
+      "zh": "聚光灯效果",
+      "descEn": "Wherever the cursor moves, that part of the background lights up.",
+      "descZh": "鼠标移动到哪里，哪里的背景就被照亮。"
+    },
+    {
+      "term": "Animated Gradient",
+      "zh": "动态渐变",
+      "descEn": "Background colors drift slowly so the scene feels alive.",
+      "descZh": "让背景颜色缓慢流动，画面更有生命力。"
+    }
+  ],
+  "stockPromptEn": "Use Aurora Background on the homepage, overlay a light Noise Texture, add Spotlight Effect for mouse interaction, and keep the overall look clean and premium.",
+  "stockPromptZh": "首页使用 Aurora Background，背景叠加轻微 Noise Texture，鼠标交互使用 Spotlight Effect，整体保持简洁高级。"
+}
