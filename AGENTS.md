@@ -32,6 +32,7 @@ Multi-page **static** UI kit published on GitHub Pages from the `main` branch ro
 - HK middle spend: https://danielwongcx.github.io/ui-kit/hk-middle-household-income-spend.html (`hk-middle-household-income-spend.html`) — Explainer. Full-viewport ~16s data film on what “middle” Hong Kong households earn and spend. Censtatd proxy: median monthly income Q4 2025 (HK$30,000 all domestic; HK$40,000 economically active) and 2024/25 household expenditure (average HK$32,472; median HK$26,000). No official middle-class line. Motion Prompt effects #183, #007, #002, #005, #144, #004, #027, #071, #006, and #187, with beat cuts #017, #018, #137, #020, and #044, and a #080 highlighter on the landed figures (`vendor/motion-prompt/`). English and written Cantonese subtitles sit on every beat. Seek with `?t=`. `prefers-reduced-motion` and `?reduce=1` show static cards with those lines. No build step.
 - Mebius charts: https://danielwongcx.github.io/ui-kit/mebius-free-charts.html (`mebius-free-charts.html`) — Explainer. Gallery of the 62 free Mebius finance chart cards, redrawn in HTML, CSS, and SVG from each chart’s sample data. Sticky search and type filters. `prefers-reduced-motion` holds entrance motion. No build step.
 - Premium feel: https://danielwongcx.github.io/ui-kit/premium-feel.html (`premium-feel.html`) — Explainer. Why premium apps feel smooth: six physics studies (button spring, pull resistance, rolling digits, drag lift, ease-out expand, drawn check). Each card opens a 1/4-speed breakdown with a graph, a With / Without comparison, and a prompt and code you can copy. `prefers-reduced-motion` and `?reduce=1` hold the motion. No build step.
+- Agent system: https://danielwongcx.github.io/ui-kit/agent-design-system.html (`agent-design-system.html`) — Explainer. rico’s (@_heyrico) five-layer design system an agent can follow: primitives, semantic tokens, components, blocks, and rules plus a review-screen skill. `prefers-reduced-motion` and `?reduce=1` hold motion. No build step.
 
 No build step. Plain HTML / CSS / JS.
 
@@ -66,6 +67,7 @@ Top-level pages: Gallery, Digest, Taste, Piano, ASCII, Ferry, MTR, Transition, A
 - HK middle spend → `hk-middle-household-income-spend.html`
 - Mebius charts → `mebius-free-charts.html`
 - Premium feel → `premium-feel.html`
+- Agent system → `agent-design-system.html`
 
 When you add a new page:
 
