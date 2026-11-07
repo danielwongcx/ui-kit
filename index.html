@@ -7245,7 +7245,10 @@
     }
 
     /* —— Nudging notifications (scoped). 64px track fits the 40px slide
-       and the cubic overshoot (~1.56 × 40px). Motion rules match Copy CSS. —— */
+       and the cubic overshoot (~1.56 × 40px).
+       Copy CSS stays the :active recipe. The live hold also latches
+       .is-pressed for the whole pointer, because touch :active is hit-tested
+       and drops when the card slides out from under the finger. —— */
     #nudging-notifications .sec-head code {
       font-family: var(--mono);
       font-size: 0.92em;
@@ -7377,6 +7380,7 @@
       gap: 8px;
       margin: 0;
       padding: 0;
+      touch-action: none;
     }
 
     #nudging-notifications .n {
@@ -7415,17 +7419,39 @@
       outline-offset: 2px;
     }
 
-    #nudging-notifications .n:active {
+    #nudging-notifications .n:active,
+    #nudging-notifications .n.is-pressed {
       translate: 40px 0;
       cursor: grabbing;
       z-index: 1;
     }
 
-    #nudging-notifications .n:has(+ .n:active) {
+    #nudging-notifications .n:has(+ .n:active),
+    #nudging-notifications .n:has(+ .n.is-pressed) {
       translate: 10px 0;
     }
 
-    #nudging-notifications .n:active + .n {
+    #nudging-notifications .n:active + .n,
+    #nudging-notifications .n.is-pressed + .n {
+      translate: 10px 0;
+    }
+
+    /* A finger can leave the slid card and land :active on a neighbor.
+       The latched card keeps 40px; only its siblings stay at 10px. */
+    #nudging-notifications .nn-stack:has(> .n.is-pressed) > .n:active:not(.is-pressed) {
+      translate: none;
+      cursor: grab;
+      z-index: auto;
+    }
+
+    #nudging-notifications .nn-stack:has(> .n.is-pressed) > .n.is-pressed {
+      translate: 40px 0;
+      cursor: grabbing;
+      z-index: 1;
+    }
+
+    #nudging-notifications .nn-stack:has(> .n.is-pressed) > .n:has(+ .n.is-pressed),
+    #nudging-notifications .nn-stack:has(> .n.is-pressed) > .n.is-pressed + .n {
       translate: 10px 0;
     }
 
@@ -7536,22 +7562,17 @@
       }
     }
 
+    /* Hold rules outrank a plain .n selector, so still has to win outright. */
     @media (prefers-reduced-motion: reduce) {
-      #nudging-notifications .n,
-      #nudging-notifications .n:active,
-      #nudging-notifications .n:has(+ .n:active),
-      #nudging-notifications .n:active + .n {
-        transition: none;
-        translate: none;
+      #nudging-notifications .n {
+        transition: none !important;
+        translate: none !important;
       }
     }
 
-    html.nn-still #nudging-notifications .n,
-    html.nn-still #nudging-notifications .n:active,
-    html.nn-still #nudging-notifications .n:has(+ .n:active),
-    html.nn-still #nudging-notifications .n:active + .n {
-      transition: none;
-      translate: none;
+    html.nn-still #nudging-notifications .n {
+      transition: none !important;
+      translate: none !important;
     }
 
     @media (forced-colors: active) {
@@ -12435,9 +12456,10 @@
         <h2>Nudging notifications</h2>
         <p>
           Android-style stack. Press and hold a card: it slides 40px and the cards above and below nudge 10px, with a bounce.
-          Pure CSS, and the motion is CSS only.
+          Motion is a CSS transition.
           <code>.n:has(+ .n:active)</code> selects the previous sibling. A selector walks forward, and <code>:has()</code> looks back.
           Major browsers support <code>:has()</code> now.
+          This demo latches <code>.is-pressed</code> on pointerdown so a finger hold does not drop the spring. Copy CSS is the pure <code>:active</code> recipe.
           Reduced motion, including <code>?reduce=1</code>, holds translate still.
         </p>
       </div>
@@ -12445,7 +12467,7 @@
       <article class="canvas">
         <div class="canvas-chrome">
           <span class="canvas-name">NotificationStack / nudge</span>
-          <span class="canvas-tag">pure CSS · :has()</span>
+          <span class="canvas-tag">CSS · :has()</span>
           <button type="button" class="nn-copy" data-announce="nudging notification CSS" data-copy='<div class="stack">
   <div class="n">Standup 10:00</div>
   <div class="n">Maya - On my way!</div>
@@ -12562,6 +12584,90 @@
 
       var root = document.getElementById('nudging-notifications');
       if (!root) return;
+
+      /* :active follows the hit target, so the 40px slide (or a finger
+         wobble, or an iOS long-press) drops it and the spring restarts.
+         .is-pressed stays down until pointerup / pointercancel. Capture
+         keeps the gesture when the finger leaves the card. preventDefault
+         on the touch stops the scroll-steal and the compatibility click
+         that would flash :active again on release. */
+      (function () {
+        var stack = root.querySelector('.nn-stack');
+        if (!stack) return;
+
+        var held = null;
+
+        function releasePointer(pointerId) {
+          if (!held) return;
+          if (pointerId != null && held.pointerId !== pointerId) return;
+          held.card.classList.remove('is-pressed');
+          held = null;
+          document.removeEventListener('pointerup', onPointerDone, true);
+          document.removeEventListener('pointercancel', onPointerDone, true);
+          document.removeEventListener('lostpointercapture', onPointerDone, true);
+          document.removeEventListener('touchend', onTouchDone, true);
+          document.removeEventListener('touchcancel', onTouchDone, true);
+          document.removeEventListener('touchmove', blockTouchScroll);
+        }
+
+        function onPointerDone(event) {
+          if (!held || event.pointerId !== held.pointerId) return;
+          if (event.type === 'lostpointercapture' && event.buttons) return;
+          releasePointer(event.pointerId);
+        }
+
+        function onTouchDone(event) {
+          var touches = event.changedTouches;
+          if (!touches || !touches.length) {
+            releasePointer(null);
+            return;
+          }
+          for (var i = 0; i < touches.length; i++) releasePointer(touches[i].identifier);
+        }
+
+        function blockTouchScroll(event) {
+          if (!held || !event.cancelable) return;
+          event.preventDefault();
+        }
+
+        function trackRelease() {
+          document.addEventListener('pointerup', onPointerDone, true);
+          document.addEventListener('pointercancel', onPointerDone, true);
+          document.addEventListener('lostpointercapture', onPointerDone, true);
+          document.addEventListener('touchend', onTouchDone, true);
+          document.addEventListener('touchcancel', onTouchDone, true);
+          document.addEventListener('touchmove', blockTouchScroll, { passive: false });
+        }
+
+        stack.addEventListener('pointerdown', function (event) {
+          if (event.pointerType === 'mouse' && event.button !== 0) return;
+          if (event.isPrimary === false) return;
+          var node = event.target;
+          var card = node && node.closest ? node.closest('.n') : null;
+          if (!card || !stack.contains(card)) return;
+          if (held && held.card !== card) held.card.classList.remove('is-pressed');
+          held = { card: card, pointerId: event.pointerId };
+          card.classList.add('is-pressed');
+          if (card.setPointerCapture) {
+            try { card.setPointerCapture(event.pointerId); } catch (err) {}
+          }
+          if (event.pointerType !== 'mouse' && event.cancelable) event.preventDefault();
+          trackRelease();
+        });
+
+        stack.addEventListener('touchstart', function (event) {
+          var node = event.target;
+          var card = node && node.closest ? node.closest('.n') : null;
+          if (!card || !stack.contains(card)) return;
+          if (event.cancelable) event.preventDefault();
+        }, { passive: false });
+
+        stack.addEventListener('contextmenu', function (event) {
+          var node = event.target;
+          var card = node && node.closest ? node.closest('.n') : null;
+          if (card && stack.contains(card)) event.preventDefault();
+        });
+      })();
 
       var timers = new WeakMap();
       var status = document.getElementById('nn-live');
