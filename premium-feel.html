@@ -1,0 +1,2071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Premium feel · ui-kit</title>
+  <meta name="description" content="Why premium apps feel smooth. Six physics studies — button spring, pull resistance, rolling digits, drag lift, ease-out expand, and a drawn check — each with a slow-motion graph, a with/without comparison, and copyable prompt and code." />
+  <script>
+    (function () {
+      var q = location.search || "";
+      var forceReduce = /(?:^|[?&])reduce=1(?:&|$)/.test(q);
+      var forceMotion = /(?:^|[?&])motion=1(?:&|$)/.test(q);
+      var reduce = false;
+      try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+      if (forceMotion) reduce = false;
+      if (forceReduce) reduce = true;
+      document.documentElement.classList.add("js");
+      document.documentElement.setAttribute("data-motion", reduce ? "reduce" : "ok");
+    })();
+  </script>
+  <link rel="stylesheet" href="shared/site-header.css?v=7" />
+  <style>
+    :root {
+      --bg: #070d16;
+      --card: #111B2E;
+      --stage: #0B1424;
+      --ink: #F4F8FC;
+      --muted: #93A4B8;
+      --accent: #4CC9FF;
+      --accent-ink: #062033;
+      --line: rgba(255, 255, 255, 0.08);
+      --radius: 16px;
+      --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { color-scheme: dark; }
+
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      background:
+        radial-gradient(900px 420px at 88% -10%, rgba(76, 201, 255, 0.16), transparent 58%),
+        radial-gradient(700px 380px at -12% 8%, rgba(76, 201, 255, 0.07), transparent 52%),
+        var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body[data-page="premium-feel"] {
+      --site-ink: #e8f4ff;
+      --site-muted: #93a4b8;
+      --site-line: rgba(76, 201, 255, 0.16);
+      --site-bar-bg: color-mix(in srgb, #070d16 84%, transparent);
+      --site-pill: rgba(76, 201, 255, 0.12);
+      --site-accent: #4CC9FF;
+    }
+
+    body[data-page="premium-feel"] .site-header__panel {
+      background: color-mix(in srgb, #070d16 94%, transparent);
+    }
+
+    ::selection { background: rgba(76, 201, 255, 0.32); color: #fff; }
+
+    .sr {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    [hidden] { display: none !important; }
+
+    .page {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 32px 20px calc(56px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .tile,
+    .back,
+    .jumps button,
+    .mode button,
+    .go,
+    .replay,
+    .copy,
+    .money,
+    .row,
+    .lisbon,
+    .check-btn {
+      font-family: inherit;
+      color: var(--ink);
+    }
+
+    .page :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .go:focus-visible,
+    .mode button[aria-pressed="true"]:focus-visible,
+    .jumps button[aria-current="true"]:focus-visible,
+    .copy.is-done:focus-visible {
+      outline-color: #fff;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 16ch;
+      font-size: clamp(2.5rem, 7vw, 4.4rem);
+      font-weight: 700;
+      letter-spacing: -0.048em;
+      line-height: 0.96;
+      text-wrap: balance;
+    }
+
+    .accent { color: var(--accent); }
+
+    .lede {
+      margin: 16px 0 0;
+      max-width: 36rem;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    @media (min-width: 740px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (min-width: 980px) {
+      .grid { grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+    .tile {
+      appearance: none;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      padding: 16px;
+      text-align: left;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      cursor: pointer;
+      font-size: 1rem;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .tile:hover { border-color: rgba(76, 201, 255, 0.45); }
+
+    .tile__meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .tile__n {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+
+    .tile__chev { color: var(--muted); }
+
+    .tile__name {
+      display: block;
+      margin-top: 8px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .tile__demo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      min-height: 148px;
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 12px;
+      background: var(--stage);
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .tile .row { min-height: 34px; font-size: 13px; }
+    .tile .rows { width: min(100%, 240px); }
+    .tile .money { font-size: 40px; }
+    .tile .lisbon { width: min(100%, 220px); }
+
+    .study {
+      position: relative;
+      margin-top: 28px;
+      padding: 16px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      scroll-margin-top: 72px;
+    }
+
+    .study.is-in { animation: rise 350ms cubic-bezier(0.16, 1, 0.3, 1); }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .study__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .back {
+      appearance: none;
+      margin: 0;
+      padding: 0 2px;
+      min-height: 44px;
+      border: 0;
+      background: transparent;
+      color: var(--accent);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .slowmo {
+      margin: 0;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: var(--accent-ink);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    h2 {
+      margin: 4px 0 0;
+      font-size: clamp(1.6rem, 3vw, 2.15rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.1;
+    }
+
+    h2 .accent { margin-right: 8px; font-size: 0.72em; letter-spacing: 0.08em; }
+
+    .jumps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .jumps button {
+      appearance: none;
+      flex: 0 0 auto;
+      min-height: 44px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(76, 201, 255, 0.28);
+      background: transparent;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .jumps button[aria-current="true"] {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--accent-ink);
+    }
+
+    .mode {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      margin-top: 14px;
+      padding: 4px;
+      border-radius: 999px;
+      background: var(--stage);
+      border: 1px solid rgba(76, 201, 255, 0.22);
+    }
+
+    .mode button {
+      appearance: none;
+      min-height: 44px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .mode button[aria-pressed="true"] {
+      background: var(--accent);
+      color: var(--accent-ink);
+    }
+
+    .stage {
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: var(--radius);
+      background: var(--stage);
+      border: 1px solid var(--line);
+    }
+
+    .stage__view {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 200px;
+    }
+
+    .stage__view--pull,
+    .stage__view--stack { align-items: stretch; }
+
+    .stage__view--stack {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stage__bar { display: flex; margin-top: 12px; }
+
+    .hint {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .replay,
+    .copy {
+      appearance: none;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(76, 201, 255, 0.45);
+      background: transparent;
+      color: var(--accent);
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .replay:hover,
+    .copy:hover { background: rgba(76, 201, 255, 0.1); }
+
+    .copy.is-done {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--accent-ink);
+    }
+
+    .go {
+      appearance: none;
+      border: 0;
+      background: var(--accent);
+      color: var(--accent-ink);
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+      min-height: 48px;
+      padding: 0 22px;
+      border-radius: 999px;
+      cursor: pointer;
+      transform-origin: center center;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .rows {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      min-height: 48px;
+      margin: 0;
+      padding: 0 14px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--ink);
+      font-size: 15px;
+      font-weight: 600;
+      text-align: left;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button.row { cursor: grab; }
+    button.row:active { cursor: grabbing; }
+
+    .money {
+      appearance: none;
+      display: inline-flex;
+      align-items: flex-end;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--ink);
+      font-size: clamp(52px, 16vw, 80px);
+      font-weight: 600;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      cursor: pointer;
+    }
+
+    .slot {
+      position: relative;
+      width: 0.62em;
+      height: 1.12em;
+      overflow: hidden;
+      flex: none;
+    }
+
+    .slot__n {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+    }
+
+    .delta {
+      min-height: 1.2em;
+      margin: 10px 0 0;
+      color: var(--accent);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(6px);
+    }
+
+    .delta.is-on {
+      opacity: 1;
+      transform: none;
+      transition: opacity 180ms linear, transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .pull {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 14px;
+      width: 100%;
+      touch-action: none;
+      user-select: none;
+      cursor: ns-resize;
+    }
+
+    .pull__lane {
+      position: relative;
+      height: 220px;
+      border-radius: 999px;
+      background: rgba(76, 201, 255, 0.1);
+    }
+
+    .pull__pip {
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      top: 0;
+      height: 32px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 8px 18px rgba(76, 201, 255, 0.28);
+    }
+
+    .pull__window {
+      height: 200px;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    .reorder {
+      position: relative;
+      width: 100%;
+      touch-action: none;
+      user-select: none;
+    }
+
+    .reorder .row {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 52px;
+      min-height: 52px;
+      touch-action: none;
+    }
+
+    .reorder .row.is-lifted {
+      background: #16283f;
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(76, 201, 255, 0.45);
+    }
+
+    .grip {
+      margin-left: auto;
+      width: 14px;
+      height: 18px;
+      flex: none;
+      background-image: radial-gradient(circle, #93A4B8 1.15px, transparent 1.35px);
+      background-size: 7px 6px;
+    }
+
+    .fit { width: 100%; display: flex; justify-content: center; }
+
+    .lisbon {
+      appearance: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: 88px;
+      padding: 0 16px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(76, 201, 255, 0.28);
+      background: #101c31;
+      color: var(--ink);
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.03em;
+      text-align: left;
+      cursor: pointer;
+      overflow: hidden;
+      flex: none;
+    }
+
+    .lisbon__orb {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(76, 201, 255, 0.16);
+      flex: none;
+    }
+
+    .check-btn {
+      appearance: none;
+      border: 0;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .check { width: 128px; height: 128px; display: block; }
+    .tile .check { width: 72px; height: 72px; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      margin: 14px 0 0;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(76, 201, 255, 0.12);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+
+    .graph { margin: 14px 0 0; min-width: 0; }
+
+    .plot { width: min(100%, 640px); height: auto; display: block; }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      margin-top: 8px;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .swatch {
+      width: 22px;
+      border-top: 2px solid var(--accent);
+      font-style: normal;
+    }
+
+    .swatch--dash { border-top-style: dashed; }
+
+    .graph figcaption {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .sheets {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .sheet {
+      min-width: 0;
+      background: var(--stage);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+
+    .sheet__bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 8px 0 14px;
+    }
+
+    .sheet h3 {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .sheet pre {
+      margin: 0;
+      padding: 8px 14px 14px;
+      overflow: auto;
+      max-width: 100%;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: #E7F4FF;
+      white-space: pre;
+      user-select: text;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .study.is-in { animation: none; }
+    }
+
+    html[data-motion="reduce"] .study.is-in { animation: none; }
+  </style>
+</head>
+<body data-page="premium-feel">
+  <main class="page">
+    <h1>Why premium apps <span class="accent">feel smooth</span>.</h1>
+    <p class="lede">Physics, not speed. Open a card for the graph.</p>
+
+    <div class="grid" id="grid">
+      <button type="button" class="tile" data-study="button">
+        <span class="tile__meta"><span class="tile__n">01</span><svg class="tile__chev" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M6 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="tile__name">Sink, then spring</span>
+        <span class="sr">Open the slow-motion breakdown.</span>
+        <span class="tile__demo" aria-hidden="true"><span class="go">Continue</span></span>
+      </button>
+      <button type="button" class="tile" data-study="pull">
+        <span class="tile__meta"><span class="tile__n">02</span><svg class="tile__chev" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M6 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="tile__name">Resist the pull</span>
+        <span class="sr">Open the slow-motion breakdown.</span>
+        <span class="tile__demo" aria-hidden="true"><span class="rows"><span class="row">Messages</span><span class="row">Calendar</span><span class="row">Notes</span></span></span>
+      </button>
+      <button type="button" class="tile" data-study="roll">
+        <span class="tile__meta"><span class="tile__n">03</span><svg class="tile__chev" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M6 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="tile__name">Roll, don’t jump</span>
+        <span class="sr">Open the slow-motion breakdown.</span>
+        <span class="tile__demo" aria-hidden="true"><span class="money">$486</span></span>
+      </button>
+      <button type="button" class="tile" data-study="drag">
+        <span class="tile__meta"><span class="tile__n">04</span><svg class="tile__chev" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M6 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="tile__name">Lift, then make room</span>
+        <span class="sr">Open the slow-motion breakdown.</span>
+        <span class="tile__demo" aria-hidden="true"><span class="rows"><span class="row">Gym at 7</span><span class="row">Groceries</span><span class="row">Read 20 pages</span></span></span>
+      </button>
+      <button type="button" class="tile" data-study="card">
+        <span class="tile__meta"><span class="tile__n">05</span><svg class="tile__chev" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M6 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="tile__name">Fast, then slow</span>
+        <span class="sr">Open the slow-motion breakdown.</span>
+        <span class="tile__demo" aria-hidden="true"><span class="lisbon"><span class="lisbon__orb"></span><span>Lisbon nights</span></span></span>
+      </button>
+      <button type="button" class="tile" data-study="success">
+        <span class="tile__meta"><span class="tile__n">06</span><svg class="tile__chev" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M6 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="tile__name">Draw the win</span>
+        <span class="sr">Open the slow-motion breakdown.</span>
+        <span class="tile__demo" aria-hidden="true">
+          <svg class="check" viewBox="0 0 100 100"><circle cx="50" cy="50" r="32" fill="none" stroke="rgba(76,201,255,0.22)" stroke-width="3"/><circle cx="50" cy="50" r="32" fill="none" stroke="#4CC9FF" stroke-width="3"/><path d="M32 52 L45 65 L70 36" fill="none" stroke="#4CC9FF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </button>
+    </div>
+
+    <section class="study" id="study" hidden aria-labelledby="study-title">
+      <div class="study__top">
+        <button type="button" class="back" id="study-back">All six</button>
+        <p class="slowmo" id="slowmo">SLOW-MO 1/4x</p>
+      </div>
+      <h2 id="study-title" tabindex="-1"></h2>
+      <div class="jumps" id="jumps" role="navigation" aria-label="Studies"></div>
+      <div class="mode" role="group" aria-label="Compare physics">
+        <button type="button" id="mode-with" aria-pressed="true">With</button>
+        <button type="button" id="mode-without" aria-pressed="false">Without</button>
+      </div>
+      <div class="stage" id="stage"></div>
+      <p class="badge" id="badge"></p>
+      <figure class="graph">
+        <div id="graph-host"></div>
+        <div class="legend" id="legend"></div>
+        <figcaption id="graph-cap"></figcaption>
+      </figure>
+      <div class="sheets">
+        <section class="sheet" aria-labelledby="prompt-label">
+          <div class="sheet__bar">
+            <h3 id="prompt-label">Prompt</h3>
+            <button type="button" class="copy" id="copy-prompt">Copy</button>
+          </div>
+          <pre id="prompt-text"></pre>
+        </section>
+        <section class="sheet" aria-labelledby="code-label">
+          <div class="sheet__bar">
+            <h3 id="code-label">Code</h3>
+            <button type="button" class="copy" id="copy-code">Copy</button>
+          </div>
+          <pre id="code-text"></pre>
+        </section>
+      </div>
+      <p class="sr" id="copy-status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var reduce = document.documentElement.getAttribute("data-motion") === "reduce";
+      var SLOW = 4;
+      var session = 0;
+      var physics = true;
+      var currentId = null;
+      var lastId = null;
+      var SVG_NS = "http://www.w3.org/2000/svg";
+
+      function clamp(v, a, b) {
+        if (v < a) return a;
+        if (v > b) return b;
+        return v;
+      }
+
+      function unitBezier(x1, y1, x2, y2) {
+        var cx = 3 * x1;
+        var bx = 3 * (x2 - x1) - cx;
+        var ax = 1 - cx - bx;
+        var cy = 3 * y1;
+        var by = 3 * (y2 - y1) - cy;
+        var ay = 1 - cy - by;
+
+        function sampleX(t) { return ((ax * t + bx) * t + cx) * t; }
+        function sampleY(t) { return ((ay * t + by) * t + cy) * t; }
+        function sampleDX(t) { return (3 * ax * t + 2 * bx) * t + cx; }
+
+        function solve(x) {
+          var t = x;
+          var i;
+          for (i = 0; i < 8; i++) {
+            var d = sampleDX(t);
+            if (Math.abs(d) < 1e-6) break;
+            t = t - (sampleX(t) - x) / d;
+          }
+          if (t < 0 || t > 1 || Math.abs(sampleX(t) - x) > 1e-3) {
+            var lo = 0;
+            var hi = 1;
+            t = x;
+            for (i = 0; i < 22; i++) {
+              if (sampleX(t) < x) lo = t;
+              else hi = t;
+              t = (lo + hi) / 2;
+            }
+          }
+          return clamp(t, 0, 1);
+        }
+
+        return function (x) {
+          if (x <= 0) return 0;
+          if (x >= 1) return 1;
+          return sampleY(solve(x));
+        };
+      }
+
+      var springEase = unitBezier(0.34, 1.56, 0.64, 1);
+      var quint = unitBezier(0.16, 1, 0.3, 1);
+      var easeOut = unitBezier(0, 0, 0.58, 1);
+      var SPRING_PEAK = (function () {
+        var peak = 1;
+        var i;
+        for (i = 0; i <= 1000; i++) peak = Math.max(peak, springEase(i / 1000));
+        return peak;
+      })();
+
+      function smoothstep(t) { return t * t * (3 - 2 * t); }
+
+      function easeInOut(u) {
+        u = clamp(u, 0, 1);
+        return u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+      }
+
+      function pressScale(u, withPhysics) {
+        if (!withPhysics) {
+          if (u < 0.08) return 1 - 0.05 * (u / 0.08);
+          return 0.95 + 0.05 * clamp((u - 0.08) / 0.92, 0, 1);
+        }
+        if (u < 0.02) return 1 - 0.05 * (u / 0.02);
+        var p = springEase((u - 0.02) / 0.98);
+        if (p <= 1) return 0.95 + 0.05 * Math.max(0, p);
+        var span = SPRING_PEAK - 1;
+        if (span < 0.0001) return 1;
+        return 1 + 0.02 * clamp((p - 1) / span, 0, 1);
+      }
+
+      function listY(drag, withPhysics) {
+        var y = Math.max(0, drag);
+        if (!withPhysics) return y;
+        if (y <= 100) return y * 0.35;
+        return 35 + (y - 100) * 0.2;
+      }
+
+      function digitY(t, delay, withPhysics) {
+        if (!withPhysics) return t > 8 ? 0 : -100;
+        var u = (t - delay) / 600;
+        if (u <= 0) return -100;
+        if (u >= 1) return 0;
+        return -100 + 100 * easeOut(u);
+      }
+
+      function liftScale(t, withPhysics) {
+        if (!withPhysics) return 1;
+        if (t < 150) return 1 + 0.05 * easeOut(t / 150);
+        if (t < 900) return 1.05;
+        return 1.05 - 0.05 * easeOut(clamp((t - 900) / 300, 0, 1));
+      }
+
+      function circleDrawn(t) {
+        var u = t / 300;
+        if (u <= 0) return 0;
+        if (u >= 1) return 1;
+        return easeOut(u);
+      }
+
+      function tickDrawn(t) {
+        var u = (t - 170) / 170;
+        if (u <= 0) return 0;
+        if (u >= 1) return 1;
+        return smoothstep(u);
+      }
+
+      function popScale(t) {
+        var u = t / 200;
+        if (u <= 0) return 0.4;
+        if (u >= 1) return 1;
+        return 0.4 + 0.6 * easeOut(u);
+      }
+
+      function animate(baseMs, frame) {
+        var sid = session;
+        var alive = true;
+        if (reduce || baseMs <= 0) {
+          if (sid === session) frame(1);
+          return { cancel: function () { alive = false; } };
+        }
+        var dur = baseMs * SLOW;
+        var t0 = performance.now();
+        function tick(now) {
+          if (!alive || sid !== session) return;
+          var u = clamp((now - t0) / dur, 0, 1);
+          frame(u);
+          if (u < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+        return { cancel: function () { alive = false; } };
+      }
+
+      function svgEl(name, attrs) {
+        var node = document.createElementNS(SVG_NS, name);
+        if (attrs) {
+          Object.keys(attrs).forEach(function (key) { node.setAttribute(key, attrs[key]); });
+        }
+        return node;
+      }
+
+      function createGraph(host, legendHost, spec) {
+        host.replaceChildren();
+        legendHost.replaceChildren();
+        var square = !!spec.square;
+        var plot = square
+          ? { x: 58, y: 12, w: 210, h: 210 }
+          : { x: 52, y: 12, w: 292, h: 148 };
+        var svg = svgEl("svg", {
+          viewBox: square ? "0 0 320 250" : "0 0 360 196",
+          class: "plot",
+          "aria-hidden": "true"
+        });
+
+        function xPos(u) { return plot.x + clamp(u, 0, 1) * plot.w; }
+        function yPos(v) {
+          var t = (v - spec.yMin) / (spec.yMax - spec.yMin);
+          return plot.y + (1 - clamp(t, 0, 1)) * plot.h;
+        }
+
+        (spec.guides || []).forEach(function (v) {
+          var y = yPos(v);
+          svg.appendChild(svgEl("line", {
+            x1: plot.x, x2: plot.x + plot.w, y1: y, y2: y,
+            stroke: "rgba(255,255,255,0.12)", "stroke-dasharray": "2 4"
+          }));
+        });
+        (spec.guidesX || []).forEach(function (u) {
+          var x = xPos(u);
+          svg.appendChild(svgEl("line", {
+            x1: x, x2: x, y1: plot.y, y2: plot.y + plot.h,
+            stroke: "rgba(76,201,255,0.28)", "stroke-dasharray": "2 4"
+          }));
+        });
+        svg.appendChild(svgEl("rect", {
+          x: plot.x, y: plot.y, width: plot.w, height: plot.h,
+          fill: "none", stroke: "rgba(255,255,255,0.14)"
+        }));
+
+        var paths = [];
+        var dots = [];
+        spec.series.forEach(function (series) {
+          var path = svgEl("path", {
+            fill: "none",
+            stroke: series.color,
+            "stroke-width": series.width || "2.25",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round"
+          });
+          if (series.dash) path.setAttribute("stroke-dasharray", series.dash);
+          svg.appendChild(path);
+          paths.push(path);
+          var dot = svgEl("circle", { r: "3.5", fill: series.color });
+          svg.appendChild(dot);
+          dots.push(dot);
+        });
+
+        var head = svgEl("line", { stroke: "rgba(76,201,255,0.4)", "stroke-width": "1" });
+        svg.appendChild(head);
+
+        function label(text, x, y, anchor) {
+          var node = svgEl("text", {
+            x: x, y: y, "text-anchor": anchor, fill: "#93A4B8",
+            "font-size": "12", "font-family": "ui-sans-serif, system-ui, sans-serif"
+          });
+          node.textContent = text;
+          svg.appendChild(node);
+        }
+
+        (spec.yTicks || []).forEach(function (tick) {
+          label(tick.text, plot.x - 8, yPos(tick.v) + 4, "end");
+        });
+        (spec.xTicks || []).forEach(function (tick) {
+          var anchor = tick.u > 0.85 ? "end" : tick.u < 0.15 ? "start" : "middle";
+          label(tick.text, xPos(tick.u), plot.y + plot.h + 18, anchor);
+        });
+
+        spec.series.forEach(function (series) {
+          var item = document.createElement("span");
+          var swatch = document.createElement("i");
+          swatch.className = "swatch" + (series.dash ? " swatch--dash" : "");
+          swatch.style.borderTopColor = series.color;
+          item.appendChild(swatch);
+          item.appendChild(document.createTextNode(series.name));
+          legendHost.appendChild(item);
+        });
+
+        host.appendChild(svg);
+
+        function draw(p) {
+          p = clamp(p, 0, 1);
+          var steps = 80;
+          spec.series.forEach(function (series, index) {
+            var count = Math.max(1, Math.round(steps * Math.max(p, 0.001)));
+            var d = "";
+            var lastX = 0;
+            var lastY = 0;
+            var i;
+            for (i = 0; i <= count; i++) {
+              var u = Math.min(p, i / steps);
+              var x = xPos(u);
+              var y = yPos(series.sample(u));
+              lastX = x;
+              lastY = y;
+              d += (i === 0 ? "M" : "L") + x.toFixed(2) + " " + y.toFixed(2) + " ";
+            }
+            paths[index].setAttribute("d", d);
+            dots[index].setAttribute("cx", lastX.toFixed(2));
+            dots[index].setAttribute("cy", lastY.toFixed(2));
+          });
+          var hx = xPos(p);
+          head.setAttribute("x1", hx);
+          head.setAttribute("x2", hx);
+          head.setAttribute("y1", plot.y);
+          head.setAttribute("y2", plot.y + plot.h);
+          head.setAttribute("opacity", p > 0.004 && p < 0.996 ? "1" : "0");
+        }
+
+        draw(0);
+        return { draw: draw };
+      }
+
+      function addReplay(stage, fn, label) {
+        var bar = document.createElement("div");
+        bar.className = "stage__bar";
+        var button = document.createElement("button");
+        button.type = "button";
+        button.className = "replay";
+        button.textContent = "Replay";
+        button.setAttribute("aria-label", label);
+        button.addEventListener("click", fn);
+        bar.appendChild(button);
+        stage.appendChild(bar);
+      }
+
+      function mountButton(stage, api) {
+        var view = document.createElement("div");
+        view.className = "stage__view";
+        var button = document.createElement("button");
+        button.type = "button";
+        button.className = "go";
+        button.id = "go";
+        button.textContent = "Continue";
+        view.appendChild(button);
+        stage.appendChild(view);
+        var job = { cancel: function () {} };
+        var holding = false;
+
+        function apply(u) {
+          button.style.transform = "scale(" + pressScale(u, api.physics).toFixed(4) + ")";
+          api.draw(u);
+        }
+        function playFrom(start) {
+          job.cancel();
+          var span = 1 - start;
+          job = animate(800 * span, function (p) { apply(start + span * p); });
+        }
+        function play() {
+          holding = false;
+          playFrom(0);
+        }
+
+        button.addEventListener("pointerdown", function (e) {
+          if (e.button !== 0) return;
+          holding = true;
+          job.cancel();
+          button.setPointerCapture(e.pointerId);
+          button.style.transform = "scale(0.95)";
+          api.draw(0.02);
+        });
+        function release() {
+          if (!holding) return;
+          holding = false;
+          playFrom(0.02);
+        }
+        button.addEventListener("pointerup", release);
+        button.addEventListener("pointercancel", release);
+        button.addEventListener("keydown", function (e) {
+          if (e.repeat) return;
+          if (e.key !== " " && e.key !== "Enter") return;
+          e.preventDefault();
+          play();
+        });
+        addReplay(stage, play, "Replay the button press");
+        play();
+      }
+
+      function mountPull(stage, api) {
+        var view = document.createElement("div");
+        view.className = "stage__view stage__view--pull";
+        var pull = document.createElement("div");
+        pull.className = "pull";
+        pull.id = "pull";
+        pull.tabIndex = 0;
+        pull.setAttribute("role", "slider");
+        pull.setAttribute("aria-orientation", "vertical");
+        pull.setAttribute("aria-valuemin", "0");
+        pull.setAttribute("aria-valuemax", "180");
+        pull.setAttribute("aria-valuenow", "0");
+        pull.setAttribute("aria-label", "Pull the list");
+
+        var lane = document.createElement("div");
+        lane.className = "pull__lane";
+        lane.setAttribute("aria-hidden", "true");
+        var pip = document.createElement("div");
+        pip.className = "pull__pip";
+        lane.appendChild(pip);
+
+        var windowEl = document.createElement("div");
+        windowEl.className = "pull__window";
+        var sheet = document.createElement("div");
+        sheet.className = "rows";
+        ["Messages", "Calendar", "Notes"].forEach(function (name) {
+          var row = document.createElement("div");
+          row.className = "row";
+          row.textContent = name;
+          sheet.appendChild(row);
+        });
+        windowEl.appendChild(sheet);
+        pull.appendChild(lane);
+        pull.appendChild(windowEl);
+        view.appendChild(pull);
+        stage.appendChild(view);
+
+        var hint = document.createElement("p");
+        hint.className = "hint";
+        hint.textContent = "Drag down";
+        stage.appendChild(hint);
+
+        var job = { cancel: function () {} };
+        var finger = 0;
+        var dragging = false;
+        var startClient = 0;
+        var origin = 0;
+
+        function apply(px, graphU) {
+          px = clamp(px, 0, 180);
+          finger = px;
+          var y = listY(px, api.physics);
+          sheet.style.transform = "translateY(" + y.toFixed(2) + "px)";
+          pip.style.transform = "translateY(" + px.toFixed(2) + "px)";
+          pull.setAttribute("aria-valuenow", String(Math.round(px)));
+          pull.setAttribute("aria-valuetext", "Finger " + Math.round(px) + " pixels, list " + Math.round(y) + " pixels");
+          if (graphU != null) api.draw(graphU);
+        }
+
+        function settleFrom(from, graphU) {
+          job.cancel();
+          job = animate(480, function (k) {
+            apply(from * (1 - easeOut(k)), graphU);
+          });
+        }
+
+        function play() {
+          dragging = false;
+          job.cancel();
+          apply(0, 0);
+          job = animate(1200, function (u) {
+            apply(u * 180, u);
+            if (u === 1 && !reduce) settleFrom(180, 1);
+          });
+        }
+
+        pull.addEventListener("pointerdown", function (e) {
+          if (e.button !== 0) return;
+          dragging = true;
+          job.cancel();
+          pull.setPointerCapture(e.pointerId);
+          startClient = e.clientY;
+          origin = finger;
+        });
+        pull.addEventListener("pointermove", function (e) {
+          if (!dragging) return;
+          apply(origin + (e.clientY - startClient), null);
+          api.draw(finger / 180);
+        });
+        function endDrag() {
+          if (!dragging) return;
+          dragging = false;
+          settleFrom(finger, finger / 180);
+        }
+        pull.addEventListener("pointerup", endDrag);
+        pull.addEventListener("pointercancel", endDrag);
+        pull.addEventListener("keydown", function (e) {
+          var step = e.shiftKey ? 40 : 16;
+          if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "Home" || e.key === "End") {
+            e.preventDefault();
+            job.cancel();
+          }
+          if (e.key === "ArrowDown") apply(finger + step, (finger + step) / 180);
+          else if (e.key === "ArrowUp") apply(finger - step, Math.max(0, finger - step) / 180);
+          else if (e.key === "Home") apply(0, 0);
+          else if (e.key === "End") apply(180, 1);
+          else if ((e.key === "Enter" || e.key === " ") && !e.repeat) {
+            e.preventDefault();
+            play();
+          }
+        });
+        addReplay(stage, play, "Replay the pull");
+        play();
+      }
+
+      function mountRoll(stage, api) {
+        var view = document.createElement("div");
+        view.className = "stage__view stage__view--stack";
+        var button = document.createElement("button");
+        button.type = "button";
+        button.className = "money";
+        button.id = "roll-money";
+        button.setAttribute("aria-label", "Roll the total from $486 to $529");
+        var sign = document.createElement("span");
+        sign.className = "money__sign";
+        sign.setAttribute("aria-hidden", "true");
+        sign.textContent = "$";
+        button.appendChild(sign);
+
+        var from = "486";
+        var to = "529";
+        var slots = [];
+        var i;
+        for (i = 0; i < 3; i++) {
+          var slot = document.createElement("span");
+          slot.className = "slot";
+          slot.setAttribute("aria-hidden", "true");
+          var outn = document.createElement("span");
+          outn.className = "slot__n";
+          outn.textContent = from.charAt(i);
+          var inn = document.createElement("span");
+          inn.className = "slot__n";
+          inn.textContent = to.charAt(i);
+          slot.appendChild(outn);
+          slot.appendChild(inn);
+          button.appendChild(slot);
+          slots.push({ outn: outn, inn: inn, index: i });
+        }
+        view.appendChild(button);
+
+        var delta = document.createElement("p");
+        delta.className = "delta";
+        delta.id = "roll-delta";
+        delta.textContent = "+$43";
+        view.appendChild(delta);
+        var live = document.createElement("p");
+        live.className = "sr";
+        live.setAttribute("aria-live", "polite");
+        view.appendChild(live);
+        stage.appendChild(view);
+
+        var job = { cancel: function () {} };
+
+        function setY(slot, y) {
+          slot.inn.style.transform = "translateY(" + y.toFixed(2) + "%)";
+          slot.outn.style.transform = "translateY(" + (y + 100).toFixed(2) + "%)";
+        }
+        function apply(u) {
+          var t = u * 800;
+          slots.forEach(function (slot) {
+            setY(slot, digitY(t, slot.index * 100, api.physics));
+          });
+          var landed = api.physics ? u === 1 : t > 8;
+          delta.classList.toggle("is-on", landed);
+          if (u === 1) live.textContent = "Total $529, up $43.";
+          api.draw(u);
+        }
+        function play() {
+          job.cancel();
+          delta.classList.remove("is-on");
+          live.textContent = "";
+          slots.forEach(function (slot) { setY(slot, -100); });
+          api.draw(0);
+          job = animate(800, apply);
+        }
+        button.addEventListener("click", play);
+        addReplay(stage, play, "Replay the rolling total");
+        play();
+      }
+
+      function mountDrag(stage, api) {
+        var ROW = 52;
+        var GAP = 8;
+        var SLOT = ROW + GAP;
+        var IDS = ["gym", "groceries", "read"];
+        var LABELS = { gym: "Gym at 7", groceries: "Groceries", read: "Read 20 pages" };
+        var order = IDS.slice();
+        var els = {};
+        var view = document.createElement("div");
+        view.className = "stage__view stage__view--pull";
+        var root = document.createElement("div");
+        root.className = "reorder";
+        root.id = "reorder";
+        root.style.height = (IDS.length * ROW + (IDS.length - 1) * GAP) + "px";
+
+        var drag = null;
+        var job = { cancel: function () {} };
+        var token = 0;
+
+        function indexOf(id) { return order.indexOf(id); }
+
+        function place() {
+          order.forEach(function (id, index) {
+            var el = els[id];
+            var lifted = drag && drag.id === id;
+            el.classList.toggle("is-lifted", !!(lifted && api.physics && drag.scale > 1.001));
+            el.style.zIndex = lifted ? "10" : "1";
+            if (lifted) {
+              el.style.transition = "none";
+              el.style.transform = "translateY(" + drag.y.toFixed(2) + "px) scale(" + drag.scale.toFixed(4) + ")";
+            } else {
+              el.style.transform = "translateY(" + (index * SLOT) + "px) scale(1)";
+            }
+          });
+        }
+
+        function arm(exceptId) {
+          order.forEach(function (id) {
+            var el = els[id];
+            if (id === exceptId || reduce) {
+              el.style.transition = "none";
+              return;
+            }
+            if (api.physics) {
+              el.style.transition = "transform " + (280 * SLOW) + "ms cubic-bezier(0.16, 1, 0.3, 1) " + (200 * SLOW) + "ms";
+            } else {
+              el.style.transition = "transform " + (180 * SLOW) + "ms linear 0ms";
+            }
+          });
+        }
+
+        function clearTransitions() {
+          IDS.forEach(function (id) { els[id].style.transition = "none"; });
+        }
+
+        function scriptY(t) {
+          var start = SLOT;
+          var end = SLOT * 2;
+          if (t <= 150) return start;
+          if (t >= 700) return end;
+          return start + (end - start) * easeInOut((t - 150) / 550);
+        }
+
+        IDS.forEach(function (id) {
+          var item = document.createElement("button");
+          item.type = "button";
+          item.className = "row";
+          item.appendChild(document.createTextNode(LABELS[id]));
+          var grip = document.createElement("span");
+          grip.className = "grip";
+          grip.setAttribute("aria-hidden", "true");
+          item.appendChild(grip);
+          item.setAttribute("aria-label", LABELS[id] + ". Drag to reorder, or press Alt and an arrow key.");
+          els[id] = item;
+          root.appendChild(item);
+
+          item.addEventListener("pointerdown", function (e) {
+            if (e.button !== 0) return;
+            token += 1;
+            job.cancel();
+            clearTransitions();
+            var origin = indexOf(id) * SLOT;
+            drag = { id: id, y: origin, scale: 1, origin: origin, client: e.clientY, moved: false };
+            place();
+            root.getBoundingClientRect();
+            arm(id);
+            item.setPointerCapture(e.pointerId);
+            if (!api.physics) return;
+            if (reduce) {
+              drag.scale = 1.05;
+              place();
+              return;
+            }
+            var sid = token;
+            var t0 = performance.now();
+            var liftMs = 150 * SLOW;
+            function lift(now) {
+              if (sid !== token || !drag || drag.id !== id) return;
+              var u = clamp((now - t0) / liftMs, 0, 1);
+              drag.scale = 1 + 0.05 * easeOut(u);
+              place();
+              api.draw(Math.min(0.125, (u * 150) / 1200));
+              if (u < 1) requestAnimationFrame(lift);
+            }
+            requestAnimationFrame(lift);
+          });
+
+          item.addEventListener("pointermove", function (e) {
+            if (!drag || drag.id !== id) return;
+            var dy = e.clientY - drag.client;
+            if (Math.abs(dy) > 3) {
+              drag.moved = true;
+              item.dataset.dragged = "1";
+            }
+            drag.y = clamp(drag.origin + dy, 0, (order.length - 1) * SLOT);
+            var target = clamp(Math.round(drag.y / SLOT), 0, order.length - 1);
+            if (target !== indexOf(id)) {
+              var from = indexOf(id);
+              order.splice(from, 1);
+              order.splice(target, 0, id);
+            }
+            place();
+          });
+
+          function finish() {
+            if (!drag || drag.id !== id) return;
+            var dest = indexOf(id) * SLOT;
+            drag = null;
+            if (!reduce) {
+              item.style.transition = "transform " + (240 * SLOW) + "ms cubic-bezier(0.16, 1, 0.3, 1)";
+            }
+            item.classList.remove("is-lifted");
+            item.style.zIndex = "1";
+            item.style.transform = "translateY(" + dest + "px) scale(1)";
+            api.draw(1);
+          }
+          item.addEventListener("pointerup", finish);
+          item.addEventListener("pointercancel", finish);
+          item.addEventListener("click", function (e) {
+            if (item.dataset.dragged === "1") {
+              item.dataset.dragged = "0";
+              e.preventDefault();
+            }
+          });
+          item.addEventListener("keydown", function (e) {
+            var dir = 0;
+            if (e.altKey && e.key === "ArrowDown") dir = 1;
+            else if (e.altKey && e.key === "ArrowUp") dir = -1;
+            else return;
+            e.preventDefault();
+            nudge(id, dir);
+          });
+        });
+
+        view.appendChild(root);
+        stage.appendChild(view);
+        var hint = document.createElement("p");
+        hint.className = "hint";
+        hint.textContent = "Drag a row";
+        stage.appendChild(hint);
+
+        function nudge(id, dir) {
+          var from = indexOf(id);
+          var to = from + dir;
+          if (to < 0 || to >= order.length) return;
+          token += 1;
+          job.cancel();
+          clearTransitions();
+          var startY = from * SLOT;
+          var endY = to * SLOT;
+          drag = { id: id, y: startY, scale: 1 };
+          place();
+          root.getBoundingClientRect();
+          arm(id);
+          var sid = token;
+          job = animate(1200, function (u) {
+            if (sid !== token || !drag) return;
+            var t = u * 1200;
+            var moved = t <= 150 ? 0 : t >= 700 ? 1 : easeInOut((t - 150) / 550);
+            drag.y = startY + (endY - startY) * moved;
+            drag.scale = liftScale(t, api.physics);
+            if (Math.round(drag.y / SLOT) === to && indexOf(id) !== to) {
+              order.splice(indexOf(id), 1);
+              order.splice(to, 0, id);
+            }
+            place();
+            api.draw(u);
+            if (u === 1) {
+              drag = null;
+              clearTransitions();
+              place();
+            }
+          });
+        }
+
+        function play() {
+          token += 1;
+          job.cancel();
+          drag = null;
+          order = IDS.slice();
+          clearTransitions();
+          place();
+          root.getBoundingClientRect();
+          arm("groceries");
+          var sid = token;
+          var reordered = false;
+          drag = { id: "groceries", y: SLOT, scale: 1 };
+          job = animate(1200, function (u) {
+            if (sid !== token) return;
+            var t = u * 1200;
+            drag.y = scriptY(t);
+            drag.scale = liftScale(t, api.physics);
+            var target = clamp(Math.round(drag.y / SLOT), 0, 2);
+            if (!reordered && target !== indexOf("groceries")) {
+              reordered = true;
+              var from = indexOf("groceries");
+              order.splice(from, 1);
+              order.splice(target, 0, "groceries");
+            }
+            place();
+            api.draw(u);
+            if (u === 1) {
+              drag = null;
+              clearTransitions();
+              place();
+            }
+          });
+        }
+
+        place();
+        addReplay(stage, play, "Replay the lift and slide");
+        play();
+      }
+
+      function mountCard(stage, api) {
+        var view = document.createElement("div");
+        view.className = "stage__view";
+        var fit = document.createElement("div");
+        fit.className = "fit";
+        var button = document.createElement("button");
+        button.type = "button";
+        button.className = "lisbon";
+        button.id = "lisbon";
+        button.setAttribute("aria-expanded", "false");
+        var orb = document.createElement("span");
+        orb.className = "lisbon__orb";
+        orb.setAttribute("aria-hidden", "true");
+        var label = document.createElement("span");
+        label.textContent = "Lisbon nights";
+        button.appendChild(orb);
+        button.appendChild(label);
+        fit.appendChild(button);
+        view.appendChild(fit);
+        stage.appendChild(view);
+
+        var current = 0;
+        var job = { cancel: function () {} };
+        var token = 0;
+
+        function apply(u) {
+          current = clamp(u, 0, 1);
+          var max = fit.clientWidth || 280;
+          var min = Math.min(200, max);
+          button.style.width = (min + (max - min) * current).toFixed(2) + "px";
+          button.setAttribute("aria-expanded", current > 0.85 ? "true" : "false");
+        }
+
+        function runTo(target, id) {
+          if (id == null) id = ++token;
+          job.cancel();
+          var from = current;
+          job = animate(350, function (p) {
+            if (id !== token) return;
+            var eased = api.physics ? quint(p) : p;
+            apply(from + (target - from) * eased);
+            api.draw(p);
+          });
+        }
+
+        function replay() {
+          var id = ++token;
+          var sid = session;
+          job.cancel();
+          apply(0);
+          api.draw(0);
+          if (reduce) {
+            apply(1);
+            api.draw(1);
+            return;
+          }
+          var timer = setTimeout(function () {
+            if (sid !== session || id !== token) return;
+            runTo(1, id);
+          }, 160 * SLOW);
+          job = { cancel: function () { clearTimeout(timer); } };
+        }
+
+        button.addEventListener("click", function () {
+          runTo(current > 0.5 ? 0 : 1);
+        });
+        addReplay(stage, replay, "Replay the card expand");
+        replay();
+      }
+
+      function mountSuccess(stage, api) {
+        var view = document.createElement("div");
+        view.className = "stage__view";
+        var button = document.createElement("button");
+        button.type = "button";
+        button.className = "check-btn";
+        button.id = "check";
+        button.setAttribute("aria-label", "Play the success check");
+        var svg = svgEl("svg", { viewBox: "0 0 100 100", class: "check", "aria-hidden": "true" });
+        var track = svgEl("circle", {
+          cx: "50", cy: "50", r: "32", fill: "none",
+          stroke: "rgba(76,201,255,0.22)", "stroke-width": "3"
+        });
+        var group = svgEl("g", {});
+        var circle = svgEl("circle", {
+          cx: "50", cy: "50", r: "32", fill: "none", stroke: "#4CC9FF",
+          "stroke-width": "3", "stroke-linecap": "round",
+          pathLength: "1", "stroke-dasharray": "1", "stroke-dashoffset": "1",
+          transform: "rotate(-90 50 50)"
+        });
+        var tick = svgEl("path", {
+          d: "M32 52 L45 65 L70 36", fill: "none", stroke: "#4CC9FF",
+          "stroke-width": "3.5", "stroke-linecap": "round", "stroke-linejoin": "round",
+          pathLength: "1", "stroke-dasharray": "1", "stroke-dashoffset": "1"
+        });
+        group.appendChild(circle);
+        group.appendChild(tick);
+        svg.appendChild(track);
+        svg.appendChild(group);
+        button.appendChild(svg);
+        view.appendChild(button);
+        stage.appendChild(view);
+
+        var job = { cancel: function () {} };
+
+        function apply(u) {
+          var t = u * 470;
+          if (api.physics) {
+            group.removeAttribute("transform");
+            circle.setAttribute("stroke-dashoffset", String(1 - circleDrawn(t)));
+            tick.setAttribute("stroke-dashoffset", String(1 - tickDrawn(t)));
+          } else {
+            circle.setAttribute("stroke-dashoffset", "0");
+            tick.setAttribute("stroke-dashoffset", "0");
+            var scale = popScale(t);
+            group.setAttribute("transform", "translate(50 50) scale(" + scale.toFixed(4) + ") translate(-50 -50)");
+          }
+          api.draw(u);
+        }
+        function play() {
+          job.cancel();
+          apply(0);
+          job = animate(470, apply);
+        }
+        button.addEventListener("click", play);
+        addReplay(stage, play, "Replay the success check");
+        play();
+      }
+
+      function lines() {
+        var args = Array.prototype.slice.call(arguments);
+        return args.join("\n");
+      }
+
+      var STUDIES = [
+        {
+          id: "button",
+          n: "01",
+          short: "Spring",
+          name: "Sink, then spring",
+          badge: "SINK 95% - SPRING 800ms",
+          badgeOff: "SINK 95% - LINEAR RETURN",
+          caption: "Scale vs time · 800ms",
+          prompt: "Create a premium button that on press scales to 95% then springs back with overshoot over 800ms using cubic-bezier(.34,1.56,.64,1). Show scale vs time graph.",
+          code: lines(
+            ".continue {",
+            "  transition: transform 800ms cubic-bezier(0.34, 1.56, 0.64, 1);",
+            "}",
+            ".continue:active {",
+            "  transition: none;",
+            "  transform: scale(0.95);",
+            "}",
+            "",
+            "// whileTap={{ scale: 0.95 }}",
+            "// spring  stiffness: 400  damping: 15"
+          ),
+          mount: mountButton,
+          graph: function (withPhysics) {
+            return {
+              yMin: 0.94, yMax: 1.04,
+              yTicks: [{ v: 0.95, text: "0.95" }, { v: 1, text: "1.00" }, { v: 1.02, text: "1.02" }],
+              xTicks: [{ u: 0, text: "0" }, { u: 1, text: "800ms" }],
+              guides: [1, 1.02],
+              series: [
+                { name: "With", color: "#4CC9FF", width: withPhysics ? "2.75" : "1.7", sample: function (u) { return pressScale(u, true); } },
+                { name: "Without", color: "#93A4B8", dash: "5 4", width: withPhysics ? "1.7" : "2.75", sample: function (u) { return pressScale(u, false); } }
+              ]
+            };
+          }
+        },
+        {
+          id: "pull",
+          n: "02",
+          short: "Pull",
+          name: "Resist the pull",
+          badge: "FINGER 100% → LIST 35%",
+          badgeOff: "FINGER 100% → LIST 100%",
+          caption: "Finger vs list",
+          prompt: "Make pull-to-refresh where finger drag maps to only 35% list movement (resistance). Finger 100px = list 35px. Show finger vs list graph.",
+          code: lines(
+            "function listY(dragY) {",
+            "  if (dragY <= 100) return dragY * 0.35;",
+            "  return 35 + (dragY - 100) * 0.2;",
+            "}",
+            "",
+            "sheet.style.transform = \"translateY(\" + listY(dragY) + \"px)\";"
+          ),
+          mount: mountPull,
+          graph: function (withPhysics) {
+            return {
+              square: true,
+              yMin: 0, yMax: 1,
+              yTicks: [{ v: 0, text: "0" }, { v: 100 / 180, text: "100" }, { v: 1, text: "180" }],
+              xTicks: [{ u: 0, text: "0" }, { u: 100 / 180, text: "100" }, { u: 1, text: "180" }],
+              guidesX: [100 / 180],
+              series: [
+                { name: "List", color: "#4CC9FF", width: "2.75", sample: function (u) { return listY(u * 180, withPhysics) / 180; } },
+                { name: "Finger", color: "#93A4B8", dash: "4 4", width: "1.7", sample: function (u) { return u; } }
+              ]
+            };
+          }
+        },
+        {
+          id: "roll",
+          n: "03",
+          short: "Roll",
+          name: "Roll, don’t jump",
+          badge: "DIGITS ROLL - 100ms APART",
+          badgeOff: "NUMBER JUMPS",
+          caption: "Digit position vs time · 600ms",
+          prompt: "Animate number from $486 to $529 by rolling each digit vertically like a slot machine, staggered 100ms apart, 600ms ease-out.",
+          code: lines(
+            "digits.forEach(function (digit, i) {",
+            "  digit.animate(",
+            "    [",
+            "      { transform: \"translateY(-100%)\" },",
+            "      { transform: \"translateY(0)\" }",
+            "    ],",
+            "    {",
+            "      duration: 600,",
+            "      delay: i * 100,",
+            "      easing: \"cubic-bezier(0, 0, 0.58, 1)\",",
+            "      fill: \"forwards\"",
+            "    }",
+            "  );",
+            "});"
+          ),
+          mount: mountRoll,
+          graph: function (withPhysics) {
+            return {
+              yMin: -110, yMax: 16,
+              yTicks: [{ v: -100, text: "-100%" }, { v: 0, text: "0" }],
+              xTicks: [{ u: 0, text: "0" }, { u: 600 / 800, text: "600" }, { u: 1, text: "800ms" }],
+              series: [
+                { name: "100s", color: "#4CC9FF", width: withPhysics ? "2.6" : "1.5", sample: function (u) { return digitY(u * 800, 0, true); } },
+                { name: "10s", color: "#8FDBFF", width: withPhysics ? "2.2" : "1.4", sample: function (u) { return digitY(u * 800, 100, true); } },
+                { name: "1s", color: "#D7F3FF", width: withPhysics ? "2" : "1.3", sample: function (u) { return digitY(u * 800, 200, true); } },
+                { name: "Jump", color: "#93A4B8", dash: "5 4", width: withPhysics ? "1.5" : "2.6", sample: function (u) { return digitY(u * 800, 0, false); } }
+              ]
+            };
+          }
+        },
+        {
+          id: "drag",
+          n: "04",
+          short: "Lift",
+          name: "Lift, then make room",
+          badge: "LIFT 105% - OTHERS SLIDE 200ms",
+          badgeOff: "NO LIFT - SLIDE NOW",
+          caption: "Lift vs time · 1200ms",
+          prompt: "Drag-to-reorder list where dragged item lifts to 105% scale with shadow, other items only slide to make room after 200ms delay.",
+          code: lines(
+            "dragged.style.transform = \"scale(1.05)\";",
+            "dragged.style.zIndex = \"10\";",
+            "dragged.style.boxShadow = \"0 18px 36px rgba(0, 0, 0, 0.35)\";",
+            "",
+            "others.forEach(function (item) {",
+            "  item.style.transition = \"transform 280ms cubic-bezier(0.16, 1, 0.3, 1) 200ms\";",
+            "});"
+          ),
+          mount: mountDrag,
+          graph: function (withPhysics) {
+            return {
+              yMin: 0.99, yMax: 1.07,
+              yTicks: [{ v: 1, text: "1.00" }, { v: 1.05, text: "1.05" }],
+              xTicks: [{ u: 0, text: "0" }, { u: 200 / 1200, text: "200" }, { u: 1, text: "1200ms" }],
+              guides: [1.05],
+              guidesX: [200 / 1200],
+              series: [
+                { name: "With", color: "#4CC9FF", width: withPhysics ? "2.75" : "1.7", sample: function (u) { return liftScale(u * 1200, true); } },
+                { name: "Without", color: "#93A4B8", dash: "5 4", width: withPhysics ? "1.7" : "2.75", sample: function (u) { return liftScale(u * 1200, false); } }
+              ]
+            };
+          }
+        },
+        {
+          id: "card",
+          n: "05",
+          short: "Expand",
+          name: "Fast, then slow",
+          badge: "EASE-OUT - 350ms",
+          badgeOff: "LINEAR - 350ms",
+          caption: "Size vs time · 350ms",
+          prompt: "Card expand animation that is fast at start then slow end, 350ms ease-out quint (cubic-bezier 0.16,1,0.3,1), size graph above linear.",
+          code: lines(
+            ".lisbon {",
+            "  transition: width 350ms cubic-bezier(0.16, 1, 0.3, 1);",
+            "}",
+            ".lisbon.is-open {",
+            "  width: 100%;",
+            "}"
+          ),
+          mount: mountCard,
+          graph: function (withPhysics) {
+            return {
+              yMin: 0, yMax: 1.08,
+              yTicks: [{ v: 0, text: "0" }, { v: 1, text: "1" }],
+              xTicks: [{ u: 0, text: "0" }, { u: 1, text: "350ms" }],
+              series: [
+                { name: "Ease-out", color: "#4CC9FF", width: withPhysics ? "2.75" : "1.7", sample: function (u) { return quint(u); } },
+                { name: "Linear", color: "#93A4B8", dash: "5 4", width: withPhysics ? "1.7" : "2.75", sample: function (u) { return u; } }
+              ]
+            };
+          }
+        },
+        {
+          id: "success",
+          n: "06",
+          short: "Check",
+          name: "Draw the win",
+          badge: "CIRCLE, THEN TICK - 470ms",
+          badgeOff: "POP THE CHECK",
+          caption: "Tick drawn · 470ms",
+          prompt: "Success checkmark animation - draw circle stroke first (300ms) then draw tick (170ms), total 470ms, use SVG pathLength animation.",
+          code: lines(
+            "circle.style.strokeDasharray = \"1\";",
+            "tick.style.strokeDasharray = \"1\";",
+            "circle.style.transition = \"stroke-dashoffset 300ms ease-out\";",
+            "tick.style.transition = \"stroke-dashoffset 170ms cubic-bezier(0.45, 0, 0.55, 1) 170ms\";",
+            "circle.style.strokeDashoffset = \"0\";",
+            "tick.style.strokeDashoffset = \"0\";",
+            "",
+            "// pathLength 0 -> 1",
+            "// circle duration 0.3s",
+            "// tick delay 0.17s, duration 0.17s"
+          ),
+          mount: mountSuccess,
+          graph: function (withPhysics) {
+            return {
+              yMin: 0, yMax: 1.08,
+              yTicks: [{ v: 0, text: "0" }, { v: 1, text: "1" }],
+              xTicks: [{ u: 0, text: "0" }, { u: 170 / 470, text: "170" }, { u: 1, text: "470ms" }],
+              guidesX: [170 / 470, 300 / 470],
+              series: [
+                { name: "Circle", color: "#8FDBFF", width: withPhysics ? "1.8" : "1.3", sample: function (u) { return circleDrawn(u * 470); } },
+                { name: "Tick", color: "#4CC9FF", width: withPhysics ? "2.75" : "1.6", sample: function (u) { return tickDrawn(u * 470); } },
+                { name: "Pop", color: "#93A4B8", dash: "5 4", width: withPhysics ? "1.5" : "2.6", sample: function (u) { return (popScale(u * 470) - 0.4) / 0.6; } }
+              ]
+            };
+          }
+        }
+      ];
+
+      function findStudy(id) {
+        var i;
+        for (i = 0; i < STUDIES.length; i++) {
+          if (STUDIES[i].id === id) return STUDIES[i];
+        }
+        return null;
+      }
+
+      function setHash(id) {
+        if (!history.replaceState) return;
+        var url = location.pathname + location.search;
+        if (id) url += "#" + id;
+        history.replaceState(null, "", url);
+      }
+
+      function syncMode() {
+        document.getElementById("mode-with").setAttribute("aria-pressed", physics ? "true" : "false");
+        document.getElementById("mode-without").setAttribute("aria-pressed", physics ? "false" : "true");
+      }
+
+      function syncJumps() {
+        var buttons = document.querySelectorAll("#jumps button");
+        Array.prototype.forEach.call(buttons, function (button) {
+          var on = button.getAttribute("data-jump") === currentId;
+          if (on) button.setAttribute("aria-current", "true");
+          else button.removeAttribute("aria-current");
+        });
+      }
+
+      function render() {
+        session += 1;
+        var spec = findStudy(currentId);
+        if (!spec) return;
+        var title = document.getElementById("study-title");
+        title.textContent = "";
+        var num = document.createElement("span");
+        num.className = "accent";
+        num.textContent = spec.n;
+        title.appendChild(num);
+        title.appendChild(document.createTextNode(" " + spec.name));
+        document.getElementById("badge").textContent = physics ? spec.badge : spec.badgeOff;
+        document.getElementById("graph-cap").textContent = spec.caption;
+        document.getElementById("prompt-text").textContent = spec.prompt;
+        document.getElementById("code-text").textContent = spec.code;
+        document.getElementById("slowmo").textContent = reduce ? "REDUCED MOTION" : "SLOW-MO 1/4x";
+        syncMode();
+        syncJumps();
+        var graph = createGraph(
+          document.getElementById("graph-host"),
+          document.getElementById("legend"),
+          spec.graph(physics)
+        );
+        var stage = document.getElementById("stage");
+        stage.replaceChildren();
+        spec.mount(stage, {
+          physics: physics,
+          draw: function (p) { graph.draw(p); }
+        });
+      }
+
+      function openStudy(id, opts) {
+        opts = opts || {};
+        if (!findStudy(id)) return;
+        currentId = id;
+        lastId = id;
+        document.getElementById("grid").hidden = true;
+        var study = document.getElementById("study");
+        study.hidden = false;
+        study.classList.add("is-in");
+        render();
+        setHash(id);
+        if (!opts.keepFocus) document.getElementById("study-title").focus();
+        if (opts.scroll !== false) {
+          study.scrollIntoView({ block: "start", behavior: reduce ? "auto" : "smooth" });
+        }
+      }
+
+      function closeStudy() {
+        session += 1;
+        var id = lastId;
+        currentId = null;
+        document.getElementById("study").hidden = true;
+        document.getElementById("grid").hidden = false;
+        setHash("");
+        if (id) {
+          var tile = document.querySelector('.tile[data-study="' + id + '"]');
+          if (tile) tile.focus();
+        }
+      }
+
+      function copyText(text) {
+        function legacy() {
+          return new Promise(function (resolve, reject) {
+            var area = document.createElement("textarea");
+            area.value = text;
+            area.setAttribute("readonly", "");
+            area.style.position = "fixed";
+            area.style.left = "-9999px";
+            document.body.appendChild(area);
+            area.select();
+            var ok = false;
+            try { ok = document.execCommand("copy"); } catch (err) { ok = false; }
+            document.body.removeChild(area);
+            if (ok) resolve();
+            else reject(new Error("copy failed"));
+          });
+        }
+        if (navigator.clipboard && window.isSecureContext && navigator.clipboard.writeText) {
+          return navigator.clipboard.writeText(text).catch(legacy);
+        }
+        return legacy();
+      }
+
+      function bindCopy(button, read, what) {
+        button.addEventListener("click", function () {
+          copyText(read()).then(function () {
+            button.textContent = "Copied";
+            button.classList.add("is-done");
+            document.getElementById("copy-status").textContent = "Copied " + what;
+            setTimeout(function () {
+              button.textContent = "Copy";
+              button.classList.remove("is-done");
+            }, 1400);
+          }).catch(function () {
+            document.getElementById("copy-status").textContent = "Copy failed";
+          });
+        });
+      }
+
+      var jumps = document.getElementById("jumps");
+      STUDIES.forEach(function (spec) {
+        var button = document.createElement("button");
+        button.type = "button";
+        button.textContent = spec.short;
+        button.setAttribute("data-jump", spec.id);
+        button.addEventListener("click", function () {
+          openStudy(spec.id, { keepFocus: true, scroll: false });
+        });
+        jumps.appendChild(button);
+      });
+
+      document.getElementById("grid").addEventListener("click", function (e) {
+        var node = e.target;
+        while (node && node !== document) {
+          if (node.classList && node.classList.contains("tile")) {
+            openStudy(node.getAttribute("data-study"));
+            return;
+          }
+          node = node.parentNode;
+        }
+      });
+
+      document.getElementById("study-back").addEventListener("click", closeStudy);
+      document.getElementById("mode-with").addEventListener("click", function () {
+        if (physics || !currentId) return;
+        physics = true;
+        render();
+      });
+      document.getElementById("mode-without").addEventListener("click", function () {
+        if (!physics || !currentId) return;
+        physics = false;
+        render();
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && currentId) {
+          e.preventDefault();
+          closeStudy();
+        }
+      });
+
+      bindCopy(document.getElementById("copy-prompt"), function () {
+        return document.getElementById("prompt-text").textContent;
+      }, "prompt");
+      bindCopy(document.getElementById("copy-code"), function () {
+        return document.getElementById("code-text").textContent;
+      }, "code");
+
+      window.addEventListener("hashchange", function () {
+        var id = (location.hash || "").replace(/^#/, "");
+        if (findStudy(id)) {
+          if (id !== currentId) openStudy(id, { keepFocus: true, scroll: false });
+        } else if (currentId) {
+          closeStudy();
+        }
+      });
+
+      var params = new URLSearchParams(location.search);
+      var initial = params.get("open") || (location.hash || "").replace(/^#/, "");
+      if (findStudy(initial)) openStudy(initial, { scroll: false });
+    })();
+  </script>
+  <script src="shared/site-header.js?v=24" defer></script>
+</body>
+</html>
