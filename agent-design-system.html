@@ -1,0 +1,2033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agent system · ui-kit</title>
+  <meta name="description" content="rico’s five layers for a design system an agent can follow: primitives, semantic tokens, components, blocks, and rules with a review-screen skill." />
+  <script>
+    /* Match the gallery page shell before paint. Palettes change --page only. */
+    (function () {
+      try {
+        var q = location.search || '';
+        var reduce = /(?:^|[?&])reduce=1(?:&|$)/.test(q);
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) reduce = true;
+        if (/(?:^|[?&])motion=1(?:&|$)/.test(q)) reduce = false;
+        if (/(?:^|[?&])reduce=1(?:&|$)/.test(q)) reduce = true;
+        document.documentElement.classList.add('js');
+        document.documentElement.setAttribute('data-motion', reduce ? 'reduce' : 'ok');
+        var id = localStorage.getItem('ui-kit-palette') || 'forest';
+        var pages = {
+          forest: '#f5f1ee', navy: '#eef2f6', terracotta: '#faf3ef',
+          plum: '#f6f1f8', ocean: '#eef6f6', amber: '#faf6ee',
+          slate: '#f0f1f3', rosewood: '#f8f1f3', olive: '#f4f3ea',
+          ink: '#ececf0'
+        };
+        document.documentElement.setAttribute('data-theme', id);
+        document.documentElement.style.setProperty('--page', pages[id] || pages.forest);
+      } catch (e) {}
+    })();
+  </script>
+  <style>
+    :root {
+      --page: #ececf0;
+      --canvas: #ffffff;
+      --ink: #1c1c22;
+      --muted: #6b6b76;
+      --line: #e4e4ea;
+      --accent: #5b5bf0;
+      --brand: #1e6851;
+      --spring: linear(
+        0, 0.006, 0.025, 0.07, 0.14, 0.25, 0.4, 0.55, 0.7, 0.82,
+        0.92, 0.99, 1.04, 1.08, 1.09, 1.07, 1.04, 1.02, 1.005, 1
+      );
+      --spring-dur: 0.75s;
+      --nav-h: 52px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--site-header-h, 56px) + var(--nav-h) + 16px);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      background: var(--page);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .sr {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .lib-nav {
+      position: sticky;
+      top: var(--site-header-h, 56px);
+      z-index: 40;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0 0.85rem 0 1rem;
+      background: color-mix(in srgb, var(--page) 88%, #fff);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .lib-brand {
+      font-size: 11px;
+      font-weight: 650;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+      flex: none;
+    }
+
+    .lib-links {
+      display: flex;
+      gap: 0.15rem;
+      margin-left: auto;
+      min-width: 0;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+    }
+
+    @media (max-width: 640px) {
+      .lib-links {
+        -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+        mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+      }
+    }
+
+    .lib-links::-webkit-scrollbar { display: none; }
+
+    .lib-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.45rem 0.7rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .lib-links a:hover,
+    .lib-links a[aria-current="location"] {
+      color: var(--ink);
+      background: var(--canvas);
+    }
+
+    .lib {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+      min-width: 0;
+    }
+
+    .hero {
+      display: grid;
+      gap: 1.35rem;
+      align-items: center;
+      margin: 0 0 2.75rem;
+      min-width: 0;
+    }
+
+    @media (min-width: 840px) {
+      .hero { grid-template-columns: 1fr 1.05fr; gap: 2rem; }
+      .lib-nav { padding: 0 1.25rem; }
+    }
+
+    h1 {
+      margin: 0 0 0.55rem;
+      font-size: clamp(1.9rem, 4vw, 2.5rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+      text-wrap: balance;
+    }
+
+    .lede {
+      margin: 0;
+      max-width: 34rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .by {
+      margin: 0.85rem 0 0;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    a { color: var(--accent); text-underline-offset: 0.16em; }
+    a:hover { color: var(--ink); }
+
+    .rise {
+      transition: transform var(--spring-dur) var(--spring), opacity 0.45s ease;
+    }
+
+    .js[data-motion="ok"] .hero:not(.is-in) .rise {
+      opacity: 0;
+      transform: translateY(14px) scale(0.97);
+    }
+
+    .hero.is-in .rise:nth-child(2) { transition-delay: 0.08s; }
+
+    .canvas {
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px #00000008;
+      overflow: hidden;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .canvas-chrome {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid var(--line);
+      background: #fafafa;
+    }
+
+    .canvas-name,
+    .canvas-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+
+    .canvas-name { color: #3a3a44; }
+    .canvas-tag { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+    .stage-body,
+    .chart-body { padding: 1rem 1rem 0.95rem; min-width: 0; }
+
+    .stage-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-top: 0.85rem;
+    }
+
+    .btn {
+      min-height: 44px;
+      padding: 0.4rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      color: var(--ink);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    .btn:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+
+    .caption, .quiet, .sec-head p {
+      margin: 0;
+      max-width: 40rem;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    .caption { margin-top: 0.8rem; font-size: 0.82rem; }
+    .quiet { margin-top: 0.85rem; }
+
+    .sec {
+      margin: 0 0 2.85rem;
+      scroll-margin-top: calc(var(--site-header-h, 56px) + var(--nav-h) + 12px);
+      min-width: 0;
+    }
+
+    .sec-head { margin: 0 0 1rem; }
+
+    .sec-head h2 {
+      margin: 0 0 0.3rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .kicker {
+      margin: 0 0 0.45rem;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .switch {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .switch label,
+    .map-row {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .switch label {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0 0.9rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .switch input,
+    .map-row input {
+      position: absolute;
+      opacity: 0;
+      inset: 0;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .switch input:focus,
+    .map-row input:focus { outline: none; }
+
+    .switch label:has(input:checked) {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
+
+    .switch label:has(input:focus-visible),
+    .map-row:has(input:focus-visible),
+    .plant:has(input:focus-visible),
+    .chip:focus-visible,
+    .btn:focus-visible,
+    a:focus-visible,
+    .demo-input:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .closer {
+      padding-top: 0.4rem;
+      border-top: 1px solid var(--line);
+    }
+
+    .closer h2 {
+      margin: 0 0 0.35rem;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+
+    .closer p {
+      margin: 0;
+      max-width: 40rem;
+      color: var(--muted);
+    }
+
+    /* —— system under study. Page chrome stays outside .sys —— */
+    .sys {
+      --ink: #1c1c22;
+      --muted: #5c5c66;
+      --canvas: #ffffff;
+      --surface: #f6f6f8;
+      --line: #e4e4ea;
+      --brand: #1e6851;
+      --green: #157a45;
+      --amber: #8a5a10;
+      --red: #9f2d2d;
+      --green-bg: #e7f5ee;
+      --amber-bg: #fbf4e6;
+      --red-bg: #fdecec;
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 24px;
+      --space-6: 32px;
+      --type-12: 12px;
+      --type-14: 14px;
+      --type-16: 16px;
+      --type-20: 20px;
+      --type-28: 28px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --shadow-sm: 0 1px 2px #00000014;
+      --shadow-md: 0 8px 24px #00000014;
+      --motion-fast: 160ms ease;
+      --motion-hover: 200ms ease;
+      color: var(--ink);
+      font-size: var(--type-14);
+    }
+
+    /* Not in the primitive file. #2f6e56 is dark enough to read as text. */
+    .odd-type { font-size: 13.5px; color: #2f6e56; }
+    .odd-hex { background: #2f6e56; }
+
+    .c-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      min-height: 44px;
+      padding: 0 0.75rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      background: var(--ink);
+      color: #fff;
+      font: inherit;
+      font-size: var(--type-14);
+      font-weight: 650;
+      line-height: 1;
+      cursor: pointer;
+      transition: background var(--motion-hover), transform var(--motion-hover), opacity var(--motion-fast);
+    }
+
+    .c-btn.quiet {
+      background: var(--canvas);
+      color: var(--ink);
+      border-color: var(--line);
+    }
+
+    .c-btn.quiet:hover { background: var(--surface); border-color: var(--ink); }
+
+    .c-btn.primary:hover,
+    .sheet-button:has(input[value="hover"]:checked) .c-btn.primary {
+      background: #2a2a32;
+    }
+
+    .c-btn.primary:active,
+    .sheet-button:has(input[value="pressed"]:checked) .c-btn.primary {
+      background: #000;
+      transform: translateY(1px);
+    }
+
+    .sheet-button:has(input[value="disabled"]:checked) .c-btn.primary {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .sheet-button:has(input[value="loading"]:checked) .lbl-idle { display: none; }
+    .lbl-busy { display: none; }
+    .sheet-button:has(input[value="loading"]:checked) .lbl-busy { display: inline-flex; align-items: center; gap: 0.4rem; }
+
+    .spinner {
+      width: 12px;
+      height: 12px;
+      border: 2px solid #fff;
+      border-right-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      padding: 0 0.5rem;
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--ink);
+      font-size: var(--type-12);
+      font-weight: 650;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .badge.ok { background: var(--green-bg); color: var(--green); }
+    .badge.warn { background: var(--amber-bg); color: var(--amber); }
+    .badge.danger { background: var(--red-bg); color: var(--red); }
+
+    .mini {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: var(--canvas);
+      padding: var(--space-4);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .mini-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-3);
+    }
+
+    .mini-copy { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+    .mini-title { font-size: 13.5px; font-weight: 650; letter-spacing: -0.02em; color: #2f6e56; }
+    .mini-meta { font-size: var(--type-12); color: var(--muted); }
+    .mini-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-4); }
+
+    .hero-demo:has(input[value="follow"]:checked) .mini-title {
+      font-size: var(--type-16);
+      color: var(--ink);
+    }
+
+    .hero-demo:has(input[value="follow"]:checked) .mini-copy { gap: var(--space-2); }
+
+    .only-follow { display: none; }
+    .canvas:has(input[name="build"][value="follow"]:checked) .only-guess { display: none; }
+    .canvas:has(input[name="build"][value="follow"]:checked) .only-follow { display: inline-flex; }
+    .canvas:has(input[name="build"][value="follow"]:checked) p.only-follow { display: block; }
+
+    .hero-demo .switch { margin-bottom: 0.85rem; }
+
+    /* primitives */
+    .file-note {
+      margin: 0 0 0.9rem;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: #3a3a44;
+    }
+
+    .file-note span { color: var(--muted); }
+
+    .token-group { margin-top: 0.85rem; }
+    .token-group .kicker { margin-bottom: 0.4rem; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      min-height: 44px;
+      padding: 0 0.7rem;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      color: var(--ink);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    .chip[aria-pressed="true"] {
+      border-color: var(--ink);
+      box-shadow: inset 0 0 0 1px var(--ink);
+    }
+
+    .chip i {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      border: 1px solid #00000014;
+      flex: none;
+    }
+
+    .chip-sample {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin-top: 0.9rem;
+      min-height: 52px;
+      padding: 0.65rem 0.75rem;
+      border-radius: var(--radius-md);
+      border: 1px dashed var(--line);
+      background: var(--surface);
+      overflow: hidden;
+    }
+
+    .sample-swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid #00000014;
+      flex: none;
+    }
+
+    .readout {
+      margin: 0.7rem 0 0;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: #3a3a44;
+    }
+
+    .vs {
+      display: grid;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    @media (min-width: 720px) {
+      .vs { grid-template-columns: 1fr 1fr; }
+    }
+
+    .metric { display: grid; gap: 0.15rem; padding: 0.7rem 0; border-top: 1px solid var(--line); }
+    .metric:first-child { border-top: 0; padding-top: 0; }
+    .metric b {
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+      font-variant-numeric: tabular-nums;
+    }
+    .metric em { font-style: normal; font-weight: 650; }
+    .metric .dim { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+
+    .gap-track {
+      display: block;
+      width: 140px;
+      height: 8px;
+      margin-top: 0.35rem;
+      border-radius: 999px;
+      background: var(--line);
+      overflow: hidden;
+    }
+    .gap-track i { display: block; height: 100%; border-radius: inherit; }
+    .gap-track .odd { width: 100px; background: #9f2d2d; }
+    .gap-track .file { width: 80px; background: var(--brand); }
+
+    .swatch-row { display: flex; align-items: center; gap: 0.5rem; font-family: var(--mono); font-size: 12px; }
+    .swatch-row i { width: 28px; height: 28px; border-radius: 6px; border: 1px solid #00000014; }
+
+    /* semantic */
+    .map {
+      display: grid;
+      gap: 0.4rem;
+      margin: 0 0 0.85rem;
+    }
+
+    @media (min-width: 720px) {
+      .map { grid-template-columns: 1fr 1fr; }
+    }
+
+    .map-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) auto minmax(0, 1fr);
+      align-items: center;
+      gap: 0.45rem;
+      min-height: 44px;
+      padding: 0.35rem 0.7rem;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--canvas);
+      font-size: 13px;
+    }
+
+    .map-row:has(input:checked) {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent);
+    }
+
+    .map-row.ask { border-style: dashed; }
+    .tok { font-family: var(--mono); font-size: 12px; font-weight: 600; }
+    .arrow { color: var(--muted); }
+    .prim { display: inline-flex; align-items: center; gap: 0.35rem; font-weight: 650; min-width: 0; }
+    .prim i { width: 12px; height: 12px; border-radius: 3px; border: 1px solid #00000014; flex: none; }
+
+    .pair {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    @media (min-width: 720px) {
+      .pair { grid-template-columns: 1fr 1fr; }
+    }
+
+    .task {
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-4);
+    }
+
+    .task h3 {
+      margin: 0;
+      font-size: var(--type-16);
+      letter-spacing: -0.02em;
+    }
+
+    .task.decor h3 { color: var(--green); }
+    .task .when { margin: var(--space-1) 0 0; color: var(--muted); font-size: var(--type-12); }
+    .bars { display: flex; align-items: flex-end; gap: 6px; height: 48px; margin: var(--space-4) 0; }
+    .bars span { display: block; width: 14px; border-radius: 3px 3px 0 0; background: var(--ink); }
+    .task.decor .bars span { background: var(--green); }
+    .bars span:nth-child(1) { height: 40%; opacity: 0.45; }
+    .bars span:nth-child(2) { height: 100%; }
+    .bars span:nth-child(3) { height: 70%; opacity: 0.75; }
+    .bars span:nth-child(4) { height: 28%; opacity: 0.35; }
+    .task-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+
+    .sem:has(input[value="success"]:checked) [data-hot~="success"],
+    .sem:has(input[value="muted"]:checked) [data-hot~="muted"],
+    .sem:has(input[value="motion"]:checked) [data-hot~="motion"] {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 6px;
+    }
+
+    .sem:has(input[value="surface"]:checked) [data-hot~="surface"] {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    .sem:has(input[value="elevation"]:checked) [data-hot~="elevation"] {
+      box-shadow: var(--shadow-md), 0 0 0 2px var(--accent);
+    }
+
+    .token-note { display: none; }
+    .sem:has(input[value="muted"]:checked) .n-muted,
+    .sem:has(input[value="success"]:checked) .n-success,
+    .sem:has(input[value="warning"]:checked) .n-warning,
+    .sem:has(input[value="danger"]:checked) .n-danger,
+    .sem:has(input[value="surface"]:checked) .n-surface,
+    .sem:has(input[value="elevation"]:checked) .n-elevation,
+    .sem:has(input[value="motion"]:checked) .n-motion,
+    .sem:has(input[value="ask"]:checked) .n-ask { display: block; }
+
+    /* components */
+    .job { display: none; }
+    .studio:has(input[name="comp"][value="button"]:checked) .job-button,
+    .studio:has(input[name="comp"][value="input"]:checked) .job-input,
+    .studio:has(input[name="comp"][value="badge"]:checked) .job-badge,
+    .studio:has(input[name="comp"][value="alert"]:checked) .job-alert { display: block; }
+
+    .sheet { display: none; }
+    .studio:has(input[name="comp"][value="button"]:checked) .sheet-button,
+    .studio:has(input[name="comp"][value="input"]:checked) .sheet-input,
+    .studio:has(input[name="comp"][value="badge"]:checked) .sheet-badge,
+    .studio:has(input[name="comp"][value="alert"]:checked) .sheet-alert { display: block; }
+
+    .sheet .switch { margin: 0.75rem 0; }
+
+    .stage {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 112px;
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      background: var(--surface);
+    }
+
+    .spec {
+      display: grid;
+      gap: 0.55rem;
+      margin: 0.9rem 0 0;
+    }
+
+    .spec div { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: 0.5rem; }
+    .spec dt { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; color: var(--muted); }
+    .spec dd { margin: 0; }
+
+    .gb {
+      display: grid;
+      gap: 0.6rem;
+      margin-top: 0.9rem;
+    }
+
+    @media (min-width: 640px) {
+      .gb { grid-template-columns: 1fr 1fr; }
+    }
+
+    .gb figure {
+      margin: 0;
+      padding: 0.75rem;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--canvas);
+    }
+
+    .gb figcaption {
+      margin: 0 0 0.55rem;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .gb .good figcaption { color: var(--green); }
+    .gb .bad figcaption { color: var(--red); }
+
+    .tiny {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      min-height: 44px;
+      padding: 0.45rem 0.6rem;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--canvas);
+    }
+
+    .tiny-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+    .field { display: grid; gap: 0.35rem; width: min(100%, 280px); text-align: left; }
+    .field span.label, .field label { font-size: var(--type-12); font-weight: 700; }
+    .demo-input, .fake-input {
+      width: 100%;
+      min-height: 44px;
+      padding: 0 0.7rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      color: var(--ink);
+      font: inherit;
+      font-size: var(--type-14);
+    }
+
+    .demo-input[aria-invalid="true"] { border-color: var(--red); }
+    .demo-input:disabled { background: var(--surface); color: var(--muted); }
+    .field .hint, .field .err { font-size: var(--type-12); }
+    .field .err { color: var(--red); }
+
+    .fake-input { display: flex; align-items: center; color: var(--muted); }
+
+    .alert {
+      width: min(100%, 420px);
+      padding: 0.8rem 0.85rem;
+      border-radius: var(--radius-md);
+      background: var(--red-bg);
+      color: var(--red);
+      text-align: left;
+    }
+
+    .alert strong { display: block; color: var(--ink); }
+    .alert p { margin: 0.25rem 0 0.65rem; color: var(--ink); }
+    .sheet-alert:has(input[value="warning"]:checked) .alert { background: var(--amber-bg); color: var(--amber); }
+    .sheet-alert:has(input[value="warning"]:checked) .a-error { display: none; }
+    .sheet-alert:has(input[value="error"]:checked) .a-warn,
+    .sheet-alert:not(:has(input[value="warning"]:checked)) .a-warn { display: none; }
+    .sheet-alert:has(input[value="warning"]:checked) .a-warn { display: block; }
+
+    .bare-error { margin: 0; color: var(--red); font-weight: 700; }
+
+    .badge-demo .s { display: none; }
+    .sheet-badge:has(input[value="running"]:checked) .s-running,
+    .sheet-badge:has(input[value="done"]:checked) .s-done,
+    .sheet-badge:has(input[value="waiting"]:checked) .s-waiting,
+    .sheet-badge:has(input[value="failed"]:checked) .s-failed { display: inline; }
+
+    .sheet-badge:has(input[value="done"]:checked) .badge-demo { background: var(--green-bg); color: var(--green); }
+    .sheet-badge:has(input[value="waiting"]:checked) .badge-demo { background: var(--amber-bg); color: var(--amber); }
+    .sheet-badge:has(input[value="failed"]:checked) .badge-demo { background: var(--red-bg); color: var(--red); }
+
+    .absent {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin: 0.55rem 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .absent li {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      min-height: 36px;
+      padding: 0 0.7rem;
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .absent em { font-style: normal; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; font-size: 10px; }
+
+    /* blocks */
+    .legend { margin-bottom: 0.75rem; }
+
+    .product {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--canvas);
+      overflow: hidden;
+    }
+
+    .blk { position: relative; cursor: pointer; }
+    .product .blk:hover { background-color: color-mix(in srgb, var(--accent) 7%, transparent); }
+    .appbar, .stats, .run, .detail, .approval, .share {
+      padding: var(--space-4);
+    }
+
+    .appbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .appbar strong { font-size: var(--type-16); letter-spacing: -0.02em; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0;
+      padding: 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .stats div { padding: var(--space-3) var(--space-4); }
+    .stats div + div { border-left: 1px solid var(--line); }
+    .stats b { display: block; font-size: var(--type-20); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+    .stats span { color: var(--muted); font-size: var(--type-12); }
+
+    .split { display: grid; }
+    @media (min-width: 720px) {
+      .split { grid-template-columns: 1.25fr 0.85fr; }
+    }
+
+    .runs { border-bottom: 1px solid var(--line); }
+    @media (min-width: 720px) {
+      .runs { border-bottom: 0; border-right: 1px solid var(--line); }
+    }
+
+    .run {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      width: 100%;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      background: transparent;
+    }
+
+    .run:last-child { border-bottom: 0; }
+    .run.is-open { background: var(--surface); }
+    .run b { font-weight: 650; }
+
+    .detail { background: var(--surface); min-height: 100%; }
+
+    .approval {
+      background: var(--canvas);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+    }
+
+    .approval p { margin: 0.2rem 0 var(--space-3); }
+    .approval .tiny-actions { margin-top: var(--space-3); }
+
+    .blk-tag {
+      display: none;
+      position: absolute;
+      z-index: 2;
+      top: 8px;
+      left: 12px;
+      align-items: center;
+      width: max-content;
+      margin: 0;
+      min-height: 22px;
+      padding: 0 0.5rem;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      pointer-events: none;
+    }
+
+    .blocks:has(input[value="header"]:checked) [data-blk="header"] .appbar,
+    .blocks:has(input[value="detail"]:checked) [data-blk="detail"],
+    .blocks:has(input[value="approval"]:checked) [data-blk="approval"] { padding-top: 2.5rem; }
+
+    .blocks:has(input[value="stats"]:checked) [data-blk="stats"],
+    .blocks:has(input[value="runs"]:checked) [data-blk="runs"] { padding-top: 2.5rem; }
+
+    .blocks:has(input[value="runcard"]:checked) [data-blk="runcard"]:has(> .blk-tag) { padding-top: 2.5rem; }
+
+    .blocks:has(input[value="header"]:checked) [data-blk="header"],
+    .blocks:has(input[value="stats"]:checked) [data-blk="stats"],
+    .blocks:has(input[value="runs"]:checked) [data-blk="runs"],
+    .blocks:has(input[value="detail"]:checked) [data-blk="detail"],
+    .blocks:has(input[value="approval"]:checked) [data-blk="approval"],
+    .blocks:has(input[value="runcard"]:checked) [data-blk="runcard"] {
+      box-shadow: inset 0 0 0 2px var(--accent);
+    }
+
+    .blocks:has(input[value="header"]:checked) [data-blk="header"] > .blk-tag,
+    .blocks:has(input[value="stats"]:checked) [data-blk="stats"] > .blk-tag,
+    .blocks:has(input[value="runs"]:checked) [data-blk="runs"] > .blk-tag,
+    .blocks:has(input[value="detail"]:checked) [data-blk="detail"] > .blk-tag,
+    .blocks:has(input[value="approval"]:checked) [data-blk="approval"] > .blk-tag,
+    .blocks:has(input[value="runcard"]:checked) [data-blk="runcard"] > .blk-tag {
+      display: inline-flex;
+    }
+
+    .share {
+      display: none;
+      position: relative;
+      margin: var(--space-3);
+      padding-top: 2.5rem;
+      border: 1px dashed var(--red);
+      border-radius: var(--radius-md);
+      background: var(--red-bg);
+    }
+
+    .blocks:has(#share:checked) .share { display: block; }
+    .share .blk-tag { display: inline-flex; background: var(--red); }
+
+    .blk-notes .caption { display: none; }
+    .blocks:has(input[value="header"]:checked) .n-header,
+    .blocks:has(input[value="stats"]:checked) .n-stats,
+    .blocks:has(input[value="runs"]:checked) .n-runs,
+    .blocks:has(input[value="runcard"]:checked) .n-runcard,
+    .blocks:has(input[value="detail"]:checked) .n-detail,
+    .blocks:has(input[value="approval"]:checked) .n-approval { display: block; }
+
+    .blocks:has(#share:checked) .blk-notes .caption:not(.n-share) { display: none; }
+    .blocks:has(#share:checked) .n-share { display: block; }
+
+    .plant {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      min-height: 44px;
+      font-size: 0.9rem;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    .plant input { width: 1.1rem; height: 1.1rem; accent-color: var(--ink); }
+
+    /* rules */
+    .rule {
+      display: grid;
+      gap: 0.85rem;
+      margin: 0 0 0.75rem;
+      padding: 0.9rem;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--canvas);
+    }
+
+    @media (min-width: 720px) {
+      .rule { grid-template-columns: 1.2fr 0.8fr; align-items: center; }
+    }
+
+    .rule-say { margin: 0; font-weight: 700; letter-spacing: -0.02em; }
+    .rule-why { margin: 0.3rem 0 0; color: var(--muted); font-size: 0.9rem; }
+    .rule-pair { display: grid; gap: 0.45rem; }
+    .mark-label {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .mark-label.good { color: var(--green); }
+    .mark-label.bad { color: var(--red); }
+
+    .skill-grid {
+      display: grid;
+      gap: 0.9rem;
+    }
+
+    @media (min-width: 800px) {
+      .skill-grid { grid-template-columns: 1.05fr 0.95fr; }
+    }
+
+    .rev-screen { overflow: hidden; }
+    .rev-bar { height: 8px; background: var(--brand); }
+    .skill:has(#bug-hex:checked) .rev-bar { background: #2f6e56; }
+    .hex-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.55rem 0.85rem 0;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .skill:has(#bug-hex:checked) .hex-token,
+    .skill:not(:has(#bug-hex:checked)) .hex-raw { display: none; }
+
+    .rev-list, .rev-approval { margin: 0.75rem; }
+    .rev-list {
+      min-height: 88px;
+      display: grid;
+      place-items: center;
+      border: 1px dashed var(--line);
+      border-radius: var(--radius-md);
+      text-align: center;
+    }
+    .hole { margin: 0; color: var(--muted); }
+    .skill:has(#bug-empty:checked) .hole { display: none; }
+    .skill:not(:has(#bug-empty:checked)) .empty-copy { display: none; }
+    .empty-copy { margin: 0; font-weight: 650; }
+
+    .rev-approval {
+      padding: var(--space-4);
+      border-radius: var(--radius-md);
+      background: var(--canvas);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--line);
+    }
+    .rev-approval .state-line { margin: 0; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+    .rev-approval h3 { margin: 0.3rem 0 0.55rem; font-size: 1rem; }
+    .skill:has(#bug-status:checked) .badge-stale,
+    .skill:not(:has(#bug-status:checked)) .badge-fresh { display: none; }
+
+    .skill[data-ran="1"]:has(#bug-hex:checked) .rev-bar,
+    .skill[data-ran="1"]:not(:has(#bug-empty:checked)) .rev-list,
+    .skill[data-ran="1"]:not(:has(#bug-status:checked)) .rev-approval {
+      box-shadow: 0 0 0 2px var(--red);
+    }
+
+    .steps { margin: 0.4rem 0 0; padding: 0; list-style: none; }
+    .steps li {
+      display: flex;
+      gap: 0.55rem;
+      align-items: baseline;
+      padding: 0.45rem 0;
+      border-top: 1px solid var(--line);
+      font-size: 0.9rem;
+    }
+    .steps li::before {
+      content: "—";
+      flex: none;
+      width: 2.4rem;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .steps li[data-result="pass"]::before { content: "Pass"; color: var(--green); }
+    .steps li[data-result="fail"]::before { content: "Fail"; color: var(--red); }
+
+    .findings { margin: 0.75rem 0 0; padding: 0; list-style: none; }
+    .findings li {
+      margin-top: 0.4rem;
+      padding: 0.55rem 0.7rem;
+      border-radius: 8px;
+      background: var(--red-bg);
+      color: var(--ink);
+      font-size: 0.88rem;
+    }
+    .findings li.idle { background: transparent; padding-left: 0; padding-right: 0; color: var(--muted); }
+    .findings li.pass { background: var(--green-bg); }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .rise, .c-btn, .chip-sample, .spinner {
+        transition: none !important;
+        animation: none !important;
+      }
+      .c-btn.primary:active,
+      .sheet-button:has(input[value="pressed"]:checked) .c-btn.primary { transform: none; }
+    }
+
+    html[data-motion="reduce"] {
+      scroll-behavior: auto;
+    }
+
+    html[data-motion="reduce"] .rise,
+    html[data-motion="reduce"] .c-btn,
+    html[data-motion="reduce"] .chip-sample,
+    html[data-motion="reduce"] .spinner {
+      transition: none !important;
+      animation: none !important;
+    }
+
+    html[data-motion="reduce"] .c-btn.primary:active,
+    html[data-motion="reduce"] .sheet-button:has(input[value="pressed"]:checked) .c-btn.primary {
+      transform: none;
+    }
+
+    @media (scripting: none) {
+      .rise { opacity: 1 !important; transform: none !important; }
+    }
+  </style>
+  <link rel="stylesheet" href="shared/site-header.css?v=7" />
+</head>
+<body data-page="agent-design-system">
+  <nav class="lib-nav" aria-label="Page sections">
+    <div class="lib-brand">Agent system</div>
+    <div class="lib-links">
+      <a href="#primitives">Primitives</a>
+      <a href="#semantic">Semantic</a>
+      <a href="#components">Components</a>
+      <a href="#blocks">Blocks</a>
+      <a href="#rules">Rules</a>
+    </div>
+  </nav>
+
+  <main class="lib">
+    <header class="hero" id="top">
+      <div class="hero-copy rise">
+        <h1>Fast, clean, wrong in the details.</h1>
+        <p class="lede">He asked Claude Code to build a screen from the design. It came back fast and clean, and wrong in the details, because what felt right lived in his head. A design system is where that gets written down, so the agent can follow without guessing.</p>
+        <p class="by">rico (<a href="https://x.com/_heyrico" target="_blank" rel="noopener noreferrer">@_heyrico</a>) · <a href="https://x.com/_heyrico/status/2116953958279479760" target="_blank" rel="noopener noreferrer">Build the design system and skills your agent can follow</a> · 1 Nov 2026</p>
+      </div>
+
+      <div class="canvas rise">
+        <div class="canvas-chrome">
+          <span class="canvas-name">screen</span>
+          <span class="canvas-tag only-guess">guessing</span>
+          <span class="canvas-tag only-follow">following</span>
+        </div>
+        <div class="stage-body hero-demo sys" id="hero-demo">
+          <div class="switch" role="radiogroup" aria-label="How the screen was built">
+            <label>Guess<input type="radio" name="build" value="guess" checked /></label>
+            <label>Follow<input type="radio" name="build" value="follow" /></label>
+          </div>
+          <article class="mini">
+            <div class="mini-top">
+              <div class="mini-copy">
+                <strong class="mini-title">Deploy docs</strong>
+                <span class="mini-meta">2 minutes ago</span>
+              </div>
+              <span class="badge only-follow">Running</span>
+            </div>
+            <div class="mini-actions">
+              <span class="c-btn primary">Open</span>
+              <span class="c-btn primary only-guess">Stop</span>
+              <span class="c-btn quiet only-follow">Stop</span>
+            </div>
+          </article>
+          <p class="caption only-guess">13.5px type, a 10px gap, and #2f6e56 on the title. No status badge. Two primary buttons.</p>
+          <p class="caption only-follow">type-16, space-2, and ink on the title. A Running badge. One primary button.</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="sec" id="primitives">
+      <div class="sec-head">
+        <p class="kicker">Layer 1 · Primitives</p>
+        <h2>One file. Do not invent.</h2>
+        <p>Colors, type, spacing, radius, shadows, and motion live in one file. The note at the top says to take values from here. Components do not read this file. It feeds the next layer.</p>
+      </div>
+
+      <div class="canvas sys" id="token-file">
+        <div class="canvas-chrome">
+          <span class="canvas-name">primitives.css</span>
+          <span class="canvas-tag">one file</span>
+        </div>
+        <div class="chart-body">
+          <p class="file-note"><span>/*</span> Take values from here. Do not invent. <span>*/</span></p>
+
+          <div class="token-group">
+            <p class="kicker">Color</p>
+            <div class="chips" role="group" aria-label="Color primitives">
+              <button type="button" class="chip" data-kind="color" data-value="var(--ink)" data-read="--ink · #1c1c22"><i style="background:var(--ink)"></i>ink</button>
+              <button type="button" class="chip" data-kind="color" data-value="var(--muted)" data-read="--muted · #5c5c66"><i style="background:var(--muted)"></i>muted</button>
+              <button type="button" class="chip" data-kind="color" data-value="var(--canvas)" data-read="--canvas · #ffffff"><i style="background:var(--canvas)"></i>canvas</button>
+              <button type="button" class="chip" data-kind="color" data-value="var(--line)" data-read="--line · #e4e4ea"><i style="background:var(--line)"></i>line</button>
+              <button type="button" class="chip" data-kind="color" data-value="var(--brand)" data-read="--brand · #1e6851"><i style="background:var(--brand)"></i>brand</button>
+              <button type="button" class="chip" data-kind="color" data-value="var(--green)" data-read="--green · #157a45"><i style="background:var(--green)"></i>green</button>
+              <button type="button" class="chip" data-kind="color" data-value="var(--amber)" data-read="--amber · #8a5a10"><i style="background:var(--amber)"></i>amber</button>
+              <button type="button" class="chip" data-kind="color" data-value="var(--red)" data-read="--red · #9f2d2d"><i style="background:var(--red)"></i>red</button>
+            </div>
+          </div>
+
+          <div class="token-group">
+            <p class="kicker">Type</p>
+            <div class="chips" role="group" aria-label="Type primitives">
+              <button type="button" class="chip" data-kind="type" data-value="12" data-read="--type-12 · 12px">12</button>
+              <button type="button" class="chip" data-kind="type" data-value="14" data-read="--type-14 · 14px">14</button>
+              <button type="button" class="chip" data-kind="type" data-value="16" data-read="--type-16 · 16px">16</button>
+              <button type="button" class="chip" data-kind="type" data-value="20" data-read="--type-20 · 20px">20</button>
+              <button type="button" class="chip" data-kind="type" data-value="28" data-read="--type-28 · 28px">28</button>
+            </div>
+          </div>
+
+          <div class="token-group">
+            <p class="kicker">Space</p>
+            <div class="chips" role="group" aria-label="Space primitives">
+              <button type="button" class="chip" data-kind="space" data-value="4" data-read="--space-1 · 4px">4</button>
+              <button type="button" class="chip" data-kind="space" data-value="8" data-read="--space-2 · 8px">8</button>
+              <button type="button" class="chip" data-kind="space" data-value="12" data-read="--space-3 · 12px">12</button>
+              <button type="button" class="chip" data-kind="space" data-value="16" data-read="--space-4 · 16px">16</button>
+              <button type="button" class="chip" data-kind="space" data-value="24" data-read="--space-5 · 24px">24</button>
+              <button type="button" class="chip" data-kind="space" data-value="32" data-read="--space-6 · 32px">32</button>
+            </div>
+          </div>
+
+          <div class="token-group">
+            <p class="kicker">Radius</p>
+            <div class="chips" role="group" aria-label="Radius primitives">
+              <button type="button" class="chip" data-kind="radius" data-value="6" data-read="--radius-sm · 6px">6</button>
+              <button type="button" class="chip" data-kind="radius" data-value="10" data-read="--radius-md · 10px">10</button>
+              <button type="button" class="chip" data-kind="radius" data-value="14" data-read="--radius-lg · 14px">14</button>
+            </div>
+          </div>
+
+          <div class="token-group">
+            <p class="kicker">Shadow</p>
+            <div class="chips" role="group" aria-label="Shadow primitives">
+              <button type="button" class="chip" data-kind="shadow" data-value="var(--shadow-sm)" data-read="--shadow-sm">sm</button>
+              <button type="button" class="chip" data-kind="shadow" data-value="var(--shadow-md)" data-read="--shadow-md">md</button>
+            </div>
+          </div>
+
+          <div class="token-group">
+            <p class="kicker">Motion</p>
+            <div class="chips" role="group" aria-label="Motion primitives">
+              <button type="button" class="chip" data-kind="motion" data-value="160ms ease" data-read="--motion-fast · 160ms">fast · 160ms</button>
+              <button type="button" class="chip" data-kind="motion" data-value="200ms ease" data-read="--motion-hover · 200ms">hover · 200ms</button>
+            </div>
+          </div>
+
+          <div class="chip-sample" id="chip-sample">
+            <i class="sample-swatch" id="sample-swatch" hidden></i>
+            <span id="sample-text">Deploy docs</span>
+          </div>
+          <p class="readout" id="token-read" aria-live="polite">Select a value. It has to come from this file.</p>
+        </div>
+      </div>
+
+      <div class="vs" aria-label="Invented values beside values from the file">
+        <article class="canvas">
+          <div class="canvas-chrome"><span class="canvas-name">Invented</span></div>
+          <div class="chart-body">
+            <div class="metric">
+              <b>13.5px</b>
+              <span class="dim">Type, from nowhere</span>
+              <em class="odd-type">Deploy docs</em>
+            </div>
+            <div class="metric">
+              <b>10px</b>
+              <span class="dim">Gap, from nowhere</span>
+              <span class="gap-track" aria-hidden="true"><i class="odd"></i></span>
+            </div>
+            <div class="metric">
+              <b>#2f6e56</b>
+              <span class="dim">Color, from nowhere</span>
+              <span class="swatch-row"><i class="odd-hex"></i><span>#2f6e56</span></span>
+            </div>
+          </div>
+        </article>
+        <article class="canvas sys">
+          <div class="canvas-chrome"><span class="canvas-name">From the file</span></div>
+          <div class="chart-body">
+            <div class="metric">
+              <b>14px</b>
+              <span class="dim">type-14</span>
+              <em style="font-size:var(--type-14)">Deploy docs</em>
+            </div>
+            <div class="metric">
+              <b>8px</b>
+              <span class="dim">space-2</span>
+              <span class="gap-track" aria-hidden="true"><i class="file"></i></span>
+            </div>
+            <div class="metric">
+              <b>green</b>
+              <span class="dim">--green</span>
+              <span class="swatch-row"><i style="background:var(--green)"></i><span>green</span></span>
+            </div>
+          </div>
+        </article>
+      </div>
+      <p class="quiet">A 13.5px font and a 10px gap show up when the agent invents a value. The gap bars are drawn at ten times that size. Components do not read this file. These values feed semantic tokens.</p>
+    </section>
+
+    <section class="sec" id="semantic">
+      <div class="sec-head">
+        <p class="kicker">Layer 2 · Semantic tokens</p>
+        <h2>Names that mean a job.</h2>
+        <p>A purpose name points at a primitive. Green, amber, and red show up only when they mean done, warning, or error. Decorative use dilutes that. If a value is undecided, leave a note that tells the agent to ask first.</p>
+      </div>
+
+      <div class="canvas">
+        <div class="canvas-chrome">
+          <span class="canvas-name">semantic.css</span>
+          <span class="canvas-tag">purpose → primitive</span>
+        </div>
+        <div class="chart-body sem sys">
+          <div class="map" role="radiogroup" aria-label="Semantic tokens">
+            <label class="map-row">
+              <input type="radio" name="token" value="muted" />
+              <span class="tok">text-muted</span>
+              <span class="arrow" aria-hidden="true">→</span>
+              <span class="prim"><i style="background:var(--muted)"></i>muted</span>
+            </label>
+            <label class="map-row">
+              <input type="radio" name="token" value="success" checked />
+              <span class="tok">status-success</span>
+              <span class="arrow" aria-hidden="true">→</span>
+              <span class="prim"><i style="background:var(--green)"></i>green</span>
+            </label>
+            <label class="map-row">
+              <input type="radio" name="token" value="warning" />
+              <span class="tok">status-warning</span>
+              <span class="arrow" aria-hidden="true">→</span>
+              <span class="prim"><i style="background:var(--amber)"></i>amber</span>
+            </label>
+            <label class="map-row">
+              <input type="radio" name="token" value="danger" />
+              <span class="tok">status-danger</span>
+              <span class="arrow" aria-hidden="true">→</span>
+              <span class="prim"><i style="background:var(--red)"></i>red</span>
+            </label>
+            <label class="map-row">
+              <input type="radio" name="token" value="surface" />
+              <span class="tok">bg-surface</span>
+              <span class="arrow" aria-hidden="true">→</span>
+              <span class="prim"><i style="background:var(--canvas)"></i>canvas</span>
+            </label>
+            <label class="map-row">
+              <input type="radio" name="token" value="elevation" />
+              <span class="tok">elevation-card</span>
+              <span class="arrow" aria-hidden="true">→</span>
+              <span class="prim">shadow-md</span>
+            </label>
+            <label class="map-row">
+              <input type="radio" name="token" value="motion" />
+              <span class="tok">motion-hover</span>
+              <span class="arrow" aria-hidden="true">→</span>
+              <span class="prim">--motion-hover</span>
+            </label>
+            <label class="map-row ask">
+              <input type="radio" name="token" value="ask" />
+              <span class="tok">radius-overlay</span>
+              <span class="arrow" aria-hidden="true">→</span>
+              <span class="prim">ask first</span>
+            </label>
+          </div>
+
+          <div class="pair">
+            <article class="task decor" data-hot="surface elevation">
+              <p class="kicker">Decorative</p>
+              <h3 data-hot="success">Weekly summary</h3>
+              <p class="when" data-hot="muted">2 minutes ago</p>
+              <div class="bars" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+              <div class="task-row">
+                <span class="badge ok" data-hot="success">Done</span>
+                <button type="button" class="c-btn quiet" data-hot="motion">Open</button>
+              </div>
+            </article>
+            <article class="task" data-hot="surface elevation">
+              <p class="kicker">Meaningful</p>
+              <h3>Weekly summary</h3>
+              <p class="when" data-hot="muted">2 minutes ago</p>
+              <div class="bars" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+              <div class="task-row">
+                <span class="badge ok" data-hot="success">Done</span>
+                <button type="button" class="c-btn quiet" data-hot="motion">Open</button>
+              </div>
+            </article>
+          </div>
+
+          <p class="caption token-note n-muted">text-muted points at muted. It is the time stamp.</p>
+          <p class="caption token-note n-success">status-success points at green, and it means the task is done. On the decorative card the title is green too, so done stops meaning done.</p>
+          <p class="caption token-note n-warning">status-warning points at amber. Amber means a warning.</p>
+          <p class="caption token-note n-danger">status-danger points at red. Red means an error.</p>
+          <p class="caption token-note n-surface">bg-surface points at canvas. It is the card fill.</p>
+          <p class="caption token-note n-elevation">elevation-card points at shadow-md.</p>
+          <p class="caption token-note n-motion">motion-hover points at motion-hover, 200ms. Hover the Open button.</p>
+          <p class="caption token-note n-ask">radius-overlay is undecided. Ask before using it.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="components">
+      <div class="sec-head">
+        <p class="kicker">Layer 3 · Components</p>
+        <h2>Only the pieces that exist.</h2>
+        <p>The article’s base is shadcn/ui, grouped by job: Actions, Inputs, Overlays, Navigation, Layout, Data, Feedback, Agent and chat. For each component you use, write when, when not, the default, one good example, one bad example, and the states that exist.</p>
+      </div>
+
+      <div class="canvas">
+        <div class="canvas-chrome">
+          <span class="canvas-name">components</span>
+          <span class="canvas-tag">four that exist</span>
+        </div>
+        <div class="chart-body studio sys" id="studio">
+          <div class="switch" role="radiogroup" aria-label="Component">
+            <label>Button<input type="radio" name="comp" value="button" checked /></label>
+            <label>Input<input type="radio" name="comp" value="input" /></label>
+            <label>Badge<input type="radio" name="comp" value="badge" /></label>
+            <label>Alert<input type="radio" name="comp" value="alert" /></label>
+          </div>
+
+          <div class="sheet sheet-button">
+            <h3 class="sr">Button</h3>
+            <p class="kicker job job-button">Actions</p>
+            <div class="switch" role="radiogroup" aria-label="Button states">
+              <label>Default<input type="radio" name="button-state" value="default" checked /></label>
+              <label>Hover<input type="radio" name="button-state" value="hover" /></label>
+              <label>Pressed<input type="radio" name="button-state" value="pressed" /></label>
+              <label>Loading<input type="radio" name="button-state" value="loading" /></label>
+              <label>Disabled<input type="radio" name="button-state" value="disabled" /></label>
+            </div>
+            <div class="stage">
+              <button type="button" class="c-btn primary" id="demo-btn">
+                <span class="lbl-idle">Approve</span>
+                <span class="lbl-busy"><i class="spinner" aria-hidden="true"></i>Approving</span>
+              </button>
+            </div>
+            <dl class="spec">
+              <div><dt>When</dt><dd>The one primary action on the screen.</dd></div>
+              <div><dt>When not</dt><dd>A second action. That one stays quiet.</dd></div>
+              <div><dt>Default</dt><dd>Solid, sentence case.</dd></div>
+            </dl>
+            <div class="gb">
+              <figure class="good">
+                <figcaption>Good</figcaption>
+                <div class="tiny-actions">
+                  <span class="c-btn quiet">Dismiss</span>
+                  <span class="c-btn primary">Approve</span>
+                </div>
+              </figure>
+              <figure class="bad">
+                <figcaption>Bad</figcaption>
+                <div class="tiny-actions">
+                  <span class="c-btn primary">Approve</span>
+                  <span class="c-btn primary">Reject</span>
+                </div>
+              </figure>
+            </div>
+            <p class="caption">Written down: default, hover, pressed, loading, disabled.</p>
+          </div>
+
+          <div class="sheet sheet-input">
+            <h3 class="sr">Input</h3>
+            <p class="kicker job job-input">Inputs</p>
+            <div class="switch" role="radiogroup" aria-label="Input states">
+              <label>Empty<input type="radio" name="input-state" value="empty" checked /></label>
+              <label>Filled<input type="radio" name="input-state" value="filled" /></label>
+              <label>Error<input type="radio" name="input-state" value="error" /></label>
+              <label>Disabled<input type="radio" name="input-state" value="disabled" /></label>
+            </div>
+            <div class="stage">
+              <div class="field">
+                <label for="demo-input">Run name</label>
+                <input class="demo-input" id="demo-input" type="text" autocomplete="off" aria-describedby="demo-hint" />
+                <span class="hint" id="demo-hint">Shown on the run card.</span>
+                <span class="err" id="demo-err" hidden>Name is required.</span>
+              </div>
+            </div>
+            <dl class="spec">
+              <div><dt>When</dt><dd>The person has to type a value.</dd></div>
+              <div><dt>When not</dt><dd>A placeholder standing in for the label.</dd></div>
+              <div><dt>Default</dt><dd>A labeled field.</dd></div>
+            </dl>
+            <div class="gb">
+              <figure class="good">
+                <figcaption>Good</figcaption>
+                <div class="field">
+                  <span class="label">Run name</span>
+                  <span class="fake-input">Deploy docs</span>
+                </div>
+              </figure>
+              <figure class="bad">
+                <figcaption>Bad · placeholder only</figcaption>
+                <div class="field">
+                  <span class="fake-input">Name</span>
+                </div>
+              </figure>
+            </div>
+            <p class="caption">Written down: empty, filled, error, disabled.</p>
+          </div>
+
+          <div class="sheet sheet-badge">
+            <h3 class="sr">Badge</h3>
+            <p class="kicker job job-badge">Feedback</p>
+            <div class="switch" role="radiogroup" aria-label="Badge status">
+              <label>Running<input type="radio" name="badge-state" value="running" checked /></label>
+              <label>Done<input type="radio" name="badge-state" value="done" /></label>
+              <label>Waiting<input type="radio" name="badge-state" value="waiting" /></label>
+              <label>Failed<input type="radio" name="badge-state" value="failed" /></label>
+            </div>
+            <div class="stage">
+              <span class="badge badge-demo" id="demo-badge">
+                <span class="s s-running">Running</span>
+                <span class="s s-done">Done</span>
+                <span class="s s-waiting">Waiting</span>
+                <span class="s s-failed">Failed</span>
+              </span>
+            </div>
+            <dl class="spec">
+              <div><dt>When</dt><dd>A status on a run card, including while it is running.</dd></div>
+              <div><dt>When not</dt><dd>Color on a heading.</dd></div>
+              <div><dt>Default</dt><dd>Running.</dd></div>
+            </dl>
+            <div class="gb">
+              <figure class="good">
+                <figcaption>Good</figcaption>
+                <div class="tiny"><b>Deploy docs</b><span class="badge">Running</span></div>
+              </figure>
+              <figure class="bad">
+                <figcaption>Bad</figcaption>
+                <div class="tiny"><b>Deploy docs</b><span>Running</span></div>
+              </figure>
+            </div>
+            <p class="caption">Written down: running, done, waiting, failed. A badge has no hover or loading state.</p>
+          </div>
+
+          <div class="sheet sheet-alert">
+            <h3 class="sr">Alert</h3>
+            <p class="kicker job job-alert">Feedback</p>
+            <div class="switch" role="radiogroup" aria-label="Alert status">
+              <label>Error<input type="radio" name="alert-state" value="error" checked /></label>
+              <label>Warning<input type="radio" name="alert-state" value="warning" /></label>
+            </div>
+            <div class="stage">
+              <div class="alert" role="alert">
+                <strong class="a-error">The run failed.</strong>
+                <strong class="a-warn">The run needs a look.</strong>
+                <p class="a-error">Retry, or open the log.</p>
+                <p class="a-warn">Open the log before it finishes.</p>
+                <span class="c-btn primary">Retry</span>
+              </div>
+            </div>
+            <dl class="spec">
+              <div><dt>When</dt><dd>Something failed and there is a next step.</dd></div>
+              <div><dt>When not</dt><dd>A success. That is a badge.</dd></div>
+              <div><dt>Default</dt><dd>Error, with a next step.</dd></div>
+            </dl>
+            <div class="gb">
+              <figure class="good">
+                <figcaption>Good</figcaption>
+                <div class="alert" role="status">
+                  <strong>The run failed.</strong>
+                  <p>Retry, or open the log.</p>
+                </div>
+              </figure>
+              <figure class="bad">
+                <figcaption>Bad</figcaption>
+                <p class="bare-error">Error</p>
+              </figure>
+            </div>
+            <p class="caption">Written down: error, warning.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="quiet">
+        <p class="kicker">Not written down</p>
+        <ul class="absent">
+          <li>Button / xl <em>Absent</em></li>
+          <li>Badge / rainbow <em>Absent</em></li>
+          <li>Alert / success <em>Absent</em></li>
+        </ul>
+        <p class="caption">Only what exists is documented. A phantom variant gets used.</p>
+      </div>
+    </section>
+
+    <section class="sec" id="blocks">
+      <div class="sec-head">
+        <p class="kicker">Layer 4 · Blocks</p>
+        <h2>A screen is a stack of blocks.</h2>
+        <p>A block is a section pulled from a real screen, once you notice you are building it again. A run card, an approval panel, a task row. If nothing you have covers the screen, slow down and ask if it belongs.</p>
+      </div>
+
+      <div class="blocks" id="block-lab">
+        <div class="switch legend" role="radiogroup" aria-label="Blocks in this screen">
+          <label>Header<input type="radio" name="blk" value="header" /></label>
+          <label>Stat cards<input type="radio" name="blk" value="stats" /></label>
+          <label>Run list<input type="radio" name="blk" value="runs" checked /></label>
+          <label>Run card<input type="radio" name="blk" value="runcard" /></label>
+          <label>Side detail<input type="radio" name="blk" value="detail" /></label>
+          <label>Approval<input type="radio" name="blk" value="approval" /></label>
+        </div>
+
+        <div class="product sys" id="product">
+          <div class="blk" data-blk="header">
+            <span class="blk-tag">Header</span>
+            <div class="appbar">
+              <strong>Runs</strong>
+              <span class="c-btn primary">New run</span>
+            </div>
+          </div>
+          <div class="blk" data-blk="stats">
+            <span class="blk-tag">Stat cards</span>
+            <div class="stats">
+              <div><b>12</b><span>Running</span></div>
+              <div><b>3</b><span>Waiting</span></div>
+              <div><b>48</b><span>Done</span></div>
+            </div>
+          </div>
+          <div class="split">
+            <div class="blk runs" data-blk="runs">
+              <span class="blk-tag">Run list</span>
+              <div class="blk run" data-blk="runcard">
+                <span class="blk-tag">Run card</span>
+                <b>Deploy docs</b>
+                <span class="badge">Running</span>
+              </div>
+              <div class="blk run is-open" data-blk="runcard">
+                <b>Review PR</b>
+                <span class="badge warn">Waiting</span>
+              </div>
+              <div class="blk run" data-blk="runcard">
+                <b>Index notes</b>
+                <span class="badge ok">Done</span>
+              </div>
+            </div>
+            <div class="blk detail" data-blk="detail">
+              <span class="blk-tag">Side detail</span>
+              <div class="blk approval" data-blk="approval">
+                <span class="blk-tag">Approval panel</span>
+                <strong>Review PR</strong>
+                <p>Needs approval</p>
+                <div class="tiny-actions">
+                  <span class="c-btn quiet">Dismiss</span>
+                  <span class="c-btn primary">Approve</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="share">
+            <span class="blk-tag">Unnamed</span>
+            <strong>Share sheet</strong>
+          </div>
+        </div>
+
+        <div class="blk-notes" id="blk-note">
+          <p class="caption n-header">Header. The top of the screen, with one primary action.</p>
+          <p class="caption n-stats">Stat cards. Counts a person can check in passing.</p>
+          <p class="caption n-runs">Run list. The stack of run cards.</p>
+          <p class="caption n-runcard">Run card. Extracted after the same card showed up again.</p>
+          <p class="caption n-detail">Side detail. The column for the selected run.</p>
+          <p class="caption n-approval">Approval panel. Its own block, because it kept being rebuilt.</p>
+          <p class="caption n-share">No block covers a share sheet. Slow down and ask if it belongs.</p>
+        </div>
+
+        <label class="plant" for="share">
+          <input type="checkbox" id="share" />
+          Drop in a share sheet
+        </label>
+      </div>
+    </section>
+
+    <section class="sec" id="rules">
+      <div class="sec-head">
+        <p class="kicker">Layer 5 · Rules and skills</p>
+        <h2>A sentence with a reason. A file for a task.</h2>
+        <p>Rules live in the file the agent always reads. A rule is one sentence and the reason. Write it when the agent gets that thing wrong. A skill is the instructions for one task. A good skill is one two people would follow the same way.</p>
+      </div>
+
+      <article class="rule sys">
+        <div>
+          <p class="rule-say">Show a status badge on every run card, even while running.</p>
+          <p class="rule-why">People check agents in passing.</p>
+        </div>
+        <div class="rule-pair">
+          <div>
+            <span class="mark-label good">Good</span>
+            <div class="tiny"><b>Deploy docs</b><span class="badge">Running</span></div>
+          </div>
+          <div>
+            <span class="mark-label bad">Bad</span>
+            <div class="tiny"><b>Deploy docs</b><span>Running</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="rule sys">
+        <div>
+          <p class="rule-say">Use only one primary button per screen.</p>
+          <p class="rule-why">If everything is important, nothing is.</p>
+        </div>
+        <div class="rule-pair">
+          <div>
+            <span class="mark-label good">Good</span>
+            <div class="tiny-actions">
+              <span class="c-btn quiet">Dismiss</span>
+              <span class="c-btn primary">Approve</span>
+            </div>
+          </div>
+          <div>
+            <span class="mark-label bad">Bad</span>
+            <div class="tiny-actions">
+              <span class="c-btn primary">Approve</span>
+              <span class="c-btn primary">Reject</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <div class="canvas" style="margin-top:0.9rem">
+        <div class="canvas-chrome">
+          <span class="canvas-name">review-screen</span>
+          <span class="canvas-tag" id="review-tag">Not run</span>
+        </div>
+        <div class="chart-body skill sys" id="skill">
+          <div class="stage-row" style="margin-top:0">
+            <label class="plant"><input type="checkbox" id="bug-hex" checked /> Raw hex on the accent</label>
+            <label class="plant"><input type="checkbox" id="bug-empty" /> Empty state on the list</label>
+            <label class="plant"><input type="checkbox" id="bug-status" /> Status text matches the state</label>
+          </div>
+          <div class="skill-grid">
+            <div class="rev-screen" role="group" aria-label="Screen with planted mistakes">
+              <div class="rev-bar"></div>
+              <div class="hex-line">
+                <span>Accent</span>
+                <span class="hex-raw">#2f6e56</span>
+                <span class="hex-token">brand</span>
+              </div>
+              <div class="hex-line"><span>Run list</span></div>
+              <div class="rev-list">
+                <p class="hole"><span class="sr">No empty state</span></p>
+                <p class="empty-copy">No runs yet.</p>
+              </div>
+              <div class="rev-approval">
+                <p class="state-line">Recorded state · Approved</p>
+                <h3>Review PR</h3>
+                <span class="badge warn badge-stale">Needs approval</span>
+                <span class="badge ok badge-fresh">Approved</span>
+              </div>
+            </div>
+
+            <div>
+              <p class="kicker">The skill</p>
+              <ol class="steps" id="steps">
+                <li data-check="hex">Flag raw values that are not tokens.</li>
+                <li data-check="empty">Check loading, empty, and error on each block.</li>
+                <li data-check="status">Check that status text matches the real state.</li>
+              </ol>
+              <div class="stage-row" style="margin-top:0.9rem">
+                <button type="button" class="btn" id="review">Review screen</button>
+              </div>
+              <ul class="findings" id="findings" aria-live="polite" aria-atomic="true">
+                <li class="idle">Run review-screen. Three mistakes are planted.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="closer">
+      <h2>The agent can follow.</h2>
+      <p>An agent can follow a system closely. Deciding what great looks like still takes a person’s time and patience. Writing it down is the slow work that makes the later work faster.</p>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var reduced = document.documentElement.getAttribute('data-motion') === 'reduce';
+      var hero = document.querySelector('.hero');
+
+      function revealHero() {
+        if (hero) hero.classList.add('is-in');
+      }
+
+      if (reduced) revealHero();
+      else requestAnimationFrame(function () { requestAnimationFrame(revealHero); });
+
+      var read = document.getElementById('token-read');
+      var sample = document.getElementById('chip-sample');
+      var sampleText = document.getElementById('sample-text');
+      var swatch = document.getElementById('sample-swatch');
+
+      function resetSample() {
+        sample.style.fontSize = '';
+        sample.style.padding = '';
+          sample.style.borderRadius = '';
+          sample.style.borderStyle = '';
+          sample.style.boxShadow = '';
+        sample.style.transform = '';
+        sample.style.transition = '';
+        swatch.hidden = true;
+        swatch.style.background = '';
+        sampleText.textContent = 'Deploy docs';
+      }
+
+      document.querySelectorAll('.chip').forEach(function (chip) {
+        chip.setAttribute('aria-pressed', 'false');
+        chip.addEventListener('click', function () {
+          document.querySelectorAll('.chip').forEach(function (other) {
+            other.setAttribute('aria-pressed', 'false');
+          });
+          chip.setAttribute('aria-pressed', 'true');
+          read.textContent = chip.getAttribute('data-read');
+          resetSample();
+          var kind = chip.getAttribute('data-kind');
+          var value = chip.getAttribute('data-value');
+          if (kind === 'type') sample.style.fontSize = value + 'px';
+          if (kind === 'space') sample.style.padding = value + 'px';
+          if (kind === 'radius') {
+            sample.style.borderRadius = value + 'px';
+            sample.style.borderStyle = 'solid';
+          }
+          if (kind === 'shadow') sample.style.boxShadow = value;
+          if (kind === 'color') {
+            swatch.hidden = false;
+            swatch.style.background = value;
+          }
+          if (kind === 'motion') {
+            sample.style.transition = reduced ? 'none' : 'transform ' + value;
+            sample.style.transform = reduced ? 'none' : 'translateX(12px)';
+          }
+        });
+      });
+
+      var demoBtn = document.getElementById('demo-btn');
+      var demoInput = document.getElementById('demo-input');
+      var demoHint = document.getElementById('demo-hint');
+      var demoErr = document.getElementById('demo-err');
+      var demoBadge = document.getElementById('demo-badge');
+
+      function checked(name) {
+        var el = document.querySelector('input[name="' + name + '"]:checked');
+        return el ? el.value : '';
+      }
+
+      function syncButton() {
+        var state = checked('button-state');
+        demoBtn.setAttribute('aria-busy', state === 'loading' ? 'true' : 'false');
+        if (state === 'disabled') demoBtn.setAttribute('aria-disabled', 'true');
+        else demoBtn.removeAttribute('aria-disabled');
+      }
+
+      function syncInput() {
+        var state = checked('input-state');
+        demoInput.disabled = state === 'disabled';
+        demoInput.value = (state === 'filled' || state === 'disabled') ? 'Deploy docs' : '';
+        var invalid = state === 'error';
+        demoInput.setAttribute('aria-invalid', invalid ? 'true' : 'false');
+        demoHint.hidden = invalid;
+        demoErr.hidden = !invalid;
+        demoInput.setAttribute('aria-describedby', invalid ? 'demo-err' : 'demo-hint');
+      }
+
+      function syncBadge() {
+        var state = checked('badge-state');
+        demoBadge.classList.remove('ok', 'warn', 'danger');
+        if (state === 'done') demoBadge.classList.add('ok');
+        if (state === 'waiting') demoBadge.classList.add('warn');
+        if (state === 'failed') demoBadge.classList.add('danger');
+      }
+
+      document.getElementById('studio').addEventListener('change', function (e) {
+        if (!e.target.name) return;
+        if (e.target.name === 'button-state') syncButton();
+        if (e.target.name === 'input-state') syncInput();
+        if (e.target.name === 'badge-state') syncBadge();
+      });
+      syncButton();
+      syncInput();
+      syncBadge();
+
+      var product = document.getElementById('product');
+      product.addEventListener('click', function (e) {
+        var blk = e.target.closest('[data-blk]');
+        if (!blk) return;
+        var radio = document.querySelector('input[name="blk"][value="' + blk.getAttribute('data-blk') + '"]');
+        if (!radio) return;
+        radio.checked = true;
+      });
+
+      var skill = document.getElementById('skill');
+      var findings = document.getElementById('findings');
+      var reviewTag = document.getElementById('review-tag');
+      var ran = false;
+
+      function setStep(name, pass) {
+        var li = document.querySelector('.steps li[data-check="' + name + '"]');
+        if (!li) return;
+        li.setAttribute('data-result', pass ? 'pass' : 'fail');
+      }
+
+      function renderReview() {
+        var hex = document.getElementById('bug-hex').checked;
+        var hasEmpty = document.getElementById('bug-empty').checked;
+        var match = document.getElementById('bug-status').checked;
+        var items = [];
+        if (hex) items.push('Raw value. #2f6e56 is not a token.');
+        if (!hasEmpty) items.push('Empty. The run list has no empty state.');
+        if (!match) items.push('Status. The approval card still says "Needs approval" after it was approved.');
+        findings.replaceChildren();
+        if (!items.length) {
+          var ok = document.createElement('li');
+          ok.className = 'pass';
+          ok.textContent = 'Nothing to flag.';
+          findings.appendChild(ok);
+          reviewTag.textContent = 'Clear';
+        } else {
+          items.forEach(function (text) {
+            var li = document.createElement('li');
+            li.textContent = text;
+            findings.appendChild(li);
+          });
+          reviewTag.textContent = items.length + (items.length === 1 ? ' flag' : ' flags');
+        }
+        setStep('hex', !hex);
+        setStep('empty', hasEmpty);
+        setStep('status', match);
+        skill.setAttribute('data-ran', '1');
+        ran = true;
+      }
+
+      document.getElementById('review').addEventListener('click', renderReview);
+      ['bug-hex', 'bug-empty', 'bug-status'].forEach(function (id) {
+        document.getElementById(id).addEventListener('change', function () {
+          if (ran) renderReview();
+        });
+      });
+
+      var navLinks = Array.prototype.slice.call(document.querySelectorAll('.lib-links a'));
+      var spy = navLinks.map(function (a) {
+        return { a: a, el: document.querySelector(a.getAttribute('href')) };
+      }).filter(function (item) { return item.el; });
+
+      function mark(link) {
+        navLinks.forEach(function (a) { a.removeAttribute('aria-current'); });
+        if (!link) return;
+        link.setAttribute('aria-current', 'location');
+        var scroller = link.parentElement;
+        if (!scroller) return;
+        var left = link.offsetLeft;
+        var right = left + link.offsetWidth;
+        var viewLeft = scroller.scrollLeft;
+        var viewRight = viewLeft + scroller.clientWidth;
+        if (left < viewLeft + 8) scroller.scrollLeft = Math.max(0, left - 8);
+        else if (right > viewRight - 8) scroller.scrollLeft = right - scroller.clientWidth + 8;
+      }
+
+      function spyLine() {
+        var nav = document.querySelector('.lib-nav');
+        var edge = nav ? nav.getBoundingClientRect().bottom : 0;
+        var current = null;
+        spy.forEach(function (item) {
+          if (item.el.getBoundingClientRect().top <= edge + 200) current = item;
+        });
+        mark(current ? current.a : null);
+      }
+
+      spyLine();
+      window.addEventListener('scroll', spyLine, { passive: true });
+    })();
+  </script>
+  <script src="shared/site-header.js?v=25" defer></script>
+</body>
+</html>
