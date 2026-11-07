@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>UI Library · Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow · Folder · Spacing · Hierarchy · Combos · Keywords · Backgrounds</title>
+  <title>UI Library · Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow · Folder · Spacing · Hierarchy · Combos · Keywords · Backgrounds · Nudge</title>
   <script>
     /* Apply saved page shell and glow stops before paint */
     (function () {
@@ -30,11 +30,11 @@
     })();
   </script>
   <script>
-    /* ?reduce=1 holds transition-keyword and background-keyword demos at rest. OS reduced motion is handled in CSS. */
+    /* ?reduce=1 holds transition-keyword, background-keyword, and nudging-notification demos at rest. OS reduced motion is handled in CSS. */
     (function () {
       try {
         if (new URLSearchParams(location.search).get('reduce') === '1') {
-          document.documentElement.classList.add('tk-still', 'bk-still');
+          document.documentElement.classList.add('tk-still', 'bk-still', 'nn-still');
         }
       } catch (e) {}
     })();
@@ -7243,6 +7243,333 @@
         forced-color-adjust: none;
       }
     }
+
+    /* —— Nudging notifications (scoped). 64px track fits the 40px slide
+       and the cubic overshoot (~1.56 × 40px). Motion rules match Copy CSS. —— */
+    #nudging-notifications .sec-head code {
+      font-family: var(--mono);
+      font-size: 0.92em;
+      white-space: nowrap;
+    }
+
+    #nudging-notifications .canvas-chrome {
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+
+    #nudging-notifications .canvas-tag {
+      margin-left: 0;
+    }
+
+    #nudging-notifications .nn-copy {
+      appearance: none;
+      margin-left: auto;
+      min-height: 44px;
+      min-width: 7.5rem;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 650;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    #nudging-notifications .nn-copy:hover {
+      background: #f7f7f9;
+      border-color: #cfcfd8;
+    }
+
+    #nudging-notifications .nn-copy:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    #nudging-notifications .nn-copy:active {
+      background: #f3f4f6;
+    }
+
+    #nudging-notifications .nn-copy.is-copied,
+    #nudging-notifications .nn-copy.is-copied:hover {
+      color: #1e6851;
+      border-color: #1e6851;
+      background: #fff;
+    }
+
+    #nudging-notifications .nn-stage {
+      padding: 32px 24px;
+    }
+
+    #nudging-notifications .nn-phone {
+      width: min(22.5rem, 100%);
+      max-width: 100%;
+      min-width: 0;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: #f3f4f6;
+      box-shadow:
+        0 1px 2px #0000000a,
+        0 16px 32px -20px #00000029;
+      overflow: visible;
+    }
+
+    #nudging-notifications .nn-clock {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0 0 12px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+    }
+
+    #nudging-notifications .nn-sig {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      height: 12px;
+    }
+
+    #nudging-notifications .nn-sig span {
+      display: block;
+      width: 4px;
+      border-radius: 999px;
+      background: currentColor;
+    }
+
+    #nudging-notifications .nn-sig span:nth-child(1) { height: 4px; }
+    #nudging-notifications .nn-sig span:nth-child(2) { height: 8px; }
+    #nudging-notifications .nn-sig span:nth-child(3) { height: 12px; }
+
+    #nudging-notifications .nn-kicker,
+    #nudging-notifications .nn-hint,
+    #nudging-notifications .nn-stack {
+      width: calc(100% - 64px);
+    }
+
+    #nudging-notifications .nn-kicker {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    #nudging-notifications .nn-hint {
+      margin: 4px 0 16px;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--muted);
+    }
+
+    #nudging-notifications .nn-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+    }
+
+    #nudging-notifications .n {
+      appearance: none;
+      -webkit-appearance: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      margin: 0;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      text-align: left;
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: none;
+      position: relative;
+      box-shadow: 0 1px 1px #0000000a, 0 8px 16px -10px #00000024;
+      transition: translate 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    #nudging-notifications .n::-moz-focus-inner {
+      border: 0;
+      padding: 0;
+    }
+
+    #nudging-notifications .n:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    #nudging-notifications .n:active {
+      translate: 40px 0;
+      cursor: grabbing;
+      z-index: 1;
+    }
+
+    #nudging-notifications .n:has(+ .n:active) {
+      translate: 10px 0;
+    }
+
+    #nudging-notifications .n:active + .n {
+      translate: 10px 0;
+    }
+
+    #nudging-notifications .nn-mark {
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      flex: 0 0 32px;
+      border-radius: 50%;
+      color: #fff;
+    }
+
+    #nudging-notifications .nn-mark svg {
+      display: block;
+      width: 16px;
+      height: 16px;
+    }
+
+    #nudging-notifications .nn-mark--cal { background: #5b5bf0; }
+    #nudging-notifications .nn-mark--chat { background: #0f766e; }
+    #nudging-notifications .nn-mark--photo { background: #a16207; }
+    #nudging-notifications .nn-mark--mail { background: #9f1239; }
+
+    #nudging-notifications .nn-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    #nudging-notifications .nn-line {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    #nudging-notifications .nn-title {
+      min-width: 0;
+      overflow: hidden;
+      font-size: 14px;
+      font-weight: 650;
+      letter-spacing: -0.01em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    #nudging-notifications .nn-when {
+      flex-shrink: 0;
+      margin-left: auto;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    #nudging-notifications .nn-msg {
+      color: #3a3a44;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.35;
+    }
+
+    #nudging-notifications .nn-keys {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 16px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    #nudging-notifications .nn-keys li {
+      display: flex;
+      flex: 1 1 14rem;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 8px;
+      margin: 0;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    #nudging-notifications .nn-keys code {
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 420px) {
+      #nudging-notifications .nn-stage {
+        padding: 24px 12px;
+      }
+
+      #nudging-notifications .nn-line {
+        flex-wrap: wrap;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #nudging-notifications .n,
+      #nudging-notifications .n:active,
+      #nudging-notifications .n:has(+ .n:active),
+      #nudging-notifications .n:active + .n {
+        transition: none;
+        translate: none;
+      }
+    }
+
+    html.nn-still #nudging-notifications .n,
+    html.nn-still #nudging-notifications .n:active,
+    html.nn-still #nudging-notifications .n:has(+ .n:active),
+    html.nn-still #nudging-notifications .n:active + .n {
+      transition: none;
+      translate: none;
+    }
+
+    @media (forced-colors: active) {
+      #nudging-notifications .nn-phone,
+      #nudging-notifications .n,
+      #nudging-notifications .nn-keys li,
+      #nudging-notifications .nn-copy {
+        border: 1px solid ButtonText;
+        background: ButtonFace;
+        color: ButtonText;
+      }
+
+      #nudging-notifications .nn-mark {
+        background: ButtonText;
+        color: ButtonFace;
+        forced-color-adjust: none;
+      }
+    }
   </style>
 </head>
 <body data-page="gallery">
@@ -7262,6 +7589,7 @@
       <a href="#color-combos">Color combos</a>
       <a href="#transition-keywords">Transition keywords</a>
       <a href="#background-keywords">Background keywords</a>
+      <a href="#nudging-notifications">Nudging notifications</a>
     </div>
   </nav>
 
@@ -7269,7 +7597,7 @@
     <header class="lib-hero">
       <h1>Component gallery</h1>
       <p>
-        Self-contained demos: Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords.
+        Self-contained demos: Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications.
         Digit scroll with a natural <code>linear()</code> spring (~10%
         overshoot), hard-coded glow CTAs (violet / teal / slate), nested-radius
         photo cards and a progressive dialog, ten page-shell colour palettes you can switch, twenty reference
@@ -7277,7 +7605,7 @@
         CSS-customizable <code>&lt;select&gt;</code>
         (<code>appearance: base-select</code>), a pure-CSS rotating glow
         border (<code>@property</code> angle + <code>conic-gradient</code>),
-        and a frosted SVG glass folder card.
+        and a frosted SVG glass folder card. Hold a notification and the cards above and below nudge.
       </p>
     </header>
 
@@ -12100,12 +12428,227 @@
     })();
     </script>
 
+
+    <!-- ===================== NUDGING NOTIFICATIONS ===================== -->
+    <section class="sec" id="nudging-notifications">
+      <div class="sec-head">
+        <h2>Nudging notifications</h2>
+        <p>
+          Android-style stack. Press and hold a card: it slides 40px and the cards above and below nudge 10px, with a bounce.
+          Pure CSS, and the motion is CSS only.
+          <code>.n:has(+ .n:active)</code> selects the previous sibling. A selector walks forward, and <code>:has()</code> looks back.
+          Major browsers support <code>:has()</code> now.
+          Reduced motion, including <code>?reduce=1</code>, holds translate still.
+        </p>
+      </div>
+
+      <article class="canvas">
+        <div class="canvas-chrome">
+          <span class="canvas-name">NotificationStack / nudge</span>
+          <span class="canvas-tag">pure CSS · :has()</span>
+          <button type="button" class="nn-copy" data-announce="nudging notification CSS" data-copy='<div class="stack">
+  <div class="n">Standup 10:00</div>
+  <div class="n">Maya - On my way!</div>
+  <div class="n">Memories - 3 years ago</div>
+</div>
+<style>
+.stack {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: min(22.5rem, 100%);
+  padding: 16px 80px 16px 16px;
+  border-radius: 24px;
+  background: #f3f4f6;
+}
+.n {
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 1px 1px #0000000a, 0 8px 16px -10px #00000024;
+  color: #1c1c22;
+  font: 14px/1.35 ui-sans-serif, system-ui, sans-serif;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: none;
+  transition: translate 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.n:active {
+  translate: 40px 0;
+  cursor: grabbing;
+}
+.n:has(+ .n:active) {
+  translate: 10px 0;
+}
+.n:active + .n {
+  translate: 10px 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .n,
+  .n:active,
+  .n:has(+ .n:active),
+  .n:active + .n {
+    transition: none;
+    translate: none;
+  }
+}
+</style>'>
+            <span class="nn-copy__label">Copy CSS</span>
+          </button>
+        </div>
+        <div class="canvas-body nn-stage">
+          <div class="nn-phone">
+            <div class="nn-clock" aria-hidden="true">
+              <span>9:41</span>
+              <span class="nn-sig"><span></span><span></span><span></span></span>
+            </div>
+            <p class="nn-kicker">Notifications</p>
+            <p class="nn-hint" id="nn-hold">Press and hold a card.<span class="visually-hidden"> Focus a card and hold Space.</span></p>
+            <div class="nn-stack" role="group" aria-label="Notification stack" aria-describedby="nn-hold">
+              <button type="button" class="n" id="nn-standup">
+                <span class="nn-mark nn-mark--cal" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3.5 10h17M8 3.5v3M16 3.5v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </span>
+                <span class="nn-text">
+                  <span class="nn-line"><span class="nn-title">Standup</span><span class="nn-when">10:00</span></span>
+                  <span class="nn-msg">Design sync</span>
+                </span>
+              </button>
+              <button type="button" class="n" id="nn-maya">
+                <span class="nn-mark nn-mark--chat" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path d="M5 6h14v9H9.2L5 18.2V6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+                </span>
+                <span class="nn-text">
+                  <span class="nn-line"><span class="nn-title">Maya</span><span class="nn-when">now</span></span>
+                  <span class="nn-msg">On my way!</span>
+                </span>
+              </button>
+              <button type="button" class="n" id="nn-memories">
+                <span class="nn-mark nn-mark--photo" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9" cy="10" r="1.5" fill="currentColor"/><path d="M7 16.5 10.5 13l2 2L16 12l4 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg>
+                </span>
+                <span class="nn-text">
+                  <span class="nn-line"><span class="nn-title">Memories</span><span class="nn-when">3 years ago</span></span>
+                  <span class="nn-msg">Harbour walk</span>
+                </span>
+              </button>
+              <button type="button" class="n" id="nn-inbox">
+                <span class="nn-mark nn-mark--mail" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><rect x="3.5" y="6" width="17" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="m4.5 7.5 7.5 5.5 7.5-5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+                </span>
+                <span class="nn-text">
+                  <span class="nn-line"><span class="nn-title">Inbox</span><span class="nn-when">2 new</span></span>
+                  <span class="nn-msg">Board notes</span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <ul class="nn-keys" aria-label="Nudge selectors">
+        <li><code>.n:active</code> <span>held card, 40px</span></li>
+        <li><code>.n:has(+ .n:active)</code> <span>card above, 10px</span></li>
+        <li><code>.n:active + .n</code> <span>card below, 10px</span></li>
+      </ul>
+      <p class="visually-hidden" id="nn-live" role="status" aria-live="polite"></p>
+    </section>
+    <script>
+    (function () {
+      'use strict';
+
+      var root = document.getElementById('nudging-notifications');
+      if (!root) return;
+
+      var timers = new WeakMap();
+      var status = document.getElementById('nn-live');
+      var announceToken = 0;
+
+      function legacyCopy(text) {
+        return new Promise(function (resolve, reject) {
+          var prev = document.activeElement;
+          var x = window.scrollX;
+          var y = window.scrollY;
+          var ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly', '');
+          ta.setAttribute('aria-hidden', 'true');
+          ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;padding:0;border:0;opacity:0';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          ta.setSelectionRange(0, text.length);
+          var ok = false;
+          try { ok = document.execCommand('copy'); } catch (copyErr) { ok = false; }
+          document.body.removeChild(ta);
+          window.scrollTo(x, y);
+          if (prev && prev.focus) {
+            try { prev.focus({ preventScroll: true }); } catch (focusErr) { prev.focus(); }
+          }
+          if (ok) resolve();
+          else reject(new Error('copy failed'));
+        });
+      }
+
+      function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext && navigator.clipboard.writeText) {
+          return navigator.clipboard.writeText(text).catch(function () { return legacyCopy(text); });
+        }
+        return legacyCopy(text);
+      }
+
+      function flash(btn) {
+        var label = btn.querySelector('.nn-copy__label');
+        if (!label) return;
+        if (!label.getAttribute('data-label')) label.setAttribute('data-label', label.textContent);
+        label.textContent = 'Copied';
+        btn.classList.add('is-copied');
+        var prev = timers.get(btn);
+        if (prev) window.clearTimeout(prev);
+        timers.set(btn, window.setTimeout(function () {
+          label.textContent = label.getAttribute('data-label') || 'Copy CSS';
+          btn.classList.remove('is-copied');
+        }, 1500));
+      }
+
+      function announce(msg) {
+        if (!status) return;
+        var mine = ++announceToken;
+        status.textContent = '';
+        window.setTimeout(function () {
+          if (mine !== announceToken) return;
+          status.textContent = msg;
+        }, 30);
+        window.setTimeout(function () {
+          if (mine !== announceToken) return;
+          status.textContent = '';
+        }, 1600);
+      }
+
+      Array.prototype.forEach.call(root.querySelectorAll('[data-copy]'), function (btn) {
+        btn.addEventListener('click', function (event) {
+          event.preventDefault();
+          var text = btn.getAttribute('data-copy') || '';
+          if (!text) return;
+          var said = btn.getAttribute('data-announce') || text;
+          copyText(text).then(function () {
+            flash(btn);
+            announce('Copied ' + said);
+          }).catch(function () {});
+        });
+      });
+    })();
+    </script>
+
     <footer class="lib-foot">
-      Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords. Digit-scroll <code>lh</code> + natural
+      Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications. Digit-scroll <code>lh</code> + natural
       <code>linear()</code> spring (~10% overshoot) · hard-coded glow buttons
       (violet / teal / slate) · nested radius · page-shell palettes · colour pairings · color combos · native
       <code>appearance: base-select</code> · rotating <code>conic-gradient</code> rim · SVG glass folder. No CDN.
-      Prefers-reduced-motion disables the spring and holds the glow border, transition-keyword demos, and background-keyword demos still. ?reduce=1 holds those demos at rest.
+      Prefers-reduced-motion disables the spring and holds the glow border, transition-keyword demos, background-keyword demos, and nudging notifications still. ?reduce=1 holds those demos at rest.
     </footer>
   </div>
 
@@ -12777,6 +13320,6 @@
     })();
   </script>
   <script src="shared/site-header.js?v=23" defer></script>
-  <script src="shared/section-fab.js?v=6" defer></script>
+  <script src="shared/section-fab.js?v=7" defer></script>
 </body>
 </html>
