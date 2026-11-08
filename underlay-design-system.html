@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Underlay DS · ui-kit</title>
+  <meta name="description" content="Marcel’s Underlay design system: violet foundations, theme, semantic tokens, elevation, an Inter type scale with Trim, and four rules." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet" />
+  <script>
+    /* Match the gallery page shell before paint. Palettes change --page only. */
+    (function () {
+      try {
+        var q = location.search || '';
+        var reduce = /(?:^|[?&])reduce=1(?:&|$)/.test(q);
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) reduce = true;
+        if (/(?:^|[?&])motion=1(?:&|$)/.test(q)) reduce = false;
+        if (/(?:^|[?&])reduce=1(?:&|$)/.test(q)) reduce = true;
+        document.documentElement.classList.add('js');
+        document.documentElement.setAttribute('data-motion', reduce ? 'reduce' : 'ok');
+        var id = localStorage.getItem('ui-kit-palette') || 'forest';
+        var pages = {
+          forest: '#f5f1ee', navy: '#eef2f6', terracotta: '#faf3ef',
+          plum: '#f6f1f8', ocean: '#eef6f6', amber: '#faf6ee',
+          slate: '#f0f1f3', rosewood: '#f8f1f3', olive: '#f4f3ea',
+          ink: '#ececf0'
+        };
+        document.documentElement.setAttribute('data-theme', id);
+        document.documentElement.style.setProperty('--page', pages[id] || pages.forest);
+      } catch (e) {}
+    })();
+  </script>
+  <style>
+    :root,
+    [data-brand="violet"] {
+      /* Foundations — raw values. Components do not read these. */
+      --gray-0: #FFFFFF;
+      --gray-50: #F7F7F7;
+      --gray-100: #F3F3F3;
+      --gray-200: #EBEBEB;
+      --gray-300: #D9D9D9;
+      --gray-400: #A3A3A3;
+      --gray-500: #7A7A7A;
+      --gray-600: #6D6D6D;
+      --gray-700: #525252;
+      --gray-800: #3D3D3D;
+      --gray-900: #323232;
+      --gray-950: #292929;
+
+      --indigo-50: #E9EDFF;
+      --indigo-100: #D1D9FF;
+      --indigo-200: #BAC6FF;
+      --indigo-300: #91A0FF;
+      --indigo-400: #6E7AFF;
+      --indigo-500: #5B5EFF;
+      --indigo-600: #4C38FF;
+      --indigo-700: #462CF2;
+      --indigo-800: #351BC2;
+      --indigo-900: #29169C;
+      --indigo-950: #241588;
+
+      --indigo-opacity-1: rgba(70, 44, 242, 0.01);
+      --indigo-opacity-4: rgba(70, 44, 242, 0.04);
+      --indigo-opacity-6: rgba(70, 44, 242, 0.06);
+      --indigo-opacity-8: rgba(70, 44, 242, 0.08);
+      --indigo-opacity-16: rgba(70, 44, 242, 0.16);
+      --gray-opacity-16: rgba(109, 109, 109, 0.16);
+      --white-opacity-24: rgba(255, 255, 255, 0.24);
+      --white-opacity-40: rgba(255, 255, 255, 0.40);
+
+      --blue-50: #EBF1FF;
+      --blue-200: #C0D5FF;
+      --blue-500: #335CFF;
+      --blue-950: #122368;
+      --orange-50: #FFF3EB;
+      --orange-200: #FFD9C0;
+      --orange-500: #FA7319;
+      --orange-950: #71330A;
+      --red-50: #FFEBEC;
+      --red-200: #FFC0C5;
+      --red-500: #FB3748;
+      --red-700: #D02533;
+      --red-950: #681219;
+      --green-50: #E3F7EC;
+      --green-200: #C2F5DA;
+      --green-600: #1DAF61;
+      --green-950: #0B4627;
+      --yellow-50: #FFFAEB;
+      --yellow-200: #FFECC0;
+      --yellow-600: #E6A819;
+      --yellow-950: #624C18;
+
+      --avatar-rose-bg: #FBE7E9;
+      --avatar-rose-fg: #6C424A;
+      --avatar-coral-bg: #F7D4CE;
+      --avatar-coral-fg: #59342F;
+      --avatar-orange-bg: #FAE9DF;
+      --avatar-orange-fg: #634532;
+      --avatar-yellow-bg: #F0EDDC;
+      --avatar-yellow-fg: #554E29;
+      --avatar-lime-bg: #D9E4C6;
+      --avatar-lime-fg: #39432B;
+      --avatar-green-bg: #E3F1E4;
+      --avatar-green-fg: #39553F;
+      --avatar-mint-bg: #C3E7DB;
+      --avatar-mint-fg: #144939;
+      --avatar-teal-bg: #DEF2F1;
+      --avatar-teal-fg: #185756;
+      --avatar-sky-bg: #C3E5EF;
+      --avatar-sky-fg: #0F4855;
+      --avatar-blue-bg: #E1EFFA;
+      --avatar-blue-fg: #305266;
+      --avatar-pink-bg: #F0D5E8;
+      --avatar-pink-fg: #52344B;
+
+      /* Theme — violet. One mode recolors every themed layer. */
+      --primary-darkest: var(--indigo-900);
+      --primary-dark: var(--indigo-800);
+      --primary-base: var(--indigo-700);
+      --primary-light: var(--indigo-100);
+      --primary-lighter: var(--indigo-50);
+      --primary-alpha-1: var(--indigo-opacity-1);
+      --primary-alpha-4: var(--indigo-opacity-4);
+      --primary-alpha-6: var(--indigo-opacity-6);
+      --primary-alpha-8: var(--indigo-opacity-8);
+      --primary-alpha-16: var(--indigo-opacity-16);
+
+      /* Tokens — named by job. */
+      --bg-strong-950: var(--gray-950);
+      --bg-surface-800: var(--gray-800);
+      --bg-sub-300: var(--gray-300);
+      --bg-soft-200: var(--gray-200);
+      --bg-weak-50: var(--gray-50);
+      --bg-white-0: var(--gray-0);
+
+      --text-strong-950: var(--gray-950);
+      --text-sub-600: var(--gray-600);
+      --text-soft-400: var(--gray-400);
+      --text-disabled-400: var(--gray-400);
+      --text-white-0: var(--gray-0);
+
+      --stroke-strong-950: var(--gray-950);
+      --stroke-sub-300: var(--gray-300);
+      --stroke-soft-200: var(--gray-200);
+      --stroke-white-0: var(--gray-0);
+
+      --icon-strong-950: var(--gray-950);
+      --icon-sub-600: var(--gray-600);
+      --icon-soft-400: var(--gray-400);
+      --icon-disabled-400: var(--gray-400);
+      --icon-white-0: var(--gray-0);
+
+      --overlay-gray: rgba(0, 0, 0, 0.16);
+
+      --state-information-dark: var(--blue-950);
+      --state-information-base: var(--blue-500);
+      --state-information-light: var(--blue-200);
+      --state-information-lighter: var(--blue-50);
+      --state-warning-dark: var(--orange-950);
+      --state-warning-base: var(--orange-500);
+      --state-warning-light: var(--orange-200);
+      --state-warning-lighter: var(--orange-50);
+      --state-error-dark: var(--red-950);
+      --state-error-base: var(--red-500);
+      --state-error-light: var(--red-200);
+      --state-error-lighter: var(--red-50);
+      --state-error-text: var(--red-700);
+      --state-success-dark: var(--green-950);
+      --state-success-base: var(--green-600);
+      --state-success-light: var(--green-200);
+      --state-success-lighter: var(--green-50);
+      --state-away-dark: var(--yellow-950);
+      --state-away-base: var(--yellow-600);
+      --state-away-light: var(--yellow-200);
+      --state-away-lighter: var(--yellow-50);
+
+      /* Effect colours. The first layer of a control is always a 1px ring. */
+      --shadow-gray-8: rgba(20, 20, 20, 0.08);
+      --shadow-gray-6: rgba(20, 20, 20, 0.06);
+      --shadow-gray-4: rgba(20, 20, 20, 0.04);
+      --shadow-gray-2: rgba(20, 20, 20, 0.02);
+      --shadow-gray-ring-16: var(--gray-opacity-16);
+      --shadow-primary-ring: var(--primary-base);
+      --shadow-primary-16: var(--primary-alpha-16);
+      --shadow-primary-6: var(--primary-alpha-6);
+      --shadow-primary-4: var(--primary-alpha-4);
+      --shadow-primary-1: var(--primary-alpha-1);
+      --shadow-white: var(--gray-0);
+      --shadow-white-40: var(--white-opacity-40);
+      --shadow-white-24: var(--white-opacity-24);
+
+      --elev-ring: 0 0 0 1px var(--shadow-gray-ring-16);
+      --elev-outline: var(--elev-ring);
+      --elev-badge: var(--elev-ring), 0 1px 2px var(--shadow-gray-4);
+      --elev-input: var(--elev-ring), 0 1px 2px var(--shadow-gray-4), 0 2px 6px var(--shadow-gray-2);
+      --elev-card: var(--elev-ring), 0 1px 2px var(--shadow-gray-4), 0 6px 14px var(--shadow-gray-6);
+      --elev-dropdown: var(--elev-ring), 0 6px 12px var(--shadow-gray-6), 0 18px 32px var(--shadow-gray-8);
+      --elev-modal: var(--elev-ring), 0 10px 20px var(--shadow-gray-6), 0 28px 48px var(--shadow-gray-8);
+      --state-active: 0 0 0 1px var(--shadow-primary-ring), 0 8px 18px var(--shadow-primary-16);
+      --state-button: 0 1px 1px var(--shadow-primary-6), 0 10px 22px var(--shadow-primary-16);
+
+      /* Page shell. Palettes change --page only. */
+      --page: #ececf0;
+      --canvas: #ffffff;
+      --ink: #1c1c22;
+      --muted: #5c5c66;
+      --line: rgba(28, 28, 34, 0.1);
+      --nav-h: 52px;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--site-header-h, 56px) + var(--nav-h) + 12px);
+      color-scheme: light;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      background: var(--page);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.45;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, textarea { font-family: inherit; }
+
+    .skip {
+      position: absolute;
+      left: 12px;
+      top: -48px;
+      z-index: 80;
+      padding: 8px 12px;
+      background: var(--canvas);
+      color: var(--ink);
+      border-radius: 8px;
+    }
+
+    .skip:focus { top: calc(var(--site-header-h, 56px) + 8px); }
+
+    .sr {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .lib-nav {
+      position: sticky;
+      top: var(--site-header-h, 56px);
+      z-index: 40;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0 0.85rem 0 1rem;
+      background: color-mix(in srgb, var(--page) 88%, #fff);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .lib-brand {
+      font-size: 11px;
+      font-weight: 650;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+      flex: none;
+    }
+
+    .lib-links {
+      display: flex;
+      gap: 0.15rem;
+      margin-left: auto;
+      min-width: 0;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+    }
+
+    .lib-links::-webkit-scrollbar { display: none; }
+
+    @media (max-width: 640px) {
+      .lib-links {
+        -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+        mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+      }
+    }
+
+    .lib-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.45rem 0.7rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .lib-links a:hover,
+    .lib-links a[aria-current="location"] {
+      color: var(--ink);
+      background: var(--canvas);
+    }
+
+    .lib {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4.5rem;
+    }
+
+    .hero {
+      display: grid;
+      gap: 1.5rem;
+      align-items: center;
+      margin: 0 0 2.75rem;
+    }
+
+    @media (min-width: 840px) {
+      .hero { grid-template-columns: 1.15fr 0.85fr; gap: 2rem; }
+      .lib-nav { padding: 0 1.25rem; }
+    }
+
+    .kicker {
+      margin: 0 0 0.45rem;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    h1, h2, h3 { text-wrap: balance; }
+
+    h1 {
+      margin: 0 0 0.55rem;
+      font-size: clamp(2rem, 4vw, 2.6rem);
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+    }
+
+    .lede {
+      margin: 0;
+      max-width: 36rem;
+      font-size: 1.02rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .by {
+      margin: 0.85rem 0 0;
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+
+    a { color: var(--primary-base); text-underline-offset: 0.16em; }
+    a:hover { color: var(--primary-dark); }
+
+    .pipe {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      gap: 8px;
+      margin: 0;
+    }
+
+    .pipe-step {
+      flex: 1 1 140px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-height: 72px;
+      padding: 12px 14px;
+      background: var(--canvas);
+      border-radius: 14px;
+      box-shadow: 0 0 0 1px var(--line);
+    }
+
+    .pipe-step b {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.011em;
+    }
+
+    .pipe-step span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .pipe-step.is-on {
+      background: var(--primary-lighter);
+      box-shadow: 0 0 0 1px var(--primary-light);
+      color: var(--primary-darkest);
+    }
+
+    .pipe-step.is-on span { color: var(--primary-dark); }
+
+    .pipe-arrow {
+      align-self: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .rise { transition: none; }
+
+    html[data-motion="ok"] .rise {
+      transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
+    }
+
+    html.js[data-motion="ok"] .hero:not(.is-in) .rise {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+
+    .sec { margin: 0 0 3.25rem; }
+
+    .sec-head { margin: 0 0 1rem; max-width: 42rem; }
+
+    .sec h2 {
+      margin: 0 0 0.4rem;
+      font-size: clamp(1.45rem, 2.4vw, 1.8rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    .sec-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .sheet {
+      background: var(--canvas);
+      border-radius: 18px;
+      box-shadow: 0 0 0 1px var(--line);
+      padding: 1.15rem 1.15rem 1.35rem;
+      color: var(--text-strong-950);
+      overflow: visible;
+    }
+
+    .group { margin-top: 1.5rem; }
+    .group:first-child { margin-top: 0; }
+
+    .group h3 {
+      margin: 0;
+      font-size: 0.98rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .note {
+      margin: 0.2rem 0 0.75rem;
+      font-size: 0.82rem;
+      line-height: 1.4;
+      color: var(--text-sub-600);
+    }
+
+    .ramp {
+      display: grid;
+      gap: 14px 8px;
+      grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+    }
+
+    @media (min-width: 1080px) {
+      .ramp.n12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+      .ramp.n11 { grid-template-columns: repeat(11, minmax(0, 1fr)); }
+      .ramp.n8 { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+      .ramp.n6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+      .ramp.n5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+      .ramp.n4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+
+    .swatch {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      min-width: 0;
+      min-height: 44px;
+      margin: 0;
+      padding: 2px;
+      border: 0;
+      border-radius: 12px;
+      background: transparent;
+      color: var(--text-sub-600);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .swatch-chip {
+      display: block;
+      width: 100%;
+      height: 52px;
+      border-radius: 12px;
+      background-color: var(--plate, var(--bg-white-0));
+      background-image: linear-gradient(var(--c), var(--c));
+      box-shadow: inset 0 0 0 1px var(--shadow-gray-ring-16);
+    }
+
+    .on-ink { --plate: var(--gray-950); }
+
+    .swatch-name,
+    .swatch-alias,
+    .swatch-hex {
+      display: block;
+      max-width: 100%;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.3;
+      letter-spacing: 0;
+      word-break: break-word;
+    }
+
+    .swatch-name { color: var(--text-strong-950); }
+    .swatch-alias, .swatch-hex { color: var(--text-sub-600); }
+
+    .swatch.is-brand .swatch-name { color: var(--primary-base); }
+
+    .swatch:hover .swatch-name { color: var(--primary-dark); }
+
+    .swatch:focus-visible {
+      outline: 2px solid var(--primary-base);
+      outline-offset: 2px;
+    }
+
+    .has-shadow { padding-bottom: 6px; }
+
+    .swatch-chip.is-shadow {
+      width: calc(100% - 20px);
+      height: 48px;
+      margin: 10px 10px 18px;
+      background-image: none;
+      background-color: var(--bg-white-0);
+      box-shadow: var(--sh);
+    }
+
+    .on-ink .swatch-chip.is-shadow { background-color: var(--gray-800); }
+
+    .avatar-face {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 999px;
+      background: var(--bg);
+      color: var(--fg);
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: -0.006em;
+    }
+
+    .pipe-caption {
+      margin: 1.1rem 0 0;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-sub-600);
+    }
+
+    .fx-grid {
+      display: grid;
+      gap: 16px 12px;
+      grid-template-columns: 1fr;
+      margin-top: 1.35rem;
+    }
+
+    @media (min-width: 700px) {
+      .fx-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (min-width: 1100px) {
+      .fx-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    }
+
+    #effects .group:first-child .ramp {
+      grid-template-columns: repeat(auto-fill, minmax(156px, 1fr));
+    }
+
+    .fx {
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      min-width: 0;
+    }
+
+    .well {
+      flex: 1;
+      background: var(--bg-weak-50);
+      border-radius: 20px;
+      min-height: 196px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 16px 40px;
+      overflow: visible;
+    }
+
+    .fx figcaption {
+      display: grid;
+      gap: 2px;
+      margin-top: 10px;
+    }
+
+    .fx figcaption strong {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.011em;
+      color: var(--ink);
+    }
+
+    .fx figcaption span {
+      font-size: 12px;
+      line-height: 1.35;
+      color: var(--muted);
+    }
+
+    .elev-card,
+    .menu,
+    .dialog,
+    .field,
+    .count,
+    .scope,
+    .face,
+    .send {
+      text-box-trim: trim-both;
+      text-box-edge: cap alphabetic;
+    }
+
+    .elev-card {
+      width: min(100%, 168px);
+      height: 72px;
+      border-radius: 16px;
+      background: var(--bg-white-0);
+      box-shadow: var(--elev-card);
+    }
+
+    .menu {
+      width: min(100%, 168px);
+      height: 96px;
+      border-radius: 16px;
+      background: var(--bg-white-0);
+      box-shadow: var(--elev-dropdown);
+    }
+
+    .dialog {
+      width: min(100%, 188px);
+      height: 112px;
+      border-radius: 22px;
+      background: var(--bg-white-0);
+      box-shadow: var(--elev-modal);
+    }
+
+    .field {
+      width: min(100%, 220px);
+      height: 44px;
+      margin: 0;
+      padding: 0 14px;
+      border: 0;
+      border-radius: 999px;
+      appearance: none;
+      background: var(--bg-white-0);
+      color: var(--text-strong-950);
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      letter-spacing: -0.006em;
+      box-shadow: var(--elev-input);
+    }
+
+    .field.outline { box-shadow: var(--elev-outline); resize: none; }
+
+    .field.is-active,
+    .field:focus,
+    .field:focus-visible {
+      outline: none;
+      box-shadow: var(--state-active);
+    }
+
+    .field::placeholder {
+      color: var(--text-soft-400);
+      opacity: 1;
+      font-weight: 400;
+    }
+
+    .count {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background: var(--bg-white-0);
+      color: var(--text-sub-600);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: -0.006em;
+      box-shadow: var(--elev-badge);
+    }
+
+    .scope {
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border: 0;
+      border-radius: 14px;
+      background: var(--bg-white-0);
+      box-shadow: var(--elev-outline);
+      cursor: pointer;
+    }
+
+    .scope[aria-pressed="true"] {
+      background: var(--primary-alpha-8);
+      box-shadow: 0 0 0 1px var(--primary-alpha-16);
+    }
+
+    .face {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 999px;
+      background: var(--avatar-rose-bg);
+      color: var(--avatar-rose-fg);
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: -0.006em;
+    }
+
+    .send {
+      height: 44px;
+      padding: 0 16px;
+      border: 0;
+      border-radius: 999px;
+      appearance: none;
+      background: var(--primary-base);
+      color: var(--text-white-0);
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      letter-spacing: -0.006em;
+      box-shadow: var(--state-button);
+      cursor: pointer;
+    }
+
+    .send:hover { background: var(--primary-dark); }
+    .send:active { background: var(--primary-darkest); }
+
+    html[data-motion="ok"] .send {
+      transition: background 160ms ease, transform 160ms ease, box-shadow 180ms ease;
+    }
+
+    html[data-motion="ok"] .send:hover { transform: translateY(-1px); }
+
+    html[data-motion="ok"] .field {
+      transition: box-shadow 180ms ease;
+    }
+
+    .send:focus-visible,
+    .scope:focus-visible {
+      outline: 2px solid var(--primary-darkest);
+      outline-offset: 3px;
+    }
+
+    /* Colour rule violation on purpose: a foundation hex, not a token. */
+    .send.is-raw,
+    .send.is-raw:hover,
+    .send.is-raw:active {
+      background: #462CF2;
+      box-shadow: 0 10px 22px rgba(70, 44, 242, 0.16);
+      transform: none;
+    }
+
+    .type-block { margin-top: 1.35rem; }
+    .type-block:first-child { margin-top: 0; }
+
+    .type-block h3 {
+      margin: 0 0 0.35rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-sub-600);
+    }
+
+    .type-sheet { overflow-x: auto; }
+
+    .type-row {
+      display: grid;
+      grid-template-columns: 11.5rem minmax(16rem, 1fr);
+      gap: 8px 18px;
+      align-items: baseline;
+      min-width: 36rem;
+      padding: 12px 0;
+      border-top: 1px solid var(--stroke-soft-200);
+    }
+
+    .type-meta b {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: -0.011em;
+      color: var(--text-strong-950);
+    }
+
+    .type-meta span {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-sub-600);
+    }
+
+    .type-sample {
+      margin: 0;
+      color: var(--text-strong-950);
+      font-weight: 500;
+    }
+
+    .t-h1 { font-size: 56px; line-height: 64px; letter-spacing: -0.02em; }
+    .t-h2 { font-size: 48px; line-height: 56px; letter-spacing: -0.02em; }
+    .t-h3 { font-size: 40px; line-height: 48px; letter-spacing: -0.02em; }
+    .t-h4 { font-size: 32px; line-height: 40px; letter-spacing: -0.01em; }
+    .t-h5 { font-size: 24px; line-height: 32px; letter-spacing: -0.01em; }
+    .t-h6 { font-size: 20px; line-height: 28px; letter-spacing: -0.01em; }
+    .t-ll { font-size: 18px; line-height: 24px; letter-spacing: -0.015em; }
+    .t-lm { font-size: 16px; line-height: 24px; letter-spacing: -0.011em; }
+    .t-ls { font-size: 14px; line-height: 20px; letter-spacing: -0.006em; }
+    .t-lc { font-size: 13px; line-height: 20px; letter-spacing: -0.01em; }
+    .t-lx { font-size: 12px; line-height: 16px; letter-spacing: 0; }
+    .t-pl, .t-pm, .t-ps, .t-pc, .t-px { font-weight: 400; }
+    .t-pl { font-size: 18px; line-height: 24px; letter-spacing: -0.015em; }
+    .t-pm { font-size: 16px; line-height: 24px; letter-spacing: -0.011em; }
+    .t-ps { font-size: 14px; line-height: 20px; letter-spacing: -0.006em; }
+    .t-pc { font-size: 13px; line-height: 20px; letter-spacing: -0.01em; }
+    .t-px { font-size: 12px; line-height: 16px; letter-spacing: 0; }
+    .t-tc { font-size: 13px; line-height: 20px; letter-spacing: -0.006em; }
+    .t-tpc { font-size: 13px; line-height: 20px; letter-spacing: -0.006em; font-weight: 400; }
+    .t-tx { font-size: 12px; line-height: 16px; letter-spacing: -0.006em; }
+    .t-t2 { font-size: 10px; line-height: 16px; letter-spacing: -0.006em; }
+
+    .is-trim {
+      display: inline-block;
+      padding: 0 3px;
+      color: var(--primary-base);
+      border: 1px dashed color-mix(in srgb, var(--primary-base) 55%, transparent);
+      border-radius: 2px;
+      text-box-trim: trim-both;
+      text-box-edge: cap alphabetic;
+      white-space: nowrap;
+    }
+
+    .rules {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 720px) {
+      .rules { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (min-width: 1100px) {
+      .rules { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+
+    .rule {
+      margin: 0;
+      padding: 16px 16px 14px;
+      background: var(--canvas);
+      border-radius: 16px;
+      box-shadow: 0 0 0 1px var(--line);
+    }
+
+    .rule h3 {
+      margin: 0 0 0.55rem;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .rule ul {
+      margin: 0;
+      padding: 0 0 0 1.1rem;
+      display: grid;
+      gap: 0.45rem;
+    }
+
+    .rule li {
+      font-size: 0.86rem;
+      line-height: 1.4;
+      color: var(--ink);
+    }
+
+    .teach {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .teach .mark {
+      display: block;
+      margin-bottom: 6px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .teach-note {
+      margin: 8px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .copy-status {
+      position: fixed;
+      left: 50%;
+      bottom: 16px;
+      z-index: 45;
+      transform: translateX(-50%);
+      margin: 0;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--text-strong-950);
+      color: var(--text-white-0);
+      font-size: 12px;
+      font-family: var(--mono);
+      box-shadow: var(--elev-dropdown);
+    }
+
+    .copy-status:empty { display: none; }
+
+    :focus-visible {
+      outline: 2px solid var(--primary-base);
+      outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    html[data-motion="reduce"] { scroll-behavior: auto; }
+
+    html[data-motion="reduce"] *,
+    html[data-motion="reduce"] *::before,
+    html[data-motion="reduce"] *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+
+  </style>
+  <link rel="stylesheet" href="shared/site-header.css?v=7" />
+</head>
+<body data-page="underlay-design-system" data-brand="violet">
+  <a class="skip" href="#content">Skip to content</a>
+  <nav class="lib-nav" aria-label="Page sections">
+    <div class="lib-brand">Underlay DS</div>
+    <div class="lib-links">
+      <a href="#foundations">Foundations</a>
+      <a href="#theme">Theme</a>
+      <a href="#tokens">Tokens</a>
+      <a href="#effects">Effects</a>
+      <a href="#type">Type</a>
+      <a href="#rules">Rules</a>
+    </div>
+  </nav>
+
+  <main class="lib" id="content">
+    <header class="hero" id="top">
+      <div class="rise">
+        <p class="kicker">Design system</p>
+        <h1>Underlay</h1>
+        <p class="lede">Foundations → theme → tokens → layers. Violet is the brand mode.</p>
+        <p class="by">Marcel (<a href="https://x.com/marcelkargul" target="_blank" rel="noopener noreferrer">@marcelkargul</a>) · <a href="https://x.com/marcelkargul/status/2119067779038851202" target="_blank" rel="noopener noreferrer">Underlay design system</a></p>
+      </div>
+      <div class="pipe rise" role="group" aria-label="Colour pipeline">
+        <div class="pipe-step"><b>Foundations</b><span>Raw values</span></div>
+        <span class="pipe-arrow" aria-hidden="true">→</span>
+        <div class="pipe-step is-on"><b>Theme</b><span>Brand · Violet</span></div>
+        <span class="pipe-arrow" aria-hidden="true">→</span>
+        <div class="pipe-step"><b>Tokens</b><span>Named by job</span></div>
+        <span class="pipe-arrow" aria-hidden="true">→</span>
+        <div class="pipe-step"><b>Layers</b><span>Fills, strokes, text, effects</span></div>
+      </div>
+    </header>
+
+    <section class="sec" id="foundations">
+      <div class="sec-head">
+        <p class="kicker">01 · Foundations</p>
+        <h2>Raw values. Nothing on a screen points here.</h2>
+        <p>Theme and tokens alias these. Click a swatch to copy it.</p>
+      </div>
+      <div class="sheet">
+        <div class="group">
+          <h3>Gray</h3>
+          <p class="note">Neutral scale, fixed in every theme.</p>
+          <div class="ramp n12"><button type="button" class="swatch" style="--c:var(--gray-0)" data-copy="gray/0 #FFFFFF"><span class="swatch-chip"></span><span class="swatch-name">gray/0</span><span class="swatch-hex">#FFFFFF</span></button><button type="button" class="swatch" style="--c:var(--gray-50)" data-copy="gray/50 #F7F7F7"><span class="swatch-chip"></span><span class="swatch-name">gray/50</span><span class="swatch-hex">#F7F7F7</span></button><button type="button" class="swatch" style="--c:var(--gray-100)" data-copy="gray/100 #F3F3F3"><span class="swatch-chip"></span><span class="swatch-name">gray/100</span><span class="swatch-hex">#F3F3F3</span></button><button type="button" class="swatch" style="--c:var(--gray-200)" data-copy="gray/200 #EBEBEB"><span class="swatch-chip"></span><span class="swatch-name">gray/200</span><span class="swatch-hex">#EBEBEB</span></button><button type="button" class="swatch" style="--c:var(--gray-300)" data-copy="gray/300 #D9D9D9"><span class="swatch-chip"></span><span class="swatch-name">gray/300</span><span class="swatch-hex">#D9D9D9</span></button><button type="button" class="swatch" style="--c:var(--gray-400)" data-copy="gray/400 #A3A3A3"><span class="swatch-chip"></span><span class="swatch-name">gray/400</span><span class="swatch-hex">#A3A3A3</span></button><button type="button" class="swatch" style="--c:var(--gray-500)" data-copy="gray/500 #7A7A7A"><span class="swatch-chip"></span><span class="swatch-name">gray/500</span><span class="swatch-hex">#7A7A7A</span></button><button type="button" class="swatch" style="--c:var(--gray-600)" data-copy="gray/600 #6D6D6D"><span class="swatch-chip"></span><span class="swatch-name">gray/600</span><span class="swatch-hex">#6D6D6D</span></button><button type="button" class="swatch" style="--c:var(--gray-700)" data-copy="gray/700 #525252"><span class="swatch-chip"></span><span class="swatch-name">gray/700</span><span class="swatch-hex">#525252</span></button><button type="button" class="swatch" style="--c:var(--gray-800)" data-copy="gray/800 #3D3D3D"><span class="swatch-chip"></span><span class="swatch-name">gray/800</span><span class="swatch-hex">#3D3D3D</span></button><button type="button" class="swatch" style="--c:var(--gray-900)" data-copy="gray/900 #323232"><span class="swatch-chip"></span><span class="swatch-name">gray/900</span><span class="swatch-hex">#323232</span></button><button type="button" class="swatch" style="--c:var(--gray-950)" data-copy="gray/950 #292929"><span class="swatch-chip"></span><span class="swatch-name">gray/950</span><span class="swatch-hex">#292929</span></button></div>
+        </div>
+        <div class="group">
+          <h3>Violet</h3>
+          <p class="note">Brand scale behind the Violet theme. 700 is the brand.</p>
+          <div class="ramp n11"><button type="button" class="swatch" style="--c:var(--indigo-50)" data-copy="indigo/50 #E9EDFF"><span class="swatch-chip"></span><span class="swatch-name">indigo/50</span><span class="swatch-hex">#E9EDFF</span></button><button type="button" class="swatch" style="--c:var(--indigo-100)" data-copy="indigo/100 #D1D9FF"><span class="swatch-chip"></span><span class="swatch-name">indigo/100</span><span class="swatch-hex">#D1D9FF</span></button><button type="button" class="swatch" style="--c:var(--indigo-200)" data-copy="indigo/200 #BAC6FF"><span class="swatch-chip"></span><span class="swatch-name">indigo/200</span><span class="swatch-hex">#BAC6FF</span></button><button type="button" class="swatch" style="--c:var(--indigo-300)" data-copy="indigo/300 #91A0FF"><span class="swatch-chip"></span><span class="swatch-name">indigo/300</span><span class="swatch-hex">#91A0FF</span></button><button type="button" class="swatch" style="--c:var(--indigo-400)" data-copy="indigo/400 #6E7AFF"><span class="swatch-chip"></span><span class="swatch-name">indigo/400</span><span class="swatch-hex">#6E7AFF</span></button><button type="button" class="swatch" style="--c:var(--indigo-500)" data-copy="indigo/500 #5B5EFF"><span class="swatch-chip"></span><span class="swatch-name">indigo/500</span><span class="swatch-hex">#5B5EFF</span></button><button type="button" class="swatch" style="--c:var(--indigo-600)" data-copy="indigo/600 #4C38FF"><span class="swatch-chip"></span><span class="swatch-name">indigo/600</span><span class="swatch-hex">#4C38FF</span></button><button type="button" class="swatch is-brand" style="--c:var(--indigo-700)" data-copy="indigo/700 #462CF2"><span class="swatch-chip"></span><span class="swatch-name">indigo/700</span><span class="swatch-hex">#462CF2</span></button><button type="button" class="swatch" style="--c:var(--indigo-800)" data-copy="indigo/800 #351BC2"><span class="swatch-chip"></span><span class="swatch-name">indigo/800</span><span class="swatch-hex">#351BC2</span></button><button type="button" class="swatch" style="--c:var(--indigo-900)" data-copy="indigo/900 #29169C"><span class="swatch-chip"></span><span class="swatch-name">indigo/900</span><span class="swatch-hex">#29169C</span></button><button type="button" class="swatch" style="--c:var(--indigo-950)" data-copy="indigo/950 #241588"><span class="swatch-chip"></span><span class="swatch-name">indigo/950</span><span class="swatch-hex">#241588</span></button></div>
+        </div>
+        <div class="group">
+          <h3>Opacity</h3>
+          <p class="note">Tints for selection, rings and shadows.</p>
+          <div class="ramp n8"><button type="button" class="swatch" style="--c:var(--indigo-opacity-1)" data-copy="indigo/opacity/1 #462CF2 1%"><span class="swatch-chip"></span><span class="swatch-name">indigo/opacity/1</span><span class="swatch-hex">#462CF2 · 1%</span></button><button type="button" class="swatch" style="--c:var(--indigo-opacity-4)" data-copy="indigo/opacity/4 #462CF2 4%"><span class="swatch-chip"></span><span class="swatch-name">indigo/opacity/4</span><span class="swatch-hex">#462CF2 · 4%</span></button><button type="button" class="swatch" style="--c:var(--indigo-opacity-6)" data-copy="indigo/opacity/6 #462CF2 6%"><span class="swatch-chip"></span><span class="swatch-name">indigo/opacity/6</span><span class="swatch-hex">#462CF2 · 6%</span></button><button type="button" class="swatch" style="--c:var(--indigo-opacity-8)" data-copy="indigo/opacity/8 #462CF2 8%"><span class="swatch-chip"></span><span class="swatch-name">indigo/opacity/8</span><span class="swatch-hex">#462CF2 · 8%</span></button><button type="button" class="swatch" style="--c:var(--indigo-opacity-16)" data-copy="indigo/opacity/16 #462CF2 16%"><span class="swatch-chip"></span><span class="swatch-name">indigo/opacity/16</span><span class="swatch-hex">#462CF2 · 16%</span></button><button type="button" class="swatch" style="--c:var(--gray-opacity-16)" data-copy="gray/opacity/16 #6D6D6D 16%"><span class="swatch-chip"></span><span class="swatch-name">gray/opacity/16</span><span class="swatch-hex">#6D6D6D · 16%</span></button><button type="button" class="swatch on-ink" style="--c:var(--white-opacity-24)" data-copy="white/opacity/24 #FFFFFF 24%"><span class="swatch-chip"></span><span class="swatch-name">white/opacity/24</span><span class="swatch-hex">#FFFFFF · 24%</span></button><button type="button" class="swatch on-ink" style="--c:var(--white-opacity-40)" data-copy="white/opacity/40 #FFFFFF 40%"><span class="swatch-chip"></span><span class="swatch-name">white/opacity/40</span><span class="swatch-hex">#FFFFFF · 40%</span></button></div>
+        </div>
+        <div class="group">
+          <h3>Blue</h3>
+          <p class="note">state/information. Only the steps the state tokens use. Fixed in every theme.</p>
+          <div class="ramp n4"><button type="button" class="swatch" style="--c:var(--blue-50)" data-copy="blue/50 #EBF1FF"><span class="swatch-chip"></span><span class="swatch-name">blue/50</span><span class="swatch-hex">#EBF1FF</span></button><button type="button" class="swatch" style="--c:var(--blue-200)" data-copy="blue/200 #C0D5FF"><span class="swatch-chip"></span><span class="swatch-name">blue/200</span><span class="swatch-hex">#C0D5FF</span></button><button type="button" class="swatch" style="--c:var(--blue-500)" data-copy="blue/500 #335CFF"><span class="swatch-chip"></span><span class="swatch-name">blue/500</span><span class="swatch-hex">#335CFF</span></button><button type="button" class="swatch" style="--c:var(--blue-950)" data-copy="blue/950 #122368"><span class="swatch-chip"></span><span class="swatch-name">blue/950</span><span class="swatch-hex">#122368</span></button></div>
+        </div>
+        <div class="group">
+          <h3>Orange</h3>
+          <p class="note">state/warning.</p>
+          <div class="ramp n4"><button type="button" class="swatch" style="--c:var(--orange-50)" data-copy="orange/50 #FFF3EB"><span class="swatch-chip"></span><span class="swatch-name">orange/50</span><span class="swatch-hex">#FFF3EB</span></button><button type="button" class="swatch" style="--c:var(--orange-200)" data-copy="orange/200 #FFD9C0"><span class="swatch-chip"></span><span class="swatch-name">orange/200</span><span class="swatch-hex">#FFD9C0</span></button><button type="button" class="swatch" style="--c:var(--orange-500)" data-copy="orange/500 #FA7319"><span class="swatch-chip"></span><span class="swatch-name">orange/500</span><span class="swatch-hex">#FA7319</span></button><button type="button" class="swatch" style="--c:var(--orange-950)" data-copy="orange/950 #71330A"><span class="swatch-chip"></span><span class="swatch-name">orange/950</span><span class="swatch-hex">#71330A</span></button></div>
+        </div>
+        <div class="group">
+          <h3>Red</h3>
+          <p class="note">state/error.</p>
+          <div class="ramp n5"><button type="button" class="swatch" style="--c:var(--red-50)" data-copy="red/50 #FFEBEC"><span class="swatch-chip"></span><span class="swatch-name">red/50</span><span class="swatch-hex">#FFEBEC</span></button><button type="button" class="swatch" style="--c:var(--red-200)" data-copy="red/200 #FFC0C5"><span class="swatch-chip"></span><span class="swatch-name">red/200</span><span class="swatch-hex">#FFC0C5</span></button><button type="button" class="swatch" style="--c:var(--red-500)" data-copy="red/500 #FB3748"><span class="swatch-chip"></span><span class="swatch-name">red/500</span><span class="swatch-hex">#FB3748</span></button><button type="button" class="swatch" style="--c:var(--red-700)" data-copy="red/700 #D02533"><span class="swatch-chip"></span><span class="swatch-name">red/700</span><span class="swatch-hex">#D02533</span></button><button type="button" class="swatch" style="--c:var(--red-950)" data-copy="red/950 #681219"><span class="swatch-chip"></span><span class="swatch-name">red/950</span><span class="swatch-hex">#681219</span></button></div>
+        </div>
+        <div class="group">
+          <h3>Green</h3>
+          <p class="note">state/success.</p>
+          <div class="ramp n4"><button type="button" class="swatch" style="--c:var(--green-50)" data-copy="green/50 #E3F7EC"><span class="swatch-chip"></span><span class="swatch-name">green/50</span><span class="swatch-hex">#E3F7EC</span></button><button type="button" class="swatch" style="--c:var(--green-200)" data-copy="green/200 #C2F5DA"><span class="swatch-chip"></span><span class="swatch-name">green/200</span><span class="swatch-hex">#C2F5DA</span></button><button type="button" class="swatch" style="--c:var(--green-600)" data-copy="green/600 #1DAF61"><span class="swatch-chip"></span><span class="swatch-name">green/600</span><span class="swatch-hex">#1DAF61</span></button><button type="button" class="swatch" style="--c:var(--green-950)" data-copy="green/950 #0B4627"><span class="swatch-chip"></span><span class="swatch-name">green/950</span><span class="swatch-hex">#0B4627</span></button></div>
+        </div>
+        <div class="group">
+          <h3>Yellow</h3>
+          <p class="note">state/away.</p>
+          <div class="ramp n4"><button type="button" class="swatch" style="--c:var(--yellow-50)" data-copy="yellow/50 #FFFAEB"><span class="swatch-chip"></span><span class="swatch-name">yellow/50</span><span class="swatch-hex">#FFFAEB</span></button><button type="button" class="swatch" style="--c:var(--yellow-200)" data-copy="yellow/200 #FFECC0"><span class="swatch-chip"></span><span class="swatch-name">yellow/200</span><span class="swatch-hex">#FFECC0</span></button><button type="button" class="swatch" style="--c:var(--yellow-600)" data-copy="yellow/600 #E6A819"><span class="swatch-chip"></span><span class="swatch-name">yellow/600</span><span class="swatch-hex">#E6A819</span></button><button type="button" class="swatch" style="--c:var(--yellow-950)" data-copy="yellow/950 #624C18"><span class="swatch-chip"></span><span class="swatch-name">yellow/950</span><span class="swatch-hex">#624C18</span></button></div>
+        </div>
+        <div class="group">
+          <h3>Avatar palette</h3>
+          <p class="note">11 colours. Light set is /100 on /800. Deeper set is /200 on /900. Text contrast 7.0–8.2:1. Assign in this order so neighbours differ.</p>
+          <div class="ramp n11"><button type="button" class="swatch avatar-swatch" style="--bg:var(--avatar-rose-bg);--fg:var(--avatar-rose-fg)" data-copy="avatar/rose bg #FBE7E9 text #6C424A"><span class="avatar-face">R</span><span class="swatch-name">avatar/rose</span><span class="swatch-hex">#FBE7E9</span><span class="swatch-alias">#6C424A · /100 · /800</span></button><button type="button" class="swatch avatar-swatch" style="--bg:var(--avatar-coral-bg);--fg:var(--avatar-coral-fg)" data-copy="avatar/coral bg #F7D4CE text #59342F"><span class="avatar-face">C</span><span class="swatch-name">avatar/coral</span><span class="swatch-hex">#F7D4CE</span><span class="swatch-alias">#59342F · /200 · /900</span></button><button type="button" class="swatch avatar-swatch" style="--bg:var(--avatar-orange-bg);--fg:var(--avatar-orange-fg)" data-copy="avatar/orange bg #FAE9DF text #634532"><span class="avatar-face">O</span><span class="swatch-name">avatar/orange</span><span class="swatch-hex">#FAE9DF</span><span class="swatch-alias">#634532 · /100 · /800</span></button><button type="button" class="swatch avatar-swatch" style="--bg:var(--avatar-yellow-bg);--fg:var(--avatar-yellow-fg)" data-copy="avatar/yellow bg #F0EDDC text #554E29"><span class="avatar-face">Y</span><span class="swatch-name">avatar/yellow</span><span class="swatch-hex">#F0EDDC</span><span class="swatch-alias">#554E29 · /100 · /800</span></button><button type="button" class="swatch avatar-swatch" style="--bg:var(--avatar-lime-bg);--fg:var(--avatar-lime-fg)" data-copy="avatar/lime bg #D9E4C6 text #39432B"><span class="avatar-face">L</span><span class="swatch-name">avatar/lime</span><span class="swatch-hex">#D9E4C6</span><span class="swatch-alias">#39432B · /200 · /900</span></button><button type="button" class="swatch avatar-swatch" style="--bg:var(--avatar-green-bg);--fg:var(--avatar-green-fg)" data-copy="avatar/green bg #E3F1E4 text #39553F"><span class="avatar-face">G</span><span class="swatch-name">avatar/green</span><span class="swatch-hex">#E3F1E4</span><span class="swatch-alias">#39553F · /100 · /800</span></button><button type="button" class="swatch avatar-swatch" style="--bg:var(--avatar-mint-bg);--fg:var(--avatar-mint-fg)" data-copy="avatar/mint bg #C3E7DB text #144939"><span class="avatar-face">M</span><span class="swatch-name">avatar/mint</span><span class="swatch-hex">#C3E7DB</span><span class="swatch-alias">#144939 · /200 · /900</span></button><button type="button" class="swatch avatar-swatch" style="--bg:var(--avatar-teal-bg);--fg:var(--avatar-teal-fg)" data-copy="avatar/teal bg #DEF2F1 text #185756"><span class="avatar-face">T</span><span class="swatch-name">avatar/teal</span><span class="swatch-hex">#DEF2F1</span><span class="swatch-alias">#185756 · /100 · /800</span></button><button type="button" class="swatch avatar-swatch" style="--bg:var(--avatar-sky-bg);--fg:var(--avatar-sky-fg)" data-copy="avatar/sky bg #C3E5EF text #0F4855"><span class="avatar-face">S</span><span class="swatch-name">avatar/sky</span><span class="swatch-hex">#C3E5EF</span><span class="swatch-alias">#0F4855 · /200 · /900</span></button><button type="button" class="swatch avatar-swatch" style="--bg:var(--avatar-blue-bg);--fg:var(--avatar-blue-fg)" data-copy="avatar/blue bg #E1EFFA text #305266"><span class="avatar-face">B</span><span class="swatch-name">avatar/blue</span><span class="swatch-hex">#E1EFFA</span><span class="swatch-alias">#305266 · /100 · /800</span></button><button type="button" class="swatch avatar-swatch" style="--bg:var(--avatar-pink-bg);--fg:var(--avatar-pink-fg)" data-copy="avatar/pink bg #F0D5E8 text #52344B"><span class="avatar-face">P</span><span class="swatch-name">avatar/pink</span><span class="swatch-hex">#F0D5E8</span><span class="swatch-alias">#52344B · /200 · /900</span></button></div>
+        </div>
+        <p class="pipe-caption">Foundations → Theme → Tokens → Layers</p>
+      </div>
+    </section>
+
+    <section class="sec" id="theme">
+      <div class="sec-head">
+        <p class="kicker">02 · Theme</p>
+        <h2>One mode. Violet today.</h2>
+        <p>Switch the theme mode to rebrand every layer at once. Neutrals and status colours stay put.</p>
+      </div>
+      <div class="sheet">
+        <div class="group">
+          <h3>Primary</h3>
+          <p class="note">Primary buttons, the active menu item, links, selection, and the focus ring.</p>
+          <div class="ramp n5"><button type="button" class="swatch" style="--c:var(--primary-darkest)" data-copy="primary-darkest → indigo/900 #29169C"><span class="swatch-chip"></span><span class="swatch-name">primary-darkest</span><span class="swatch-alias">indigo/900</span><span class="swatch-hex">#29169C</span></button><button type="button" class="swatch" style="--c:var(--primary-dark)" data-copy="primary-dark → indigo/800 #351BC2"><span class="swatch-chip"></span><span class="swatch-name">primary-dark</span><span class="swatch-alias">indigo/800</span><span class="swatch-hex">#351BC2</span></button><button type="button" class="swatch is-brand" style="--c:var(--primary-base)" data-copy="primary-base → indigo/700 #462CF2"><span class="swatch-chip"></span><span class="swatch-name">primary-base</span><span class="swatch-alias">indigo/700</span><span class="swatch-hex">#462CF2</span></button><button type="button" class="swatch" style="--c:var(--primary-light)" data-copy="primary-light → indigo/100 #D1D9FF"><span class="swatch-chip"></span><span class="swatch-name">primary-light</span><span class="swatch-alias">indigo/100</span><span class="swatch-hex">#D1D9FF</span></button><button type="button" class="swatch" style="--c:var(--primary-lighter)" data-copy="primary-lighter → indigo/50 #E9EDFF"><span class="swatch-chip"></span><span class="swatch-name">primary-lighter</span><span class="swatch-alias">indigo/50</span><span class="swatch-hex">#E9EDFF</span></button></div>
+        </div>
+        <div class="group">
+          <h3>Primary alpha</h3>
+          <p class="note">Selected fills and brand-tinted shadows.</p>
+          <div class="ramp n5"><button type="button" class="swatch" style="--c:var(--primary-alpha-1)" data-copy="alpha/primary-alpha-1 #462CF2 1%"><span class="swatch-chip"></span><span class="swatch-name">alpha/primary-alpha-1</span><span class="swatch-alias">indigo/opacity/1</span><span class="swatch-hex">#462CF2 · 1%</span></button><button type="button" class="swatch" style="--c:var(--primary-alpha-4)" data-copy="alpha/primary-alpha-4 #462CF2 4%"><span class="swatch-chip"></span><span class="swatch-name">alpha/primary-alpha-4</span><span class="swatch-alias">indigo/opacity/4</span><span class="swatch-hex">#462CF2 · 4%</span></button><button type="button" class="swatch" style="--c:var(--primary-alpha-6)" data-copy="alpha/primary-alpha-6 #462CF2 6%"><span class="swatch-chip"></span><span class="swatch-name">alpha/primary-alpha-6</span><span class="swatch-alias">indigo/opacity/6</span><span class="swatch-hex">#462CF2 · 6%</span></button><button type="button" class="swatch" style="--c:var(--primary-alpha-8)" data-copy="alpha/primary-alpha-8 #462CF2 8%"><span class="swatch-chip"></span><span class="swatch-name">alpha/primary-alpha-8</span><span class="swatch-alias">indigo/opacity/8</span><span class="swatch-hex">#462CF2 · 8%</span></button><button type="button" class="swatch" style="--c:var(--primary-alpha-16)" data-copy="alpha/primary-alpha-16 #462CF2 16%"><span class="swatch-chip"></span><span class="swatch-name">alpha/primary-alpha-16</span><span class="swatch-alias">indigo/opacity/16</span><span class="swatch-hex">#462CF2 · 16%</span></button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="tokens">
+      <div class="sec-head">
+        <p class="kicker">03 · Tokens</p>
+        <h2>Every colour named by its job.</h2>
+        <p>Layers read these paths. Each group is scoped.</p>
+      </div>
+      <div class="sheet">
+        <div class="group">
+          <h3>bg</h3>
+          <p class="note">Fills. Frame and shape.</p>
+          <div class="ramp n6"><button type="button" class="swatch" style="--c:var(--bg-strong-950)" data-copy="bg/strong-950 → gray/950 #292929"><span class="swatch-chip"></span><span class="swatch-name">bg/strong-950</span><span class="swatch-alias">gray/950</span><span class="swatch-hex">#292929</span></button><button type="button" class="swatch" style="--c:var(--bg-surface-800)" data-copy="bg/surface-800 → gray/800 #3D3D3D"><span class="swatch-chip"></span><span class="swatch-name">bg/surface-800</span><span class="swatch-alias">gray/800</span><span class="swatch-hex">#3D3D3D</span></button><button type="button" class="swatch" style="--c:var(--bg-sub-300)" data-copy="bg/sub-300 → gray/300 #D9D9D9"><span class="swatch-chip"></span><span class="swatch-name">bg/sub-300</span><span class="swatch-alias">gray/300</span><span class="swatch-hex">#D9D9D9</span></button><button type="button" class="swatch" style="--c:var(--bg-soft-200)" data-copy="bg/soft-200 → gray/200 #EBEBEB"><span class="swatch-chip"></span><span class="swatch-name">bg/soft-200</span><span class="swatch-alias">gray/200</span><span class="swatch-hex">#EBEBEB</span></button><button type="button" class="swatch" style="--c:var(--bg-weak-50)" data-copy="bg/weak-50 → gray/50 #F7F7F7"><span class="swatch-chip"></span><span class="swatch-name">bg/weak-50</span><span class="swatch-alias">gray/50</span><span class="swatch-hex">#F7F7F7</span></button><button type="button" class="swatch" style="--c:var(--bg-white-0)" data-copy="bg/white-0 → gray/0 #FFFFFF"><span class="swatch-chip"></span><span class="swatch-name">bg/white-0</span><span class="swatch-alias">gray/0</span><span class="swatch-hex">#FFFFFF</span></button></div>
+        </div>
+        <div class="group">
+          <h3>text</h3>
+          <p class="note">Text fill. sub-600 is the default secondary text (5.2:1).</p>
+          <div class="ramp n5"><button type="button" class="swatch" style="--c:var(--text-strong-950)" data-copy="text/strong-950 → gray/950 #292929"><span class="swatch-chip"></span><span class="swatch-name">text/strong-950</span><span class="swatch-alias">gray/950</span><span class="swatch-hex">#292929</span></button><button type="button" class="swatch" style="--c:var(--text-sub-600)" data-copy="text/sub-600 → gray/600 #6D6D6D"><span class="swatch-chip"></span><span class="swatch-name">text/sub-600</span><span class="swatch-alias">gray/600</span><span class="swatch-hex">#6D6D6D</span></button><button type="button" class="swatch" style="--c:var(--text-soft-400)" data-copy="text/soft-400 → gray/400 #A3A3A3"><span class="swatch-chip"></span><span class="swatch-name">text/soft-400</span><span class="swatch-alias">gray/400</span><span class="swatch-hex">#A3A3A3</span></button><button type="button" class="swatch" style="--c:var(--text-disabled-400)" data-copy="text/disabled-400 → gray/400 #A3A3A3"><span class="swatch-chip"></span><span class="swatch-name">text/disabled-400</span><span class="swatch-alias">gray/400</span><span class="swatch-hex">#A3A3A3</span></button><button type="button" class="swatch" style="--c:var(--text-white-0)" data-copy="text/white-0 → gray/0 #FFFFFF"><span class="swatch-chip"></span><span class="swatch-name">text/white-0</span><span class="swatch-alias">gray/0</span><span class="swatch-hex">#FFFFFF</span></button></div>
+        </div>
+        <div class="group">
+          <h3>stroke</h3>
+          <p class="note">Borders and dividers.</p>
+          <div class="ramp n4"><button type="button" class="swatch" style="--c:var(--stroke-strong-950)" data-copy="stroke/strong-950 → gray/950 #292929"><span class="swatch-chip"></span><span class="swatch-name">stroke/strong-950</span><span class="swatch-alias">gray/950</span><span class="swatch-hex">#292929</span></button><button type="button" class="swatch" style="--c:var(--stroke-sub-300)" data-copy="stroke/sub-300 → gray/300 #D9D9D9"><span class="swatch-chip"></span><span class="swatch-name">stroke/sub-300</span><span class="swatch-alias">gray/300</span><span class="swatch-hex">#D9D9D9</span></button><button type="button" class="swatch" style="--c:var(--stroke-soft-200)" data-copy="stroke/soft-200 → gray/200 #EBEBEB"><span class="swatch-chip"></span><span class="swatch-name">stroke/soft-200</span><span class="swatch-alias">gray/200</span><span class="swatch-hex">#EBEBEB</span></button><button type="button" class="swatch" style="--c:var(--stroke-white-0)" data-copy="stroke/white-0 → gray/0 #FFFFFF"><span class="swatch-chip"></span><span class="swatch-name">stroke/white-0</span><span class="swatch-alias">gray/0</span><span class="swatch-hex">#FFFFFF</span></button></div>
+        </div>
+        <div class="group">
+          <h3>icon</h3>
+          <p class="note">Icon fill and stroke. sub-600 is the default icon colour.</p>
+          <div class="ramp n5"><button type="button" class="swatch" style="--c:var(--icon-strong-950)" data-copy="icon/strong-950 → gray/950 #292929"><span class="swatch-chip"></span><span class="swatch-name">icon/strong-950</span><span class="swatch-alias">gray/950</span><span class="swatch-hex">#292929</span></button><button type="button" class="swatch" style="--c:var(--icon-sub-600)" data-copy="icon/sub-600 → gray/600 #6D6D6D"><span class="swatch-chip"></span><span class="swatch-name">icon/sub-600</span><span class="swatch-alias">gray/600</span><span class="swatch-hex">#6D6D6D</span></button><button type="button" class="swatch" style="--c:var(--icon-soft-400)" data-copy="icon/soft-400 → gray/400 #A3A3A3"><span class="swatch-chip"></span><span class="swatch-name">icon/soft-400</span><span class="swatch-alias">gray/400</span><span class="swatch-hex">#A3A3A3</span></button><button type="button" class="swatch" style="--c:var(--icon-disabled-400)" data-copy="icon/disabled-400 → gray/400 #A3A3A3"><span class="swatch-chip"></span><span class="swatch-name">icon/disabled-400</span><span class="swatch-alias">gray/400</span><span class="swatch-hex">#A3A3A3</span></button><button type="button" class="swatch" style="--c:var(--icon-white-0)" data-copy="icon/white-0 → gray/0 #FFFFFF"><span class="swatch-chip"></span><span class="swatch-name">icon/white-0</span><span class="swatch-alias">gray/0</span><span class="swatch-hex">#FFFFFF</span></button></div>
+        </div>
+        <div class="group">
+          <h3>overlay</h3>
+          <p class="note">Modal backdrop.</p>
+          <div class="ramp n4"><button type="button" class="swatch" style="--c:var(--overlay-gray)" data-copy="overlay/overlay-gray #000000 16%"><span class="swatch-chip"></span><span class="swatch-name">overlay/overlay-gray</span><span class="swatch-hex">#000000 · 16%</span></button></div>
+        </div>
+        <div class="group">
+      <h3>Information</h3>
+      <p class="note">Fixed status colours, always with an icon or label. Icons use base. Coloured text uses …/text.</p>
+      <div class="ramp n4"><button type="button" class="swatch" style="--c:var(--state-information-dark)" data-copy="state/information/dark → blue/950 #122368"><span class="swatch-chip"></span><span class="swatch-name">state/information/dark</span><span class="swatch-alias">blue/950</span><span class="swatch-hex">#122368</span></button><button type="button" class="swatch" style="--c:var(--state-information-base)" data-copy="state/information/base → blue/500 #335CFF"><span class="swatch-chip"></span><span class="swatch-name">state/information/base</span><span class="swatch-alias">blue/500</span><span class="swatch-hex">#335CFF</span></button><button type="button" class="swatch" style="--c:var(--state-information-light)" data-copy="state/information/light → blue/200 #C0D5FF"><span class="swatch-chip"></span><span class="swatch-name">state/information/light</span><span class="swatch-alias">blue/200</span><span class="swatch-hex">#C0D5FF</span></button><button type="button" class="swatch" style="--c:var(--state-information-lighter)" data-copy="state/information/lighter → blue/50 #EBF1FF"><span class="swatch-chip"></span><span class="swatch-name">state/information/lighter</span><span class="swatch-alias">blue/50</span><span class="swatch-hex">#EBF1FF</span></button></div>
+    </div>
+        <div class="group">
+      <h3>Warning</h3>
+      <p class="note">state/warning.</p>
+      <div class="ramp n4"><button type="button" class="swatch" style="--c:var(--state-warning-dark)" data-copy="state/warning/dark → orange/950 #71330A"><span class="swatch-chip"></span><span class="swatch-name">state/warning/dark</span><span class="swatch-alias">orange/950</span><span class="swatch-hex">#71330A</span></button><button type="button" class="swatch" style="--c:var(--state-warning-base)" data-copy="state/warning/base → orange/500 #FA7319"><span class="swatch-chip"></span><span class="swatch-name">state/warning/base</span><span class="swatch-alias">orange/500</span><span class="swatch-hex">#FA7319</span></button><button type="button" class="swatch" style="--c:var(--state-warning-light)" data-copy="state/warning/light → orange/200 #FFD9C0"><span class="swatch-chip"></span><span class="swatch-name">state/warning/light</span><span class="swatch-alias">orange/200</span><span class="swatch-hex">#FFD9C0</span></button><button type="button" class="swatch" style="--c:var(--state-warning-lighter)" data-copy="state/warning/lighter → orange/50 #FFF3EB"><span class="swatch-chip"></span><span class="swatch-name">state/warning/lighter</span><span class="swatch-alias">orange/50</span><span class="swatch-hex">#FFF3EB</span></button></div>
+    </div>
+        <div class="group">
+      <h3>Error</h3>
+      <p class="note">state/error. Coloured text uses state/error/text.</p>
+      <div class="ramp n5"><button type="button" class="swatch" style="--c:var(--state-error-dark)" data-copy="state/error/dark → red/950 #681219"><span class="swatch-chip"></span><span class="swatch-name">state/error/dark</span><span class="swatch-alias">red/950</span><span class="swatch-hex">#681219</span></button><button type="button" class="swatch" style="--c:var(--state-error-base)" data-copy="state/error/base → red/500 #FB3748"><span class="swatch-chip"></span><span class="swatch-name">state/error/base</span><span class="swatch-alias">red/500</span><span class="swatch-hex">#FB3748</span></button><button type="button" class="swatch" style="--c:var(--state-error-light)" data-copy="state/error/light → red/200 #FFC0C5"><span class="swatch-chip"></span><span class="swatch-name">state/error/light</span><span class="swatch-alias">red/200</span><span class="swatch-hex">#FFC0C5</span></button><button type="button" class="swatch" style="--c:var(--state-error-lighter)" data-copy="state/error/lighter → red/50 #FFEBEC"><span class="swatch-chip"></span><span class="swatch-name">state/error/lighter</span><span class="swatch-alias">red/50</span><span class="swatch-hex">#FFEBEC</span></button><button type="button" class="swatch" style="--c:var(--state-error-text)" data-copy="state/error/text → red/700 #D02533"><span class="swatch-chip"></span><span class="swatch-name">state/error/text</span><span class="swatch-alias">red/700</span><span class="swatch-hex">#D02533</span></button></div>
+    </div>
+        <div class="group">
+      <h3>Success</h3>
+      <p class="note">state/success.</p>
+      <div class="ramp n4"><button type="button" class="swatch" style="--c:var(--state-success-dark)" data-copy="state/success/dark → green/950 #0B4627"><span class="swatch-chip"></span><span class="swatch-name">state/success/dark</span><span class="swatch-alias">green/950</span><span class="swatch-hex">#0B4627</span></button><button type="button" class="swatch" style="--c:var(--state-success-base)" data-copy="state/success/base → green/600 #1DAF61"><span class="swatch-chip"></span><span class="swatch-name">state/success/base</span><span class="swatch-alias">green/600</span><span class="swatch-hex">#1DAF61</span></button><button type="button" class="swatch" style="--c:var(--state-success-light)" data-copy="state/success/light → green/200 #C2F5DA"><span class="swatch-chip"></span><span class="swatch-name">state/success/light</span><span class="swatch-alias">green/200</span><span class="swatch-hex">#C2F5DA</span></button><button type="button" class="swatch" style="--c:var(--state-success-lighter)" data-copy="state/success/lighter → green/50 #E3F7EC"><span class="swatch-chip"></span><span class="swatch-name">state/success/lighter</span><span class="swatch-alias">green/50</span><span class="swatch-hex">#E3F7EC</span></button></div>
+    </div>
+        <div class="group">
+      <h3>Away</h3>
+      <p class="note">state/away.</p>
+      <div class="ramp n4"><button type="button" class="swatch" style="--c:var(--state-away-dark)" data-copy="state/away/dark → yellow/950 #624C18"><span class="swatch-chip"></span><span class="swatch-name">state/away/dark</span><span class="swatch-alias">yellow/950</span><span class="swatch-hex">#624C18</span></button><button type="button" class="swatch" style="--c:var(--state-away-base)" data-copy="state/away/base → yellow/600 #E6A819"><span class="swatch-chip"></span><span class="swatch-name">state/away/base</span><span class="swatch-alias">yellow/600</span><span class="swatch-hex">#E6A819</span></button><button type="button" class="swatch" style="--c:var(--state-away-light)" data-copy="state/away/light → yellow/200 #FFECC0"><span class="swatch-chip"></span><span class="swatch-name">state/away/light</span><span class="swatch-alias">yellow/200</span><span class="swatch-hex">#FFECC0</span></button><button type="button" class="swatch" style="--c:var(--state-away-lighter)" data-copy="state/away/lighter → yellow/50 #FFFAEB"><span class="swatch-chip"></span><span class="swatch-name">state/away/lighter</span><span class="swatch-alias">yellow/50</span><span class="swatch-hex">#FFFAEB</span></button></div>
+    </div>
+      </div>
+    </section>
+
+    <section class="sec" id="effects">
+      <div class="sec-head">
+        <p class="kicker">04 · Effects</p>
+        <h2>A 1 px ring, then depth, then brand.</h2>
+        <p>The first layer is always a 1 px ring instead of a border. elevation/ adds depth. state/ adds the brand for interaction.</p>
+      </div>
+      <div class="sheet">
+        <div class="group">
+          <h3>shadow</h3>
+          <p class="note">Effect colour only. Used inside effect styles.</p>
+          <div class="ramp"><button type="button" class="swatch has-shadow" style="--sh:0 12px 16px var(--shadow-gray-8)" data-copy="shadow/gray/shadow-8 #141414 8%"><span class="swatch-chip is-shadow"></span><span class="swatch-name">shadow/gray/shadow-8</span><span class="swatch-hex">#141414 · 8%</span></button><button type="button" class="swatch has-shadow" style="--sh:0 10px 14px var(--shadow-gray-6)" data-copy="shadow/gray/shadow-6 #141414 6%"><span class="swatch-chip is-shadow"></span><span class="swatch-name">shadow/gray/shadow-6</span><span class="swatch-hex">#141414 · 6%</span></button><button type="button" class="swatch has-shadow" style="--sh:0 8px 12px var(--shadow-gray-4)" data-copy="shadow/gray/shadow-4 #141414 4%"><span class="swatch-chip is-shadow"></span><span class="swatch-name">shadow/gray/shadow-4</span><span class="swatch-hex">#141414 · 4%</span></button><button type="button" class="swatch has-shadow" style="--sh:0 6px 10px var(--shadow-gray-2)" data-copy="shadow/gray/shadow-2 #141414 2%"><span class="swatch-chip is-shadow"></span><span class="swatch-name">shadow/gray/shadow-2</span><span class="swatch-hex">#141414 · 2%</span></button><button type="button" class="swatch has-shadow" style="--sh:0 0 0 1px var(--shadow-gray-ring-16)" data-copy="shadow/gray/ring-16 #6D6D6D 16%"><span class="swatch-chip is-shadow"></span><span class="swatch-name">shadow/gray/ring-16</span><span class="swatch-alias">gray/opacity/16</span><span class="swatch-hex">#6D6D6D · 16%</span></button><button type="button" class="swatch has-shadow" style="--sh:0 0 0 1px var(--shadow-primary-ring)" data-copy="shadow/primary/ring #462CF2"><span class="swatch-chip is-shadow"></span><span class="swatch-name">shadow/primary/ring</span><span class="swatch-alias">primary-base</span><span class="swatch-hex">#462CF2</span></button><button type="button" class="swatch has-shadow" style="--sh:0 10px 18px var(--shadow-primary-16)" data-copy="shadow/primary/shadow-16 #462CF2 16%"><span class="swatch-chip is-shadow"></span><span class="swatch-name">shadow/primary/shadow-16</span><span class="swatch-alias">alpha/primary-alpha-16</span><span class="swatch-hex">#462CF2 · 16%</span></button><button type="button" class="swatch has-shadow" style="--sh:0 8px 16px var(--shadow-primary-6)" data-copy="shadow/primary/shadow-6 #462CF2 6%"><span class="swatch-chip is-shadow"></span><span class="swatch-name">shadow/primary/shadow-6</span><span class="swatch-alias">alpha/primary-alpha-6</span><span class="swatch-hex">#462CF2 · 6%</span></button><button type="button" class="swatch has-shadow" style="--sh:0 6px 12px var(--shadow-primary-4)" data-copy="shadow/primary/shadow-4 #462CF2 4%"><span class="swatch-chip is-shadow"></span><span class="swatch-name">shadow/primary/shadow-4</span><span class="swatch-alias">alpha/primary-alpha-4</span><span class="swatch-hex">#462CF2 · 4%</span></button><button type="button" class="swatch has-shadow" style="--sh:0 4px 10px var(--shadow-primary-1)" data-copy="shadow/primary/shadow-1 #462CF2 1%"><span class="swatch-chip is-shadow"></span><span class="swatch-name">shadow/primary/shadow-1</span><span class="swatch-alias">alpha/primary-alpha-1</span><span class="swatch-hex">#462CF2 · 1%</span></button><button type="button" class="swatch has-shadow on-ink" style="--sh:inset 0 1px 0 var(--shadow-white)" data-copy="shadow/white/highlight #FFFFFF"><span class="swatch-chip is-shadow"></span><span class="swatch-name">shadow/white/highlight</span><span class="swatch-alias">gray/0</span><span class="swatch-hex">#FFFFFF</span></button><button type="button" class="swatch has-shadow on-ink" style="--sh:inset 0 12px 16px var(--shadow-white-40)" data-copy="shadow/white/highlight-40 #FFFFFF 40%"><span class="swatch-chip is-shadow"></span><span class="swatch-name">shadow/white/highlight-40</span><span class="swatch-alias">white/opacity/40</span><span class="swatch-hex">#FFFFFF · 40%</span></button><button type="button" class="swatch has-shadow on-ink" style="--sh:inset 0 12px 16px var(--shadow-white-24)" data-copy="shadow/white/highlight-24 #FFFFFF 24%"><span class="swatch-chip is-shadow"></span><span class="swatch-name">shadow/white/highlight-24</span><span class="swatch-alias">white/opacity/24</span><span class="swatch-hex">#FFFFFF · 24%</span></button></div>
+        </div>
+        <div class="fx-grid" id="effect-samples">
+          <figure class="fx">
+            <div class="well"><div class="elev-card" aria-hidden="true"></div></div>
+            <figcaption><strong>elevation/card</strong><span>Task cards, quiet surfaces</span></figcaption>
+          </figure>
+          <figure class="fx">
+            <div class="well"><input class="field" type="search" placeholder="Search..." aria-label="Search" autocomplete="off" spellcheck="false" /></div>
+            <figcaption><strong>elevation/input</strong><span>Inputs, selects, secondary buttons</span></figcaption>
+          </figure>
+          <figure class="fx">
+            <div class="well"><textarea class="field outline" rows="1" placeholder="Add a description..." aria-label="Description" spellcheck="false"></textarea></div>
+            <figcaption><strong>elevation/outline</strong><span>Inputs inside panels, attachment rows, user avatar</span></figcaption>
+          </figure>
+          <figure class="fx">
+            <div class="well"><div class="count" role="img" aria-label="Count 8">8</div></div>
+            <figcaption><strong>elevation/badge</strong><span>Counts, keys, empty-state icons</span></figcaption>
+          </figure>
+          <figure class="fx">
+            <div class="well"><div class="menu" role="img" aria-label="Dropdown menu"></div></div>
+            <figcaption><strong>elevation/dropdown</strong><span>Menus, popovers, date picker</span></figcaption>
+          </figure>
+          <figure class="fx">
+            <div class="well"><div class="dialog" role="img" aria-label="Modal surface"></div></div>
+            <figcaption><strong>elevation/modal</strong><span>Modals, command palette</span></figcaption>
+          </figure>
+          <figure class="fx">
+            <div class="well"><input class="field is-active" type="text" value="Website redesign" aria-label="Project name" autocomplete="off" spellcheck="false" /></div>
+            <figcaption><strong>state/active</strong><span>Focused field or control</span></figcaption>
+          </figure>
+          <figure class="fx">
+            <div class="well"><button type="button" class="scope" id="scope" aria-pressed="true" aria-label="Selected scope"></button></div>
+            <figcaption><strong>state/selected</strong><span>Selected navigation item, active scope chip</span></figcaption>
+          </figure>
+          <figure class="fx">
+            <div class="well"><div class="face" role="img" aria-label="Avatar E, menu open">E</div></div>
+            <figcaption><strong>state/avatar-active</strong><span>User avatar while its menu is open</span></figcaption>
+          </figure>
+          <figure class="fx">
+            <div class="well"><button type="button" class="send">Send invites</button></div>
+            <figcaption><strong>state/button-primary</strong><span>Primary button</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="type">
+      <div class="sec-head">
+        <p class="kicker">05 · Typography</p>
+        <h2>Inter only.</h2>
+        <p>Companies can’t change the font. Single-line UI text sits in a box, so it uses the Trim set. Multi-line text uses the normal set.</p>
+      </div>
+      <div class="sheet">
+        <div class="type-block">
+          <h3>Title</h3>
+          <div class="type-sheet">
+            <div class="type-row">
+        <div class="type-meta"><b>Title/H1</b><span>Medium 56/64 −2%</span></div>
+        <p class="type-sample t-h1">Website redesign</p>
+      </div><div class="type-row">
+        <div class="type-meta"><b>Title/H2</b><span>Medium 48/56 −2%</span></div>
+        <p class="type-sample t-h2">Website redesign</p>
+      </div><div class="type-row">
+        <div class="type-meta"><b>Title/H3</b><span>Medium 40/48 −2%</span></div>
+        <p class="type-sample t-h3">Website redesign</p>
+      </div><div class="type-row">
+        <div class="type-meta"><b>Title/H4</b><span>Medium 32/40 −1%</span></div>
+        <p class="type-sample t-h4">Website redesign</p>
+      </div><div class="type-row">
+        <div class="type-meta"><b>Title/H5</b><span>Medium 24/32 −1%</span></div>
+        <p class="type-sample t-h5">Website redesign</p>
+      </div><div class="type-row">
+        <div class="type-meta"><b>Title/H6</b><span>Medium 20/28 −1%</span></div>
+        <p class="type-sample t-h6">Website redesign</p>
+      </div>
+          </div>
+        </div>
+        <div class="type-block">
+          <h3>Label</h3>
+          <div class="type-sheet">
+            <div class="type-row">
+        <div class="type-meta"><b>Label/Large</b><span>Medium 18/24 −1.5%</span></div>
+        <p class="type-sample t-ll">Invite to project</p>
+      </div><div class="type-row">
+        <div class="type-meta"><b>Label/Medium</b><span>Medium 16/24 −1.1%</span></div>
+        <p class="type-sample t-lm">Invite to project</p>
+      </div><div class="type-row">
+        <div class="type-meta"><b>Label/Small</b><span>Medium 14/20 −0.6%</span></div>
+        <p class="type-sample t-ls">Invite to project</p>
+      </div><div class="type-row">
+        <div class="type-meta"><b>Label/Compact</b><span>Medium 13/20 −1%</span></div>
+        <p class="type-sample t-lc">Invite to project</p>
+      </div><div class="type-row">
+        <div class="type-meta"><b>Label/X Small</b><span>Medium 12/16 0%</span></div>
+        <p class="type-sample t-lx">Invite to project</p>
+      </div>
+          </div>
+        </div>
+        <div class="type-block">
+          <h3>Paragraph</h3>
+          <div class="type-sheet">
+            <div class="type-row">
+        <div class="type-meta"><b>Paragraph/Large</b><span>Regular 18/24 −1.5%</span></div>
+        <p class="type-sample t-pl">Projects hold your team's tasks, notes and files.</p>
+      </div><div class="type-row">
+        <div class="type-meta"><b>Paragraph/Medium</b><span>Regular 16/24 −1.1%</span></div>
+        <p class="type-sample t-pm">Projects hold your team's tasks, notes and files.</p>
+      </div><div class="type-row">
+        <div class="type-meta"><b>Paragraph/Small</b><span>Regular 14/20 −0.6%</span></div>
+        <p class="type-sample t-ps">Projects hold your team's tasks, notes and files.</p>
+      </div><div class="type-row">
+        <div class="type-meta"><b>Paragraph/Compact</b><span>Regular 13/20 −1%</span></div>
+        <p class="type-sample t-pc">Projects hold your team's tasks, notes and files.</p>
+      </div><div class="type-row">
+        <div class="type-meta"><b>Paragraph/X Small</b><span>Regular 12/16 0%</span></div>
+        <p class="type-sample t-px">Projects hold your team's tasks, notes and files.</p>
+      </div>
+          </div>
+        </div>
+        <div class="type-block">
+          <h3>Trim</h3>
+          <p class="note">Dashed box = the text layer. No space above the cap height or below the baseline.</p>
+          <div class="type-sheet">
+            <div class="type-row">
+        <div class="type-meta"><b>Trim/Label/Small</b><span>Medium 14/20 −0.6%</span></div>
+        <p class="type-sample t-ls"><span class="is-trim">Status: Paused</span></p>
+      </div><div class="type-row">
+        <div class="type-meta"><b>Trim/Paragraph/Small</b><span>Regular 14/20 −0.6%</span></div>
+        <p class="type-sample t-ps"><span class="is-trim">Status: Paused</span></p>
+      </div><div class="type-row">
+        <div class="type-meta"><b>Trim/Label/Compact</b><span>Medium 13/20 −0.6%</span></div>
+        <p class="type-sample t-tc"><span class="is-trim">Status: Paused</span></p>
+      </div><div class="type-row">
+        <div class="type-meta"><b>Trim/Paragraph/Compact</b><span>Regular 13/20 −0.6%</span></div>
+        <p class="type-sample t-tpc"><span class="is-trim">Status: Paused</span></p>
+      </div><div class="type-row">
+        <div class="type-meta"><b>Trim/Label/X Small</b><span>Medium 12/16 −0.6%</span></div>
+        <p class="type-sample t-tx"><span class="is-trim">Status: Paused</span></p>
+      </div><div class="type-row">
+        <div class="type-meta"><b>Trim/Label/2X Small</b><span>Medium 10/16 −0.6%</span></div>
+        <p class="type-sample t-t2"><span class="is-trim">Status: Paused</span></p>
+      </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="rules">
+      <div class="sec-head">
+        <p class="kicker">06 · Rules</p>
+        <h2>What every screen follows.</h2>
+      </div>
+      <div class="rules">
+        <article class="rule">
+          <h3>Colour</h3>
+          <ul>
+            <li>Layers use Tokens or Theme, never Foundations.</li>
+            <li>Brand only on primary buttons, the active menu item, links, selection and the focus ring.</li>
+            <li>Neutrals and status colours never change with the brand.</li>
+          </ul>
+          <div class="teach">
+            <div>
+              <span class="mark">#462CF2</span>
+              <button type="button" class="send is-raw">Send invites</button>
+            </div>
+            <div>
+              <span class="mark">primary-base</span>
+              <button type="button" class="send">Send invites</button>
+            </div>
+          </div>
+          <p class="teach-note">Hover both. Only the token moves to primary-dark.</p>
+        </article>
+        <article class="rule">
+          <h3>Contrast</h3>
+          <ul>
+            <li>Text 4.5:1, icons and borders 3:1 (WCAG 2.2 AA).</li>
+            <li>Coloured text uses …/text; icons use …/base.</li>
+            <li>Status never relies on colour alone: always an icon or a label.</li>
+          </ul>
+        </article>
+        <article class="rule">
+          <h3>Type</h3>
+          <ul>
+            <li>One-line text in a box → Trim set.</li>
+            <li>Multi-line text → normal set.</li>
+            <li>Never change a trimmed layer’s typography by hand.</li>
+          </ul>
+        </article>
+        <article class="rule">
+          <h3>Layers</h3>
+          <ul>
+            <li>Names are lowercase with hyphens: search-field, task-card.</li>
+            <li>Icons keep their library name: lucide/search.</li>
+            <li>Frames without a shadow never clip content.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <p class="copy-status" id="copy-status" aria-live="polite"></p>
+
+  <script>
+    (function () {
+      'use strict';
+      var reduced = document.documentElement.getAttribute('data-motion') === 'reduce';
+      var hero = document.querySelector('.hero');
+
+      function reveal() {
+        if (hero) hero.classList.add('is-in');
+      }
+
+      if (reduced) reveal();
+      else requestAnimationFrame(function () { requestAnimationFrame(reveal); });
+
+      function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+          return navigator.clipboard.writeText(text);
+        }
+        return new Promise(function (resolve, reject) {
+          var ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'fixed';
+          ta.style.left = '-9999px';
+          document.body.appendChild(ta);
+          ta.select();
+          try {
+            document.execCommand('copy') ? resolve() : reject(new Error('copy'));
+          } catch (err) {
+            reject(err);
+          }
+          ta.remove();
+        });
+      }
+
+      var status = document.getElementById('copy-status');
+      var timer = 0;
+      document.querySelectorAll('.swatch').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var text = btn.getAttribute('data-copy') || '';
+          copyText(text).then(function () {
+            status.textContent = 'Copied ' + text;
+          }).catch(function () {
+            status.textContent = text;
+          });
+          if (timer) clearTimeout(timer);
+          timer = setTimeout(function () { status.textContent = ''; }, 1600);
+        });
+      });
+
+      var scope = document.getElementById('scope');
+      if (scope) {
+        scope.addEventListener('click', function () {
+          var on = scope.getAttribute('aria-pressed') === 'true';
+          scope.setAttribute('aria-pressed', on ? 'false' : 'true');
+        });
+      }
+
+      var navLinks = Array.prototype.slice.call(document.querySelectorAll('.lib-links a'));
+      var spy = navLinks.map(function (a) {
+        return { a: a, el: document.querySelector(a.getAttribute('href')) };
+      }).filter(function (item) { return item.el; });
+
+      function mark(link) {
+        navLinks.forEach(function (a) { a.removeAttribute('aria-current'); });
+        if (!link) return;
+        link.setAttribute('aria-current', 'location');
+        var scroller = link.parentElement;
+        if (!scroller) return;
+        var left = link.offsetLeft;
+        var right = left + link.offsetWidth;
+        var viewLeft = scroller.scrollLeft;
+        var viewRight = viewLeft + scroller.clientWidth;
+        if (left < viewLeft + 8) scroller.scrollLeft = Math.max(0, left - 8);
+        else if (right > viewRight - 8) scroller.scrollLeft = right - scroller.clientWidth + 8;
+      }
+
+      function spyLine() {
+        var nav = document.querySelector('.lib-nav');
+        var edge = nav ? nav.getBoundingClientRect().bottom : 0;
+        var current = null;
+        spy.forEach(function (item) {
+          if (item.el.getBoundingClientRect().top <= edge + 80) current = item;
+        });
+        mark(current ? current.a : (spy[0] ? spy[0].a : null));
+      }
+
+      spyLine();
+      window.addEventListener('scroll', spyLine, { passive: true });
+    })();
+  </script>
+  <script src="shared/site-header.js?v=26" defer></script>
+</body>
+</html>
