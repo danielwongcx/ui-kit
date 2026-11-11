@@ -24,18 +24,8 @@
 <body data-page="onboarding">
   <main class="wrap">
     <h1 class="sr">Onboarding</h1>
-    <div class="stage is-framed" id="stage">
+    <div class="stage" id="stage">
       <div class="screen" id="screen" data-chrome="welcome" data-step="welcome">
-        <div class="island" id="island" aria-hidden="true"></div>
-        <div class="statusbar">
-          <span>9:41</span>
-          <span class="status-icons" aria-hidden="true">
-            <svg width="17" height="12" viewBox="0 0 17 12"><rect x="0" y="7" width="3" height="5" rx="0.6" fill="#1a1a1f"/><rect x="4.5" y="5" width="3" height="7" rx="0.6" fill="#1a1a1f"/><rect x="9" y="2.5" width="3" height="9.5" rx="0.6" fill="#1a1a1f"/><rect x="13.5" y="0" width="3" height="12" rx="0.6" fill="#1a1a1f"/></svg>
-            <svg width="16" height="12" viewBox="0 0 16 12"><path d="M1 4.5c3.8-3.4 10.2-3.4 14 0" fill="none" stroke="#1a1a1f" stroke-width="1.4" stroke-linecap="round"/><path d="M3.4 7c2.5-2.1 6.7-2.1 9.2 0" fill="none" stroke="#1a1a1f" stroke-width="1.4" stroke-linecap="round"/><circle cx="8" cy="10" r="1.2" fill="#1a1a1f"/></svg>
-            <svg width="28" height="13" viewBox="0 0 28 13"><rect x="0.6" y="0.6" width="23" height="11.8" rx="3" fill="none" stroke="#1a1a1f" stroke-width="1.2"/><rect x="2" y="2" width="18" height="9" rx="1.4" fill="#1a1a1f"/><rect x="24.6" y="4" width="2" height="5" rx="0.8" fill="#1a1a1f"/></svg>
-          </span>
-        </div>
-
         <header class="chrome">
           <div class="chrome-mode chrome-welcome">
             <div class="wm-welcome">letterly</div>
@@ -93,14 +83,26 @@
             </div>
           </section>
 
+          <section class="panel" id="panel-invite" hidden aria-label="Your invite">
+            <h2>Northwind invited you.</h2>
+            <article class="invite" id="inviteCard">
+              <div class="invite-mark" aria-hidden="true">N</div>
+              <div>
+                <strong>Ritu Chen</strong>
+                <span>Product design</span>
+                <span>Starts Monday 16 Nov</span>
+              </div>
+            </article>
+          </section>
+
           <section class="panel panel-name" id="panel-name" hidden aria-label="Your name">
-            <h2>What's your name?</h2>
+            <h2 id="nameTitle">What's your name?</h2>
             <label class="field">
               <span>First name</span>
               <input id="nameInput" name="given-name" autocomplete="given-name" maxlength="16" placeholder="e.g. Ritu" enterkeyhint="done" />
             </label>
             <div class="tiles" id="tiles" aria-hidden="true"></div>
-            <p class="hint">Only used to greet you. You can change it anytime.</p>
+            <p class="hint" id="nameHint">Only used to greet you. You can change it anytime.</p>
           </section>
 
           <section class="panel" id="panel-role" hidden aria-label="Kind of work">
@@ -258,6 +260,88 @@
             </div>
           </section>
 
+          <section class="panel" id="panel-seat" hidden aria-label="Where you sit">
+            <h2>Where do you sit?</h2>
+            <div class="wheel" id="ewheel" tabindex="0" role="listbox" aria-label="Your seat"></div>
+          </section>
+
+          <section class="panel" id="panel-eday" hidden aria-label="Day one">
+            <h2>What should be awake on day one?</h2>
+            <div class="badge"><span class="gdot" aria-hidden="true"></span><span id="eAwakeNum">3</span>&nbsp;Letters awake</div>
+            <div class="rows" id="erows">
+              <div class="row-shadow"><button type="button" class="row is-on" data-eday="gigi" aria-pressed="true"><span class="glyph glyph-sm" data-who="gigi" data-ch="g" data-mood="happy">g</span><span class="row-text"><span class="row-title">Intro email</span><span class="row-sub">Gigi is awake</span></span><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 12.5l3.2 3.2L17.5 8.5"/></svg></span></button></div>
+              <div class="row-shadow"><button type="button" class="row is-on" data-eday="olo" aria-pressed="true"><span class="glyph glyph-sm" data-who="olo" data-ch="o" data-mood="happy">o</span><span class="row-text"><span class="row-title">Meet the team</span><span class="row-sub">Olo is awake</span></span><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 12.5l3.2 3.2L17.5 8.5"/></svg></span></button></div>
+              <div class="row-shadow"><button type="button" class="row is-on" data-eday="pip" aria-pressed="true"><span class="glyph glyph-sm" data-who="pip" data-ch="p" data-mood="happy">p</span><span class="row-text"><span class="row-title">Plan my first week</span><span class="row-sub">Pip is awake</span></span><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 12.5l3.2 3.2L17.5 8.5"/></svg></span></button></div>
+              <div class="row-shadow"><button type="button" class="row" data-eday="quinn" aria-pressed="false"><span class="glyph glyph-sm" data-who="quinn" data-ch="q" data-mood="sleep">q</span><span class="row-text"><span class="row-title">Read the handbook</span><span class="row-sub">Quinn is napping</span></span><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 12.5l3.2 3.2L17.5 8.5"/></svg></span></button></div>
+              <div class="row-shadow"><button type="button" class="row" data-eday="dex" aria-pressed="false"><span class="glyph glyph-sm" data-who="dex" data-ch="d" data-mood="sleep">d</span><span class="row-text"><span class="row-title">Set up my tracker</span><span class="row-sub">Dex is napping</span></span><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 12.5l3.2 3.2L17.5 8.5"/></svg></span></button></div>
+              <div class="row-shadow"><button type="button" class="row" data-eday="bo" aria-pressed="false"><span class="glyph glyph-sm" data-who="bo" data-ch="b" data-mood="sleep">b</span><span class="row-text"><span class="row-title">Ideas for the team</span><span class="row-sub">Bo is napping</span></span><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 12.5l3.2 3.2L17.5 8.5"/></svg></span></button></div>
+            </div>
+          </section>
+
+          <section class="panel" id="panel-etools" hidden aria-label="Work tools">
+            <h2>Connect your work tools</h2>
+            <div class="tools">
+              <div class="tool">
+                <span class="tool-ico ico-mail" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 7l8 6 8-6"/></svg></span>
+                <span class="tool-copy"><b>Work email</b><small>Gigi drafts your intro</small></span>
+                <button type="button" class="connect is-connected" data-connect="eemail">✓ Connected</button>
+              </div>
+              <div class="tool">
+                <span class="tool-ico ico-cal" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg></span>
+                <span class="tool-copy"><b>Calendar</b><small>Pip plans your first week</small></span>
+                <button type="button" class="connect" data-connect="ecalendar">+ Connect</button>
+              </div>
+              <div class="tool">
+                <span class="tool-ico ico-chat" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 16.5V7.5A2.5 2.5 0 0 1 7.5 5h9A2.5 2.5 0 0 1 19 7.5v6A2.5 2.5 0 0 1 16.5 16H9l-4 3z"/></svg></span>
+                <span class="tool-copy"><b>Team chat</b><small>Olo posts in the team room</small></span>
+                <button type="button" class="connect" data-connect="echat">+ Connect</button>
+              </div>
+              <div class="tool">
+                <span class="tool-ico ico-files" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8.5V6.8A1.8 1.8 0 0 1 5.8 5H10l2 2h6.2A1.8 1.8 0 0 1 20 8.8v7.4a1.8 1.8 0 0 1-1.8 1.8H5.8A1.8 1.8 0 0 1 4 16.2z"/></svg></span>
+                <span class="tool-copy"><b>Handbook</b><small>Quinn reads the company docs</small></span>
+                <button type="button" class="connect" data-connect="ehandbook">+ Connect</button>
+              </div>
+              <div class="privacy"><span aria-hidden="true">🔒</span><span>Read-only until you say so. Letters always ask before sending or changing anything.</span></div>
+            </div>
+          </section>
+
+          <section class="panel" id="panel-enudge" hidden aria-label="Monday plan">
+            <div class="nudge-hero">
+              <span class="glyph glyph-xl" data-who="pip" data-ch="p" data-mood="happy">p</span>
+              <button type="button" class="bell" id="ebell" aria-label="Ring the Monday plan">
+                <span class="bell-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2H4.5L6 16z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg></span>
+                <span class="bell-check" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M6.5 12.5l3.2 3.2L17.5 8" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </button>
+            </div>
+            <div class="note">
+              <div class="note-top"><span class="glyph glyph-sm" data-who="pip" data-ch="p" data-mood="happy">p</span><strong>Pip</strong><time>8:30 AM</time></div>
+              <p id="eNudgeLine">Morning, Ritu. Intro at 10, team lunch at 12:30. I held 45 minutes after for the handbook.</p>
+            </div>
+            <div class="nudge-copy">
+              <h2>Want a Monday plan from Pip?</h2>
+              <p class="lede">One short plan for your first morning. You choose what else pings you.</p>
+            </div>
+          </section>
+
+          <section class="panel" id="panel-ein" hidden aria-label="You're in">
+            <div class="cast" id="ecast">
+              <span class="floater" style="--rot:-6deg;--dx:2px;--dy:-4px;--drot:3deg;--dur:4.2s"><span class="glyph glyph-lg" data-who="gigi" data-ch="g" data-mood="happy">g</span></span>
+              <span class="floater" style="--rot:0deg;--dx:0px;--dy:-6px;--drot:2deg;--dur:4.8s"><span class="glyph glyph-lg" data-who="ada" data-ch="a" data-mood="happy">a</span></span>
+              <span class="floater" style="--rot:4deg;--dx:-2px;--dy:-3px;--drot:-3deg;--dur:4.4s"><span class="glyph glyph-lg" data-who="olo" data-ch="o" data-mood="happy">o</span></span>
+              <span class="floater" style="--rot:-3deg;--dx:3px;--dy:-5px;--drot:3deg;--dur:5s"><span class="glyph glyph-lg" data-who="pip" data-ch="p" data-mood="happy">p</span></span>
+            </div>
+            <div class="allset-copy">
+              <h2 id="einTitle">You're in, Ritu.</h2>
+              <p class="lede">Your first week is awake. Type @ anywhere to call a Letter.</p>
+            </div>
+            <div class="starters" id="estarters">
+              <p class="eyebrow">START THE WEEK WITH ONE OF THESE</p>
+              <button type="button" class="starter" data-who="Gigi"><span class="glyph glyph-sm" data-who="gigi" data-ch="g" data-mood="happy">g</span><span>@Gigi draft my intro</span><span class="go" aria-hidden="true">→</span></button>
+              <button type="button" class="starter" data-who="Olo"><span class="glyph glyph-sm" data-who="olo" data-ch="o" data-mood="happy">o</span><span>@Olo join the team lunch</span><span class="go" aria-hidden="true">→</span></button>
+              <button type="button" class="starter" data-who="Pip"><span class="glyph glyph-sm" data-who="pip" data-ch="p" data-mood="happy">p</span><span>@Pip plan my first week</span><span class="go" aria-hidden="true">→</span></button>
+            </div>
+          </section>
+
           <section class="panel" id="panel-paywall" hidden aria-label="Unlock the whole crew">
             <div class="premium-row" id="premiumRow" aria-hidden="true"></div>
             <div class="free-badge" id="freeBadge">★ 7 days free</div>
@@ -357,7 +441,6 @@
           </div>
           <p class="fine" id="fine" hidden>₹0 today. Cancel anytime in Settings.</p>
         </div>
-        <div class="homebar" aria-hidden="true"></div>
       </div>
     </div>
     <p class="credit">Motion study of a Letterly-style onboarding. Characters and copy follow a public walkthrough — this is not the Letterly app.</p>
