@@ -39,7 +39,8 @@
         { id: 'mebius-free-charts', label: 'Mebius charts', href: 'mebius-free-charts.html' },
         { id: 'premium-feel', label: 'Premium feel', href: 'premium-feel.html' },
         { id: 'agent-design-system', label: 'Agent system', href: 'agent-design-system.html' },
-        { id: 'underlay-design-system', label: 'Underlay DS', href: 'underlay-design-system.html' }
+        { id: 'underlay-design-system', label: 'Underlay DS', href: 'underlay-design-system.html' },
+        { id: 'onboarding', label: 'Onboarding', href: 'onboarding.html' }
       ]
     }
   ];
