@@ -27,7 +27,6 @@
   ];
   var NAMES = { gigi: "Gigi", olo: "Olo", pip: "Pip", quinn: "Quinn", dex: "Dex", bo: "Bo" };
   var STOCK = "Tell the client we need two more days for the logo files.";
-  var BEZEL = "0 0 0 11px #1c1c1e, 0 0 0 13px #3a3a3e, 0 28px 64px rgba(40,30,20,0.16)";
 
   var state = {
     step: "welcome",
@@ -41,7 +40,6 @@
     tools: { chat: false, files: false, notes: false },
     plan: "yearly",
     remind: true,
-    framed: true,
     crewIndex: 0
   };
 
@@ -55,8 +53,6 @@
   var dragging = false;
   var wheelMoved = false;
   var wheelRaf = 0;
-  var kenTween = null;
-  var introTween = null;
   var settleTimer = 0;
   var snapTimer = 0;
   var carX = 0;
@@ -70,9 +66,7 @@
   var lastC = 0;
   var connecting = false;
 
-  var stage = document.getElementById("stage");
   var screen = document.getElementById("screen");
-  var island = document.getElementById("island");
   var adaRow = document.getElementById("adaRow");
   var avatar = document.getElementById("avatar");
   var bubble = document.getElementById("bubble");
@@ -130,10 +124,6 @@
   }
   function lock(ms) { busyUntil = Math.max(busyUntil, Date.now() + ms); }
   function isBusy() { return Date.now() < busyUntil; }
-  function fullRadius() {
-    return window.matchMedia("(max-width: 520px)").matches ? 0 : 32;
-  }
-
   function faceHTML(mood) {
     return '<span class="face face-' + mood + '" aria-hidden="true"><span class="eyes"><i></i><i></i></span><i class="mouth"></i></span>';
   }
@@ -1049,68 +1039,6 @@
     });
   }
 
-  function shedInstant() {
-    if (kenTween) kenTween.kill();
-    if (introTween) introTween.kill();
-    state.framed = false;
-    stage.classList.remove("is-framed");
-    stage.classList.add("is-full");
-    gsap.set(screen, { clearProps: "transform,boxShadow,borderRadius" });
-    island.style.opacity = "0";
-  }
-  function punchIn() {
-    if (!state.framed || state.step === "welcome") return;
-    if (kenTween) kenTween.kill();
-    var scale = Number(gsap.getProperty(screen, "scale")) || 0.85;
-    gsap.to(island, { opacity: 0, duration: 0.35 });
-    introTween = gsap.to(screen, {
-      scale: 1,
-      boxShadow: "0 0 0 0px rgba(0,0,0,0), 0 0 0 0px rgba(0,0,0,0), 0 0 0 rgba(0,0,0,0)",
-      borderRadius: fullRadius(),
-      duration: 0.5,
-      ease: "power2.inOut",
-      overwrite: "auto",
-      onComplete: function () {
-        state.framed = false;
-        stage.classList.remove("is-framed");
-        stage.classList.add("is-full");
-        gsap.set(screen, { clearProps: "transform,boxShadow,borderRadius" });
-      }
-    });
-    void scale;
-  }
-  function restoreFrame() {
-    if (introTween) introTween.kill();
-    if (kenTween) kenTween.kill();
-    state.framed = true;
-    stage.classList.add("is-framed");
-    stage.classList.remove("is-full");
-    if (reduce) {
-      gsap.set(screen, { clearProps: "transform,boxShadow,borderRadius" });
-      island.style.opacity = "1";
-      return;
-    }
-    gsap.fromTo(screen,
-      { scale: 1, borderRadius: fullRadius(), boxShadow: "0 0 0 0 #000" },
-      {
-        scale: 0.85,
-        borderRadius: 40,
-        boxShadow: BEZEL,
-        duration: 0.45,
-        ease: "power2.out",
-        overwrite: "auto",
-        onComplete: function () {
-          gsap.set(screen, { scale: 0.85 });
-        }
-      }
-    );
-    gsap.to(island, { opacity: 1, duration: 0.3 });
-  }
-  function startKen() {
-    if (reduce || !state.framed) return;
-    kenTween = gsap.fromTo(screen, { scale: 0.78 }, { scale: 0.85, duration: 1.55, ease: "power1.out" });
-  }
-
   function onEnter(step, token) {
     if (step === "name") {
       adaTypingThen(token, "Hi! First things first, what should we call you?", 380);
@@ -1191,10 +1119,7 @@
     var forward = dir >= 0;
     var out = panels[prev];
     var inc = panels[next];
-    if (next === "welcome") {
-      if (!state.framed) restoreFrame();
-      hideAda();
-    } else if (next === "paywall" || next === "allset") hideAda();
+    if (next === "welcome" || next === "paywall" || next === "allset") hideAda();
     updateDock(next);
     gsap.killTweensOf([out, inc]);
     inc.hidden = false;
@@ -1225,12 +1150,7 @@
 
   function meet() {
     if (isBusy()) return;
-    lock(reduce ? 160 : 520);
     go("name", 1);
-    if (reduce) { shedInstant(); return; }
-    setTimeout(function () {
-      if (state.step === "name" && state.framed) punchIn();
-    }, 420);
   }
   function autotype() {
     var token = ++autoToken;
@@ -1273,7 +1193,6 @@
     if (state.step === "allset") return;
     if (!sheet.hidden) closeSheet();
     if (!state.name) state.name = nameInput.value.trim() || "Ritu";
-    if (state.framed) shedInstant();
     go("allset", 1);
   }
   function back() {
@@ -1480,7 +1399,6 @@
   updateDock("welcome");
   hideAda();
   syncRows();
-  startKen();
   helloCycle();
   blink();
   if (reduce) document.querySelectorAll(".floater").forEach(function (el) { el.style.animation = "none"; });
