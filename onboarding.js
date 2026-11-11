@@ -4,6 +4,16 @@
 
   var reduce = document.documentElement.getAttribute("data-motion") === "reduce";
   var ORDER = ["welcome", "name", "role", "week", "crew", "task", "tools", "nudge", "paywall", "allset"];
+  var EMPLOYEE = ["welcome", "invite", "name", "seat", "eday", "etools", "enudge", "ein"];
+  var SEATS = [
+    { id: "people", label: "People", icon: "nodes" },
+    { id: "design", label: "Design", icon: "pencil" },
+    { id: "engineering", label: "Engineering", icon: "code" },
+    { id: "product", label: "Product", icon: "cube" },
+    { id: "marketing", label: "Marketing", icon: "mega" },
+    { id: "sales", label: "Sales", icon: "trend" },
+    { id: "operations", label: "Operations", icon: "flag" }
+  ];
   var TILE_COLORS = ["#ff8a24", "#ffc83a", "#ff5b9a", "#2ec6d0", "#3dcb6c", "#7b6cff", "#3b6cff", "#ff6a3d"];
   var TILTS = [-7, 6, -4, 8, -5, 4, -8, 5, -3, 7, -6, 3];
   var PREMIUM = [
@@ -40,7 +50,12 @@
     tools: { chat: false, files: false, notes: false },
     plan: "yearly",
     remind: true,
-    crewIndex: 0
+    crewIndex: 0,
+    path: "crew",
+    seat: 1,
+    eday: { gigi: true, olo: true, pip: true, quinn: false, dex: false, bo: false },
+    eCalendar: false,
+    eTools: { echat: false, ehandbook: false }
   };
 
   var run = 0;
@@ -105,7 +120,12 @@
   var premiumRow = document.getElementById("premiumRow");
   var freeBadge = document.getElementById("freeBadge");
   var panels = {};
-  ORDER.forEach(function (id) { panels[id] = document.getElementById("panel-" + id); });
+  document.querySelectorAll(".panel[id]").forEach(function (el) {
+    panels[el.id.slice("panel-".length)] = el;
+  });
+  function pathOrder() {
+    return state.path === "employee" ? EMPLOYEE : ORDER;
+  }
 
   function dur(ms) { return reduce ? Math.min(100, ms) : ms; }
   function wait(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
@@ -446,6 +466,150 @@
   function roleLine() {
     return "Lovely to meet you, " + displayName() + "! Tell me about your work.";
   }
+  function seatLine() {
+    return "Lovely, " + displayName() + ". Tell me where you sit.";
+  }
+
+  var ewheel = document.getElementById("ewheel");
+  var seatScroll = 1;
+  var seatRaf = 0;
+  var seatMoved = false;
+  var seatDrag = false;
+  function layoutSeat() {
+    Array.prototype.forEach.call(ewheel.querySelectorAll(".wheel-item"), function (el, i) {
+      var d = i - seatScroll;
+      var ad = Math.abs(d);
+      var y = d * 58;
+      var x = -16 * d * d;
+      var scale = Math.max(0.7, 1 - ad * 0.12);
+      var opacity = Math.max(0.12, 1 - ad * 0.3);
+      el.style.transform = "translate(" + x + "px, calc(-50% + " + y + "px)) scale(" + scale + ")";
+      el.style.opacity = String(opacity);
+      var on = ad < 0.45;
+      el.classList.toggle("is-focus", on);
+      el.setAttribute("aria-selected", on ? "true" : "false");
+    });
+  }
+  function onSeatSettled() {
+    state.seat = clamp(Math.round(seatScroll), 0, SEATS.length - 1);
+    clearTimeout(settleTimer);
+    if (state.step !== "seat") return;
+    settleTimer = setTimeout(function () {
+      if (state.step !== "seat") return;
+      if (Math.abs(seatScroll - state.seat) > 0.08) return;
+      setAda("type");
+    }, dur(700));
+  }
+  function snapSeat(index) {
+    var target = clamp(Math.round(index), 0, SEATS.length - 1);
+    var start = seatScroll;
+    var t0 = performance.now();
+    var ms = dur(320);
+    cancelAnimationFrame(seatRaf);
+    function tick(now) {
+      var p = Math.min(1, (now - t0) / ms);
+      var e = 1 - Math.pow(1 - p, 3);
+      seatScroll = start + (target - start) * e;
+      layoutSeat();
+      if (p < 1) seatRaf = requestAnimationFrame(tick);
+      else onSeatSettled();
+    }
+    if (Math.abs(start - target) < 0.001) onSeatSettled();
+    else seatRaf = requestAnimationFrame(tick);
+  }
+  function buildSeatWheel() {
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("class", "arc");
+    svg.setAttribute("viewBox", "0 0 100 320");
+    svg.setAttribute("preserveAspectRatio", "none");
+    svg.setAttribute("aria-hidden", "true");
+    var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", "M62 10 Q 98 160 62 310");
+    path.setAttribute("fill", "none");
+    path.setAttribute("stroke", "#c5c8d4");
+    path.setAttribute("stroke-width", "2");
+    path.setAttribute("stroke-dasharray", "1.2 7");
+    path.setAttribute("stroke-linecap", "round");
+    svg.appendChild(path);
+    ewheel.appendChild(svg);
+    var tick = document.createElement("div");
+    tick.className = "tick";
+    tick.setAttribute("aria-hidden", "true");
+    ewheel.appendChild(tick);
+    SEATS.forEach(function (role, i) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "wheel-item";
+      btn.setAttribute("role", "option");
+      btn.innerHTML = '<span class="wl">' + role.label + "</span><span class=\"wi\">" +
+        (role.icon === "code" ? '<span class="code-ico">&lt;/&gt;</span>' : icon(role.icon)) + "</span>";
+      btn.addEventListener("click", function () {
+        if (seatMoved) return;
+        seatMoved = false;
+        snapSeat(i);
+      });
+      ewheel.appendChild(btn);
+    });
+    var lastY = 0;
+    var lastT = 0;
+    var vel = 0;
+    ewheel.addEventListener("pointerdown", function (e) {
+      if (e.button != null && e.button !== 0) return;
+      seatDrag = true;
+      seatMoved = false;
+      lastY = e.clientY;
+      lastT = performance.now();
+      vel = 0;
+      cancelAnimationFrame(seatRaf);
+      clearTimeout(settleTimer);
+      if (bubble.classList.contains("is-typing") && state.step === "seat") setAda("talk", seatLine());
+      ewheel.setPointerCapture(e.pointerId);
+    });
+    ewheel.addEventListener("pointermove", function (e) {
+      if (!seatDrag) return;
+      var dy = e.clientY - lastY;
+      var dt = Math.max(8, performance.now() - lastT);
+      if (Math.abs(dy) > 3) seatMoved = true;
+      seatScroll = clamp(seatScroll - dy / 64, 0, SEATS.length - 1);
+      vel = (-dy / 64) / dt;
+      lastY = e.clientY;
+      lastT = performance.now();
+      layoutSeat();
+    });
+    function up() {
+      if (!seatDrag) return;
+      seatDrag = false;
+      var v = vel;
+      function coast() {
+        v *= 0.9;
+        seatScroll = clamp(seatScroll + v * 16.7, 0, SEATS.length - 1);
+        layoutSeat();
+        if (Math.abs(v) < 0.00035) snapSeat(seatScroll);
+        else seatRaf = requestAnimationFrame(coast);
+      }
+      cancelAnimationFrame(seatRaf);
+      if (reduce || Math.abs(v) < 0.0008) snapSeat(seatScroll);
+      else seatRaf = requestAnimationFrame(coast);
+    }
+    ewheel.addEventListener("pointerup", up);
+    ewheel.addEventListener("pointercancel", up);
+    ewheel.addEventListener("wheel", function (e) {
+      e.preventDefault();
+      seatScroll = clamp(seatScroll + e.deltaY / 220, 0, SEATS.length - 1);
+      layoutSeat();
+      clearTimeout(settleTimer);
+      if (bubble.classList.contains("is-typing")) setAda("talk", seatLine());
+      clearTimeout(snapTimer);
+      snapTimer = setTimeout(function () { snapSeat(seatScroll); }, 140);
+    }, { passive: false });
+    ewheel.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowDown") { e.preventDefault(); snapSeat(state.seat + 1); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); snapSeat(state.seat - 1); }
+      else if (e.key === "Home") { e.preventDefault(); snapSeat(0); }
+      else if (e.key === "End") { e.preventDefault(); snapSeat(SEATS.length - 1); }
+    });
+    layoutSeat();
+  }
 
   function setAda(mode, text) {
     adaRow.classList.add("is-on");
@@ -506,22 +670,25 @@
     if (!has) pillRose = false;
   }
   function updateDock(step) {
-    if (step === "welcome") setPill("Meet the crew", { arrow: true });
+    if (step === "welcome") setPill("Meet the crew", { arrow: true, quiet: "I'm joining a team" });
+    else if (step === "invite") setPill("That's me", { quiet: "This isn't my invite" });
     else if (step === "name") updateNamePill(false);
-    else if (step === "role") setPill("Continue");
-    else if (step === "week") setPill("Meet my crew");
+    else if (step === "role" || step === "seat") setPill("Continue");
+    else if (step === "week" || step === "eday") setPill("Meet my crew");
     else if (step === "crew") setPill("See them in action");
     else if (step === "task") setPill("Nice, keep going");
-    else if (step === "tools") setPill("Continue", { quiet: "I'll do this later" });
+    else if (step === "tools" || step === "etools") setPill("Continue", { quiet: "I'll do this later" });
     else if (step === "nudge") setPill("Turn on nudges", { quiet: "Not now" });
+    else if (step === "enudge") setPill("Turn on nudges", { quiet: "Not now" });
     else if (step === "paywall") setPill("Start 7-day free trial", { blue: true, fine: "₹0 today. Cancel anytime in Settings." });
-    else     if (step === "allset") setPill("Start working");
+    else if (step === "allset") setPill("Start working");
+    else if (step === "ein") setPill("Start the week", { blue: true });
     if (step !== "task") doneBanner.hidden = true;
   }
   function chromeFor(step) {
     if (step === "welcome") return "welcome";
     if (step === "paywall") return "paywall";
-    if (step === "allset") return "allset";
+    if (step === "allset" || step === "ein") return "allset";
     return "flow";
   }
   function applyChrome(step) {
@@ -663,6 +830,49 @@
     if (on) {
       springTo(glyph, { scale: 1 }, { scale: 0.78 });
       springTo(box, { scale: 1 }, { scale: 0.55 });
+      setAda("talk", NAMES[id] + " is up!");
+    } else {
+      setAda("talk", NAMES[id] + " is napping.");
+    }
+  }
+
+  function eAwakeCount() {
+    return ["gigi", "olo", "pip", "quinn", "dex"].filter(function (id) { return state.eday[id]; }).length;
+  }
+  function setECount(n) {
+    var el = document.getElementById("eAwakeNum");
+    if (el.textContent === String(n)) return;
+    el.textContent = String(n);
+    if (!reduce) gsap.fromTo(el, { y: 8, opacity: 0 }, { y: 0, opacity: 1, duration: 0.28, ease: "power2.out" });
+  }
+  function syncERow(id) {
+    var row = document.querySelector('#erows .row[data-eday="' + id + '"]');
+    if (!row) return;
+    var on = !!state.eday[id];
+    row.classList.toggle("is-on", on);
+    row.setAttribute("aria-pressed", on ? "true" : "false");
+    row.querySelector(".row-sub").textContent = NAMES[id] + (on ? " is awake" : " is napping");
+    var glyph = row.querySelector(".glyph");
+    glyph.dataset.mood = on ? "happy" : "sleep";
+    paintGlyph(glyph);
+  }
+  function syncERows() {
+    Object.keys(NAMES).forEach(syncERow);
+    setECount(eAwakeCount());
+  }
+  function toggleERow(id) {
+    if (id === "bo") {
+      setAda("talk", "Bo sleeps until you're in.");
+      return;
+    }
+    var on = !state.eday[id];
+    state.eday[id] = on;
+    syncERow(id);
+    setECount(eAwakeCount());
+    var row = document.querySelector('#erows .row[data-eday="' + id + '"]');
+    if (on) {
+      springTo(row.querySelector(".glyph"), { scale: 1 }, { scale: 0.78 });
+      springTo(row.querySelector(".box"), { scale: 1 }, { scale: 0.55 });
       setAda("talk", NAMES[id] + " is up!");
     } else {
       setAda("talk", NAMES[id] + " is napping.");
@@ -979,8 +1189,13 @@
     connecting = false;
     allow.disabled = false;
     allow.innerHTML = '<span class="pill-label">Allow access</span>';
-    state.calendar = true;
-    morphConnect("calendar");
+    if (state.step === "etools") {
+      state.eCalendar = true;
+      morphConnect("ecalendar");
+    } else {
+      state.calendar = true;
+      morphConnect("calendar");
+    }
     closeSheet();
     showToast("Calendar connected");
   }
@@ -1040,9 +1255,24 @@
   }
 
   function onEnter(step, token) {
-    if (step === "name") {
-      adaTypingThen(token, "Hi! First things first, what should we call you?", 380);
-      resetTiles(nameInput.value.length > 1 ? 50 : 0);
+    if (step === "invite") {
+      adaTypingThen(token, "I'll get your first week ready.", 380);
+      if (!reduce) {
+        gsap.fromTo("#inviteCard", { opacity: 0, y: 18, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "power2.out" });
+        springTo(document.querySelector(".invite-mark"), { scale: 1 }, { scale: 0.7 });
+      }
+    } else if (step === "name") {
+      var employee = state.path === "employee";
+      document.getElementById("nameTitle").textContent = employee ? "What should the team call you?" : "What's your name?";
+      document.getElementById("nameHint").textContent = employee
+        ? "The team will see this. You can change it anytime."
+        : "Only used to greet you. You can change it anytime.";
+      adaTypingThen(token, employee ? "The invite says Ritu. What should the team call you?" : "Hi! First things first, what should we call you?", 380);
+      if (employee && !nameInput.value.trim()) {
+        nameInput.value = "Ritu";
+        prevLen = 4;
+      }
+      resetTiles(nameInput.value.length > 1 ? (employee ? 80 : 50) : 0);
       if (window.matchMedia("(pointer: fine)").matches) {
         nameInput.focus({ preventScroll: true });
       }
@@ -1050,6 +1280,39 @@
       adaTypingThen(token, roleLine(), 420);
       scroll = state.role;
       layoutWheel();
+    } else if (step === "seat") {
+      adaTypingThen(token, seatLine(), 420);
+      seatScroll = state.seat;
+      layoutSeat();
+    } else if (step === "eday") {
+      setAda("type");
+      syncERows();
+      if (!reduce) {
+        panels.eday.classList.remove("is-entering");
+        void panels.eday.offsetWidth;
+        panels.eday.classList.add("is-entering");
+        setTimeout(function () { if (token === run) ink(pill); }, 160);
+      }
+    } else if (step === "etools") {
+      adaTypingThen(token, "Work email is already on. Plug in the rest when you want.", 420);
+      if (state.eCalendar) morphConnect("ecalendar");
+      if (state.eTools.echat) morphConnect("echat");
+      if (state.eTools.ehandbook) morphConnect("ehandbook");
+    } else if (step === "enudge") {
+      setAda("type");
+      document.getElementById("eNudgeLine").textContent =
+        "Morning, " + displayName() + ". Intro at 10, team lunch at 12:30. I held 45 minutes after for the handbook.";
+    } else if (step === "ein") {
+      hideAda();
+      document.getElementById("einTitle").textContent = "You're in, " + displayName() + ".";
+      burst({ n: 96, y: 0.34 });
+      if (!reduce) {
+        gsap.fromTo("#estarters .starter", { opacity: 0, y: 10, filter: "blur(8px)" }, {
+          opacity: 1, y: 0, filter: "blur(0px)", duration: 0.48, stagger: 0.1, delay: 0.12, ease: "power2.out"
+        });
+        gsap.fromTo("#ecast .glyph", { y: 16, scale: 0.8 }, { y: 0, scale: 1, duration: 0.4, stagger: 0.06, ease: "power2.out" });
+        setTimeout(function () { if (token === run) ink(pill); }, 200);
+      }
     } else if (step === "week") {
       setAda("type");
       syncRows();
@@ -1102,9 +1365,15 @@
       tools: "Connect your tools",
       nudge: "Morning nudge",
       paywall: "Unlock the whole crew",
-      allset: "You're all set"
+      allset: "You're all set",
+      invite: "Northwind invited you",
+      seat: "Where do you sit?",
+      eday: "What should be awake on day one?",
+      etools: "Connect your work tools",
+      enudge: "Monday plan",
+      ein: "You're in"
     };
-    if (step !== "role") live.textContent = labels[step] || step;
+    if (step !== "role" && step !== "seat") live.textContent = labels[step] || step;
   }
 
   function go(next, dir) {
@@ -1119,7 +1388,9 @@
     var forward = dir >= 0;
     var out = panels[prev];
     var inc = panels[next];
-    if (next === "welcome" || next === "paywall" || next === "allset") hideAda();
+    if (next === "welcome") state.path = "crew";
+    if (next === "invite") state.path = "employee";
+    if (next === "welcome" || next === "paywall" || next === "allset" || next === "ein") hideAda();
     updateDock(next);
     gsap.killTweensOf([out, inc]);
     inc.hidden = false;
@@ -1150,7 +1421,13 @@
 
   function meet() {
     if (isBusy()) return;
+    state.path = "crew";
     go("name", 1);
+  }
+  function joinTeam() {
+    if (isBusy()) return;
+    state.path = "employee";
+    go("invite", 1);
   }
   function autotype() {
     var token = ++autoToken;
@@ -1176,12 +1453,17 @@
   function leaveName() {
     state.name = nameInput.value.trim();
     exitTiles();
-    go("role", 1);
+    go(state.path === "employee" ? "seat" : "role", 1);
   }
   function enableNudges() {
     state.nudges = true;
     bell.classList.add("is-ringing", "is-on");
     go("paywall", 1);
+  }
+  function enableENudges() {
+    state.eNudges = true;
+    document.getElementById("ebell").classList.add("is-ringing", "is-on");
+    go("ein", 1);
   }
   function skipNudges() {
     go("paywall", 1);
@@ -1193,13 +1475,14 @@
     if (state.step === "allset") return;
     if (!sheet.hidden) closeSheet();
     if (!state.name) state.name = nameInput.value.trim() || "Ritu";
-    go("allset", 1);
+    go(state.path === "employee" ? "ein" : "allset", 1);
   }
   function back() {
     if (!sheet.hidden) { closeSheet(); return; }
-    var i = ORDER.indexOf(state.step);
+    var list = pathOrder();
+    var i = list.indexOf(state.step);
     if (i <= 0) return;
-    go(ORDER[i - 1], -1);
+    go(list[i - 1], -1);
   }
 
   function confirmTrial() {
@@ -1217,10 +1500,16 @@
     if (isBusy() && state.step !== "task") return;
     var s = state.step;
     if (s === "welcome") return meet();
+    if (s === "invite") return go("name", 1);
     if (s === "name") {
       if (!nameInput.value.trim()) return autotype();
       return leaveName();
     }
+    if (s === "seat") return go("eday", 1);
+    if (s === "eday") return go("etools", 1);
+    if (s === "etools") return go("enudge", 1);
+    if (s === "enudge") return enableENudges();
+    if (s === "ein") return showToast("Your first week is ready.");
     if (s === "role") return go("week", 1);
     if (s === "week") return go("crew", 1);
     if (s === "crew") return go("task", 1);
@@ -1251,8 +1540,12 @@
     pill.addEventListener("click", onPill);
     quiet.addEventListener("click", function () {
       if (isBusy()) return;
-      if (state.step === "tools") go("nudge", 1);
+      if (state.step === "welcome") joinTeam();
+      else if (state.step === "invite") go("welcome", -1);
+      else if (state.step === "tools") go("nudge", 1);
+      else if (state.step === "etools") go("enudge", 1);
       else if (state.step === "nudge") skipNudges();
+      else if (state.step === "enudge") go("ein", 1);
     });
     document.getElementById("back").addEventListener("click", function () { if (!isBusy()) back(); });
     document.getElementById("skip").addEventListener("click", function () { if (!isBusy()) skipToEnd(); });
@@ -1282,11 +1575,18 @@
     document.querySelectorAll("[data-connect]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var id = btn.dataset.connect;
-        if (id === "email") return;
-        if (id === "calendar") {
-          if (state.calendar) return;
+        if (id === "email" || id === "eemail") return;
+        if (id === "calendar" || id === "ecalendar") {
+          if (id === "calendar" && state.calendar) return;
+          if (id === "ecalendar" && state.eCalendar) return;
           setAda("talk", "Plug us into your tools. We only read until you say so.");
           openSheet("sheetCalendar");
+          return;
+        }
+        if (id === "echat" || id === "ehandbook") {
+          state.eTools[id] = true;
+          morphConnect(id);
+          setAda("talk", "Connected. We'll only read until you say so.");
           return;
         }
         state.tools[id] = true;
@@ -1319,6 +1619,22 @@
     bell.addEventListener("click", function () {
       bell.classList.add("is-ringing");
       setTimeout(function () { bell.classList.add("is-on"); }, dur(180));
+    });
+    document.getElementById("ebell").addEventListener("click", function () {
+      var el = document.getElementById("ebell");
+      el.classList.add("is-ringing");
+      setTimeout(function () { el.classList.add("is-on"); }, dur(180));
+    });
+    document.getElementById("erows").addEventListener("click", function (e) {
+      var row = e.target.closest(".row");
+      if (!row) return;
+      toggleERow(row.dataset.eday);
+    });
+    document.getElementById("estarters").addEventListener("click", function (e) {
+      var btn = e.target.closest(".starter");
+      if (!btn) return;
+      btn.classList.add("is-sent");
+      showToast("Sent to " + btn.dataset.who + ".");
     });
     chips.addEventListener("click", function (e) {
       var btn = e.target.closest("[data-chip]");
@@ -1393,6 +1709,7 @@
   paintAll();
   buildWheel();
   bindWheel();
+  buildSeatWheel();
   bindCarousel();
   bind();
   applyChrome("welcome");
