@@ -34,6 +34,7 @@ Multi-page **static** UI kit published on GitHub Pages from the `main` branch ro
 - Premium feel: https://danielwongcx.github.io/ui-kit/premium-feel.html (`premium-feel.html`) — Explainer. Why premium apps feel smooth: six physics studies (button spring, pull resistance, rolling digits, drag lift, ease-out expand, drawn check). Each card opens a 1/4-speed breakdown with a graph, a With / Without comparison, and a prompt and code you can copy. `prefers-reduced-motion` and `?reduce=1` hold the motion. No build step.
 - Agent system: https://danielwongcx.github.io/ui-kit/agent-design-system.html (`agent-design-system.html`) — Explainer. rico’s (@_heyrico) five-layer design system an agent can follow: primitives, semantic tokens, components, blocks, and rules plus a review-screen skill. `prefers-reduced-motion` and `?reduce=1` hold motion. No build step.
 - Underlay DS: https://danielwongcx.github.io/ui-kit/underlay-design-system.html (`underlay-design-system.html`) — Explainer. Marcel’s (@marcelkargul) Underlay design system: violet foundations, theme, semantic tokens, elevation and state, an Inter type scale with Trim, and four rules. `prefers-reduced-motion` and `?reduce=1` hold motion. No build step.
+- Onboarding: https://danielwongcx.github.io/ui-kit/onboarding.html (`onboarding.html`) — Explainer. Playable motion study of a Letterly-style onboarding: pinned chrome, ink ripples, spring-born letter tiles, a curved role wheel, checklist wake, peek carousel, draft expansion, permission sheet, nudge-to-paywall crossfade, and two confetti bursts. `prefers-reduced-motion` and `?reduce=1` skip springs, punch-in, Ken Burns, and confetti. No build step.
 
 No build step. Plain HTML / CSS / JS.
 
@@ -70,6 +71,7 @@ Top-level pages: Gallery, Digest, Taste, Piano, ASCII, Ferry, MTR, Transition, A
 - Premium feel → `premium-feel.html`
 - Agent system → `agent-design-system.html`
 - Underlay DS → `underlay-design-system.html`
+- Onboarding → `onboarding.html`
 
 When you add a new page:
 
