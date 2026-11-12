@@ -137,6 +137,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
+  max-height: calc(100dvh - var(--site-header-h) - 16px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .site-header__flyout-card .site-header__link {

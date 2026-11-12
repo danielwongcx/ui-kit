@@ -35,6 +35,7 @@ Multi-page **static** UI kit published on GitHub Pages from the `main` branch ro
 - Agent system: https://danielwongcx.github.io/ui-kit/agent-design-system.html (`agent-design-system.html`) — Explainer. rico’s (@_heyrico) five-layer design system an agent can follow: primitives, semantic tokens, components, blocks, and rules plus a review-screen skill. `prefers-reduced-motion` and `?reduce=1` hold motion. No build step.
 - Underlay DS: https://danielwongcx.github.io/ui-kit/underlay-design-system.html (`underlay-design-system.html`) — Explainer. Marcel’s (@marcelkargul) Underlay design system: violet foundations, theme, semantic tokens, elevation and state, an Inter type scale with Trim, and four rules. `prefers-reduced-motion` and `?reduce=1` hold motion. No build step.
 - Onboarding: https://danielwongcx.github.io/ui-kit/onboarding.html (`onboarding.html`) — Explainer. Playable motion study of a Letterly-style onboarding: pinned chrome, ink ripples, spring-born letter tiles, a curved role wheel, checklist wake, peek carousel, draft expansion, permission sheet, nudge-to-paywall crossfade, and two confetti bursts. `prefers-reduced-motion` and `?reduce=1` skip springs, punch-in, Ken Burns, and confetti. No build step.
+- Prompt Spec: https://danielwongcx.github.io/ui-kit/prompt-spec.html (`prompt-spec.html`) — Explainer. Reference page for copying a rules block and a system prompt that lock spacing, radius, type, and color, then name five interruptible real-UI motion primitives. Not a motion demo. No build step.
 
 No build step. Plain HTML / CSS / JS.
 
@@ -72,6 +73,7 @@ Top-level pages: Gallery, Digest, Taste, Piano, ASCII, Ferry, MTR, Transition, A
 - Agent system → `agent-design-system.html`
 - Underlay DS → `underlay-design-system.html`
 - Onboarding → `onboarding.html`
+- Prompt Spec → `prompt-spec.html`
 
 When you add a new page:
 

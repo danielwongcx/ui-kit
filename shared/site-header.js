@@ -40,7 +40,8 @@
         { id: 'premium-feel', label: 'Premium feel', href: 'premium-feel.html' },
         { id: 'agent-design-system', label: 'Agent system', href: 'agent-design-system.html' },
         { id: 'underlay-design-system', label: 'Underlay DS', href: 'underlay-design-system.html' },
-        { id: 'onboarding', label: 'Onboarding', href: 'onboarding.html' }
+        { id: 'onboarding', label: 'Onboarding', href: 'onboarding.html' },
+        { id: 'prompt-spec', label: 'Prompt Spec', href: 'prompt-spec.html' }
       ]
     }
   ];
@@ -295,6 +296,13 @@
       root.classList.toggle('is-open', open);
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
       fly.hidden = !open;
+      if (!open) return;
+      var current = card.querySelector('[aria-current="page"]');
+      if (!current) return;
+      var cardBox = card.getBoundingClientRect();
+      var linkBox = current.getBoundingClientRect();
+      if (linkBox.top < cardBox.top) card.scrollTop -= cardBox.top - linkBox.top;
+      else if (linkBox.bottom > cardBox.bottom) card.scrollTop += linkBox.bottom - cardBox.bottom;
     }
 
     function sync() {
