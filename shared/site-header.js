@@ -41,7 +41,8 @@
         { id: 'agent-design-system', label: 'Agent system', href: 'agent-design-system.html' },
         { id: 'underlay-design-system', label: 'Underlay DS', href: 'underlay-design-system.html' },
         { id: 'onboarding', label: 'Onboarding', href: 'onboarding.html' },
-        { id: 'prompt-spec', label: 'Prompt Spec', href: 'prompt-spec.html' }
+        { id: 'prompt-spec', label: 'Prompt Spec', href: 'prompt-spec.html' },
+        { id: 'atelier-orb', label: 'Atelier Orb', href: 'atelier-orb.html' }
       ]
     }
   ];

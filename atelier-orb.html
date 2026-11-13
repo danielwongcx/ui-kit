@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atelier Orb · ui-kit</title>
+  <meta name="description" content="Identity and motion study of a Canvas 2D orb. Dark and light, six palettes, neon. Not an Atelier product.">
+  <link rel="icon" href="data:,">
+  <script>
+    (function () {
+      try {
+        var saved = JSON.parse(localStorage.getItem("atelier-orb-look") || "null");
+        if (saved && (saved.theme === "light" || saved.theme === "dark")) {
+          document.documentElement.setAttribute("data-theme", saved.theme);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="shared/site-header.css?v=8">
+  <style>
+    :root {
+      --bg: #0f0f0f;
+      --ink: #f2eee8;
+      --muted: #8a8580;
+      --line: #2a2a2a;
+      --panel: #161212;
+      --accent: #E87A4A;
+      --on-accent: #111111;
+      --success: #E8A04A;
+      --error: #FF5A3C;
+      --on-error: #110808;
+      --space-4: 4px;
+      --space-8: 8px;
+      --space-12: 12px;
+      --space-16: 16px;
+      --space-24: 24px;
+      --space-32: 32px;
+      --space-48: 48px;
+      color-scheme: dark;
+    }
+    html[data-theme="light"] {
+      --bg: #F4EFE8;
+      --ink: #1C1814;
+      --muted: #7A736C;
+      --line: #E2DAD2;
+      --panel: #FFF8F4;
+      --accent: #C45C32;
+      --on-accent: #FFF8F4;
+      --success: #D4A04A;
+      --error: #D63A24;
+      --on-error: #FFF8F4;
+      color-scheme: light;
+    }
+    .stage, .stage * { box-sizing: border-box; }
+    html {
+      background: var(--bg);
+      scroll-padding-top: var(--site-header-h, 56px);
+    }
+    html, body {
+      color: var(--ink);
+      font-family: "SF Mono", "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas, monospace;
+    }
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+    }
+    /* Sticky shared header stays in flow. Theme tokens follow the page background. */
+    body[data-page="atelier-orb"] {
+      --site-ink: #f2eee8;
+      --site-muted: #a39e98;
+      --site-line: rgba(242, 238, 232, 0.14);
+      --site-bar-bg: color-mix(in srgb, #0f0f0f 82%, transparent);
+      --site-pill: rgba(255, 255, 255, 0.08);
+      --site-accent: #E87A4A;
+    }
+    html[data-theme="light"] body[data-page="atelier-orb"] {
+      --site-ink: #1c1814;
+      --site-muted: #5c564f;
+      --site-line: rgba(28, 24, 20, 0.12);
+      --site-bar-bg: color-mix(in srgb, #F4EFE8 86%, transparent);
+      --site-pill: rgba(255, 255, 255, 0.78);
+      --site-accent: #8C3A1C;
+    }
+    body[data-page="atelier-orb"] > .site-header {
+      flex: 0 0 auto;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    body[data-page="atelier-orb"] .site-header__panel {
+      background: color-mix(in srgb, #0f0f0f 94%, transparent);
+    }
+    html[data-theme="light"] body[data-page="atelier-orb"] .site-header__panel {
+      background: color-mix(in srgb, #F4EFE8 94%, transparent);
+    }
+    .stage {
+      width: min(520px, calc(100% - var(--space-32)));
+      max-width: 100%;
+      min-width: 0;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-24);
+      padding: var(--space-32) 0;
+    }
+    .kicker {
+      margin: 0;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      scroll-margin-top: calc(var(--site-header-h, 56px) + var(--space-16));
+    }
+    .error {
+      scroll-margin-top: calc(var(--site-header-h, 56px) + var(--space-16));
+      border: 1px solid color-mix(in srgb, var(--error) 55%, var(--line));
+      border-radius: 16px;
+      padding: var(--space-16) var(--space-24);
+      background: var(--panel);
+      opacity: 0;
+      transform: translateY(-8px);
+      pointer-events: none;
+      max-height: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      border-width: 0;
+      overflow: hidden;
+      transition: opacity 0.45s ease, transform 0.45s ease, max-height 0.45s ease, padding 0.45s ease, border-width 0.2s ease;
+    }
+    .error.is-on {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+      max-height: 240px;
+      padding: var(--space-16) var(--space-24);
+      border-width: 1px;
+    }
+    .error-kicker {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--error);
+      margin-bottom: var(--space-8);
+    }
+    .error-q {
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      line-height: 1.4;
+      margin-bottom: var(--space-16);
+      color: var(--ink);
+    }
+    .error,
+    .error-actions,
+    .controls,
+    .swatches {
+      min-width: 0;
+      max-width: 100%;
+    }
+    .error-actions {
+      display: flex;
+      gap: var(--space-8);
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+    }
+    .error-actions button {
+      flex: 0 0 auto;
+      appearance: none;
+      border: 1px solid color-mix(in srgb, var(--error) 70%, var(--ink));
+      background: transparent;
+      color: var(--ink);
+      font: inherit;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: var(--space-12) var(--space-16);
+      min-height: 44px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .error-actions button:hover,
+    .error-actions button:focus-visible {
+      background: var(--error);
+      color: var(--on-error);
+      outline: none;
+    }
+    canvas {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      display: block;
+      height: auto;
+    }
+    .bar {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: var(--space-16);
+    }
+    #status {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      line-height: 1.5;
+      min-height: 2.8em;
+      white-space: pre-line;
+      transition: opacity 0.35s ease;
+    }
+    #status.is-swap { opacity: 0; }
+    .controls,
+    .swatches {
+      display: flex;
+      gap: var(--space-8);
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+      padding-bottom: var(--space-4);
+    }
+    .controls button {
+      appearance: none;
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: var(--space-12) var(--space-16);
+      min-height: 44px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .controls button[data-state][aria-pressed="true"] {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--on-accent);
+    }
+    .controls button[data-state="resting"][aria-pressed="true"] {
+      background: var(--success);
+      border-color: var(--success);
+    }
+    .controls button[data-state="stuck"][aria-pressed="true"] {
+      background: var(--error);
+      border-color: var(--error);
+      color: var(--on-error);
+    }
+    .controls button[data-theme][aria-pressed="true"] {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--bg);
+    }
+    .controls button[data-neon][aria-pressed="true"] {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--on-accent);
+      box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 55%, transparent);
+    }
+    .controls button:focus-visible,
+    .swatch:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+    .look {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-16);
+      padding-top: var(--space-8);
+      border-top: 1px solid var(--line);
+    }
+    .look-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: nowrap;
+      gap: var(--space-16);
+      min-width: 0;
+    }
+    .look-label {
+      flex: 0 0 56px;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .look-row .controls,
+    .look-row .swatches {
+      flex: 1;
+      min-width: 0;
+    }
+    .swatches {
+      align-items: center;
+      min-height: 44px;
+      /* Room for the 4px selected ring inside the scrollport. */
+      padding-inline: var(--space-4);
+    }
+    .swatch {
+      appearance: none;
+      flex: 0 0 auto;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      background: var(--swatch);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 18%, transparent);
+      cursor: pointer;
+      padding: 0;
+    }
+    .swatch[aria-pressed="true"] {
+      box-shadow:
+        0 0 0 2px var(--bg),
+        0 0 0 4px var(--ink),
+        inset 0 0 0 1px color-mix(in srgb, var(--ink) 18%, transparent);
+    }
+    .swatch-custom {
+      position: relative;
+      background:
+        conic-gradient(#E87A4A, #F0A45C, #5ECF9A, #5EC8E0, #C89BFF, #FF6B8A, #E87A4A);
+    }
+    .swatch-custom.is-picked {
+      background: var(--swatch);
+    }
+    .swatch-custom input {
+      appearance: none;
+      opacity: 0;
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      border: 0;
+      padding: 0;
+    }
+    .color-name {
+      flex: 0 0 auto;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .error, #status { transition: none; }
+    }
+  </style>
+</head>
+<body data-page="atelier-orb">
+  <main class="stage">
+    <h1 class="kicker">Atelier orb · identity study</h1>
+    <div class="error" id="error" role="alert">
+      <div class="error-kicker">Error — North roof breaks 8m limit</div>
+      <div class="error-q">How should I continue?</div>
+      <div class="error-actions">
+        <button type="button" data-resolve>Stop the roof</button>
+        <button type="button" data-resolve>Apply for a variance</button>
+      </div>
+    </div>
+    <canvas id="orb" width="520" height="520" aria-label="Atelier orb"></canvas>
+    <div class="bar">
+      <div id="status">Static</div>
+    </div>
+    <div class="controls" role="tablist" aria-label="Orb state">
+      <button type="button" role="tab" data-state="static" aria-pressed="true">Static</button>
+      <button type="button" role="tab" data-state="thinking" aria-pressed="false">Thinking</button>
+      <button type="button" role="tab" data-state="working" aria-pressed="false">Working</button>
+      <button type="button" role="tab" data-state="resting" aria-pressed="false">Resting</button>
+      <button type="button" role="tab" data-state="stuck" aria-pressed="false">Stuck</button>
+    </div>
+    <div class="look">
+      <div class="look-row">
+        <div class="look-label" id="mode-label">Mode</div>
+        <div class="controls" role="group" aria-labelledby="mode-label">
+          <button type="button" data-theme="dark" aria-pressed="true">Dark</button>
+          <button type="button" data-theme="light" aria-pressed="false">Light</button>
+        </div>
+      </div>
+      <div class="look-row">
+        <div class="look-label" id="color-label">Color</div>
+        <div class="swatches" role="group" aria-labelledby="color-label" id="swatches"></div>
+        <div class="color-name" id="color-name">Terracotta</div>
+      </div>
+      <div class="look-row">
+        <div class="look-label" id="effect-label">Effect</div>
+        <div class="controls" role="group" aria-labelledby="effect-label">
+          <button type="button" data-neon aria-pressed="false">Neon</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="shared/site-header.js?v=29" defer></script>
+  <script>
+    const N = 120;
+    const GOLDEN = Math.PI * (1 + Math.sqrt(5));
+    const LOCK_Y = Math.PI / 4;
+    const LOCK_X = Math.atan(1 / Math.sqrt(2));
+    const MORPH_FRAMES = 40;
+    const PALETTES = [
+      { id: "terracotta", name: "Terracotta", dark: "#E87A4A", light: "#C45C32" },
+      { id: "amber", name: "Amber", dark: "#F0A45C", light: "#C4892A" },
+      { id: "jade", name: "Jade", dark: "#5ECF9A", light: "#2F7A52" },
+      { id: "ice", name: "Ice", dark: "#5EC8E0", light: "#1F6F84" },
+      { id: "orchid", name: "Orchid", dark: "#C89BFF", light: "#6B4AA8" },
+      { id: "rose", name: "Rose", dark: "#FF6B8A", light: "#C43D5A" }
+    ];
+    const ERROR_DARK = [255, 90, 60];
+    const ERROR_LIGHT = [214, 58, 36];
+
+    const base = [];
+    for (let i = 0; i < N; i++) {
+      const phi = Math.acos(1 - 2 * (i + 0.5) / N);
+      const theta = GOLDEN * i;
+      const x = Math.sin(phi) * Math.cos(theta);
+      const y = Math.cos(phi);
+      const z = Math.sin(phi) * Math.sin(theta);
+      const m = Math.max(Math.abs(x), Math.abs(y), Math.abs(z)) || 1;
+      base.push({
+        x, y, z, i,
+        lat: Math.min(7, Math.floor((phi / Math.PI) * 8)),
+        cx: x / m, cy: y / m, cz: z / m,
+        kind: "fib"
+      });
+    }
+
+    const structure = [];
+    for (const sx of [-1, 1]) {
+      for (const sy of [-1, 1]) {
+        for (const sz of [-1, 1]) {
+          structure.push({ cx: sx, cy: sy, cz: sz, kind: "corner" });
+        }
+      }
+    }
+    for (let axis = 0; axis < 3; axis++) {
+      for (const s1 of [-1, 1]) {
+        for (const s2 of [-1, 1]) {
+          for (let t = 1; t <= 6; t++) {
+            const u = -1 + (2 * t) / 7;
+            const p = [0, 0, 0];
+            p[axis] = u;
+            p[(axis + 1) % 3] = s1;
+            p[(axis + 2) % 3] = s2;
+            structure.push({ cx: p[0], cy: p[1], cz: p[2], kind: "edge" });
+          }
+        }
+      }
+    }
+
+    const canvas = document.getElementById("orb");
+    const ctx = canvas.getContext("2d");
+    const statusEl = document.getElementById("status");
+    const errorEl = document.getElementById("error");
+    const buttons = [...document.querySelectorAll("[data-state]")];
+    const themeButtons = [...document.querySelectorAll("[data-theme]")];
+    const neonButton = document.querySelector("[data-neon]");
+    const swatchWrap = document.getElementById("swatches");
+    const colorNameEl = document.getElementById("color-name");
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    let theme = "dark";
+    let paletteId = "terracotta";
+    let customHex = "#E87A4A";
+    let neon = false;
+    let TERRACOTTA = [232, 122, 74];
+    let RESTING = [232, 160, 74];
+    let ERRORC = ERROR_DARK.slice();
+    let state = "static";
+    let morphT = 0;
+    let yAngle = 0.15;
+    let color = TERRACOTTA.slice();
+    let t0 = performance.now();
+    let stateT0 = t0;
+    let statusText = "Static";
+
+    function easeOutElastic(t) {
+      if (t <= 0) return 0;
+      if (t >= 1) return 1;
+      const c4 = (2 * Math.PI) / 3;
+      return Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * c4) + 1;
+    }
+    function easeInOut(t) {
+      return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    }
+    function mix(a, b, t) { return a + (b - a) * t; }
+    function rgb(c, a) { return `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${a})`; }
+    function hexToRgb(hex) {
+      const h = String(hex || "").replace("#", "");
+      const full = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+      const n = parseInt(full, 16);
+      if (!Number.isFinite(n) || full.length !== 6) return [232, 122, 74];
+      return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+    }
+    function rgbToHex(c) {
+      return "#" + c.map((v) => Math.max(0, Math.min(255, v | 0)).toString(16).padStart(2, "0")).join("");
+    }
+    function luma(c) {
+      return (0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]) / 255;
+    }
+    function rgbToHsl(r, g, b) {
+      r /= 255; g /= 255; b /= 255;
+      const max = Math.max(r, g, b), min = Math.min(r, g, b);
+      let h = 0, s = 0, l = (max + min) / 2;
+      if (max !== min) {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
+        else if (max === g) h = (b - r) / d + 2;
+        else h = (r - g) / d + 4;
+        h *= 60;
+      }
+      return [h, s, l];
+    }
+    function hslToRgb(h, s, l) {
+      const hue = ((h % 360) + 360) % 360;
+      const C = (1 - Math.abs(2 * l - 1)) * s;
+      const X = C * (1 - Math.abs((hue / 60) % 2 - 1));
+      const m = l - C / 2;
+      let r = 0, g = 0, b = 0;
+      if (hue < 60) [r, g, b] = [C, X, 0];
+      else if (hue < 120) [r, g, b] = [X, C, 0];
+      else if (hue < 180) [r, g, b] = [0, C, X];
+      else if (hue < 240) [r, g, b] = [0, X, C];
+      else if (hue < 300) [r, g, b] = [X, 0, C];
+      else [r, g, b] = [C, 0, X];
+      return [(r + m) * 255, (g + m) * 255, (b + m) * 255];
+    }
+    function restingFrom(c) {
+      const [h, s, l] = rgbToHsl(c[0], c[1], c[2]);
+      return hslToRgb(mix(h, 38, 0.25), Math.min(1, s * 0.92), Math.min(0.72, l + 0.08));
+    }
+    function mixRgb(a, b, t) {
+      return [mix(a[0], b[0], t), mix(a[1], b[1], t), mix(a[2], b[2], t)];
+    }
+    function rotY(p, a) {
+      const c = Math.cos(a), s = Math.sin(a);
+      return { x: p.x * c + p.z * s, y: p.y, z: -p.x * s + p.z * c };
+    }
+    function rotX(p, a) {
+      const c = Math.cos(a), s = Math.sin(a);
+      return { x: p.x, y: p.y * c - p.z * s, z: p.y * s + p.z * c };
+    }
+    function faceNormal(lx, ly, lz) {
+      const ax = Math.abs(lx), ay = Math.abs(ly), az = Math.abs(lz);
+      if (ax >= ay && ax >= az) return { x: lx >= 0 ? 1 : -1, y: 0, z: 0 };
+      if (ay >= az) return { x: 0, y: ly >= 0 ? 1 : -1, z: 0 };
+      return { x: 0, y: 0, z: lz >= 0 ? 1 : -1 };
+    }
+    function currentHex() {
+      if (paletteId === "custom") return customHex;
+      const pal = PALETTES.find((p) => p.id === paletteId) || PALETTES[0];
+      return pal[theme];
+    }
+    function currentName() {
+      if (paletteId === "custom") return customHex;
+      const pal = PALETTES.find((p) => p.id === paletteId) || PALETTES[0];
+      return pal.name;
+    }
+
+    function applyLook() {
+      const hex = currentHex();
+      TERRACOTTA = hexToRgb(hex);
+      RESTING = restingFrom(TERRACOTTA);
+      ERRORC = (theme === "light" ? ERROR_LIGHT : ERROR_DARK).slice();
+      const on = luma(TERRACOTTA) > 0.62 ? "#111111" : "#F2EEE8";
+      const onErr = luma(ERRORC) > 0.62 ? "#111111" : (theme === "light" ? "#FFF8F4" : "#110808");
+      document.documentElement.dataset.theme = theme;
+      document.documentElement.style.setProperty("--accent", hex);
+      document.documentElement.style.setProperty("--on-accent", on);
+      document.documentElement.style.setProperty("--success", rgbToHex(RESTING));
+      document.documentElement.style.setProperty("--error", rgbToHex(ERRORC));
+      document.documentElement.style.setProperty("--on-error", onErr);
+      themeButtons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.theme === theme)));
+      neonButton.setAttribute("aria-pressed", String(neon));
+      colorNameEl.textContent = currentName();
+      swatchWrap.querySelectorAll("[data-palette]").forEach((el) => {
+        const id = el.dataset.palette;
+        el.setAttribute("aria-pressed", String(id === paletteId));
+        if (id === "custom") {
+          el.classList.toggle("is-picked", paletteId === "custom");
+          el.style.setProperty("--swatch", paletteId === "custom" ? customHex : "transparent");
+        } else {
+          const pal = PALETTES.find((p) => p.id === id);
+          el.style.setProperty("--swatch", pal[theme]);
+        }
+      });
+      try {
+        localStorage.setItem("atelier-orb-look", JSON.stringify({ theme, paletteId, customHex, neon }));
+      } catch (err) { /* ignore quota / private mode */ }
+    }
+
+    function buildSwatches() {
+      swatchWrap.replaceChildren();
+      for (const pal of PALETTES) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "swatch";
+        btn.dataset.palette = pal.id;
+        btn.title = pal.name;
+        btn.setAttribute("aria-label", pal.name);
+        btn.style.setProperty("--swatch", pal[theme]);
+        btn.addEventListener("click", () => {
+          paletteId = pal.id;
+          applyLook();
+        });
+        swatchWrap.appendChild(btn);
+      }
+      const label = document.createElement("label");
+      label.className = "swatch swatch-custom";
+      label.dataset.palette = "custom";
+      label.title = "Custom color";
+      label.setAttribute("aria-label", "Custom color");
+      const input = document.createElement("input");
+      input.type = "color";
+      input.value = customHex;
+      input.setAttribute("aria-label", "Pick a custom color");
+      const pick = () => {
+        customHex = input.value;
+        paletteId = "custom";
+        applyLook();
+      };
+      input.addEventListener("input", pick);
+      input.addEventListener("change", pick);
+      label.appendChild(input);
+      swatchWrap.appendChild(label);
+    }
+
+    try {
+      const saved = JSON.parse(localStorage.getItem("atelier-orb-look") || "null");
+      if (saved && typeof saved === "object") {
+        if (saved.theme === "light" || saved.theme === "dark") theme = saved.theme;
+        if (saved.paletteId === "custom" || PALETTES.some((p) => p.id === saved.paletteId)) {
+          paletteId = saved.paletteId;
+        }
+        if (typeof saved.customHex === "string" && /^#?[0-9a-fA-F]{6}$/.test(saved.customHex)) {
+          customHex = saved.customHex.startsWith("#") ? saved.customHex : "#" + saved.customHex;
+        }
+        neon = !!saved.neon;
+      }
+    } catch (err) { /* ignore bad storage */ }
+
+    buildSwatches();
+    applyLook();
+
+    themeButtons.forEach((b) => b.addEventListener("click", () => {
+      theme = b.dataset.theme;
+      applyLook();
+    }));
+    neonButton.addEventListener("click", () => {
+      neon = !neon;
+      applyLook();
+    });
+
+    function labelFor(now) {
+      const elapsed = (now - stateT0) / 1000;
+      if (state === "static") return "Static";
+      if (state === "thinking") {
+        if (elapsed < 0.35) return "...Thinking...";
+        return "...Thinking...\nBubbling up";
+      }
+      if (state === "working") {
+        if (elapsed < 0.7) return "Running — site study";
+        const ticks = [
+          "Running — site study\nReading site_survey.pdf",
+          "Running — site study\nChecking the 8m height limit"
+        ];
+        return ticks[Math.floor((elapsed - 0.7) / 2.4) % 2];
+      }
+      if (state === "resting") {
+        if (elapsed < 0.25) return "";
+        return "Site study ready";
+      }
+      if (elapsed < 0.55) return "Error";
+      return "Error — North roof breaks 8m limit";
+    }
+
+    function setStatus(text) {
+      if (text === statusText) return;
+      statusText = text;
+      statusEl.classList.add("is-swap");
+      const apply = () => { statusEl.textContent = text; statusEl.classList.remove("is-swap"); };
+      if (reduce.matches) apply();
+      else setTimeout(apply, 160);
+    }
+
+    function setState(next) {
+      state = next;
+      stateT0 = performance.now();
+      if (next === "stuck") morphT = 0;
+      buttons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.state === next)));
+    }
+
+    buttons.forEach((b) => b.addEventListener("click", () => setState(b.dataset.state)));
+    document.querySelectorAll("[data-resolve]").forEach((b) => {
+      b.addEventListener("click", () => setState("resting"));
+    });
+
+    function resize() {
+      const css = canvas.clientWidth || 520;
+      const dpr = Math.min(window.devicePixelRatio || 1, 3);
+      canvas.width = Math.round(css * dpr);
+      canvas.height = Math.round(css * dpr);
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    function targetColor() {
+      if (state === "stuck") return ERRORC;
+      if (state === "resting") return RESTING;
+      return TERRACOTTA;
+    }
+
+    function frame(now) {
+      const dt = Math.min(0.05, (now - t0) / 1000);
+      t0 = now;
+      const t = now / 1000;
+      const frozen = reduce.matches;
+      const dpr = canvas.width / (canvas.clientWidth || 520);
+      const css = canvas.width / dpr;
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      const dark = theme === "dark";
+
+      const morphStep = frozen ? 1 : 1 / MORPH_FRAMES;
+      if (state === "stuck") morphT = Math.min(1, morphT + morphStep * dt * 60);
+      else morphT = Math.max(0, morphT - morphStep * dt * 60);
+      const morph = frozen
+        ? (state === "stuck" ? 1 : 0)
+        : (state === "stuck" ? easeOutElastic(morphT) : easeInOut(morphT));
+      const lock = Math.min(1, Math.max(0, morphT));
+      const cubeAmt = Math.min(1, Math.max(0, morph));
+      const radius = css * mix(0.28, 0.165, cubeAmt) * dpr;
+
+      if (!frozen && lock < 1) {
+        yAngle += 0.25 * dt * (state === "resting" ? 0.72 : 1) * (1 - lock);
+      }
+      const wobble = frozen ? 0 : Math.sin(t * 0.3) * 0.15;
+      const xAngle = mix(wobble, LOCK_X, easeInOut(lock));
+      const orbitY = mix(yAngle, LOCK_Y, easeInOut(lock));
+
+      const tc = targetColor();
+      color[0] += (tc[0] - color[0]) * Math.min(1, dt * 6);
+      color[1] += (tc[1] - color[1]) * Math.min(1, dt * 6);
+      color[2] += (tc[2] - color[2]) * Math.min(1, dt * 6);
+
+      const showError = state === "stuck" && (frozen || morphT >= 0.72);
+      const wasError = errorEl.classList.contains("is-on");
+      if (wasError !== showError) {
+        errorEl.classList.toggle("is-on", showError);
+        if (showError) {
+          const reveal = () => errorEl.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "auto" });
+          reveal();
+          if (!frozen) {
+            errorEl.addEventListener("transitionend", function onEnd(e) {
+              if (e.propertyName !== "max-height") return;
+              errorEl.removeEventListener("transitionend", onEnd);
+              if (errorEl.classList.contains("is-on")) reveal();
+            });
+          }
+        }
+      }
+      setStatus(labelFor(now));
+
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (neon) {
+        const wash = ctx.createRadialGradient(cx, cy, radius * 0.12, cx, cy, radius * 1.4);
+        wash.addColorStop(0, rgb(color, dark ? 0.18 : 0.10));
+        wash.addColorStop(0.45, rgb(color, dark ? 0.06 : 0.04));
+        wash.addColorStop(1, rgb(color, 0));
+        ctx.fillStyle = wash;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      const light = { x: -0.4, y: 0.7, z: 0.65 };
+      const ln = Math.hypot(light.x, light.y, light.z);
+      light.x /= ln; light.y /= ln; light.z /= ln;
+
+      const dots = [];
+      const sources = cubeAmt > 0.02 ? base.concat(structure) : base;
+      for (const b of sources) {
+        const isStruct = b.kind !== "fib";
+        let x, y, z, lx, ly, lz;
+        if (isStruct) {
+          x = b.cx * 1.05; y = b.cy * 1.05; z = b.cz * 1.05;
+          lx = b.cx; ly = b.cy; lz = b.cz;
+        } else if (morph !== 0) {
+          x = mix(b.x, b.cx * 1.05, morph);
+          y = mix(b.y, b.cy * 1.05, morph);
+          z = mix(b.z, b.cz * 1.05, morph);
+          lx = b.cx; ly = b.cy; lz = b.cz;
+        } else if (state === "thinking") {
+          const amp = frozen ? 0.12 * Math.sin(b.i * 0.4) : Math.sin(t * 2.5 + b.i * 0.4) * 0.18;
+          x = b.x * (1 + amp);
+          y = b.y * (1 + amp);
+          z = b.z * (1 + amp);
+          lx = b.x; ly = b.y; lz = b.z;
+        } else {
+          x = b.x; y = b.y; z = b.z;
+          lx = b.x; ly = b.y; lz = b.z;
+        }
+
+        let yaw = orbitY;
+        if (!isStruct && state === "working" && lock < 0.5 && !frozen) {
+          const sign = b.lat % 2 === 0 ? 1 : -1;
+          yaw += sign * t * 0.8 * (0.5 + b.lat * 0.12) * (1 - lock * 2);
+        }
+        let p = rotY({ x, y, z }, yaw);
+        p = rotX(p, xAngle);
+
+        let facing = 1;
+        let lamb = 1;
+        if (cubeAmt > 0) {
+          let n = faceNormal(lx, ly, lz);
+          n = rotY(n, yaw);
+          n = rotX(n, xAngle);
+          facing = n.z;
+          lamb = Math.max(0, n.x * light.x + n.y * light.y + n.z * light.z);
+          if (facing < 0.08) {
+            const fade = 1 - cubeAmt;
+            if (fade < 0.02) continue;
+          }
+        }
+
+        const perspective = 3 / (3 - p.z * 0.9);
+        const depth = (p.z + 1.5) / 3;
+        const d = Math.max(0, Math.min(1, depth));
+        const shade = cubeAmt > 0 ? mix(1, 0.42 + 0.72 * lamb, cubeAmt) : 1;
+        const backFade = (cubeAmt > 0 && facing < 0.08) ? (1 - cubeAmt) : 1;
+        const ax = Math.abs(lx), ay = Math.abs(ly), az = Math.abs(lz);
+        const mid = [ax, ay, az].sort((a, c) => c - a)[1];
+        const edgeness = mid / Math.max(ax, ay, az, 1e-6);
+        let size = (2.2 + d * 3.2) * dpr;
+        if (edgeness > 0.85 && cubeAmt > 0.3) size *= mix(1, 1.2, cubeAmt);
+        if (b.kind === "corner") size *= 1.45;
+        if (b.kind === "edge") size = Math.max(size, 2.6 * dpr);
+        let alpha = (0.35 + d * 0.65) * shade * backFade;
+        if (isStruct) alpha *= cubeAmt;
+        if (alpha < 0.03) continue;
+
+        dots.push({
+          sx: cx + p.x * radius * perspective,
+          sy: cy - p.y * radius * perspective,
+          z: p.z,
+          size,
+          alpha: Math.min(1, alpha),
+          depth: d
+        });
+      }
+
+      dots.sort((a, b) => a.z - b.z);
+      const glow = state === "resting" && lock < 0.2 && !neon;
+      const pulse = neon && !frozen ? 1 + Math.sin(t * 2.2) * 0.08 : 1;
+      const core = neon ? mixRgb(color, [255, 255, 255], dark ? 0.35 : 0.12) : color;
+      const rimA = dark ? 0.12 : 0.4;
+
+      for (const d of dots) {
+        if (neon) {
+          if (dark) ctx.globalCompositeOperation = "lighter";
+          ctx.beginPath();
+          ctx.fillStyle = rgb(color, (dark ? 0.18 : 0.12) * d.alpha);
+          ctx.arc(d.sx, d.sy, d.size * 3.8 * pulse, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.beginPath();
+          ctx.fillStyle = rgb(color, (dark ? 0.38 : 0.2) * d.alpha);
+          ctx.arc(d.sx, d.sy, d.size * 1.85 * pulse, 0, Math.PI * 2);
+          ctx.fill();
+          if (dark) ctx.globalCompositeOperation = "source-over";
+        } else if (glow) {
+          ctx.beginPath();
+          ctx.fillStyle = rgb(RESTING, 0.15 * d.alpha);
+          ctx.arc(d.sx, d.sy, 6 * dpr * Math.max(d.depth, 0.15), 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.beginPath();
+        ctx.fillStyle = rgb(core, d.alpha);
+        ctx.arc(d.sx, d.sy, d.size, 0, Math.PI * 2);
+        ctx.fill();
+        if (d.depth > 0.6) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(255,255,255,${rimA * d.alpha})`;
+          ctx.lineWidth = Math.max(1, 0.85 * dpr);
+          ctx.arc(d.sx, d.sy, d.size, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      }
+
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  </script>
+</body>
+</html>
