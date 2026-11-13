@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prompt Spec · ui-kit</title>
+  <meta name="description" content="A reusable system prompt that locks spacing, radius, type, and color ratios, then names five interruptible real-UI motion primitives so a model cannot treat ‘beautiful’ or ‘clean’ as a spec." />
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="shared/site-header.css?v=8" />
+  <style>
+    /* Rank: page title, then section labels, then body / meta.
+       One action: the black Copy pill.
+       Spacing 4 8 12 16 24 32 48 64 96 128.
+       Card radius 24, padding 16, inner radius 8 (24 − 16). Type 36 / 20 / 16. */
+    :root {
+      --canvas: #f3f1ee;
+      --card: #ffffff;
+      --ink: #1c1c22;
+      --muted: #5e5a56;
+      --faint: #6f6a64;
+      --cta: #111111;
+      --cta-ink: #ffffff;
+      --success: #1e6851;
+      --space-4: 4px;
+      --space-8: 8px;
+      --space-12: 12px;
+      --space-16: 16px;
+      --space-24: 24px;
+      --space-32: 32px;
+      --space-48: 48px;
+      --space-64: 64px;
+      --space-96: 96px;
+      --space-128: 128px;
+      --radius-card: 24px;
+      --radius-inner: 8px;
+      --type-title: 36px;
+      --type-label: 20px;
+      --type-body: 16px;
+      --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      color-scheme: light;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      background: var(--canvas);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: var(--type-body);
+      font-weight: 400;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .shell {
+      width: 100%;
+      padding: var(--space-48) var(--space-16) var(--space-96);
+    }
+
+    .page {
+      width: 100%;
+      max-width: calc(35em + var(--space-32));
+      margin: 0 auto;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-48);
+    }
+
+    .intro {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-16);
+      padding: 0 var(--space-16);
+    }
+
+    .lock {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+    }
+
+    h1, h2, p { margin: 0; }
+
+    h1 {
+      font-size: var(--type-title);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    h2 {
+      font-size: var(--type-label);
+      font-weight: 600;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+
+    .eyebrow,
+    .meta,
+    .credit {
+      color: var(--muted);
+      font-size: var(--type-body);
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    .credit {
+      color: var(--faint);
+      padding: 0 var(--space-16);
+    }
+
+    .lede,
+    .card p,
+    .primitives li {
+      font-size: var(--type-body);
+      font-weight: 400;
+      line-height: 1.5;
+      text-wrap: pretty;
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-32);
+      min-width: 0;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius-card);
+      padding: var(--space-16);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-16);
+      min-width: 0;
+    }
+
+    .card a {
+      color: var(--ink);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: var(--space-4);
+    }
+
+    .card a:focus-visible {
+      outline: var(--space-4) solid var(--ink);
+      outline-offset: var(--space-4);
+      border-radius: var(--space-4);
+    }
+
+    .primitives {
+      margin: 0;
+      padding: 0 0 0 var(--space-24);
+    }
+
+    .primitives li + li {
+      margin-top: var(--space-16);
+    }
+
+    .primitives li::marker {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .primitives strong {
+      font-weight: 600;
+    }
+
+    .block-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-16);
+    }
+
+    .block-names {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+      min-width: 0;
+      flex: 1;
+    }
+
+    .prompt {
+      margin: 0;
+      max-width: 100%;
+      min-width: 0;
+      padding: var(--space-16);
+      border-radius: var(--radius-inner);
+      background: var(--canvas);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: var(--type-body);
+      font-weight: 400;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+    }
+
+    .copy {
+      appearance: none;
+      -webkit-appearance: none;
+      border: 0;
+      margin: 0;
+      background: var(--cta);
+      color: var(--cta-ink);
+      font-family: var(--sans);
+      font-size: var(--type-body);
+      font-weight: 600;
+      line-height: 1;
+      min-width: var(--space-96);
+      min-height: var(--space-48);
+      padding: 0 var(--space-24);
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: none;
+      white-space: nowrap;
+    }
+
+    .copy:hover,
+    .copy:active {
+      background: #000000;
+    }
+
+    .copy:focus-visible {
+      outline: var(--space-4) solid var(--ink);
+      outline-offset: var(--space-4);
+    }
+
+    .copy.is-copied {
+      box-shadow: 0 0 0 var(--space-4) var(--success);
+    }
+
+    .sr {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (min-width: 40rem) {
+      .shell {
+        padding: var(--space-64) var(--space-24) var(--space-128);
+      }
+    }
+
+    @media (max-width: 32rem) {
+      .block-head {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .copy {
+        align-self: flex-start;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .copy {
+        transition: none;
+        animation: none;
+      }
+    }
+
+    @media (forced-colors: active) {
+      .copy.is-copied {
+        outline: var(--space-4) solid Highlight;
+      }
+    }
+  </style>
+</head>
+<body data-page="prompt-spec">
+  <div class="shell">
+    <main class="page">
+      <p id="copy-status" class="sr" role="status" aria-live="polite"></p>
+      <header class="intro">
+        <div class="lock">
+          <p class="eyebrow">Locked rules + named motion primitives.</p>
+          <h1>Prompt Spec</h1>
+        </div>
+        <p class="lede">A reusable system prompt that locks spacing, radius, type, and color ratios, then names five interruptible real-UI motion primitives so a model cannot treat ‘beautiful’ or ‘clean’ as a spec.</p>
+      </header>
+
+      <div class="stack">
+        <section class="card" aria-labelledby="summary-title">
+          <h2 id="summary-title" class="sr">Summary</h2>
+          <p>Asking for a “beautiful, clean interface” gives the model no rules, so spacing, radius, type, and color ratios get reinvented every time.</p>
+          <p>Lock a rules file first; every AI must read it before any UI work. It may not invent tokens or use adjectives as design decisions.</p>
+          <p>Paste the Rules block, or point the model at <a href="DESIGN.md">DESIGN.md</a> / tokens. Paste the System prompt. Then replace only the last line:</p>
+          <pre id="replace-line" class="prompt" spellcheck="false" translate="no" aria-labelledby="summary-title">Now build: [this screen]. Use primitive(s): [names].</pre>
+          <p>These primitives are for real product UI (user-driven, interruptible). They are not a pre-timed film. No camera dolly, no fake hand cursor, no 3D flips.</p>
+        </section>
+
+        <section class="card" aria-labelledby="primitives-title">
+          <h2 id="primitives-title">Primitives</h2>
+          <ol class="primitives">
+            <li><strong>expand-to-sheet</strong> — A card morphs into a modal sheet (shared bounds); backdrop fades ~300ms; dismiss is the reverse morph.</li>
+            <li><strong>confirm-and-collapse</strong> — Primary black pill CTA; on success, row checkmarks stagger in, then the sheet collapses; optional list-insert of a new activity row.</li>
+            <li><strong>tab-or-filter-swap</strong> — The selected pill slides; outgoing list fades/down 150–200ms; incoming list fades/up, stagger 40–80ms. No FLIP if the item set is different.</li>
+            <li><strong>chart-period-swap</strong> — The hero number ticks; the chart path-morphs in ~400ms; a black tooltip follows the scrub.</li>
+            <li><strong>chip-update</strong> — Adding or removing a filter chip uses the same list swap; counts update with it.</li>
+          </ol>
+        </section>
+
+        <section class="card" aria-labelledby="rules-title">
+          <div class="block-head">
+            <div class="block-names">
+              <h2 id="rules-title">Rules</h2>
+              <p class="meta">Paste this, or point the model at <a href="DESIGN.md">DESIGN.md</a> / tokens, before any UI work.</p>
+            </div>
+            <button type="button" class="copy" id="copy-rules" data-copy="prompt-rules" data-name="Rules">
+              <span class="copy-label">Copy</span><span class="sr"> Rules</span>
+            </button>
+          </div>
+          <pre id="prompt-rules" class="prompt" spellcheck="false" translate="no" aria-labelledby="rules-title">Spacing scale (only): 4 8 12 16 24 32 48 64 96 128. Do not invent other gaps or padding.
+
+Radius (three steps):
+- Cards: 20–24
+- Icon buttons / squircles: 16–20
+- Pills and the primary CTA: fully round
+- Nested radius: inner = outer − padding, 4px grid, floor 4
+
+Type (three steps): page title, hero number, body / meta (gray). Do not add a fourth display size.
+
+Color usage ratio: about 90% neutrals (canvas + cards), 8% ink hierarchy, 2% accent.
+- Canvas: soft light gray; cards: white
+- Orange only for overdue, sparklines, and due dates
+- Green only for success
+- Primary CTA is a black pill
+- Do not add a third accent color
+
+Do not invent spacing, radius, type, or colors.
+Do not treat “clean”, “beautiful”, or “modern” as a design decision.</pre>
+        </section>
+
+        <section class="card" aria-labelledby="system-title">
+          <div class="block-head">
+            <div class="block-names">
+              <h2 id="system-title">System prompt</h2>
+              <p class="meta">Reusable motion prompt. After the rules, paste this, then fill in the last line only.</p>
+            </div>
+            <button type="button" class="copy" id="copy-system" data-copy="prompt-system" data-name="System prompt">
+              <span class="copy-label">Copy</span><span class="sr"> System prompt</span>
+            </button>
+          </div>
+          <pre id="prompt-system" class="prompt" spellcheck="false" translate="no" aria-labelledby="system-title">Read DESIGN.md / tokens before any UI work. Do not invent spacing, radius, type, or colors. Do not treat “clean” or “beautiful” as a spec.
+
+Motion — use only these named primitives (real UI, user-driven, interruptible):
+- expand-to-sheet: a card morphs into a modal sheet (shared bounds), backdrop fades ~300ms; dismiss is the reverse morph.
+- confirm-and-collapse: primary black pill CTA; on success, row checkmarks stagger in, then the sheet collapses; optional list-insert of a new activity row.
+- tab-or-filter-swap: the selected pill slides; outgoing list fades/down 150–200ms; incoming list fades/up, stagger 40–80ms. No FLIP if the item set is different.
+- chart-period-swap: the hero number ticks, the chart path-morphs in ~400ms; a black tooltip follows the scrub.
+- chip-update: adding/removing a filter chip uses the same list swap; counts update with it.
+
+Constraints: 200–450ms ease-out; transform and opacity only; no camera dolly, no 3D flips, no overshooting springs. prefers-reduced-motion = instant switch.
+
+Now build: [this screen]. Use primitive(s): [names].</pre>
+        </section>
+
+        <section class="card" aria-labelledby="filled-title">
+          <div class="block-head">
+            <div class="block-names">
+              <h2 id="filled-title">Filled example</h2>
+              <p class="meta">Same system prompt, with the last line filled for an Overview screen. Copy this when you want a starting example.</p>
+            </div>
+            <button type="button" class="copy" id="copy-filled" data-copy="prompt-filled" data-name="Filled example">
+              <span class="copy-label">Copy</span><span class="sr"> Filled example</span>
+            </button>
+          </div>
+          <pre id="prompt-filled" class="prompt" spellcheck="false" translate="no" aria-labelledby="filled-title">Read DESIGN.md / tokens before any UI work. Do not invent spacing, radius, type, or colors. Do not treat “clean” or “beautiful” as a spec.
+
+Motion — use only these named primitives (real UI, user-driven, interruptible):
+- expand-to-sheet: a card morphs into a modal sheet (shared bounds), backdrop fades ~300ms; dismiss is the reverse morph.
+- confirm-and-collapse: primary black pill CTA; on success, row checkmarks stagger in, then the sheet collapses; optional list-insert of a new activity row.
+- tab-or-filter-swap: the selected pill slides; outgoing list fades/down 150–200ms; incoming list fades/up, stagger 40–80ms. No FLIP if the item set is different.
+- chart-period-swap: the hero number ticks, the chart path-morphs in ~400ms; a black tooltip follows the scrub.
+- chip-update: adding/removing a filter chip uses the same list swap; counts update with it.
+
+Constraints: 200–450ms ease-out; transform and opacity only; no camera dolly, no 3D flips, no overshooting springs. prefers-reduced-motion = instant switch.
+
+Now build: Overview (hero revenue, overdue invoices card, team activity). Use primitive(s): expand-to-sheet, confirm-and-collapse.</pre>
+        </section>
+      </div>
+
+      <p class="credit">Motion language observed from public product films by Divan Raj (@desdivj).</p>
+    </main>
+  </div>
+  <script>
+    (function () {
+      var status = document.getElementById("copy-status");
+      var timers = {};
+
+      function legacyCopy(text) {
+        var previous = document.activeElement;
+        var area = document.createElement("textarea");
+        area.value = text;
+        area.setAttribute("readonly", "");
+        area.style.position = "fixed";
+        area.style.top = "0";
+        area.style.left = "0";
+        area.style.width = "1px";
+        area.style.height = "1px";
+        area.style.padding = "0";
+        area.style.border = "0";
+        area.style.opacity = "0";
+        document.body.appendChild(area);
+        try {
+          area.focus({ preventScroll: true });
+        } catch (err) {
+          try { area.focus(); } catch (e) {}
+        }
+        area.select();
+        try { area.setSelectionRange(0, text.length); } catch (e) {}
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (err) { ok = false; }
+        document.body.removeChild(area);
+        if (previous && previous.focus) {
+          try { previous.focus({ preventScroll: true }); } catch (err) {
+            try { previous.focus(); } catch (e) {}
+          }
+        }
+        return ok;
+      }
+
+      function copyText(text) {
+        var apiPromise = null;
+        if (navigator.clipboard && window.isSecureContext && navigator.clipboard.writeText) {
+          try {
+            apiPromise = navigator.clipboard.writeText(text);
+          } catch (err) {
+            apiPromise = Promise.reject(err);
+          }
+        }
+        // Run the fallback in this same click so it still has the user gesture
+        // if the Clipboard API rejects after the turn ends.
+        var legacyOk = legacyCopy(text);
+        if (legacyOk) {
+          if (apiPromise) apiPromise.catch(function () {});
+          return Promise.resolve();
+        }
+        if (apiPromise) return apiPromise;
+        return Promise.reject(new Error("copy failed"));
+      }
+
+      function announce(message) {
+        status.textContent = "";
+        window.requestAnimationFrame(function () {
+          status.textContent = message;
+        });
+      }
+
+      document.querySelectorAll(".copy").forEach(function (button) {
+        var pre = document.getElementById(button.getAttribute("data-copy"));
+        var label = button.querySelector(".copy-label");
+        var name = button.getAttribute("data-name");
+        button.addEventListener("click", function () {
+          copyText(pre.textContent).then(function () {
+            label.textContent = "Copied";
+            button.classList.add("is-copied");
+            announce("Copied " + name);
+            if (timers[button.id]) clearTimeout(timers[button.id]);
+            timers[button.id] = setTimeout(function () {
+              label.textContent = "Copy";
+              button.classList.remove("is-copied");
+              delete timers[button.id];
+            }, 1500);
+          }).catch(function () {
+            announce("Could not copy " + name);
+          });
+        });
+      });
+    })();
+  </script>
+  <script src="shared/site-header.js?v=28" defer></script>
+</body>
+</html>
