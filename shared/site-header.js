@@ -3,46 +3,60 @@
  * Page links live ONLY here — register new pages in PAGE_LINKS.
  *
  * Each entry is a page { id, label, href } or a category
- * { id, label, children: [page, ...] }. A page is listed once.
+ * { id, label, children }. A child is { id, label, href, group? }.
+ * A page is listed once. A category with more than 8 children that
+ * set group opens a two-column flyout, labeled by those groups.
  */
 (function () {
   'use strict';
 
   var PAGE_LINKS = [
     { id: 'gallery', label: 'Gallery', href: 'index.html' },
-    { id: 'digest', label: 'Digest', href: 'digest.html' },
     { id: 'taste', label: 'Taste', href: 'taste.html' },
-    { id: 'learn-piano-101', label: 'Piano', href: 'learn-piano-101.html' },
-    { id: 'ascii-sharks', label: 'ASCII', href: 'ascii-sharks.html' },
-    { id: 'ferry', label: 'Ferry', href: 'ferry.html' },
-    { id: 'mtr', label: 'MTR', href: 'mtr.html' },
-    { id: 'transition', label: 'Transition', href: 'transition.html' },
-    { id: 'atelier', label: 'Atelier', href: 'atelier.html' },
-    { id: 'gemini-sparkles', label: 'Sparkles', href: 'gemini-sparkles.html' },
+    { id: 'digest', label: 'Digest', href: 'digest.html' },
     {
-      id: 'explainer',
-      label: 'Explainer',
+      id: 'guides',
+      label: 'Guides',
       children: [
-        { id: 'one-prompt', label: 'One prompt', href: 'one-prompt.html' },
-        { id: 'motion-studio', label: 'Motion studio', href: 'motion-studio.html' },
-        { id: 'ui-aesthetic', label: 'UI aesthetic', href: 'ui-aesthetic.html' },
-        { id: 'refactor-ui', label: 'Refactor UI', href: 'refactor-ui.html' },
-        { id: 'frontend', label: 'Frontend', href: 'frontend.html' },
-        { id: 'motion-vocab', label: 'Motion vocab', href: 'motion-vocab.html' },
-        { id: 'fix-life', label: 'Fix your life', href: 'fix-life.html' },
-        { id: 'design-with-ai', label: 'Design with AI', href: 'design-with-ai.html' },
-        { id: 'grok-bot-showreel', label: 'Grok Bot reel', href: 'grok-bot-showreel.html' },
-        { id: 'dub-promo-showreel', label: 'Dub promo', href: 'dub-promo-showreel.html' },
-        { id: 'wave-card-grid', label: 'Wave grid', href: 'wave-card-grid.html' },
-        { id: 'kinetic-typography', label: 'Motion prompt', href: 'kinetic-typography.html' },
-        { id: 'hk-middle-household-income-spend', label: 'HK middle spend', href: 'hk-middle-household-income-spend.html' },
-        { id: 'mebius-free-charts', label: 'Mebius charts', href: 'mebius-free-charts.html' },
-        { id: 'premium-feel', label: 'Premium feel', href: 'premium-feel.html' },
-        { id: 'agent-design-system', label: 'Agent system', href: 'agent-design-system.html' },
-        { id: 'underlay-design-system', label: 'Underlay DS', href: 'underlay-design-system.html' },
-        { id: 'onboarding', label: 'Onboarding', href: 'onboarding.html' },
-        { id: 'prompt-spec', label: 'Prompt Spec', href: 'prompt-spec.html' },
-        { id: 'atelier-orb', label: 'Atelier Orb', href: 'atelier-orb.html' }
+        { id: 'refactor-ui', label: 'Refactor UI', href: 'refactor-ui.html', group: 'Handbooks' },
+        { id: 'frontend', label: 'Frontend', href: 'frontend.html', group: 'Handbooks' },
+        { id: 'prompt-spec', label: 'Prompt Spec', href: 'prompt-spec.html', group: 'Handbooks' },
+        { id: 'design-with-ai', label: 'Design with AI', href: 'design-with-ai.html', group: 'Handbooks' },
+        { id: 'ui-aesthetic', label: 'UI aesthetic', href: 'ui-aesthetic.html', group: 'Handbooks' },
+        { id: 'agent-design-system', label: 'Agent system', href: 'agent-design-system.html', group: 'Handbooks' },
+        { id: 'underlay-design-system', label: 'Underlay DS', href: 'underlay-design-system.html', group: 'Handbooks' },
+        { id: 'premium-feel', label: 'Premium feel', href: 'premium-feel.html', group: 'Handbooks' },
+        { id: 'motion-vocab', label: 'Motion vocab', href: 'motion-vocab.html', group: 'Handbooks' },
+        { id: 'one-prompt', label: 'One prompt', href: 'one-prompt.html', group: 'Notes' },
+        { id: 'motion-studio', label: 'Motion studio', href: 'motion-studio.html', group: 'Notes' },
+        { id: 'fix-life', label: 'Fix your life', href: 'fix-life.html', group: 'Notes' },
+        { id: 'mebius-free-charts', label: 'Mebius charts', href: 'mebius-free-charts.html', group: 'Notes' }
+      ]
+    },
+    {
+      id: 'motion',
+      label: 'Motion',
+      children: [
+        { id: 'kinetic-typography', label: 'Motion prompt', href: 'kinetic-typography.html', group: 'Playgrounds' },
+        { id: 'wave-card-grid', label: 'Wave grid', href: 'wave-card-grid.html', group: 'Playgrounds' },
+        { id: 'transition', label: 'Transition', href: 'transition.html', group: 'Playgrounds' },
+        { id: 'atelier', label: 'Atelier', href: 'atelier.html', group: 'Playgrounds' },
+        { id: 'atelier-orb', label: 'Atelier Orb', href: 'atelier-orb.html', group: 'Playgrounds' },
+        { id: 'gemini-sparkles', label: 'Sparkles', href: 'gemini-sparkles.html', group: 'Playgrounds' },
+        { id: 'onboarding', label: 'Onboarding', href: 'onboarding.html', group: 'Films' },
+        { id: 'grok-bot-showreel', label: 'Grok Bot reel', href: 'grok-bot-showreel.html', group: 'Films' },
+        { id: 'dub-promo-showreel', label: 'Dub promo', href: 'dub-promo-showreel.html', group: 'Films' },
+        { id: 'learn-piano-101', label: 'Piano', href: 'learn-piano-101.html', group: 'Films' },
+        { id: 'hk-middle-household-income-spend', label: 'HK middle spend', href: 'hk-middle-household-income-spend.html', group: 'Films' }
+      ]
+    },
+    {
+      id: 'stages',
+      label: 'Stages',
+      children: [
+        { id: 'ascii-sharks', label: 'ASCII', href: 'ascii-sharks.html' },
+        { id: 'ferry', label: 'Ferry', href: 'ferry.html' },
+        { id: 'mtr', label: 'MTR', href: 'mtr.html' }
       ]
     }
   ];
@@ -74,6 +88,33 @@
       if (item.children[i].id === active) return true;
     }
     return false;
+  }
+
+  /* Preserve first-seen group order. Ungrouped children share an empty label. */
+  function childGroups(item) {
+    var order = [];
+    var map = {};
+    item.children.forEach(function (child) {
+      var name = child.group || '';
+      if (!map[name]) {
+        map[name] = [];
+        order.push(name);
+      }
+      map[name].push(child);
+    });
+    return order.map(function (name) {
+      return { label: name, children: map[name] };
+    });
+  }
+
+  /* More than 8 links with real group labels becomes a two-column flyout. */
+  function flyoutColumns(item) {
+    if (!item.children || item.children.length <= 8) return false;
+    var named = 0;
+    childGroups(item).forEach(function (group) {
+      if (group.label) named += 1;
+    });
+    return named > 1;
   }
 
   function makeLink(item, active) {
@@ -234,8 +275,29 @@
     links.setAttribute('role', 'group');
     links.setAttribute('aria-labelledby', label.id);
 
-    item.children.forEach(function (child) {
-      links.appendChild(makeLink(child, active));
+    var columns = flyoutColumns(item);
+    childGroups(item).forEach(function (bucket, index) {
+      if (columns && bucket.label) {
+        var sub = document.createElement('p');
+        sub.className = 'site-header__subgroup-label';
+        sub.id = 'site-header-sub-' + item.id + '-' + index;
+        sub.textContent = bucket.label;
+        if (bucket.children.some(function (child) { return child.id === active; })) {
+          sub.classList.add('is-active');
+        }
+        var block = document.createElement('div');
+        block.setAttribute('role', 'group');
+        block.setAttribute('aria-labelledby', sub.id);
+        bucket.children.forEach(function (child) {
+          block.appendChild(makeLink(child, active));
+        });
+        links.appendChild(sub);
+        links.appendChild(block);
+        return;
+      }
+      bucket.children.forEach(function (child) {
+        links.appendChild(makeLink(child, active));
+      });
     });
 
     group.appendChild(label);
@@ -272,9 +334,36 @@
     card.className = 'site-header__flyout-card';
     card.setAttribute('role', 'group');
     card.setAttribute('aria-label', item.label);
-    item.children.forEach(function (child) {
-      card.appendChild(makeLink(child, active));
-    });
+    if (flyoutColumns(item)) {
+      card.classList.add('site-header__flyout-card--cols');
+      childGroups(item).forEach(function (bucket, index) {
+        var col = document.createElement('div');
+        col.className = 'site-header__fly-col';
+        if (bucket.label) {
+          var sub = document.createElement('p');
+          sub.className = 'site-header__fly-label';
+          sub.id = 'site-header-fly-' + item.id + '-' + index;
+          sub.textContent = bucket.label;
+          var list = document.createElement('div');
+          list.setAttribute('role', 'group');
+          list.setAttribute('aria-labelledby', sub.id);
+          bucket.children.forEach(function (child) {
+            list.appendChild(makeLink(child, active));
+          });
+          col.appendChild(sub);
+          col.appendChild(list);
+        } else {
+          bucket.children.forEach(function (child) {
+            col.appendChild(makeLink(child, active));
+          });
+        }
+        card.appendChild(col);
+      });
+    } else {
+      item.children.forEach(function (child) {
+        card.appendChild(makeLink(child, active));
+      });
+    }
     fly.appendChild(card);
 
     root.appendChild(btn);
@@ -292,18 +381,21 @@
       return fly.contains(document.activeElement);
     }
 
+    function revealLink(link) {
+      if (!link || fly.hidden) return;
+      var cardBox = card.getBoundingClientRect();
+      var linkBox = link.getBoundingClientRect();
+      if (linkBox.top < cardBox.top) card.scrollTop -= cardBox.top - linkBox.top + 4;
+      else if (linkBox.bottom > cardBox.bottom) card.scrollTop += linkBox.bottom - cardBox.bottom + 4;
+    }
+
     function setExpanded(next) {
       var open = !!next;
       root.classList.toggle('is-open', open);
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
       fly.hidden = !open;
       if (!open) return;
-      var current = card.querySelector('[aria-current="page"]');
-      if (!current) return;
-      var cardBox = card.getBoundingClientRect();
-      var linkBox = current.getBoundingClientRect();
-      if (linkBox.top < cardBox.top) card.scrollTop -= cardBox.top - linkBox.top;
-      else if (linkBox.bottom > cardBox.bottom) card.scrollTop += linkBox.bottom - cardBox.bottom;
+      revealLink(card.querySelector('[aria-current="page"]'));
     }
 
     function sync() {
@@ -368,7 +460,9 @@
         api.suppress = false;
         api.pinned = true;
         setExpanded(true);
-        (e.key === 'ArrowDown' ? links[0] : links[links.length - 1]).focus();
+        var edge = e.key === 'ArrowDown' ? links[0] : links[links.length - 1];
+        edge.focus();
+        revealLink(edge);
       } else if (e.key === 'Escape' && api.isOpen()) {
         e.preventDefault();
         e.stopPropagation();
@@ -379,23 +473,31 @@
     card.addEventListener('keydown', function (e) {
       var links = Array.prototype.slice.call(card.querySelectorAll('a'));
       var i = links.indexOf(document.activeElement);
+      var next = null;
       if (e.key === 'ArrowDown' && links.length) {
         e.preventDefault();
-        links[(i + 1) % links.length].focus();
+        next = links[(i + 1) % links.length];
       } else if (e.key === 'ArrowUp') {
         e.preventDefault();
-        if (i <= 0) btn.focus();
-        else links[i - 1].focus();
+        if (i <= 0) {
+          btn.focus();
+          return;
+        }
+        next = links[i - 1];
       } else if (e.key === 'Home' && links.length) {
         e.preventDefault();
-        links[0].focus();
+        next = links[0];
       } else if (e.key === 'End' && links.length) {
         e.preventDefault();
-        links[links.length - 1].focus();
+        next = links[links.length - 1];
       } else if (e.key === 'Escape') {
         e.preventDefault();
         e.stopPropagation();
         api.forceClose(true);
+      }
+      if (next) {
+        next.focus();
+        revealLink(next);
       }
     });
 

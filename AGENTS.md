@@ -6,12 +6,12 @@ Rules for AI agents editing this repository.
 
 Multi-page **static** UI kit published on GitHub Pages from the `main` branch root:
 
-- Gallery: https://danielwongcx.github.io/ui-kit/ (`index.html`, mirrored by `ui-combo.html`) — Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords (`#transition-keywords`, awe0 page-transition and text-motion terms) · Background keywords (`#background-keywords`, awe0 background-effect terms) · Nudging notifications (`#nudging-notifications`, Android-style stack nudge, pure CSS `:has()`); keep index unchanged when adding other pages. `index.html` and `ui-combo.html` stay byte-identical, including Color combos. Hierarchy (`#hierarchy`) owns visual rank, including the harbour ladder. Spacing links there and stays on the scale.
+- Gallery: https://danielwongcx.github.io/ui-kit/ (`index.html`, mirrored by `ui-combo.html`) — Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords (`#transition-keywords`, awe0 page-transition and text-motion terms) · Background keywords (`#background-keywords`, awe0 background-effect terms) · Nudging notifications (`#nudging-notifications`, Android-style stack nudge, pure CSS `:has()`) · Prompting UI (`#prompting-ui`, icon size equals line-height, and better-button prompts); keep index unchanged when adding other pages. `index.html` and `ui-combo.html` stay byte-identical, including Color combos. Hierarchy (`#hierarchy`) owns visual rank, including the harbour ladder. Spacing links there and stays on the scale.
 - Digest: https://danielwongcx.github.io/ui-kit/digest.html
 - Taste: https://danielwongcx.github.io/ui-kit/taste.html (`taste.html`) — motion / app-data / buttons+ / states / forms / cards+ patterns from taste-skill study
-- Refactor UI: https://danielwongcx.github.io/ui-kit/refactor-ui.html (`refactor-ui.html`) — Explainer. Interactive handbook of the Refactoring UI framework: nine parts, short original lessons, and live before/after demos. Inspired by Adam Wathan and Steve Schoger; not the book.
-- Frontend: https://danielwongcx.github.io/ui-kit/frontend.html (`frontend.html`) — Explainer. Interactive handbook of the frontend design/spacing/motion engine with live before/after and kinetic demos. `FRONTEND.md` is the source guide and is downloadable from the page.
-- Motion vocab: https://danielwongcx.github.io/ui-kit/motion-vocab.html (`motion-vocab.html`) — Explainer. awe0’s motion prompt lexicon: nine casual phrases mapped to Count Up, Marquee, Typewriter, Stagger, Hover Lift, Morph, Easing, Ripple, and Flip Card, each with a live demo. The stock bar copies the English prompt. `prefers-reduced-motion` and `?reduce=1` hold demos at rest. No build step.
+- Refactor UI: https://danielwongcx.github.io/ui-kit/refactor-ui.html (`refactor-ui.html`) — Guides. Interactive handbook of the Refactoring UI framework: nine parts, short original lessons, and live before/after demos. Inspired by Adam Wathan and Steve Schoger; not the book.
+- Frontend: https://danielwongcx.github.io/ui-kit/frontend.html (`frontend.html`) — Guides. Interactive handbook of the frontend design/spacing/motion engine with live before/after and kinetic demos. `FRONTEND.md` is the source guide and is downloadable from the page.
+- Motion vocab: https://danielwongcx.github.io/ui-kit/motion-vocab.html (`motion-vocab.html`) — Guides. awe0’s motion prompt lexicon: nine casual phrases mapped to Count Up, Marquee, Typewriter, Stagger, Hover Lift, Morph, Easing, Ripple, and Flip Card, each with a live demo. The stock bar copies the English prompt. `prefers-reduced-motion` and `?reduce=1` hold demos at rest. No build step.
 - `DESIGN.md` (repo root) is the agent rulebook for those principles and is downloadable from the Refactor UI page.
 - Learn Piano 101: https://danielwongcx.github.io/ui-kit/learn-piano-101.html (`learn-piano-101.html`) — full-viewport beginner piano film; click starts the visual GSAP timeline. GSAP and the motion runtime live in `vendor/` (no CDN, no soundtrack).
 - ASCII: https://danielwongcx.github.io/ui-kit/ascii-sharks.html (`ascii-sharks.html`) — full-viewport scenes. A corner control switches **Sharks** (stackedlol ocean), **Train** (ASCII Magic viaduct steam train, halftone dots on black), and **HRTD** (original “made with 💕 by HRTD” line). Only the active scene runs. The last scene is stored in `localStorage` (`ascii-scene`); `?scene=sharks`, `?scene=train`, or `?scene=hrtd` overrides it for that visit. `?scene=ferry` and `?scene=mtr` redirect to their own pages. Sharks keep the Light / Dark palette (`ascii-sharks-theme`, `?theme=light`). The theme control hides on Train and HRTD. Engines: `vendor/ascii-sharks/ocean.js` (port of [stackedlol/ascii-sharks](https://github.com/stackedlol/ascii-sharks)), `vendor/ascii-magic/` ([ascii-magic-art](https://github.com/kailashsr38/ascii-magic-art) v1.0.2, MIT; no CDN), and `vendor/ascii-hrtd/made.js`. Optional `?sharks=thresher,hammerhead,mako,nurse`.
@@ -20,23 +20,23 @@ Multi-page **static** UI kit published on GitHub Pages from the `main` branch ro
 - Transition: https://danielwongcx.github.io/ui-kit/transition.html (`transition.html`) — interactive gallery of the 32 free transitions.dev motion recipes. Light chrome (`#fdfdfd`, white cards, Inter), inline CSS/JS, no build step.
 - Atelier: https://danielwongcx.github.io/ui-kit/atelier.html (`atelier.html`) — interaction study in the locked Motion Atelier style: warm bone, dusty pastels, five bands, specimen grid. `atelier/DESIGN.md` is that style’s bible and is the file the page downloads. The repo-root `DESIGN.md` stays the Refactor UI rulebook.
 - Gemini Sparkles: https://danielwongcx.github.io/ui-kit/gemini-sparkles.html (`gemini-sparkles.html`) — one full-viewport page. A single div draws three parallax sparkle layers with CSS radial gradients and a slow `background-position` loop, plus a soft blue glow. Night stage, no build step.
-- One prompt: https://danielwongcx.github.io/ui-kit/one-prompt.html (`one-prompt.html`) — Explainer. Plain-language page on seeco’s (@seeconvm) X article about viral “one-prompt” Opus motion videos. Spring-timed hero, a prompt-vs-setup chart, an eight-piece studio diagram, and the piece / without it / fix table. Numbers are the article’s. No build step.
-- Motion studio: https://danielwongcx.github.io/ui-kit/motion-studio.html (`motion-studio.html`) — Explainer. Plain-language page on Movez’s (@0xMovez) X article, a 12-step course for turning a one-line motion prompt into a studio. Light seek(t) hero, a prompt-vs-harness chart, a four-part step diagram, and a without-it / fix table. Numbers are the article’s. No build step.
-- UI aesthetic: https://danielwongcx.github.io/ui-kit/ui-aesthetic.html (`ui-aesthetic.html`) — Explainer. Plain-language page on Xian’s (@Xian0063) X article, eight working principles and five AI design skills, with the article’s 15 images. Numbers and install commands are the article’s. No build step.
-- Fix your life: https://danielwongcx.github.io/ui-kit/fix-life.html (`fix-life.html`) — Explainer. Plain-language page on Dan Koe’s (@thedankoe) X article about changing identity in a day: first-order change, the identity loop, nine mind stages, a cybernetic steer, the flip, a one-day protocol, and a six-ring game. No build step.
-- Design with AI: https://danielwongcx.github.io/ui-kit/design-with-ai.html (`design-with-ai.html`) — Explainer. Plain-language page on Matt Dailey’s (@reactiverobot) two X articles about de-slopping AI design: a constraint loop, six craft moves on one surface, and a six-step loop for features that cross many screens. No build step.
-- Grok Bot reel: https://danielwongcx.github.io/ui-kit/grok-bot-showreel.html (`grok-bot-showreel.html`) — Explainer. Full-viewport 15s motion showreel for Grok Bot, desktop assistant: cold open, identity spark, wordmark, six easings, morph, Truchet, depth, kinetic type, and fin. One GSAP master timeline (`vendor/gsap.min.js`). `prefers-reduced-motion` holds the fin plate. No build step.
-- Dub promo: https://danielwongcx.github.io/ui-kit/dub-promo-showreel.html (`dub-promo-showreel.html`) — Explainer. Full-viewport 15s looping motion study of a Dub short-link promo: long URL, short pill, live clicks, analytics, partners, feature slides, and a fin CTA. One GSAP master timeline (`vendor/gsap.min.js`). `prefers-reduced-motion` holds the fin plate. No build step.
-- Wave grid: https://danielwongcx.github.io/ui-kit/wave-card-grid.html (`wave-card-grid.html`) — Explainer. Responsive SaaS card grid that fades, rises, and scales in as a staggered wave. Delay follows the diagonal (row + column), the row, or the column. Replay restarts the wave. `prefers-reduced-motion` shows every card at rest. GSAP (`vendor/gsap.min.js`). No build step.
-- Motion prompt: https://danielwongcx.github.io/ui-kit/kinetic-typography.html (`kinetic-typography.html`) — Explainer. All 192 effects from Shohei Ohtaki’s Motion Prompt gallery (MIT), vendored in `vendor/motion-prompt/` (runtime, eight packs, `catalog-slim.json`, LICENSE). Pack chips filter the looping canvas cards. `#008` and `#kinetic-typography` scroll to kinetic typography. `prefers-reduced-motion` and `?reduce=1` hold every card at `u = cycle * 0.35`. Packs declare no web fonts. No build step.
-- HK middle spend: https://danielwongcx.github.io/ui-kit/hk-middle-household-income-spend.html (`hk-middle-household-income-spend.html`) — Explainer. Full-viewport ~16s data film on what “middle” Hong Kong households earn and spend. Censtatd proxy: median monthly income Q4 2025 (HK$30,000 all domestic; HK$40,000 economically active) and 2024/25 household expenditure (average HK$32,472; median HK$26,000). No official middle-class line. Motion Prompt effects #183, #007, #002, #005, #144, #004, #027, #071, #006, and #187, with beat cuts #017, #018, #137, #020, and #044, and a #080 highlighter on the landed figures (`vendor/motion-prompt/`). English and written Cantonese subtitles sit on every beat. Seek with `?t=`. `prefers-reduced-motion` and `?reduce=1` show static cards with those lines. No build step.
-- Mebius charts: https://danielwongcx.github.io/ui-kit/mebius-free-charts.html (`mebius-free-charts.html`) — Explainer. Gallery of the 62 free Mebius finance chart cards, redrawn in HTML, CSS, and SVG from each chart’s sample data. Sticky search and type filters. `prefers-reduced-motion` holds entrance motion. No build step.
-- Premium feel: https://danielwongcx.github.io/ui-kit/premium-feel.html (`premium-feel.html`) — Explainer. Why premium apps feel smooth: six physics studies (button spring, pull resistance, rolling digits, drag lift, ease-out expand, drawn check). Each card opens a 1/4-speed breakdown with a graph, a With / Without comparison, and a prompt and code you can copy. `prefers-reduced-motion` and `?reduce=1` hold the motion. No build step.
-- Agent system: https://danielwongcx.github.io/ui-kit/agent-design-system.html (`agent-design-system.html`) — Explainer. rico’s (@_heyrico) five-layer design system an agent can follow: primitives, semantic tokens, components, blocks, and rules plus a review-screen skill. `prefers-reduced-motion` and `?reduce=1` hold motion. No build step.
-- Underlay DS: https://danielwongcx.github.io/ui-kit/underlay-design-system.html (`underlay-design-system.html`) — Explainer. Marcel’s (@marcelkargul) Underlay design system: violet foundations, theme, semantic tokens, elevation and state, an Inter type scale with Trim, and four rules. `prefers-reduced-motion` and `?reduce=1` hold motion. No build step.
-- Onboarding: https://danielwongcx.github.io/ui-kit/onboarding.html (`onboarding.html`) — Explainer. Playable motion study of a Letterly-style onboarding: pinned chrome, ink ripples, spring-born letter tiles, a curved role wheel, checklist wake, peek carousel, draft expansion, permission sheet, nudge-to-paywall crossfade, and two confetti bursts. `prefers-reduced-motion` and `?reduce=1` skip springs, punch-in, Ken Burns, and confetti. No build step.
-- Prompt Spec: https://danielwongcx.github.io/ui-kit/prompt-spec.html (`prompt-spec.html`) — Explainer. Reference page for copying a rules block and a system prompt that lock spacing, radius, type, and color, then name five interruptible real-UI motion primitives. Not a motion demo. No build step.
-- Atelier Orb: https://danielwongcx.github.io/ui-kit/atelier-orb.html (`atelier-orb.html`) — Explainer. Identity and motion study of a Canvas 2D orb: 120 Fibonacci dots, Static / Thinking / Working / Resting / Stuck, Dark and Light, six palettes plus a custom color, and a Neon toggle. `prefers-reduced-motion` freezes the orbit, snaps the morph, and stops the neon pulse. Look persists in `localStorage` (`atelier-orb-look`). Separate from the Motion Atelier page. No build step.
+- One prompt: https://danielwongcx.github.io/ui-kit/one-prompt.html (`one-prompt.html`) — Guides. Plain-language page on seeco’s (@seeconvm) X article about viral “one-prompt” Opus motion videos. Spring-timed hero, a prompt-vs-setup chart, an eight-piece studio diagram, and the piece / without it / fix table. Numbers are the article’s. No build step.
+- Motion studio: https://danielwongcx.github.io/ui-kit/motion-studio.html (`motion-studio.html`) — Guides. Plain-language page on Movez’s (@0xMovez) X article, a 12-step course for turning a one-line motion prompt into a studio. Light seek(t) hero, a prompt-vs-harness chart, a four-part step diagram, and a without-it / fix table. Numbers are the article’s. No build step.
+- UI aesthetic: https://danielwongcx.github.io/ui-kit/ui-aesthetic.html (`ui-aesthetic.html`) — Guides. Plain-language page on Xian’s (@Xian0063) X article, eight working principles and five AI design skills, with the article’s 15 images. Numbers and install commands are the article’s. No build step.
+- Fix your life: https://danielwongcx.github.io/ui-kit/fix-life.html (`fix-life.html`) — Guides. Plain-language page on Dan Koe’s (@thedankoe) X article about changing identity in a day: first-order change, the identity loop, nine mind stages, a cybernetic steer, the flip, a one-day protocol, and a six-ring game. No build step.
+- Design with AI: https://danielwongcx.github.io/ui-kit/design-with-ai.html (`design-with-ai.html`) — Guides. Plain-language page on Matt Dailey’s (@reactiverobot) two X articles about de-slopping AI design: a constraint loop, six craft moves on one surface, and a six-step loop for features that cross many screens. No build step.
+- Grok Bot reel: https://danielwongcx.github.io/ui-kit/grok-bot-showreel.html (`grok-bot-showreel.html`) — Motion. Full-viewport 15s motion showreel for Grok Bot, desktop assistant: cold open, identity spark, wordmark, six easings, morph, Truchet, depth, kinetic type, and fin. One GSAP master timeline (`vendor/gsap.min.js`). `prefers-reduced-motion` holds the fin plate. No build step.
+- Dub promo: https://danielwongcx.github.io/ui-kit/dub-promo-showreel.html (`dub-promo-showreel.html`) — Motion. Full-viewport 15s looping motion study of a Dub short-link promo: long URL, short pill, live clicks, analytics, partners, feature slides, and a fin CTA. One GSAP master timeline (`vendor/gsap.min.js`). `prefers-reduced-motion` holds the fin plate. No build step.
+- Wave grid: https://danielwongcx.github.io/ui-kit/wave-card-grid.html (`wave-card-grid.html`) — Motion. Responsive SaaS card grid that fades, rises, and scales in as a staggered wave. Delay follows the diagonal (row + column), the row, or the column. Replay restarts the wave. `prefers-reduced-motion` shows every card at rest. GSAP (`vendor/gsap.min.js`). No build step.
+- Motion prompt: https://danielwongcx.github.io/ui-kit/kinetic-typography.html (`kinetic-typography.html`) — Motion. All 192 effects from Shohei Ohtaki’s Motion Prompt gallery (MIT), vendored in `vendor/motion-prompt/` (runtime, eight packs, `catalog-slim.json`, LICENSE). Pack chips filter the looping canvas cards. `#008` and `#kinetic-typography` scroll to kinetic typography. `prefers-reduced-motion` and `?reduce=1` hold every card at `u = cycle * 0.35`. Packs declare no web fonts. No build step.
+- HK middle spend: https://danielwongcx.github.io/ui-kit/hk-middle-household-income-spend.html (`hk-middle-household-income-spend.html`) — Motion. Full-viewport ~16s data film on what “middle” Hong Kong households earn and spend. Censtatd proxy: median monthly income Q4 2025 (HK$30,000 all domestic; HK$40,000 economically active) and 2024/25 household expenditure (average HK$32,472; median HK$26,000). No official middle-class line. Motion Prompt effects #183, #007, #002, #005, #144, #004, #027, #071, #006, and #187, with beat cuts #017, #018, #137, #020, and #044, and a #080 highlighter on the landed figures (`vendor/motion-prompt/`). English and written Cantonese subtitles sit on every beat. Seek with `?t=`. `prefers-reduced-motion` and `?reduce=1` show static cards with those lines. No build step.
+- Mebius charts: https://danielwongcx.github.io/ui-kit/mebius-free-charts.html (`mebius-free-charts.html`) — Guides. Gallery of the 62 free Mebius finance chart cards, redrawn in HTML, CSS, and SVG from each chart’s sample data. Sticky search and type filters. `prefers-reduced-motion` holds entrance motion. No build step.
+- Premium feel: https://danielwongcx.github.io/ui-kit/premium-feel.html (`premium-feel.html`) — Guides. Why premium apps feel smooth: six physics studies (button spring, pull resistance, rolling digits, drag lift, ease-out expand, drawn check). Each card opens a 1/4-speed breakdown with a graph, a With / Without comparison, and a prompt and code you can copy. `prefers-reduced-motion` and `?reduce=1` hold the motion. No build step.
+- Agent system: https://danielwongcx.github.io/ui-kit/agent-design-system.html (`agent-design-system.html`) — Guides. rico’s (@_heyrico) five-layer design system an agent can follow: primitives, semantic tokens, components, blocks, and rules plus a review-screen skill. `prefers-reduced-motion` and `?reduce=1` hold motion. No build step.
+- Underlay DS: https://danielwongcx.github.io/ui-kit/underlay-design-system.html (`underlay-design-system.html`) — Guides. Marcel’s (@marcelkargul) Underlay design system: violet foundations, theme, semantic tokens, elevation and state, an Inter type scale with Trim, and four rules. `prefers-reduced-motion` and `?reduce=1` hold motion. No build step.
+- Onboarding: https://danielwongcx.github.io/ui-kit/onboarding.html (`onboarding.html`) — Motion. Playable motion study of a Letterly-style onboarding: pinned chrome, ink ripples, spring-born letter tiles, a curved role wheel, checklist wake, peek carousel, draft expansion, permission sheet, nudge-to-paywall crossfade, and two confetti bursts. `prefers-reduced-motion` and `?reduce=1` skip springs, punch-in, Ken Burns, and confetti. No build step.
+- Prompt Spec: https://danielwongcx.github.io/ui-kit/prompt-spec.html (`prompt-spec.html`) — Guides. Reference page for copying a rules block and a system prompt that lock spacing, radius, type, and color, then name five interruptible real-UI motion primitives. Not a motion demo. No build step.
+- Atelier Orb: https://danielwongcx.github.io/ui-kit/atelier-orb.html (`atelier-orb.html`) — Motion. Identity and motion study of a Canvas 2D orb: 120 Fibonacci dots, Static / Thinking / Working / Resting / Stuck, Dark and Light, six palettes plus a custom color, and a Neon toggle. `prefers-reduced-motion` freezes the orbit, snaps the morph, and stops the neon pulse. Look persists in `localStorage` (`atelier-orb-look`). Separate from the Motion Atelier page. No build step.
 
 No build step. Plain HTML / CSS / JS.
 
@@ -50,45 +50,68 @@ Every HTML page **MUST**:
 
 Page links live **ONLY** in `shared/site-header.js` → `PAGE_LINKS`.
 
-`PAGE_LINKS` is the top-level nav, in order. Each item is either a page `{ id, label, href }` or a category `{ id, label, children }`. Children use the same page shape. A page is listed once: top-level **or** under a category, never both.
+`PAGE_LINKS` is the top-level nav, in order. Each item is either a page `{ id, label, href }` or a category `{ id, label, children }`. Children use `{ id, label, href, group? }`. A page is listed once: top-level **or** under a category, never both.
 
-Top-level pages: Gallery, Digest, Taste, Piano, ASCII, Ferry, MTR, Transition, Atelier, Sparkles.
+Top-level, in order: Gallery, Taste, Digest, Guides, Motion, Stages.
 
-**Explainer** (desktop dropdown, mobile group):
+**Guides** (desktop two-column flyout, mobile group). `group` splits the children:
+
+Handbooks:
+
+- Refactor UI → `refactor-ui.html`
+- Frontend → `frontend.html`
+- Prompt Spec → `prompt-spec.html`
+- Design with AI → `design-with-ai.html`
+- UI aesthetic → `ui-aesthetic.html`
+- Agent system → `agent-design-system.html`
+- Underlay DS → `underlay-design-system.html`
+- Premium feel → `premium-feel.html`
+- Motion vocab → `motion-vocab.html`
+
+Notes:
 
 - One prompt → `one-prompt.html`
 - Motion studio → `motion-studio.html`
-- UI aesthetic → `ui-aesthetic.html`
-- Refactor UI → `refactor-ui.html`
-- Frontend → `frontend.html`
-- Motion vocab → `motion-vocab.html`
 - Fix your life → `fix-life.html`
-- Design with AI → `design-with-ai.html`
+- Mebius charts → `mebius-free-charts.html`
+
+**Motion** (desktop two-column flyout, mobile group):
+
+Playgrounds:
+
+- Motion prompt → `kinetic-typography.html`
+- Wave grid → `wave-card-grid.html`
+- Transition → `transition.html`
+- Atelier → `atelier.html`
+- Atelier Orb → `atelier-orb.html`
+- Sparkles → `gemini-sparkles.html`
+
+Films:
+
+- Onboarding → `onboarding.html`
 - Grok Bot reel → `grok-bot-showreel.html`
 - Dub promo → `dub-promo-showreel.html`
-- Wave grid → `wave-card-grid.html`
-- Motion prompt → `kinetic-typography.html`
+- Piano → `learn-piano-101.html`
 - HK middle spend → `hk-middle-household-income-spend.html`
-- Mebius charts → `mebius-free-charts.html`
-- Premium feel → `premium-feel.html`
-- Agent system → `agent-design-system.html`
-- Underlay DS → `underlay-design-system.html`
-- Onboarding → `onboarding.html`
-- Prompt Spec → `prompt-spec.html`
-- Atelier Orb → `atelier-orb.html`
+
+**Stages** (desktop dropdown, mobile group):
+
+- ASCII → `ascii-sharks.html`
+- Ferry → `ferry.html`
+- MTR → `mtr.html`
 
 When you add a new page:
 
 1. Create the HTML file
-2. Append a top-level item, or append a child to the category it belongs to (relative hrefs only: `name.html`)
+2. Append a top-level item, or append a child to the category it belongs to (relative hrefs only: `name.html`). Set `group` when that category uses labeled columns.
 3. Wire the shared CSS/JS + `data-page` as above
 4. If `site-header.js` or `site-header.css` changed, bump the `?v=` query on every page that loads them
 
 Category behavior, owned by the shared header:
 
-- Desktop: the category is a button (`aria-expanded`, `aria-controls`). Click, hover on a fine pointer, or Arrow Down / Arrow Up opens the links. Escape closes and returns focus to the button. Arrow keys, Home, and End move inside the list. The current page sets `aria-current="page"` on the child and `aria-current="true"` plus `.is-active` on the category button.
-- Mobile panel: the category is a label with its child links listed under it. The label and the current child both take the active style.
-- Do not list One prompt (or any explainer) again as a top-level link.
+- Desktop: the category is a button (`aria-expanded`, `aria-controls`). Click, hover on a fine pointer, or Arrow Down / Arrow Up opens the links. Escape closes and returns focus to the button. Arrow keys, Home, and End move inside the list. The current page sets `aria-current="page"` on the child and `aria-current="true"` plus `.is-active` on the category button. A category with more than 8 children that set `group` opens a two-column flyout with those group labels, not one long scrolling list.
+- Mobile panel: the category is a label with its child links listed under it, and the same group labels when the flyout uses them. The category label and the current child both take the active style.
+- Do not list a Guides, Motion, or Stages page again as a top-level link.
 
 **Never** invent a one-off top nav, hardcode `https://danielwongcx.github.io/ui-kit/…` for internal page links, or duplicate header markup in each file. The JS injects the sticky header.
 

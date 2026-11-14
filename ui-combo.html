@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>UI Library · Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow · Folder · Spacing · Hierarchy · Combos · Keywords · Backgrounds · Nudge</title>
+  <title>UI Library · Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow · Folder · Spacing · Hierarchy · Combos · Keywords · Backgrounds · Nudge · Prompting UI</title>
   <script>
     /* Apply saved page shell and glow stops before paint */
     (function () {
@@ -30,11 +30,11 @@
     })();
   </script>
   <script>
-    /* ?reduce=1 holds transition-keyword, background-keyword, and nudging-notification demos at rest. OS reduced motion is handled in CSS. */
+    /* ?reduce=1 holds transition-keyword, background-keyword, nudging-notification, and prompting-ui bloom demos at rest. OS reduced motion is handled in CSS. */
     (function () {
       try {
         if (new URLSearchParams(location.search).get('reduce') === '1') {
-          document.documentElement.classList.add('tk-still', 'bk-still', 'nn-still');
+          document.documentElement.classList.add('tk-still', 'bk-still', 'nn-still', 'pu-still');
         }
       } catch (e) {}
     })();
@@ -6085,7 +6085,7 @@
       }
     }
 </style>
-  <link rel="stylesheet" href="shared/site-header.css?v=8" />
+  <link rel="stylesheet" href="shared/site-header.css?v=9" />
   <link rel="stylesheet" href="shared/section-fab.css?v=3" />
   <style>
     /* Transition keywords. Resting rules are the settled frame.
@@ -7591,6 +7591,555 @@
         forced-color-adjust: none;
       }
     }
+
+    /* —— Prompting UI (scoped). Icon line box, then better buttons.
+       Lucide art is a 24 grid. stroke-width 2.1 in a 20px box renders as 1.75px.
+       Figma line-height Auto is CSS line-height: normal. —— */
+    #prompting-ui .pu-study + .pu-study {
+      margin-top: 32px;
+    }
+
+    #prompting-ui .pu-title {
+      margin: 0 0 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    #prompting-ui .pu-lead {
+      margin: 0 0 16px;
+      max-width: 40rem;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    #prompting-ui .pu-lead code {
+      font-family: var(--mono);
+      font-size: 0.92em;
+      color: #3a3a44;
+    }
+
+    #prompting-ui .canvas-chrome {
+      flex-wrap: nowrap;
+      gap: 8px;
+      padding: 8px 12px;
+      overflow-x: auto;
+    }
+
+    #prompting-ui .canvas-name,
+    #prompting-ui .canvas-tag,
+    #prompting-ui .pu-copies,
+    #prompting-ui .pu-copy {
+      flex: none;
+    }
+
+    #prompting-ui .canvas-tag {
+      margin-left: 0;
+    }
+
+    #prompting-ui .pu-copies {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 8px;
+      margin-left: auto;
+    }
+
+    #prompting-ui .pu-copy {
+      appearance: none;
+      min-height: 44px;
+      padding: 0 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 650;
+      line-height: 1;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    #prompting-ui .pu-copy:hover {
+      background: #f7f7f9;
+      border-color: #cfcfd8;
+    }
+
+    #prompting-ui .pu-copy:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    #prompting-ui .pu-copy:active {
+      background: #f3f4f6;
+    }
+
+    #prompting-ui .pu-copy.is-copied,
+    #prompting-ui .pu-copy.is-copied:hover {
+      color: #1e6851;
+      border-color: #1e6851;
+      background: #fff;
+    }
+
+    #prompting-ui .pu-stage {
+      container: pu-stage / inline-size;
+      align-items: stretch;
+      justify-content: flex-start;
+      gap: 16px;
+      min-height: 0;
+      padding: 16px;
+    }
+
+    #prompting-ui .pu-cap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+
+    #prompting-ui .pu-cap__k {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #111;
+    }
+
+    #prompting-ui .pu-cap__m {
+      font-size: 12px;
+      line-height: 16px;
+      color: var(--muted);
+    }
+
+    #prompting-ui .pu-col {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+      margin: 0;
+      min-width: 0;
+    }
+
+    #prompting-ui .pu-credit {
+      margin: 16px 0 0;
+      font-size: 12px;
+      line-height: 16px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    #prompting-ui .ita-pair,
+    #prompting-ui .bb-pair {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 24px;
+      width: 100%;
+    }
+
+    #prompting-ui .ita-pair {
+      justify-items: center;
+    }
+
+    #prompting-ui .ita-pair .pu-col {
+      width: min(280px, 100%);
+    }
+
+    @container pu-stage (min-width: 600px) {
+      #prompting-ui .ita-pair {
+        grid-template-columns: 280px 280px;
+        justify-content: center;
+      }
+    }
+
+    #prompting-ui .ita-side {
+      width: 280px;
+      max-width: 100%;
+      margin-inline: auto;
+      background: #fff;
+      color: #111;
+      border: 1px solid #e4e4e7;
+      border-radius: 12px;
+      box-shadow: 0 1px 2px #0000000a;
+      overflow: hidden;
+      padding-bottom: 8px;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    #prompting-ui .ita-head,
+    #prompting-ui .ita-row {
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+    }
+
+    #prompting-ui .ita-head {
+      height: 48px;
+    }
+
+    #prompting-ui .ita-row {
+      height: 32px;
+    }
+
+    #prompting-ui .ita-row:hover {
+      background: #F4F4F5;
+    }
+
+    #prompting-ui .ita-side--wrong .ita-head,
+    #prompting-ui .ita-side--wrong .ita-row {
+      gap: 4px;
+      line-height: normal;
+    }
+
+    #prompting-ui .ita-side--right .ita-head,
+    #prompting-ui .ita-side--right .ita-row {
+      gap: 8px;
+      line-height: 20px;
+    }
+
+    #prompting-ui .ita-side--right .ita-who,
+    #prompting-ui .ita-side--right .ita-name {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+    }
+
+    #prompting-ui .ita-who,
+    #prompting-ui .ita-name {
+      min-width: 0;
+      white-space: nowrap;
+    }
+
+    #prompting-ui .ita-nav {
+      padding-top: 16px;
+    }
+
+    #prompting-ui .ita-avatar {
+      display: inline-flex;
+      flex: none;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: #111;
+      color: #fff;
+      font-weight: 650;
+      line-height: 1;
+    }
+
+    #prompting-ui .ita-side--right .ita-avatar {
+      width: 20px;
+      height: 20px;
+      font-size: 11px;
+    }
+
+    #prompting-ui .ita-side--wrong .ita-avatar {
+      width: 24px;
+      height: 24px;
+      font-size: 13px;
+      transform: translateY(3px);
+    }
+
+    #prompting-ui .ita-ico {
+      display: block;
+      flex: none;
+      width: 20px;
+      height: 20px;
+      color: #111;
+    }
+
+    #prompting-ui .ita-ico svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.1;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    #prompting-ui .ita-search {
+      margin-left: auto;
+    }
+
+    #prompting-ui .ita-side--wrong .ita-ico {
+      background: #FFC2D1;
+      border-radius: 4px;
+    }
+
+    #prompting-ui .ita-side--wrong .ita-ico--s24 { width: 24px; height: 24px; }
+    #prompting-ui .ita-side--wrong .ita-ico--s22 { width: 22px; height: 22px; }
+    #prompting-ui .ita-side--wrong .ita-ico--s18 { width: 18px; height: 18px; }
+    #prompting-ui .ita-side--wrong .ita-ico--s16 { width: 16px; height: 16px; }
+    #prompting-ui .ita-side--wrong .ita-ico--s14 { width: 14px; height: 14px; }
+    #prompting-ui .ita-side--wrong .ita-ico--s13 { width: 13px; height: 13px; }
+    #prompting-ui .ita-side--wrong .ita-ico--up3 { transform: translateY(-3px); }
+    #prompting-ui .ita-side--wrong .ita-ico--up4 { transform: translateY(-4px); }
+    #prompting-ui .ita-side--wrong .ita-ico--up5 { transform: translateY(-5px); }
+    #prompting-ui .ita-side--wrong .ita-ico--up6 { transform: translateY(-6px); }
+    #prompting-ui .ita-side--wrong .ita-ico--dn4 { transform: translateY(4px); }
+    #prompting-ui .ita-side--wrong .ita-ico--dn5 { transform: translateY(5px); }
+
+    #prompting-ui .ita-kicker {
+      display: flex;
+      align-items: center;
+      height: 32px;
+      margin-top: 8px;
+      padding: 0 12px;
+      color: #71717a;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    #prompting-ui .ita-side--right .ita-kicker {
+      line-height: 16px;
+    }
+
+    #prompting-ui .ita-side--wrong .ita-kicker {
+      line-height: normal;
+    }
+
+    #prompting-ui .ita-badge {
+      margin-left: auto;
+      flex: none;
+      min-width: 16px;
+      height: 16px;
+      padding: 0 4px;
+      border-radius: 999px;
+      background: #FF6467;
+      color: #111;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 16px;
+      text-align: center;
+    }
+
+    #prompting-ui .ita-row--mark {
+      position: relative;
+    }
+
+    #prompting-ui .ita-measure {
+      position: absolute;
+      left: 32px;
+      top: 6px;
+      width: 8px;
+      height: 20px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    #prompting-ui .ita-measure__bar {
+      display: block;
+      width: 8px;
+      height: 20px;
+      background: #FF6467;
+    }
+
+    #prompting-ui .ita-measure__label {
+      position: absolute;
+      left: 0;
+      bottom: calc(100% + 6px);
+      color: #FF6467;
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 16px;
+      white-space: nowrap;
+    }
+
+    #prompting-ui .bb-panel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 128px;
+      padding: 32px 8px;
+      border-radius: 12px;
+      background: #0F0F0F;
+      color: #fff;
+      overflow: visible;
+    }
+
+    #prompting-ui .bb-row {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      width: max-content;
+      max-width: 100%;
+      padding: 8px 12px 12px;
+    }
+
+    #prompting-ui .bb-flat {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: none;
+      transform: none;
+      font-family: var(--sans);
+      line-height: 20px;
+      white-space: nowrap;
+    }
+
+    #prompting-ui .bb-flat--login {
+      padding: 10px 16px;
+      border: 1px solid #fff;
+      border-radius: 8px;
+      background: transparent;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    #prompting-ui .bb-flat--go {
+      padding: 14px 28px;
+      border: none;
+      border-radius: 8px;
+      background: #FF6A2B;
+      color: #111;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    #prompting-ui .bb-login,
+    #prompting-ui .bb-cta {
+      margin: 0;
+      font-family: var(--sans);
+      line-height: 20px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    #prompting-ui .bb-login {
+      border: none;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 10px 16px;
+      box-shadow: none;
+      outline: none;
+    }
+
+    #prompting-ui .bb-login:hover,
+    #prompting-ui .bb-login:focus-visible {
+      text-decoration: underline;
+      color: #fff;
+      cursor: pointer;
+      outline: none;
+    }
+
+    #prompting-ui .bb-cta {
+      border: none;
+      background: #FF6A2B;
+      color: #111;
+      padding: 14px 28px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 600;
+      transform: translateY(-2px);
+      box-shadow:
+        0 2px 0 0 rgba(0, 0, 0, 0.2) inset,
+        0 12px 24px rgba(255, 106, 43, 0.35),
+        0 1px 0 rgba(255, 255, 255, 0.4) inset;
+      position: relative;
+      overflow: visible;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    /* ::before paints above the button background (negative z-index).
+       The span covers the face so the bloom stays a rim, and repeats the
+       inset shadows so the highlight is not buried under that glow. */
+    #prompting-ui .bb-cta span {
+      position: relative;
+      z-index: 1;
+      display: block;
+      border-radius: 999px;
+      background: #FF6A2B;
+      margin: -14px -28px;
+      padding: 14px 28px;
+      box-shadow:
+        0 2px 0 0 rgba(0, 0, 0, 0.2) inset,
+        0 1px 0 rgba(255, 255, 255, 0.4) inset;
+    }
+
+    #prompting-ui .bb-cta::before {
+      content: "";
+      position: absolute;
+      inset: -3px;
+      border-radius: 999px;
+      background: conic-gradient(from 0deg at 50% 50%, #FF6A2B, #FFB86A, #FF6A2B, #FF3C00, #FF6A2B);
+      filter: blur(10px);
+      opacity: 0;
+      transition: opacity 0.3s;
+      animation: rotateGlow 2.5s linear infinite;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    #prompting-ui .bb-cta:hover::before,
+    #prompting-ui .bb-cta:focus-visible::before {
+      opacity: 1;
+    }
+
+    #prompting-ui .bb-cta:focus-visible {
+      outline: none;
+    }
+
+    @keyframes rotateGlow {
+      to { transform: rotate(360deg); }
+    }
+
+    @container pu-stage (min-width: 760px) {
+      #prompting-ui .bb-pair {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      #prompting-ui .bb-row {
+        padding-left: 16px;
+        padding-right: 24px;
+      }
+    }
+
+    @media (min-width: 720px) {
+      #prompting-ui .pu-stage {
+        padding: 24px;
+        gap: 24px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #prompting-ui .bb-cta,
+      #prompting-ui .bb-cta::before,
+      #prompting-ui .bb-login {
+        animation: none;
+        transition: none;
+      }
+    }
+
+    html.pu-still #prompting-ui .bb-cta,
+    html.pu-still #prompting-ui .bb-cta::before,
+    html.pu-still #prompting-ui .bb-login {
+      animation: none;
+      transition: none;
+    }
+
+    @media (forced-colors: active) {
+      #prompting-ui .ita-side,
+      #prompting-ui .bb-panel,
+      #prompting-ui .pu-copy {
+        border: 1px solid ButtonText;
+      }
+
+      #prompting-ui .ita-side--wrong .ita-ico {
+        background: Highlight;
+      }
+    }
   </style>
 </head>
 <body data-page="gallery">
@@ -7611,6 +8160,7 @@
       <a href="#transition-keywords">Transition keywords</a>
       <a href="#background-keywords">Background keywords</a>
       <a href="#nudging-notifications">Nudging notifications</a>
+      <a href="#prompting-ui">Prompting UI</a>
     </div>
   </nav>
 
@@ -7618,7 +8168,7 @@
     <header class="lib-hero">
       <h1>Component gallery</h1>
       <p>
-        Self-contained demos: Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications.
+        Self-contained demos: Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications · Prompting UI.
         Digit scroll with a natural <code>linear()</code> spring (~10%
         overshoot), hard-coded glow CTAs (violet / teal / slate), nested-radius
         photo cards and a progressive dialog, ten page-shell colour palettes you can switch, twenty reference
@@ -7627,6 +8177,7 @@
         (<code>appearance: base-select</code>), a pure-CSS rotating glow
         border (<code>@property</code> angle + <code>conic-gradient</code>),
         and a frosted SVG glass folder card. Hold a notification and the cards above and below nudge.
+        Match the icon to the line-height and leave an 8px gap. Demote Log in so the primary button can lift.
       </p>
     </header>
 
@@ -12749,12 +13300,271 @@
     })();
     </script>
 
+    <!-- ===================== PROMPTING UI ===================== -->
+    <section class="sec" id="prompting-ui">
+      <div class="sec-head">
+        <h2>Prompting UI</h2>
+        <p>
+          Two prompt studies. Name the line box the icon sits in, then name the button you want.
+        </p>
+      </div>
+
+      <div class="pu-study">
+        <h3 class="pu-title">Icon text align</h3>
+        <p class="pu-lead">
+          Tie icon size to the text line-height, not the font size.
+          At 14px, <code>line-height: auto</code> lets the icon float.
+          <code>line-height: 20px</code> and a 20×20 icon share one line box on a 4px grid.
+          The gap is 8px. Say “make icon size = line-height”.
+        </p>
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Sidebar / icon = line-height</span>
+            <span class="canvas-tag">20px · 8px</span>
+            <div class="pu-copies">
+              <button type="button" class="pu-copy" data-pu-copy="icon" data-announce="icon alignment prompt">
+                <span class="pu-copy__label">Copy prompt</span>
+              </button>
+            </div>
+          </div>
+          <div class="canvas-body pu-stage">
+            <div class="ita-pair">
+            <figure class="pu-col">
+              <figcaption class="pu-cap">
+                <span class="pu-cap__k">Wrong</span>
+                <span class="pu-cap__m">line-height Auto · gap 4px</span>
+              </figcaption>
+              <div class="ita-side ita-side--wrong" data-ita="wrong">
+                <div class="ita-head">
+                  <span class="ita-avatar" aria-hidden="true">Z</span>
+                  <span class="ita-who">Zander</span>
+                  <span class="ita-ico ita-ico--s14 ita-ico--dn4"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></span>
+                  <span class="ita-ico ita-search ita-ico--s16 ita-ico--up5"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg></span>
+                </div>
+                <div class="ita-nav">
+                  <div class="ita-row">
+                    <span class="ita-ico ita-ico--s24 ita-ico--up3"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></span>
+                    <span class="ita-name">Inbox</span>
+                    <span class="ita-badge">4</span>
+                  </div>
+                  <div class="ita-row">
+                    <span class="ita-ico ita-ico--s13 ita-ico--dn5"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><line x1="22" x2="18" y1="12" y2="12"/><line x1="6" x2="2" y1="12" y2="12"/><line x1="12" x2="12" y1="6" y2="2"/><line x1="12" x2="12" y1="22" y2="18"/></svg></span>
+                    <span class="ita-name">My issues</span>
+                  </div>
+                  <div class="ita-kicker">Workspace</div>
+                  <div class="ita-row">
+                    <span class="ita-ico ita-ico--s16 ita-ico--up6"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></span>
+                    <span class="ita-name">Projects</span>
+                  </div>
+                  <div class="ita-row">
+                    <span class="ita-ico ita-ico--s22 ita-ico--dn4"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg></span>
+                    <span class="ita-name">Views</span>
+                  </div>
+                  <div class="ita-row">
+                    <span class="ita-ico ita-ico--s18 ita-ico--up4"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></span>
+                    <span class="ita-name">More</span>
+                  </div>
+                </div>
+              </div>
+            </figure>
+            <figure class="pu-col">
+              <figcaption class="pu-cap">
+                <span class="pu-cap__k">Correct</span>
+                <span class="pu-cap__m">line-height 20px · icon 20×20 · gap 8px</span>
+              </figcaption>
+              <div class="ita-side ita-side--right" data-ita="right">
+                <div class="ita-head">
+                  <span class="ita-avatar" aria-hidden="true">Z</span>
+                  <span class="ita-who">Zander</span>
+                  <span class="ita-ico"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></span>
+                  <span class="ita-ico ita-search"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg></span>
+                </div>
+                <div class="ita-nav">
+                  <div class="ita-row ita-row--mark">
+                    <span class="ita-ico"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></span>
+                    <span class="ita-name">Inbox</span>
+                    <span class="ita-badge">4</span>
+                    <span class="ita-measure" aria-hidden="true"><span class="ita-measure__bar"></span><span class="ita-measure__label">8px</span></span>
+                  </div>
+                  <div class="ita-row">
+                    <span class="ita-ico"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><line x1="22" x2="18" y1="12" y2="12"/><line x1="6" x2="2" y1="12" y2="12"/><line x1="12" x2="12" y1="6" y2="2"/><line x1="12" x2="12" y1="22" y2="18"/></svg></span>
+                    <span class="ita-name">My issues</span>
+                  </div>
+                  <div class="ita-kicker">Workspace</div>
+                  <div class="ita-row">
+                    <span class="ita-ico"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></span>
+                    <span class="ita-name">Projects</span>
+                  </div>
+                  <div class="ita-row">
+                    <span class="ita-ico"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg></span>
+                    <span class="ita-name">Views</span>
+                  </div>
+                  <div class="ita-row">
+                    <span class="ita-ico"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></span>
+                    <span class="ita-name">More</span>
+                  </div>
+                </div>
+              </div>
+            </figure>
+            </div>
+            <p class="pu-credit">Study of Memorisely’s “Aligning your icons and text” tip.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="pu-study">
+        <h3 class="pu-title">Better buttons</h3>
+        <p class="pu-lead">
+          Demote Log in to bare text and underline it on hover.
+          Lift the primary button with an inset highlight and a drop shadow.
+          On hover, a conic bloom rotates around the pill.
+          The label is the outcome: Book my first client.
+        </p>
+        <article class="canvas">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Buttons / bloom</span>
+            <span class="canvas-tag">hover</span>
+            <div class="pu-copies">
+              <button type="button" class="pu-copy" data-pu-copy="short" data-announce="short button prompt">
+                <span class="pu-copy__label">Copy short prompt</span>
+              </button>
+              <button type="button" class="pu-copy" data-pu-copy="full" data-announce="full button prompt">
+                <span class="pu-copy__label">Copy full prompt</span>
+              </button>
+            </div>
+          </div>
+          <div class="canvas-body pu-stage">
+            <div class="bb-pair">
+              <figure class="pu-col">
+                <figcaption class="pu-cap">
+                  <span class="pu-cap__k">Boring</span>
+                  <span class="pu-cap__m">Outline and flat fill</span>
+                </figcaption>
+                <div class="bb-panel">
+                  <div class="bb-row">
+                    <div class="bb-flat bb-flat--login">Log in</div>
+                    <div class="bb-flat bb-flat--go">Get started</div>
+                  </div>
+                </div>
+              </figure>
+              <figure class="pu-col">
+                <figcaption class="pu-cap">
+                  <span class="pu-cap__k">Final</span>
+                  <span class="pu-cap__m">Bare text · lifted CTA</span>
+                </figcaption>
+                <div class="bb-panel">
+                  <div class="bb-row">
+                    <button type="button" class="bb-login">Log in</button>
+                    <button type="button" class="bb-cta"><span>Book my first client</span></button>
+                  </div>
+                </div>
+              </figure>
+            </div>
+            <p class="pu-credit">Study of @buildwithomar, “Prompting Claude for BETTER BUTTONS”.</p>
+          </div>
+        </article>
+      </div>
+      <p class="visually-hidden" id="pu-live" role="status" aria-live="polite"></p>
+    </section>
+    <script>
+    (function () {
+      'use strict';
+
+      var root = document.getElementById('prompting-ui');
+      if (!root) return;
+
+      var PROMPTS = {"icon": "Create a clean SaaS sidebar component, 280px wide, white background, 12px border-radius.\n\nHeader: Avatar + \"Zander\" + dropdown chevron, search icon right-aligned.\n\nNav items:\n- Inbox (with red badge 4)\n- My issues\n- Section title: Workspace\n- Projects\n- Views\n- More\n\nEach nav row: height 32px, display:flex, align-items:center, gap:8px, padding 0 12px.\n\nCRITICAL ALIGNMENT RULE (do not ignore):\n- Text: font-size 14px, line-height 20px, font-weight 500\n- Icon: size exactly 20x20px, stroke 1.75px\n- Icon container: 20x20px centered to the 20px line-height box\n- Gap between icon and text: exactly 8px\n- All icons aligned to 4px grid\n\nShow 2 versions side-by-side:\nLeft = WRONG: line-height Auto, gap 4px (misaligned)\nRight = CORRECT: line-height 20px, gap 8px (aligned)\n\nUse lucide icons: inbox, crosshair, box, layers, more-horizontal.\n\nStyle: Linear.app minimal, no color icons, black #111 text on white, #F4F4F5 hover state.\n\nSpacing should use the Refactoring UI scale (4 8 12 16 24 32 48 64 96 128) for padding/margin/gap around the section chrome.", "short": "Lose the outline from login button - make it bare text, underline on hover so existing users are motivated to click main CTA. For main CTA button-cta, add lift with translateY(-2px), drop-shadow 0 20px 40px, inset highlight and indent shadow. On hover, add subtle glow using conic-gradient border that rotates creating bloom glow around it. Swap label from 'Get started' to outcome-focused 'Book my first client'", "full": "Create a single-file pure HTML CSS JS hero with 2 buttons on dark background #0F0F0F.\n\nInitial state (boring):\n- Button 1: \"Log in\" with 1px solid white outline, box-shadow none\n- Button 2: \"Get started\" orange #FF6A2B\n\nThen transform to FINAL state as per below - this is what I want in code:\n\n1. SECONDARY BUTTON - demote:\n<button class=\"login-btn\">Log in</button>\nStyles:\n- border: none\n- background: transparent\n- color: rgba(255,255,255,0.7)\n- font-size: 14px, font-weight 500\n- padding: 10px 16px\n- On hover: text-decoration: underline, color: white, cursor:pointer\n- No outline, no box-shadow\n\n2. PRIMARY CTA - elevate:\n<button class=\"cta-btn\"><span>Book my first client</span></button>\nBase styles:\n- background: #FF6A2B\n- color: #111\n- padding: 14px 28px\n- border-radius: 999px\n- font-size: 15px, font-weight 600\n- transform: translateY(-2px)\n- box-shadow: 0 2px 0 0 rgba(0,0,0,0.2) inset, 0 12px 24px rgba(255,106,43,0.35), 0 1px 0 rgba(255,255,255,0.4) inset\n- position: relative, overflow: visible\n- transition: all 0.2s ease\n\nHover bloom effect:\n- Create pseudo-element::before:\n content: ''\n position: absolute\n inset: -3px\n border-radius: 999px\n background: conic-gradient(from 0deg at 50% 50%, #FF6A2B, #FFB86A, #FF6A2B, #FF3C00, #FF6A2B)\n filter: blur(10px)\n opacity: 0\n transition: opacity 0.3s\n animation: rotateGlow 2.5s linear infinite\n z-index: -1\n\n- On hover:::before opacity: 1\n- @keyframes rotateGlow { to { transform: rotate(360deg) } }\n\n- Inside button, keep text in span with relative z-index 1, background #FF6A2B to cover center, so glow looks like stroke/bloom only.\n\nLayout: center both buttons with gap 24px, flex row, align center.\n\nGoal: secondary fades away, primary looks lifted, tactile, with rotating bloom on hover. Outcome copy \"Book my first client\" not \"Get started\".\n\nSingle HTML file, no external libs. Include hover states."};
+
+      var timers = new WeakMap();
+      var status = document.getElementById('pu-live');
+      var announceToken = 0;
+
+      function legacyCopy(value) {
+        return new Promise(function (resolve, reject) {
+          var prev = document.activeElement;
+          var x = window.scrollX;
+          var y = window.scrollY;
+          var ta = document.createElement('textarea');
+          ta.value = value;
+          ta.setAttribute('readonly', '');
+          ta.setAttribute('aria-hidden', 'true');
+          ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;padding:0;border:0;opacity:0';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          ta.setSelectionRange(0, value.length);
+          var ok = false;
+          try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+          document.body.removeChild(ta);
+          window.scrollTo(x, y);
+          if (prev && prev.focus) {
+            try { prev.focus({ preventScroll: true }); } catch (focusErr) { prev.focus(); }
+          }
+          if (ok) resolve();
+          else reject(new Error('copy failed'));
+        });
+      }
+
+      function copyText(value) {
+        if (navigator.clipboard && window.isSecureContext && navigator.clipboard.writeText) {
+          return navigator.clipboard.writeText(value).catch(function () { return legacyCopy(value); });
+        }
+        return legacyCopy(value);
+      }
+
+      function flash(btn, message) {
+        var label = btn.querySelector('.pu-copy__label');
+        if (!label) return;
+        if (!label.getAttribute('data-label')) label.setAttribute('data-label', label.textContent);
+        label.textContent = message;
+        btn.classList.toggle('is-copied', message === 'Copied');
+        var prev = timers.get(btn);
+        if (prev) window.clearTimeout(prev);
+        timers.set(btn, window.setTimeout(function () {
+          label.textContent = label.getAttribute('data-label') || 'Copy prompt';
+          btn.classList.remove('is-copied');
+        }, 1600));
+      }
+
+      function announce(msg) {
+        if (!status) return;
+        var mine = ++announceToken;
+        status.textContent = '';
+        window.setTimeout(function () {
+          if (mine !== announceToken) return;
+          status.textContent = msg;
+        }, 30);
+        window.setTimeout(function () {
+          if (mine !== announceToken) return;
+          status.textContent = '';
+        }, 1700);
+      }
+
+      Array.prototype.forEach.call(root.querySelectorAll('[data-pu-copy]'), function (btn) {
+        btn.addEventListener('click', function (event) {
+          event.preventDefault();
+          var key = btn.getAttribute('data-pu-copy');
+          var value = PROMPTS[key] || '';
+          if (!value) return;
+          var said = btn.getAttribute('data-announce') || key;
+          copyText(value).then(function () {
+            flash(btn, 'Copied');
+            announce('Copied ' + said);
+          }).catch(function () {
+            flash(btn, 'Failed');
+            announce('Could not copy ' + said);
+          });
+        });
+      });
+    })();
+    </script>
+
     <footer class="lib-foot">
-      Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications. Digit-scroll <code>lh</code> + natural
+      Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications · Prompting UI. Digit-scroll <code>lh</code> + natural
       <code>linear()</code> spring (~10% overshoot) · hard-coded glow buttons
       (violet / teal / slate) · nested radius · page-shell palettes · colour pairings · color combos · native
       <code>appearance: base-select</code> · rotating <code>conic-gradient</code> rim · SVG glass folder. No CDN.
-      Prefers-reduced-motion disables the spring and holds the glow border, transition-keyword demos, background-keyword demos, and nudging notifications still. ?reduce=1 holds those demos at rest.
+      Prefers-reduced-motion disables the spring and holds the glow border, transition-keyword demos, background-keyword demos, nudging notifications, and the prompting-ui bloom still. ?reduce=1 holds those demos at rest.
     </footer>
   </div>
 
@@ -13425,7 +14235,7 @@
       onScroll();
     })();
   </script>
-  <script src="shared/site-header.js?v=29" defer></script>
-  <script src="shared/section-fab.js?v=7" defer></script>
+  <script src="shared/site-header.js?v=30" defer></script>
+  <script src="shared/section-fab.js?v=8" defer></script>
 </body>
 </html>

@@ -20,7 +20,8 @@
     { id: 'color-combos', label: 'Color combos' },
     { id: 'transition-keywords', label: 'Transition keywords' },
     { id: 'background-keywords', label: 'Background keywords' },
-    { id: 'nudging-notifications', label: 'Nudging notifications' }
+    { id: 'nudging-notifications', label: 'Nudging notifications' },
+    { id: 'prompting-ui', label: 'Prompting UI' }
   ];
 
   var TASTE_SECTION_LINKS = [
