@@ -1,4 +1,4 @@
-/* Shared site header — top-level pages plus categories (Explainer). */
+/* Shared site header — Gallery, Taste, Digest, plus Guides, Motion, and Stages. */
 :root {
   --site-header-h: 56px;
   --site-ink: #1c1c22;
@@ -158,6 +158,33 @@
   box-shadow: none;
 }
 
+.site-header__flyout-card--cols {
+  display: grid;
+  grid-template-columns: minmax(11.5rem, max-content) minmax(11.5rem, max-content);
+  column-gap: 0.35rem;
+  align-items: start;
+  min-width: 0;
+  width: max-content;
+  max-width: calc(100vw - 1.5rem);
+}
+
+.site-header__fly-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 11.5rem;
+}
+
+.site-header__fly-label {
+  margin: 0;
+  padding: 0.3rem 0.85rem 0.2rem;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--site-muted);
+}
+
 .site-header__toggle {
   display: none;
   margin-left: auto;
@@ -306,6 +333,30 @@
     flex-direction: column;
     gap: 0.15rem;
     padding-left: 0.55rem;
+  }
+
+  .site-header__group-links [role="group"] {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .site-header__subgroup-label {
+    margin: 0.7rem 0 0;
+    padding: 0.2rem 0.9rem 0.1rem;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--site-muted);
+  }
+
+  .site-header__group-links > .site-header__subgroup-label:first-child {
+    margin-top: 0.15rem;
+  }
+
+  .site-header__subgroup-label.is-active {
+    color: var(--site-accent);
   }
 }
 
