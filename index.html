@@ -14728,9 +14728,33 @@
         });
       }
 
+      function withTimeout(promise, ms) {
+        return new Promise(function (resolve, reject) {
+          var settled = false;
+          var timer = window.setTimeout(function () {
+            if (settled) return;
+            settled = true;
+            reject(new Error('timeout'));
+          }, ms);
+          promise.then(function (value) {
+            if (settled) return;
+            settled = true;
+            window.clearTimeout(timer);
+            resolve(value);
+          }, function (err) {
+            if (settled) return;
+            settled = true;
+            window.clearTimeout(timer);
+            reject(err);
+          });
+        });
+      }
+
       function copyText(value) {
         if (navigator.clipboard && window.isSecureContext && navigator.clipboard.writeText) {
-          return navigator.clipboard.writeText(value).catch(function () { return legacyCopy(value); });
+          return withTimeout(navigator.clipboard.writeText(value), 400).catch(function () {
+            return legacyCopy(value);
+          });
         }
         return legacyCopy(value);
       }
