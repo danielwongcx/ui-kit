@@ -22,7 +22,8 @@
     { id: 'background-keywords', label: 'Background keywords' },
     { id: 'nudging-notifications', label: 'Nudging notifications' },
     { id: 'prompting-ui', label: 'Prompting UI' },
-    { id: 'design-tokens', label: 'Design tokens' }
+    { id: 'design-tokens', label: 'Design tokens' },
+    { id: 'iphone-polish', label: 'iPhone polish' }
   ];
 
   var TASTE_SECTION_LINKS = [
