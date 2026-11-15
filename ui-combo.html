@@ -14752,9 +14752,15 @@
 
       function copyText(value) {
         if (navigator.clipboard && window.isSecureContext && navigator.clipboard.writeText) {
-          return withTimeout(navigator.clipboard.writeText(value), 400).catch(function () {
+          try {
+            return withTimeout(Promise.resolve().then(function () {
+              return navigator.clipboard.writeText(value);
+            }), 400).catch(function () {
+              return legacyCopy(value);
+            });
+          } catch (err) {
             return legacyCopy(value);
-          });
+          }
         }
         return legacyCopy(value);
       }
@@ -14828,6 +14834,8 @@
           var value = SNIPPETS[key] || '';
           if (!value) return;
           var said = btn.getAttribute('data-announce') || key;
+          flash(btn, 'Copied');
+          announce('Copied ' + said);
           copyText(value).then(function () {
             flash(btn, 'Copied');
             announce('Copied ' + said);
