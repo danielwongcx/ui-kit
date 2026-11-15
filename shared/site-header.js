@@ -30,7 +30,8 @@
         { id: 'one-prompt', label: 'One prompt', href: 'one-prompt.html', group: 'Notes' },
         { id: 'motion-studio', label: 'Motion studio', href: 'motion-studio.html', group: 'Notes' },
         { id: 'fix-life', label: 'Fix your life', href: 'fix-life.html', group: 'Notes' },
-        { id: 'mebius-free-charts', label: 'Mebius charts', href: 'mebius-free-charts.html', group: 'Notes' }
+        { id: 'mebius-free-charts', label: 'Mebius charts', href: 'mebius-free-charts.html', group: 'Notes' },
+        { id: 'design-sites', label: 'Design sites', href: 'design-sites.html', group: 'Notes' }
       ]
     },
     {

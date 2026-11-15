@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Design sites · ui-kit</title>
+  <meta name="description" content="One hundred design-reference sites in nine categories, with search, free and paid filters, and four ways to actually use them." />
+  <script>
+    /* Match the gallery page shell before paint. Palettes change --page only. */
+    (function () {
+      try {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          document.documentElement.setAttribute("data-motion", "reduce");
+        }
+        var id = localStorage.getItem("ui-kit-palette") || "forest";
+        var pages = {
+          forest: "#f5f1ee", navy: "#eef2f6", terracotta: "#faf3ef",
+          plum: "#f6f1f8", ocean: "#eef6f6", amber: "#faf6ee",
+          slate: "#f0f1f3", rosewood: "#f8f1f3", olive: "#f4f3ea",
+          ink: "#ececf0"
+        };
+        document.documentElement.setAttribute("data-theme", id);
+        document.documentElement.style.setProperty("--page", pages[id] || pages.forest);
+      } catch (e) {}
+    })();
+  </script>
+  <style>
+    :root {
+      --page: #f5f1ee;
+      --canvas: #ffffff;
+      --ink: #1c1c22;
+      --muted: #64646c;
+      --line: #e4e4ea;
+      --brand: #1e6851;
+      --s-4: 4px;
+      --s-8: 8px;
+      --s-12: 12px;
+      --s-16: 16px;
+      --s-24: 24px;
+      --s-32: 32px;
+      --s-48: 48px;
+      --s-64: 64px;
+      --s-96: 96px;
+      --s-128: 128px;
+      --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: auto;
+      max-width: 100%;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      max-width: 100%;
+      background: var(--page);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      width: min(720px, calc(100% - var(--s-32)));
+      max-width: 100%;
+      min-width: 0;
+      margin: 0 auto;
+      padding: var(--s-32) 0 calc(var(--s-128) + var(--s-64));
+    }
+
+    .hero {
+      display: grid;
+      gap: var(--s-12);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .lede {
+      margin: 0;
+      max-width: 38em;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .by,
+    .colophon {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    .page a {
+      color: inherit;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.18em;
+    }
+
+    .lede a,
+    .by a,
+    .colophon a {
+      text-decoration-line: underline;
+      text-decoration-color: #b9b9c2;
+    }
+
+    .lede a:hover,
+    .by a:hover,
+    .colophon a:hover,
+    .name:hover {
+      text-decoration-color: var(--ink);
+    }
+
+    a:focus-visible,
+    .chip:focus-visible {
+      outline: 2px solid var(--brand);
+      outline-offset: 2px;
+    }
+
+    .controls {
+      position: sticky;
+      top: var(--site-header-h, 56px);
+      z-index: 40;
+      display: grid;
+      gap: var(--s-8);
+      max-width: 100%;
+      min-width: 0;
+      margin-top: var(--s-32);
+      padding: var(--s-12) 0 var(--s-16);
+      background: var(--page);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .search {
+      position: relative;
+      display: block;
+      min-width: 0;
+    }
+
+    .search input {
+      width: 100%;
+      margin: 0;
+      padding: var(--s-12) var(--s-16);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--canvas);
+      color: var(--ink);
+      font: inherit;
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    .search input::placeholder { color: var(--muted); }
+
+    .search input:focus-visible {
+      outline: 2px solid var(--brand);
+      outline-offset: 2px;
+    }
+
+    /* One scrolling line each. These rows must not wrap. */
+    .chips {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: var(--s-8);
+      align-items: center;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      overscroll-behavior-x: contain;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: #c8c8d0 transparent;
+      padding-block: var(--s-4);
+      scroll-padding-inline: var(--s-4);
+    }
+
+    .chip {
+      flex: 0 0 auto;
+      margin: 0;
+      padding: var(--s-8) var(--s-12);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--canvas);
+      color: var(--muted);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 650;
+      line-height: 16px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .chip:hover { color: var(--ink); }
+
+    .chip[aria-checked="true"] {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: #fff;
+    }
+
+    .result {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 16px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .directory { margin-top: var(--s-24); }
+
+    .groups {
+      display: grid;
+      gap: var(--s-48);
+    }
+
+    .cat h2,
+    .use h2 {
+      display: flex;
+      align-items: baseline;
+      gap: var(--s-8);
+      margin: 0 0 var(--s-12);
+      font-size: 20px;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .count {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .sheet {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .site {
+      display: grid;
+      grid-template-columns: var(--s-32) minmax(0, 1fr) auto;
+      column-gap: var(--s-12);
+      row-gap: var(--s-4);
+      align-items: start;
+      padding: var(--s-12) var(--s-16);
+    }
+
+    .site + .site,
+    .practices li + li { border-top: 1px solid var(--line); }
+
+    .site:hover,
+    .site:focus-within { background: #fafafa; }
+
+    .num {
+      grid-column: 1;
+      grid-row: 1;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 24px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .name {
+      grid-column: 2;
+      grid-row: 1;
+      font-size: 16px;
+      font-weight: 650;
+      line-height: 24px;
+      text-decoration-line: underline;
+      text-decoration-color: #c4c4cc;
+    }
+
+    .badge {
+      grid-column: 3;
+      grid-row: 1;
+      padding: var(--s-4) var(--s-8);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 650;
+      line-height: 16px;
+      white-space: nowrap;
+    }
+
+    .badge-free {
+      background: #ececf0;
+      color: var(--ink);
+    }
+
+    .badge-paid {
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .badge-partial {
+      background: var(--canvas);
+      color: var(--ink);
+      box-shadow: inset 0 0 0 1px var(--ink);
+    }
+
+    .site p {
+      grid-column: 2 / -1;
+      grid-row: 2;
+      margin: 0;
+      max-width: 62ch;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .empty {
+      margin: 0 0 var(--s-24);
+      padding: var(--s-32) var(--s-16);
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .use {
+      margin-top: var(--s-64);
+      scroll-margin-top: calc(var(--site-header-h, 56px) + var(--s-128) + var(--s-64) + var(--s-32));
+    }
+
+    .cat { scroll-margin-top: calc(var(--site-header-h, 56px) + var(--s-128) + var(--s-64) + var(--s-32)); }
+
+    .practices {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .practices li {
+      display: grid;
+      grid-template-columns: var(--s-32) minmax(0, 1fr);
+      gap: var(--s-12);
+      align-items: start;
+      padding: var(--s-16);
+    }
+
+    .practices .num { line-height: 24px; }
+
+    .practices p {
+      margin: 0;
+      max-width: 62ch;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .colophon {
+      margin-top: var(--s-48);
+      padding-top: var(--s-24);
+      border-top: 1px solid var(--line);
+    }
+
+    .vh {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .site[hidden],
+    .cat[hidden],
+    .empty[hidden] { display: none !important; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
+  <link rel="stylesheet" href="shared/site-header.css?v=9" />
+</head>
+<body data-page="design-sites">
+  <main class="page" id="design-sites">
+    <header class="hero">
+      <h1>Design sites</h1>
+      <p class="lede">A directory of one hundred sites for training your eye, sorted by the job you open them to do. Saving the list changes nothing until you use the <a href="#how-to-use">four practices</a> below.</p>
+      <p class="by">From <a href="https://x.com/EianLu/status/2121219503988113557" target="_blank" rel="noopener noreferrer">EianLu’s article</a> on X.</p>
+    </header>
+
+    <div class="controls">
+      <label class="search">
+        <span class="vh">Search by name</span>
+        <input id="q" type="search" placeholder="Search by name" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" />
+      </label>
+      <div class="chips" id="cat-chips" role="radiogroup" aria-label="Category">
+        <button type="button" class="chip" role="radio" aria-checked="true" data-value="all">All</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" tabindex="-1" data-value="awards">Awards</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" tabindex="-1" data-value="motion">Motion &amp; video</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" tabindex="-1" data-value="3d">3D &amp; rendering</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" tabindex="-1" data-value="cinematography">Cinematography</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" tabindex="-1" data-value="ui">UI design</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" tabindex="-1" data-value="web">Web inspiration</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" tabindex="-1" data-value="frontend">Frontend &amp; interaction</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" tabindex="-1" data-value="type-color">Type &amp; color</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" tabindex="-1" data-value="collect">Everyday collecting</button>
+      </div>
+      <div class="chips" id="access-chips" role="radiogroup" aria-label="Access">
+        <button type="button" class="chip" role="radio" aria-checked="true" data-value="all">All</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" tabindex="-1" data-value="free">Free</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" tabindex="-1" data-value="paid">Paid</button>
+      </div>
+      <p class="result" id="result-count" role="status">100 sites</p>
+    </div>
+
+    <div class="directory" id="directory">
+      <p class="empty" id="empty" hidden>No sites match.</p>
+      <div class="groups">
+      <section class="cat" id="awards" data-cat="awards" aria-labelledby="awards-title">
+        <h2 id="awards-title">Awards <span class="count"><span class="count-n">12</span><span class="vh"> sites</span></span></h2>
+        <ul class="sheet">
+          <li class="site" data-name="pwnisher 3d challenge" data-access="free">
+            <span class="num">01</span>
+            <a class="name" href="https://www.youtube.com/@pwnisher" target="_blank" rel="noopener noreferrer">Pwnisher 3D challenge</a>
+            <span class="badge badge-free">Free</span>
+            <p>Open it when you want to compare 3D renders that share one camera move and one character.</p>
+          </li>
+<li class="site" data-name="awwwards" data-access="free">
+            <span class="num">02</span>
+            <a class="name" href="https://www.awwwards.com/" target="_blank" rel="noopener noreferrer">Awwwards</a>
+            <span class="badge badge-free">Free</span>
+            <p>Open the daily winner when you want a scored read on design, usability, creativity, and content.</p>
+          </li>
+<li class="site" data-name="css design awards" data-access="free">
+            <span class="num">03</span>
+            <a class="name" href="https://www.cssdesignawards.com/" target="_blank" rel="noopener noreferrer">CSS Design Awards</a>
+            <span class="badge badge-free">Free</span>
+            <p>Check this daily award, judged on UI, UX, and innovation, when Awwwards’ shortlist feels too familiar.</p>
+          </li>
+<li class="site" data-name="the fwa" data-access="free">
+            <span class="num">04</span>
+            <a class="name" href="https://thefwa.com/" target="_blank" rel="noopener noreferrer">The FWA</a>
+            <span class="badge badge-free">Free</span>
+            <p>Browse the daily pick when you are after interaction, WebGL, and sound.</p>
+          </li>
+<li class="site" data-name="the motion awards" data-access="free">
+            <span class="num">05</span>
+            <a class="name" href="https://motionawards.com/" target="_blank" rel="noopener noreferrer">The Motion Awards</a>
+            <span class="badge badge-free">Free</span>
+            <p>Use the winner pages when you want a year of titles, ads, brand films, and documentaries with the films playable there.</p>
+          </li>
+<li class="site" data-name="apple design awards" data-access="free">
+            <span class="num">06</span>
+            <a class="name" href="https://developer.apple.com/design/awards/" target="_blank" rel="noopener noreferrer">Apple Design Awards</a>
+            <span class="badge badge-free">Free</span>
+            <p>Read the citations when you want apps and games chosen for how they use Apple’s interface and hardware.</p>
+          </li>
+<li class="site" data-name="d&amp;ad" data-access="free">
+            <span class="num">07</span>
+            <a class="name" href="https://www.dandad.org/" target="_blank" rel="noopener noreferrer">D&amp;AD</a>
+            <span class="badge badge-free">Free</span>
+            <p>Search the archive when you need brand, advertising, and print work held to a top prize that some years goes unawarded.</p>
+          </li>
+<li class="site" data-name="the one show &amp; adc" data-access="free">
+            <span class="num">08</span>
+            <a class="name" href="https://www.oneclub.org/" target="_blank" rel="noopener noreferrer">The One Show &amp; ADC</a>
+            <span class="badge badge-free">Free</span>
+            <p>Open The One Club when you want advertising ideas from the One Show beside type and art direction from ADC.</p>
+          </li>
+<li class="site" data-name="runway ai film festival" data-access="free">
+            <span class="num">09</span>
+            <a class="name" href="https://aif.runwayml.com/" target="_blank" rel="noopener noreferrer">Runway AI Film Festival</a>
+            <span class="badge badge-free">Free</span>
+            <p>Use the screening room when you want to see where AI shorts, design, fashion, and ads landed in a given year.</p>
+          </li>
+<li class="site" data-name="tokyo tdc" data-access="free">
+            <span class="num">10</span>
+            <a class="name" href="https://tokyotypedirectorsclub.org/" target="_blank" rel="noopener noreferrer">Tokyo TDC</a>
+            <span class="badge badge-free">Free</span>
+            <p>Look through the annual when you want experimental posters, books, and motion type.</p>
+          </li>
+<li class="site" data-name="annecy festival" data-access="free">
+            <span class="num">11</span>
+            <a class="name" href="https://www.annecyfestival.com/" target="_blank" rel="noopener noreferrer">Annecy Festival</a>
+            <span class="badge badge-free">Free</span>
+            <p>Check the programme when you want features, shorts, and commissioned ads, videos, and titles from one animation festival.</p>
+          </li>
+<li class="site" data-name="ciclope festival" data-access="free">
+            <span class="num">12</span>
+            <a class="name" href="https://www.ciclopefestival.com/" target="_blank" rel="noopener noreferrer">Ciclope Festival</a>
+            <span class="badge badge-free">Free</span>
+            <p>Open the winners by craft when you want to study grade, edit, 3D, effects, or music on its own.</p>
+          </li>
+        </ul>
+      </section>
+      <section class="cat" id="motion" data-cat="motion" aria-labelledby="motion-title">
+        <h2 id="motion-title">Motion &amp; video <span class="count"><span class="count-n">14</span><span class="vh"> sites</span></span></h2>
+        <ul class="sheet">
+          <li class="site" data-name="motionographer" data-access="free">
+            <span class="num">13</span>
+            <a class="name" href="https://motionographer.com/" target="_blank" rel="noopener noreferrer">Motionographer</a>
+            <span class="badge badge-free">Free</span>
+            <p>Read a post when a motion piece deserves a second look and you want the studio’s notes beside it.</p>
+          </li>
+<li class="site" data-name="stash" data-access="paid">
+            <span class="num">14</span>
+            <a class="name" href="https://www.stashmedia.tv/" target="_blank" rel="noopener noreferrer">STASH</a>
+            <span class="badge badge-paid">Paid</span>
+            <p>Subscribe when you need a tagged library of commercials, music videos, and broadcast design, many with a making-of.</p>
+          </li>
+<li class="site" data-name="art of the title" data-access="free">
+            <span class="num">15</span>
+            <a class="name" href="https://www.artofthetitle.com/" target="_blank" rel="noopener noreferrer">Art of the Title</a>
+            <span class="badge badge-free">Free</span>
+            <p>Open a sequence when you want the film plus the sketches, the rejects, and the interviews behind it.</p>
+          </li>
+<li class="site" data-name="vimeo staff picks" data-access="free">
+            <span class="num">16</span>
+            <a class="name" href="https://vimeo.com/channels/staffpicks" target="_blank" rel="noopener noreferrer">Vimeo Staff Picks</a>
+            <span class="badge badge-free">Free</span>
+            <p>Watch the channel when you want an editor’s daily selection of live-action, animation, and documentary shorts.</p>
+          </li>
+<li class="site" data-name="behance motion" data-access="free">
+            <span class="num">17</span>
+            <a class="name" href="https://www.behance.net/galleries/motion" target="_blank" rel="noopener noreferrer">Behance Motion</a>
+            <span class="badge badge-free">Free</span>
+            <p>Open a project when you want the mood board, style frames, and animatic next to the finished film.</p>
+          </li>
+<li class="site" data-name="short of the week" data-access="free">
+            <span class="num">18</span>
+            <a class="name" href="https://www.shortoftheweek.com/" target="_blank" rel="noopener noreferrer">Short of the Week</a>
+            <span class="badge badge-free">Free</span>
+            <p>Watch a short when you want the film and a review of how the story holds together.</p>
+          </li>
+<li class="site" data-name="directors notes" data-access="free">
+            <span class="num">19</span>
+            <a class="name" href="https://directorsnotes.com/" target="_blank" rel="noopener noreferrer">Directors Notes</a>
+            <span class="badge badge-free">Free</span>
+            <p>Read an interview when you want the budget, the camera package, and what broke in post on an independent short.</p>
+          </li>
+<li class="site" data-name="sakugabooru" data-access="free">
+            <span class="num">20</span>
+            <a class="name" href="https://www.sakugabooru.com/" target="_blank" rel="noopener noreferrer">Sakugabooru</a>
+            <span class="badge badge-free">Free</span>
+            <p>Search the tags when you need labeled animation cuts, by animator or by kind of motion, to step through frame by frame.</p>
+          </li>
+<li class="site" data-name="promonews" data-access="free">
+            <span class="num">21</span>
+            <a class="name" href="https://www.promonews.tv/" target="_blank" rel="noopener noreferrer">Promonews</a>
+            <span class="badge badge-free">Free</span>
+            <p>Scan the day’s videos when you want a director’s note on the camera, the grade, and how a shot was built.</p>
+          </li>
+<li class="site" data-name="buck" data-access="free">
+            <span class="num">22</span>
+            <a class="name" href="https://buck.co/" target="_blank" rel="noopener noreferrer">BUCK</a>
+            <span class="badge badge-free">Free</span>
+            <p>Open the reel when you want a wide studio range across 2D, 3D, and live action.</p>
+          </li>
+<li class="site" data-name="manvsmachine" data-access="free">
+            <span class="num">23</span>
+            <a class="name" href="https://mvsm.com/" target="_blank" rel="noopener noreferrer">ManvsMachine</a>
+            <span class="badge badge-free">Free</span>
+            <p>Watch a spot when you want product films in which the materials and the light carry the idea.</p>
+          </li>
+<li class="site" data-name="oddfellows" data-access="free">
+            <span class="num">24</span>
+            <a class="name" href="https://oddfellows.tv/" target="_blank" rel="noopener noreferrer">Oddfellows</a>
+            <span class="badge badge-free">Free</span>
+            <p>Open a film when you want illustrated characters, easy color, and motion that keeps its weight through the cut.</p>
+          </li>
+<li class="site" data-name="golden wolf" data-access="free">
+            <span class="num">25</span>
+            <a class="name" href="https://www.goldenwolf.tv/" target="_blank" rel="noopener noreferrer">Golden Wolf</a>
+            <span class="badge badge-free">Free</span>
+            <p>Watch a piece when you want saturated color, bent perspective, and a very fast cut.</p>
+          </li>
+<li class="site" data-name="ordinary folk" data-access="free">
+            <span class="num">26</span>
+            <a class="name" href="https://www.ordinaryfolk.co/" target="_blank" rel="noopener noreferrer">Ordinary Folk</a>
+            <span class="badge badge-free">Free</span>
+            <p>Open the site when you want simple 2D shapes whose timing and bounce do the performing.</p>
+          </li>
+        </ul>
+      </section>
+      <section class="cat" id="3d" data-cat="3d" aria-labelledby="3d-title">
+        <h2 id="3d-title">3D &amp; rendering <span class="count"><span class="count-n">9</span><span class="vh"> sites</span></span></h2>
+        <ul class="sheet">
+          <li class="site" data-name="artstation" data-access="free">
+            <span class="num">27</span>
+            <a class="name" href="https://www.artstation.com/" target="_blank" rel="noopener noreferrer">ArtStation</a>
+            <span class="badge badge-free">Free</span>
+            <p>Search it when you need concept art or a finished 3D asset from people working in games and film.</p>
+          </li>
+<li class="site" data-name="the rookies" data-access="free">
+            <span class="num">28</span>
+            <a class="name" href="https://www.therookies.co/" target="_blank" rel="noopener noreferrer">The Rookies</a>
+            <span class="badge badge-free">Free</span>
+            <p>Browse the awards when you want to see what a current student reel looks like in 3D, games, effects, or concept.</p>
+          </li>
+<li class="site" data-name="80 level" data-access="free">
+            <span class="num">29</span>
+            <a class="name" href="https://80.lv/" target="_blank" rel="noopener noreferrer">80 Level</a>
+            <span class="badge badge-free">Free</span>
+            <p>Read a breakdown when you want the artist’s path from blockout and textures through to the light in the engine.</p>
+          </li>
+<li class="site" data-name="sketchfab" data-access="free">
+            <span class="num">30</span>
+            <a class="name" href="https://sketchfab.com/" target="_blank" rel="noopener noreferrer">Sketchfab</a>
+            <span class="badge badge-free">Free</span>
+            <p>Open a model when you want to orbit it and switch to clay, wireframe, normals, or roughness.</p>
+          </li>
+<li class="site" data-name="befores &amp; afters" data-access="free">
+            <span class="num">31</span>
+            <a class="name" href="https://beforesandafters.com/" target="_blank" rel="noopener noreferrer">befores &amp; afters</a>
+            <span class="badge badge-free">Free</span>
+            <p>Read an article when you want the raw plate beside the finished shot and the supervisor’s account of the composite.</p>
+          </li>
+<li class="site" data-name="fxguide" data-access="free">
+            <span class="num">32</span>
+            <a class="name" href="https://www.fxguide.com/" target="_blank" rel="noopener noreferrer">fxguide</a>
+            <span class="badge badge-free">Free</span>
+            <p>Open an article when you want renderer internals, virtual-production stages, or simulation technique.</p>
+          </li>
+<li class="site" data-name="blender studio" data-access="paid">
+            <span class="num">33</span>
+            <a class="name" href="https://studio.blender.org/" target="_blank" rel="noopener noreferrer">Blender Studio</a>
+            <span class="badge badge-paid">Paid</span>
+            <p>Subscribe when you want Blender’s open films together with the rigs, the lighting files, and the lessons behind them.</p>
+          </li>
+<li class="site" data-name="poly haven" data-access="free">
+            <span class="num">34</span>
+            <a class="name" href="https://polyhaven.com/" target="_blank" rel="noopener noreferrer">Poly Haven</a>
+            <span class="badge badge-free">Free</span>
+            <p>Download an HDRI, a material, or a scan when the file has to be CC0 for client work and you want it without an account.</p>
+          </li>
+<li class="site" data-name="beeple everydays" data-access="free">
+            <span class="num">35</span>
+            <a class="name" href="https://beeple-crap.com/everydays" target="_blank" rel="noopener noreferrer">Beeple Everydays</a>
+            <span class="badge badge-free">Free</span>
+            <p>Scroll the archive when you want to watch a daily image practice change across many years.</p>
+          </li>
+        </ul>
+      </section>
+      <section class="cat" id="cinematography" data-cat="cinematography" aria-labelledby="cinematography-title">
+        <h2 id="cinematography-title">Cinematography <span class="count"><span class="count-n">7</span><span class="vh"> sites</span></span></h2>
+        <ul class="sheet">
+          <li class="site" data-name="shotdeck" data-access="paid">
+            <span class="num">36</span>
+            <a class="name" href="https://shotdeck.com/" target="_blank" rel="noopener noreferrer">ShotDeck</a>
+            <span class="badge badge-paid">Paid</span>
+            <p>Search it when you can name the light, the lens, the color, and the place and you need film frames that match.</p>
+          </li>
+<li class="site" data-name="filmgrab" data-access="free">
+            <span class="num">37</span>
+            <a class="name" href="https://film-grab.com/" target="_blank" rel="noopener noreferrer">FILMGRAB</a>
+            <span class="badge badge-free">Free</span>
+            <p>Open one film’s page when you want a free sequence of key frames for that director’s light and framing.</p>
+          </li>
+<li class="site" data-name="stillslab" data-access="free">
+            <span class="num">38</span>
+            <a class="name" href="https://stillslab.com/" target="_blank" rel="noopener noreferrer">StillsLab</a>
+            <span class="badge badge-free">Free</span>
+            <p>Filter by shot size, angle, light, or camera when you want free stills from films, series, videos, and ads.</p>
+          </li>
+<li class="site" data-name="flim" data-access="free">
+            <span class="num">39</span>
+            <a class="name" href="https://flim.ai/" target="_blank" rel="noopener noreferrer">Flim</a>
+            <span class="badge badge-free">Free</span>
+            <p>Describe a shot in ordinary words when the title has slipped and you need frames from films, videos, or commercials.</p>
+          </li>
+<li class="site" data-name="eyecannndy" data-access="free">
+            <span class="num">40</span>
+            <a class="name" href="https://eyecannndy.com/" target="_blank" rel="noopener noreferrer">EyeCannndy</a>
+            <span class="badge badge-free">Free</span>
+            <p>Look up a technique by name when you want several moving examples of a match cut, a zoom, a whip pan, or a point of view.</p>
+          </li>
+<li class="site" data-name="studiobinder camera guide" data-access="free">
+            <span class="num">41</span>
+            <a class="name" href="https://www.studiobinder.com/blog/ultimate-guide-to-camera-shots/" target="_blank" rel="noopener noreferrer">StudioBinder camera guide</a>
+            <span class="badge badge-free">Free</span>
+            <p>Use the guide when you need a plain definition and a film example for a shot size, an angle, or a move before you name it in a prompt.</p>
+          </li>
+<li class="site" data-name="american cinematographer" data-access="free">
+            <span class="num">42</span>
+            <a class="name" href="https://theasc.com/" target="_blank" rel="noopener noreferrer">American Cinematographer</a>
+            <span class="badge badge-free">Free</span>
+            <p>Read a cinematographer’s article when the still is not enough and you need the lens, the key light, and the grade.</p>
+          </li>
+        </ul>
+      </section>
+      <section class="cat" id="ui" data-cat="ui" aria-labelledby="ui-title">
+        <h2 id="ui-title">UI design <span class="count"><span class="count-n">16</span><span class="vh"> sites</span></span></h2>
+        <ul class="sheet">
+          <li class="site" data-name="mobbin" data-access="partial">
+            <span class="num">43</span>
+            <a class="name" href="https://mobbin.com/" target="_blank" rel="noopener noreferrer">Mobbin</a>
+            <span class="badge badge-partial">Partly paid</span>
+            <p>Filter a flow such as a paywall or an empty state when you want shipped phone and web screens side by side; a free account sees part of the library.</p>
+          </li>
+<li class="site" data-name="page flows" data-access="paid">
+            <span class="num">44</span>
+            <a class="name" href="https://pageflows.com/" target="_blank" rel="noopener noreferrer">Page Flows</a>
+            <span class="badge badge-paid">Paid</span>
+            <p>Watch a recording when you need the whole path, from the landing page through payment to cancellation, clicks included.</p>
+          </li>
+<li class="site" data-name="refero" data-access="partial">
+            <span class="num">45</span>
+            <a class="name" href="https://refero.design/" target="_blank" rel="noopener noreferrer">Refero</a>
+            <span class="badge badge-partial">Partly paid</span>
+            <p>Search a narrow web or iOS pattern, such as a table filter or a pricing table; styles.refero.design lists color, type, and spacing from real products without an account.</p>
+          </li>
+<li class="site" data-name="nicelydone" data-access="paid">
+            <span class="num">46</span>
+            <a class="name" href="https://nicelydone.club/" target="_blank" rel="noopener noreferrer">Nicelydone</a>
+            <span class="badge badge-paid">Paid</span>
+            <p>Browse it when the reference has to be a web app, such as a dense form or a data view.</p>
+          </li>
+<li class="site" data-name="saasframe" data-access="paid">
+            <span class="num">47</span>
+            <a class="name" href="https://www.saasframe.io/" target="_blank" rel="noopener noreferrer">SaaSFrame</a>
+            <span class="badge badge-paid">Paid</span>
+            <p>Open it when you want SaaS marketing pages, sign-in, dialogs, and settings already sorted.</p>
+          </li>
+<li class="site" data-name="figma community" data-access="free">
+            <span class="num">48</span>
+            <a class="name" href="https://www.figma.com/community" target="_blank" rel="noopener noreferrer">Figma Community</a>
+            <span class="badge badge-free">Free</span>
+            <p>Duplicate a file when the screenshot is not enough and you need the auto layout and the color variables.</p>
+          </li>
+<li class="site" data-name="apple hig" data-access="free">
+            <span class="num">49</span>
+            <a class="name" href="https://developer.apple.com/design/human-interface-guidelines/" target="_blank" rel="noopener noreferrer">Apple HIG</a>
+            <span class="badge badge-free">Free</span>
+            <p>Look up a control when you need Apple’s reason for a tab bar, a hit target, or an alert.</p>
+          </li>
+<li class="site" data-name="material design 3" data-access="free">
+            <span class="num">50</span>
+            <a class="name" href="https://m3.material.io/" target="_blank" rel="noopener noreferrer">Material Design 3</a>
+            <span class="badge badge-free">Free</span>
+            <p>Read the system when you want a published method for color steps, type ranks, dark-mode contrast, and component states.</p>
+          </li>
+<li class="site" data-name="vercel web interface guidelines" data-access="free">
+            <span class="num">51</span>
+            <a class="name" href="https://vercel.com/design/guidelines" target="_blank" rel="noopener noreferrer">Vercel Web Interface Guidelines</a>
+            <span class="badge badge-free">Free</span>
+            <p>Run the checklist when you want firm rules for interaction, type, forms, and motion, including notes an assistant can follow.</p>
+          </li>
+<li class="site" data-name="impeccable" data-access="free">
+            <span class="num">52</span>
+            <a class="name" href="https://impeccable.style/" target="_blank" rel="noopener noreferrer">Impeccable</a>
+            <span class="badge badge-free">Free</span>
+            <p>Open it when a generated screen needs a named design vocabulary your editor’s agent can apply.</p>
+          </li>
+<li class="site" data-name="the component gallery" data-access="free">
+            <span class="num">53</span>
+            <a class="name" href="https://component.gallery/" target="_blank" rel="noopener noreferrer">The Component Gallery</a>
+            <span class="badge badge-free">Free</span>
+            <p>Compare one control across published design systems when you are writing a spec and looking for gaps.</p>
+          </li>
+<li class="site" data-name="60fps" data-access="free">
+            <span class="num">54</span>
+            <a class="name" href="https://60fps.design/" target="_blank" rel="noopener noreferrer">60fps</a>
+            <span class="badge badge-free">Free</span>
+            <p>Watch a clip when you want a high-frame recording of a real app’s card, refresh, or page change.</p>
+          </li>
+<li class="site" data-name="spotted in prod" data-access="free">
+            <span class="num">55</span>
+            <a class="name" href="https://www.spottedinprod.com/" target="_blank" rel="noopener noreferrer">Spotted in Prod</a>
+            <span class="badge badge-free">Free</span>
+            <p>Scroll the shorts when you want a small detail from a shipped iOS app, a press or a setting.</p>
+          </li>
+<li class="site" data-name="growth.design" data-access="free">
+            <span class="num">56</span>
+            <a class="name" href="https://growth.design/" target="_blank" rel="noopener noreferrer">Growth.Design</a>
+            <span class="badge badge-free">Free</span>
+            <p>Read a case when you want a product walked the way a person would walk it, including where the copy helps and where a dialog loses them.</p>
+          </li>
+<li class="site" data-name="laws of ux" data-access="free">
+            <span class="num">57</span>
+            <a class="name" href="https://lawsofux.com/" target="_blank" rel="noopener noreferrer">Laws of UX</a>
+            <span class="badge badge-free">Free</span>
+            <p>Open a card when a redesign needs a named principle and a short note on what it asks of the screen.</p>
+          </li>
+<li class="site" data-name="game ui database" data-access="free">
+            <span class="num">58</span>
+            <a class="name" href="https://www.gameuidatabase.com/" target="_blank" rel="noopener noreferrer">Game UI Database</a>
+            <span class="badge badge-free">Free</span>
+            <p>Search a screen type, such as an inventory or a skill tree, when you want to see rank holding up under a lot of information.</p>
+          </li>
+        </ul>
+      </section>
+      <section class="cat" id="web" data-cat="web" aria-labelledby="web-title">
+        <h2 id="web-title">Web inspiration <span class="count"><span class="count-n">10</span><span class="vh"> sites</span></span></h2>
+        <ul class="sheet">
+          <li class="site" data-name="recent (formerly godly)" data-access="free">
+            <span class="num">59</span>
+            <a class="name" href="https://recent.design/" target="_blank" rel="noopener noreferrer">Recent (formerly Godly)</a>
+            <span class="badge badge-free">Free</span>
+            <p>Scroll the previews, on the site Godly now redirects to, when you want sites, launch films, icons, and posters in one pass.</p>
+          </li>
+<li class="site" data-name="siteinspire" data-access="free">
+            <span class="num">60</span>
+            <a class="name" href="https://www.siteinspire.com/" target="_blank" rel="noopener noreferrer">Siteinspire</a>
+            <span class="badge badge-free">Free</span>
+            <p>Stack the filters for style, site type, and industry when you want a calmer set of web layouts.</p>
+          </li>
+<li class="site" data-name="land-book" data-access="free">
+            <span class="num">61</span>
+            <a class="name" href="https://land-book.com/" target="_blank" rel="noopener noreferrer">Land-book</a>
+            <span class="badge badge-free">Free</span>
+            <p>Open the landing, pricing, about, or résumé set when the page in front of you is one of those.</p>
+          </li>
+<li class="site" data-name="landingfolio" data-access="partial">
+            <span class="num">62</span>
+            <a class="name" href="https://www.landingfolio.com/" target="_blank" rel="noopener noreferrer">Landingfolio</a>
+            <span class="badge badge-partial">Partly paid</span>
+            <p>Pull a hero, a feature block, or a footer when you want a real section to hand to an assistant; some of the exports are paid.</p>
+          </li>
+<li class="site" data-name="awesome-design-md" data-access="free">
+            <span class="num">63</span>
+            <a class="name" href="https://github.com/VoltAgent/awesome-design-md" target="_blank" rel="noopener noreferrer">awesome-design-md</a>
+            <span class="badge badge-free">Free</span>
+            <p>Add a brand’s DESIGN.md to a repo when generated UI should follow that site’s color, type, and spacing.</p>
+          </li>
+<li class="site" data-name="one page love" data-access="free">
+            <span class="num">64</span>
+            <a class="name" href="https://onepagelove.com/" target="_blank" rel="noopener noreferrer">One Page Love</a>
+            <span class="badge badge-free">Free</span>
+            <p>Browse it when the story has to land in a single scroll.</p>
+          </li>
+<li class="site" data-name="minimal gallery" data-access="free">
+            <span class="num">65</span>
+            <a class="name" href="https://minimal.gallery/" target="_blank" rel="noopener noreferrer">Minimal Gallery</a>
+            <span class="badge badge-free">Free</span>
+            <p>Look here when a layout feels crowded and you want pages held up by type, grey, and open space.</p>
+          </li>
+<li class="site" data-name="dark mode design" data-access="free">
+            <span class="num">66</span>
+            <a class="name" href="https://www.darkmodedesign.com/" target="_blank" rel="noopener noreferrer">Dark Mode Design</a>
+            <span class="badge badge-free">Free</span>
+            <p>Study these when a dark page is collapsing into one black field and you need grey, type, and hairlines to separate.</p>
+          </li>
+<li class="site" data-name="hoverstat.es" data-access="free">
+            <span class="num">67</span>
+            <a class="name" href="https://www.hoverstat.es/" target="_blank" rel="noopener noreferrer">Hoverstat.es</a>
+            <span class="badge badge-free">Free</span>
+            <p>Visit when company homepages have started to match and you want artist and studio sites with their own rules.</p>
+          </li>
+<li class="site" data-name="web design museum" data-access="free">
+            <span class="num">68</span>
+            <a class="name" href="https://www.webdesignmuseum.org/" target="_blank" rel="noopener noreferrer">Web Design Museum</a>
+            <span class="badge badge-free">Free</span>
+            <p>Open a year when you want the real early-web pages behind a retro reference.</p>
+          </li>
+        </ul>
+      </section>
+      <section class="cat" id="frontend" data-cat="frontend" aria-labelledby="frontend-title">
+        <h2 id="frontend-title">Frontend &amp; interaction <span class="count"><span class="count-n">16</span><span class="vh"> sites</span></span></h2>
+        <ul class="sheet">
+          <li class="site" data-name="codrops" data-access="free">
+            <span class="num">69</span>
+            <a class="name" href="https://tympanus.net/codrops/" target="_blank" rel="noopener noreferrer">Codrops</a>
+            <span class="badge badge-free">Free</span>
+            <p>Follow a tutorial when you want the reasoning, a live demo, and the repository for a WebGL or scroll effect.</p>
+          </li>
+<li class="site" data-name="codepen spark" data-access="free">
+            <span class="num">70</span>
+            <a class="name" href="https://codepen.io/spark" target="_blank" rel="noopener noreferrer">CodePen Spark</a>
+            <span class="badge badge-free">Free</span>
+            <p>Open the weekly edit when you want a small CSS, SVG, or canvas experiment you can change in the panel.</p>
+          </li>
+<li class="site" data-name="gsap demos" data-access="free">
+            <span class="num">71</span>
+            <a class="name" href="https://demos.gsap.com/" target="_blank" rel="noopener noreferrer">GSAP demos</a>
+            <span class="badge badge-free">Free</span>
+            <p>Pick a demo when you need a scroll, type, hover, or carousel pattern with a CodePen attached.</p>
+          </li>
+<li class="site" data-name="three.js examples" data-access="free">
+            <span class="num">72</span>
+            <a class="name" href="https://threejs.org/examples/" target="_blank" rel="noopener noreferrer">Three.js examples</a>
+            <span class="badge badge-free">Free</span>
+            <p>Start from an official demo when you need a model, water, physics, or a post effect written in the library’s own style.</p>
+          </li>
+<li class="site" data-name="shadertoy" data-access="free">
+            <span class="num">73</span>
+            <a class="name" href="https://www.shadertoy.com/" target="_blank" rel="noopener noreferrer">Shadertoy</a>
+            <span class="badge badge-free">Free</span>
+            <p>Open a shader when the picture is computed from the code and you want the GLSL beside clouds, water, or a city.</p>
+          </li>
+<li class="site" data-name="the book of shaders" data-access="free">
+            <span class="num">74</span>
+            <a class="name" href="https://thebookofshaders.com/" target="_blank" rel="noopener noreferrer">The Book of Shaders</a>
+            <span class="badge badge-free">Free</span>
+            <p>Read the lessons when shader code is still opaque and you want to edit a line, a circle, and noise on the page; translations are linked from the site.</p>
+          </li>
+<li class="site" data-name="bruno simon" data-access="free">
+            <span class="num">75</span>
+            <a class="name" href="https://bruno-simon.com/" target="_blank" rel="noopener noreferrer">Bruno Simon</a>
+            <span class="badge badge-free">Free</span>
+            <p>Drive through the portfolio when you want a personal site built as a WebGL world, and a door into his Three.js course.</p>
+          </li>
+<li class="site" data-name="lusion" data-access="free">
+            <span class="num">76</span>
+            <a class="name" href="https://lusion.co/" target="_blank" rel="noopener noreferrer">Lusion</a>
+            <span class="badge badge-free">Free</span>
+            <p>Open the studio site when you want loading, scroll, particles, and sound working as one WebGL piece.</p>
+          </li>
+<li class="site" data-name="active theory" data-access="free">
+            <span class="num">77</span>
+            <a class="name" href="https://activetheory.net/" target="_blank" rel="noopener noreferrer">Active Theory</a>
+            <span class="badge badge-free">Free</span>
+            <p>Look through the work when you want an interactive studio known for large marketing pieces, including Google I/O and Spotify Wrapped.</p>
+          </li>
+<li class="site" data-name="framer gallery" data-access="free">
+            <span class="num">78</span>
+            <a class="name" href="https://www.framer.com/gallery/" target="_blank" rel="noopener noreferrer">Framer Gallery</a>
+            <span class="badge badge-free">Free</span>
+            <p>Browse the gallery when you want to see how far Framer’s own components and motion go on a published site.</p>
+          </li>
+<li class="site" data-name="motion examples" data-access="partial">
+            <span class="num">79</span>
+            <a class="name" href="https://motion.dev/examples" target="_blank" rel="noopener noreferrer">Motion examples</a>
+            <span class="badge badge-partial">Partly paid</span>
+            <p>Copy a spring, a list, or a scroll snippet for React or Vue; the demos are open, basic source is free, and the rest is Motion+.</p>
+          </li>
+<li class="site" data-name="react bits" data-access="free">
+            <span class="num">80</span>
+            <a class="name" href="https://reactbits.dev/" target="_blank" rel="noopener noreferrer">React Bits</a>
+            <span class="badge badge-free">Free</span>
+            <p>Adjust a text effect, a magnetic button, or an animated border and copy it when a React page needs one finished motion piece.</p>
+          </li>
+<li class="site" data-name="coss ui" data-access="free">
+            <span class="num">81</span>
+            <a class="name" href="https://coss.com/ui" target="_blank" rel="noopener noreferrer">coss ui</a>
+            <span class="badge badge-free">Free</span>
+            <p>Open the library when you want the accessible React components Cal.com ships with, styled in Tailwind, source included.</p>
+          </li>
+<li class="site" data-name="josh w. comeau" data-access="free">
+            <span class="num">82</span>
+            <a class="name" href="https://www.joshwcomeau.com/" target="_blank" rel="noopener noreferrer">Josh W. Comeau</a>
+            <span class="badge badge-free">Free</span>
+            <p>Read an interactive note when you need to see why a curve or a layout behaves before you ask an assistant to write it; the essays are free and the courses are paid.</p>
+          </li>
+<li class="site" data-name="rauno freiberg" data-access="free">
+            <span class="num">83</span>
+            <a class="name" href="https://rauno.me/" target="_blank" rel="noopener noreferrer">Rauno Freiberg</a>
+            <span class="badge badge-free">Free</span>
+            <p>Open the essay on invisible details when you want clickable demos of scrolling, menus, and presses.</p>
+          </li>
+<li class="site" data-name="emil kowalski" data-access="free">
+            <span class="num">84</span>
+            <a class="name" href="https://emilkowal.ski/" target="_blank" rel="noopener noreferrer">Emil Kowalski</a>
+            <span class="badge badge-free">Free</span>
+            <p>Read a short post when a transition feels busy and you want a specific duration, or a reason to leave the motion out.</p>
+          </li>
+        </ul>
+      </section>
+      <section class="cat" id="type-color" data-cat="type-color" aria-labelledby="type-color-title">
+        <h2 id="type-color-title">Type &amp; color <span class="count"><span class="count-n">10</span><span class="vh"> sites</span></span></h2>
+        <ul class="sheet">
+          <li class="site" data-name="typewolf" data-access="free">
+            <span class="num">85</span>
+            <a class="name" href="https://www.typewolf.com/" target="_blank" rel="noopener noreferrer">Typewolf</a>
+            <span class="badge badge-free">Free</span>
+            <p>Check a pairing list when an English or mixed-script page needs a font that already looks right on a real site.</p>
+          </li>
+<li class="site" data-name="fonts in use" data-access="free">
+            <span class="num">86</span>
+            <a class="name" href="https://fontsinuse.com/" target="_blank" rel="noopener noreferrer">Fonts In Use</a>
+            <span class="badge badge-free">Free</span>
+            <p>Search a typeface when you want posters, books, record sleeves, signs, and sites that actually set it.</p>
+          </li>
+<li class="site" data-name="google fonts" data-access="free">
+            <span class="num">87</span>
+            <a class="name" href="https://fonts.google.com/" target="_blank" rel="noopener noreferrer">Google Fonts</a>
+            <span class="badge badge-free">Free</span>
+            <p>Take a family, including Noto Sans SC or Noto Serif SC, when the font must be free for commercial work and simple to link.</p>
+          </li>
+<li class="site" data-name="fontshare" data-access="free">
+            <span class="num">88</span>
+            <a class="name" href="https://www.fontshare.com/" target="_blank" rel="noopener noreferrer">Fontshare</a>
+            <span class="badge badge-free">Free</span>
+            <p>Download Satoshi, Clash Display, or General Sans when you want a free family that keeps showing up on recent independent sites.</p>
+          </li>
+<li class="site" data-name="butterick&#x27;s practical typography" data-access="free">
+            <span class="num">89</span>
+            <a class="name" href="https://practicaltypography.com/" target="_blank" rel="noopener noreferrer">Butterick's Practical Typography</a>
+            <span class="badge badge-free">Free</span>
+            <p>Read the opening chapter when line length, line spacing, or tracking is still a guess and you want a firm limit.</p>
+          </li>
+<li class="site" data-name="utopia" data-access="free">
+            <span class="num">90</span>
+            <a class="name" href="https://utopia.fyi/" target="_blank" rel="noopener noreferrer">Utopia</a>
+            <span class="badge badge-free">Free</span>
+            <p>Generate a scale when phone and desktop type should meet on a ratio, then copy the CSS for type and for space.</p>
+          </li>
+<li class="site" data-name="coolors" data-access="free">
+            <span class="num">91</span>
+            <a class="name" href="https://coolors.co/" target="_blank" rel="noopener noreferrer">Coolors</a>
+            <span class="badge badge-free">Free</span>
+            <p>Lock the swatches you like and regenerate the rest when you need five colors, a color-vision preview, and an export.</p>
+          </li>
+<li class="site" data-name="realtime colors" data-access="free">
+            <span class="num">92</span>
+            <a class="name" href="https://www.realtimecolors.com/" target="_blank" rel="noopener noreferrer">Realtime Colors</a>
+            <span class="badge badge-free">Free</span>
+            <p>Set text, background, and accent on a live landing page and dashboard, dark mode included, before you export Tailwind or CSS.</p>
+          </li>
+<li class="site" data-name="radix colors" data-access="free">
+            <span class="num">93</span>
+            <a class="name" href="https://www.radix-ui.com/colors" target="_blank" rel="noopener noreferrer">Radix Colors</a>
+            <span class="badge badge-free">Free</span>
+            <p>Pick a hue when you want twelve steps with jobs already assigned, from background and hover to border and text, in both themes.</p>
+          </li>
+<li class="site" data-name="tweakcn" data-access="free">
+            <span class="num">94</span>
+            <a class="name" href="https://tweakcn.com/" target="_blank" rel="noopener noreferrer">tweakcn</a>
+            <span class="badge badge-free">Free</span>
+            <p>Restyle a shadcn theme here when your generated screens are starting to repeat and you want color, type, radius, and shadow you can export.</p>
+          </li>
+        </ul>
+      </section>
+      <section class="cat" id="collect" data-cat="collect" aria-labelledby="collect-title">
+        <h2 id="collect-title">Everyday collecting <span class="count"><span class="count-n">6</span><span class="vh"> sites</span></span></h2>
+        <ul class="sheet">
+          <li class="site" data-name="pinterest" data-access="free">
+            <span class="num">95</span>
+            <a class="name" href="https://www.pinterest.com/" target="_blank" rel="noopener noreferrer">Pinterest</a>
+            <span class="badge badge-free">Free</span>
+            <p>Follow similar pins from one image that already feels right, then keep the strong ones on a private board.</p>
+          </li>
+<li class="site" data-name="are.na" data-access="free">
+            <span class="num">96</span>
+            <a class="name" href="https://www.are.na/" target="_blank" rel="noopener noreferrer">Are.na</a>
+            <span class="badge badge-free">Free</span>
+            <p>Start a channel when the collection should hold images, PDFs, links, and notes, quietly and without a ranked feed.</p>
+          </li>
+<li class="site" data-name="cosmos" data-access="free">
+            <span class="num">97</span>
+            <a class="name" href="https://www.cosmos.so/" target="_blank" rel="noopener noreferrer">Cosmos</a>
+            <span class="badge badge-free">Free</span>
+            <p>Save from the browser, or walk through public collections, when you want boards kept by people with a strict edit.</p>
+          </li>
+<li class="site" data-name="savee" data-access="free">
+            <span class="num">98</span>
+            <a class="name" href="https://savee.com/" target="_blank" rel="noopener noreferrer">Savee</a>
+            <span class="badge badge-free">Free</span>
+            <p>Scroll the grid when you want graphics, packaging, photography, type, and objects with almost none of the usual chrome.</p>
+          </li>
+<li class="site" data-name="it&#x27;s nice that" data-access="free">
+            <span class="num">99</span>
+            <a class="name" href="https://www.itsnicethat.com/" target="_blank" rel="noopener noreferrer">It's Nice That</a>
+            <span class="badge badge-free">Free</span>
+            <p>Read a short piece when you want a new illustration, film, or photograph and the story of how it was made.</p>
+          </li>
+<li class="site" data-name="brand new" data-access="partial">
+            <span class="num">100</span>
+            <a class="name" href="https://www.underconsideration.com/brandnew/" target="_blank" rel="noopener noreferrer">Brand New</a>
+            <span class="badge badge-partial">Partly paid</span>
+            <p>Put the previous mark next to the new one when a rebrand lands; the longer review is part of the membership.</p>
+          </li>
+        </ul>
+      </section>
+      </div>
+    </div>
+
+    <section class="use" id="how-to-use" aria-labelledby="use-title">
+      <h2 id="use-title">How to use this list</h2>
+      <ol class="sheet practices">
+        <li>
+          <span class="num" aria-hidden="true">1</span>
+          <p>Spend fifteen minutes with one site and leave the other tabs closed.</p>
+        </li>
+        <li>
+          <span class="num" aria-hidden="true">2</span>
+          <p>When a page earns a save, name the reason in one sentence: the space, the contrast in the type, a grey, or the easing.</p>
+        </li>
+        <li>
+          <span class="num" aria-hidden="true">3</span>
+          <p>Pick one piece you keep returning to, step through it in the inspector or frame by frame, and rebuild a single part yourself.</p>
+        </li>
+        <li>
+          <span class="num" aria-hidden="true">4</span>
+          <p>When you ask an assistant for a direction, point it at a style, a file, and a person. “Modern” and “premium” leave it nothing to aim at.</p>
+        </li>
+      </ol>
+    </section>
+
+    <footer class="colophon">
+      <p>This directory was compiled from <a href="https://x.com/EianLu/status/2121219503988113557" target="_blank" rel="noopener noreferrer">EianLu’s article</a> on X.</p>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      var q = document.getElementById("q");
+      var catGroup = document.getElementById("cat-chips");
+      var accessGroup = document.getElementById("access-chips");
+      var sections = Array.prototype.slice.call(document.querySelectorAll(".cat"));
+      var empty = document.getElementById("empty");
+      var countEl = document.getElementById("result-count");
+
+      function radios(group) {
+        return Array.prototype.slice.call(group.querySelectorAll('[role="radio"]'));
+      }
+
+      function selected(group) {
+        var on = group.querySelector('[aria-checked="true"]');
+        return on ? on.getAttribute("data-value") : "all";
+      }
+
+      function setChecked(group, btn, focus) {
+        radios(group).forEach(function (el) {
+          var on = el === btn;
+          el.setAttribute("aria-checked", on ? "true" : "false");
+          if (on) el.removeAttribute("tabindex");
+          else el.tabIndex = -1;
+        });
+        if (focus) btn.focus();
+      }
+
+      function apply() {
+        var query = q.value.trim().toLowerCase();
+        var cat = selected(catGroup);
+        var access = selected(accessGroup);
+        var shown = 0;
+        sections.forEach(function (sec) {
+          var catOk = cat === "all" || cat === sec.getAttribute("data-cat");
+          var n = 0;
+          Array.prototype.forEach.call(sec.querySelectorAll(".site"), function (row) {
+            var name = row.getAttribute("data-name") || "";
+            var acc = row.getAttribute("data-access");
+            var qOk = !query || name.indexOf(query) !== -1;
+            var aOk = access === "all" ||
+              (access === "free" && acc === "free") ||
+              (access === "paid" && (acc === "paid" || acc === "partial"));
+            var vis = catOk && qOk && aOk;
+            row.hidden = !vis;
+            if (vis) n += 1;
+          });
+          sec.hidden = !catOk || n === 0;
+          var num = sec.querySelector(".count-n");
+          if (num) num.textContent = String(n);
+          shown += n;
+        });
+        empty.hidden = shown !== 0;
+        countEl.textContent = shown === 1 ? "1 site" : shown + " sites";
+        return shown;
+      }
+
+      function barBottom() {
+        return document.querySelector(".controls").getBoundingClientRect().bottom;
+      }
+
+      function reveal(target) {
+        if (!target) return;
+        var rect = target.getBoundingClientRect();
+        var edge = barBottom();
+        if (rect.top >= edge - 1 && rect.top < window.innerHeight - 48) return;
+        var y = rect.top + window.scrollY - edge - 16;
+        window.scrollTo({ top: Math.max(0, y), behavior: "auto" });
+      }
+
+      function onPick(group, btn, fromKey) {
+        setChecked(group, btn, fromKey);
+        if (fromKey) btn.scrollIntoView({ block: "nearest", inline: "nearest" });
+        var shown = apply();
+        if (group === catGroup) {
+          var value = btn.getAttribute("data-value");
+          var url = location.pathname + location.search + (value === "all" ? "" : "#" + value);
+          history.replaceState(null, "", url);
+        }
+        if (shown === 0) reveal(empty);
+        else reveal(document.querySelector(".cat:not([hidden])"));
+      }
+
+      function bind(group) {
+        var items = radios(group);
+        items.forEach(function (radio, index) {
+          radio.addEventListener("click", function () {
+            onPick(group, radio, false);
+          });
+          radio.addEventListener("keydown", function (event) {
+            var next = null;
+            if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+              next = items[(index + 1) % items.length];
+            } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+              next = items[(index - 1 + items.length) % items.length];
+            } else if (event.key === "Home") {
+              next = items[0];
+            } else if (event.key === "End") {
+              next = items[items.length - 1];
+            } else {
+              return;
+            }
+            event.preventDefault();
+            onPick(group, next, true);
+          });
+        });
+      }
+
+      bind(catGroup);
+      bind(accessGroup);
+
+      q.addEventListener("input", function () {
+        var shown = apply();
+        reveal(shown === 0 ? empty : document.querySelector(".cat:not([hidden])"));
+      });
+
+      var initial = (location.hash || "").replace(/^#/, "");
+      var initialBtn = null;
+      radios(catGroup).forEach(function (btn) {
+        if (btn.getAttribute("data-value") === initial) initialBtn = btn;
+      });
+      if (initialBtn && initial !== "all") {
+        setChecked(catGroup, initialBtn, false);
+        apply();
+        document.addEventListener("DOMContentLoaded", function () {
+          reveal(document.getElementById(initial));
+        });
+      }
+    })();
+  </script>
+  <script src="shared/site-header.js?v=31" defer></script>
+</body>
+</html>
