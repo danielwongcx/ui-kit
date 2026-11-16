@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feels right · ui-kit</title>
+<meta name="description" content="Six A/B micro-interactions. One feels right. Good motion is physics, meaning, and continuity.">
+<script>
+(function () {
+  var q = location.search || "";
+  var forceReduce = /(?:^|[?&])reduce=1(?:&|$)/.test(q);
+  var forceMotion = /(?:^|[?&])motion=1(?:&|$)/.test(q);
+  var reduce = false;
+  try {
+    if (forceMotion) sessionStorage.removeItem("fr-reduce");
+    else if (forceReduce) sessionStorage.setItem("fr-reduce", "1");
+    var stored = !forceMotion && sessionStorage.getItem("fr-reduce") === "1";
+    var os = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    reduce = forceMotion ? false : (stored || os);
+  } catch (e) {
+    try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e2) {}
+  }
+  if (reduce) document.documentElement.setAttribute("data-motion", "reduce");
+})();
+</script>
+<link rel="stylesheet" href="shared/site-header.css?v=9">
+<link rel="stylesheet" href="feels-right.css">
+</head>
+<body data-page="feels-right">
+<main>
+  <p class="eyebrow"><span class="pill">Motion test</span></p>
+  <h1>Feels right</h1>
+  <p class="lead">One feels right. Can you tell?</p>
+  <p class="trick">Good motion is physics, meaning, and continuity. If it helps you understand what happened, where it came from, and where you are now, it feels right.</p>
+  <p class="sr" id="live" aria-live="polite"></p>
+
+  <div class="scroller" role="tablist" aria-label="Rounds">
+    <button type="button" role="tab" data-tab="1" aria-selected="true" tabindex="0">01 Toggle</button>
+    <button type="button" role="tab" data-tab="2" aria-selected="false" tabindex="-1">02 Like</button>
+    <button type="button" role="tab" data-tab="3" aria-selected="false" tabindex="-1">03 Menu</button>
+    <button type="button" role="tab" data-tab="4" aria-selected="false" tabindex="-1">04 Password</button>
+    <button type="button" role="tab" data-tab="5" aria-selected="false" tabindex="-1">05 Tabs</button>
+    <button type="button" role="tab" data-tab="6" aria-selected="false" tabindex="-1">06 Delete</button>
+    <button type="button" role="tab" data-tab="key" aria-selected="false" tabindex="-1" disabled>Key</button>
+  </div>
+
+  <section class="round is-on" id="r1" data-round="1" data-winner="b">
+    <span class="pill">01</span>
+    <h2>Toggle</h2>
+    <p class="ask">Turn both switches. One slides. One behaves like a physical switch.</p>
+    <div class="pair">
+      <article class="card" data-side="a">
+        <span class="tag">A</span>
+        <div class="stage">
+          <button type="button" class="switch" data-mode="a" aria-pressed="false" aria-label="Switch A">
+            <span class="knob"></span>
+          </button>
+        </div>
+      </article>
+      <article class="card" data-side="b">
+        <span class="tag">B</span>
+        <div class="stage">
+          <button type="button" class="switch" data-mode="b" aria-pressed="false" aria-label="Switch B">
+            <span class="knob"></span>
+          </button>
+        </div>
+      </article>
+    </div>
+    <div class="actions">
+      <button type="button" class="primary" data-reveal>Reveal</button>
+      <button type="button" class="next" data-next="2" hidden>Next</button>
+    </div>
+    <div class="result" hidden>
+      <p class="winner" tabindex="-1">B feels right</p>
+      <p class="why">A is a linear slide. B stretches, overshoots, and settles. It feels like a real physical switch.</p>
+      <div class="replay-row">
+        <span class="pill pill-gold principle">spring not slide</span>
+        <button type="button" class="replay" data-replay="1" data-principle="spring not slide">Replay at 0.3×</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="round" id="r2" data-round="2" data-winner="a">
+    <span class="pill">02</span>
+    <h2>Like button</h2>
+    <p class="ask">Tap both hearts. One tells you the tap landed.</p>
+    <div class="pair">
+      <article class="card" data-side="a">
+        <span class="tag">A</span>
+        <div class="stage like-stage">
+          <button type="button" class="heart" data-mode="a" aria-pressed="false" aria-label="Like A">
+            <span class="burst"></span><span class="burst"></span><span class="burst"></span><span class="burst"></span>
+            <span class="burst"></span><span class="burst"></span><span class="burst"></span><span class="burst"></span>
+            <svg class="line" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 4.6-7 9-7 9z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            <svg class="fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 4.6-7 9-7 9z" fill="currentColor"/></svg>
+          </button>
+        </div>
+      </article>
+      <article class="card" data-side="b">
+        <span class="tag">B</span>
+        <div class="stage like-stage">
+          <button type="button" class="heart" data-mode="b" aria-pressed="false" aria-label="Like B">
+            <svg class="line" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 4.6-7 9-7 9z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            <svg class="fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 4.6-7 9-7 9z" fill="currentColor"/></svg>
+          </button>
+        </div>
+      </article>
+    </div>
+    <div class="actions">
+      <button type="button" class="primary" data-reveal>Reveal</button>
+      <button type="button" class="next" data-next="3" hidden>Next</button>
+    </div>
+    <div class="result" hidden>
+      <p class="winner" tabindex="-1">A feels right</p>
+      <p class="why">A pops and bursts, so you know the tap landed. B only changes the fill.</p>
+      <div class="replay-row">
+        <span class="pill pill-gold principle">pop and burst</span>
+        <button type="button" class="replay" data-replay="2" data-principle="pop and burst">Replay at 0.3×</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="round" id="r3" data-round="3" data-winner="a">
+    <span class="pill">03</span>
+    <h2>Menu</h2>
+    <p class="ask">Open both menus from the + button.</p>
+    <div class="pair">
+      <article class="card" data-side="a">
+        <span class="tag">A</span>
+        <div class="stage menu-stage">
+          <div class="menu menu-a is-shut" inert>
+            <button type="button">Edit</button>
+            <button type="button">Share</button>
+            <button type="button">Delete</button>
+          </div>
+          <button type="button" class="fab" aria-expanded="false" aria-label="Open menu A">+</button>
+        </div>
+      </article>
+      <article class="card" data-side="b">
+        <span class="tag">B</span>
+        <div class="stage menu-stage">
+          <div class="menu menu-b is-shut" inert>
+            <button type="button">Edit</button>
+            <button type="button">Share</button>
+            <button type="button">Delete</button>
+          </div>
+          <button type="button" class="fab" aria-expanded="false" aria-label="Open menu B">+</button>
+        </div>
+      </article>
+    </div>
+    <div class="actions">
+      <button type="button" class="primary" data-reveal>Reveal</button>
+      <button type="button" class="next" data-next="4" hidden>Next</button>
+    </div>
+    <div class="result" hidden>
+      <p class="winner" tabindex="-1">A feels right</p>
+      <p class="why">A grows out of the + you tapped, so you know where it came from. B fades in at the center.</p>
+      <div class="replay-row">
+        <span class="pill pill-gold principle">grows from button</span>
+        <button type="button" class="replay" data-replay="3" data-principle="grows from button">Replay at 0.3×</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="round" id="r4" data-round="4" data-winner="b">
+    <span class="pill">04</span>
+    <h2>Wrong password</h2>
+    <p class="ask">Submit both. The password is wrong.</p>
+    <div class="pair">
+      <article class="card" data-side="a">
+        <span class="tag">A</span>
+        <div class="stage">
+          <div class="field" data-mode="a">
+            <label for="pass-a">Password</label>
+            <input id="pass-a" type="password" value="incorrect" readonly>
+            <p class="badnote" hidden>Wrong password</p>
+            <button type="button" class="submit">Submit</button>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-side="b">
+        <span class="tag">B</span>
+        <div class="stage">
+          <div class="field" data-mode="b">
+            <label for="pass-b">Password</label>
+            <input id="pass-b" type="password" value="incorrect" readonly>
+            <p class="badnote" hidden>Wrong password</p>
+            <button type="button" class="submit">Submit</button>
+          </div>
+        </div>
+      </article>
+    </div>
+    <div class="actions">
+      <button type="button" class="primary" data-reveal>Reveal</button>
+      <button type="button" class="next" data-next="5" hidden>Next</button>
+    </div>
+    <div class="result" hidden>
+      <p class="winner" tabindex="-1">B feels right</p>
+      <p class="why">A only turns red. B shakes, and the shake says no before you finish reading the word.</p>
+      <div class="replay-row">
+        <span class="pill pill-gold principle">shake means no</span>
+        <button type="button" class="replay" data-replay="4" data-principle="shake means no">Replay at 0.3×</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="round" id="r5" data-round="5" data-winner="a">
+    <span class="pill">05</span>
+    <h2>Tab bar</h2>
+    <p class="ask">Move from Home to Search to Like on both bars.</p>
+    <div class="pair">
+      <article class="card" data-side="a">
+        <span class="tag">A</span>
+        <div class="stage">
+          <div class="tabbar" data-mode="a" role="group" aria-label="Tabs A">
+            <span class="tab-pill" aria-hidden="true"></span>
+            <button type="button" class="tab" aria-pressed="true">Home</button>
+            <button type="button" class="tab" aria-pressed="false">Search</button>
+            <button type="button" class="tab" aria-pressed="false">Like</button>
+          </div>
+        </div>
+      </article>
+      <article class="card" data-side="b">
+        <span class="tag">B</span>
+        <div class="stage">
+          <div class="tabbar" data-mode="b" role="group" aria-label="Tabs B">
+            <span class="tab-pill" aria-hidden="true"></span>
+            <button type="button" class="tab" aria-pressed="true">Home</button>
+            <button type="button" class="tab" aria-pressed="false">Search</button>
+            <button type="button" class="tab" aria-pressed="false">Like</button>
+          </div>
+        </div>
+      </article>
+    </div>
+    <div class="actions">
+      <button type="button" class="primary" data-reveal>Reveal</button>
+      <button type="button" class="next" data-next="6" hidden>Next</button>
+    </div>
+    <div class="result" hidden>
+      <p class="winner" tabindex="-1">A feels right</p>
+      <p class="why">A’s pill slides from Home to Search to Like, so your eye can follow it. B teleports.</p>
+      <div class="replay-row">
+        <span class="pill pill-gold principle">pill slides across</span>
+        <button type="button" class="replay" data-replay="5" data-principle="pill slides across">Replay at 0.3×</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="round" id="r6" data-round="6" data-winner="b">
+    <span class="pill">06</span>
+    <h2>Delete row</h2>
+    <p class="ask">Delete Draft in both lists. Watch the rows underneath.</p>
+    <div class="pair">
+      <article class="card" data-side="a">
+        <span class="tag">A</span>
+        <div class="stage stack">
+          <div class="list" data-mode="a"></div>
+          <button type="button" class="reset">Reset</button>
+        </div>
+      </article>
+      <article class="card" data-side="b">
+        <span class="tag">B</span>
+        <div class="stage stack">
+          <div class="list" data-mode="b"></div>
+          <button type="button" class="reset">Reset</button>
+        </div>
+      </article>
+    </div>
+    <div class="actions">
+      <button type="button" class="primary" data-reveal>Reveal</button>
+      <button type="button" class="next" data-next="key" hidden>Answer key</button>
+    </div>
+    <div class="result" hidden>
+      <p class="winner" tabindex="-1">B feels right</p>
+      <p class="why">A removes the row and everything below jumps. B shrinks the row, and the list closes without a jump, so you keep your place.</p>
+      <div class="replay-row">
+        <span class="pill pill-gold principle">no gaps close smoothly</span>
+        <button type="button" class="replay" data-replay="6" data-principle="no gaps close smoothly">Replay at 0.3×</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="round" id="key" data-round="key">
+    <span class="pill">Key</span>
+    <h2>Answer key</h2>
+    <ol class="key-list">
+      <li>01 B — spring not slide</li>
+      <li>02 A — pop and burst</li>
+      <li>03 A — grows from button</li>
+      <li>04 B — shake means no</li>
+      <li>05 A — pill slides across</li>
+      <li>06 B — no gaps close smoothly</li>
+    </ol>
+    <p class="credit">Study of an Atelier-style motion test.</p>
+  </section>
+</main>
+<script src="shared/site-header.js?v=34" defer></script>
+<script src="feels-right.js" defer></script>
+</body>
+</html>

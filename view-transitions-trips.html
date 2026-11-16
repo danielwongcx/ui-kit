@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saved trips · Driftwood</title>
+<meta name="description" content="Driftwood saved trips. Each row has its own view-transition-name, and the page opts into cross-document view transitions.">
+<script>
+(function () {
+  var q = location.search || "";
+  var forceReduce = /(?:^|[?&])reduce=1(?:&|$)/.test(q);
+  var forceMotion = /(?:^|[?&])motion=1(?:&|$)/.test(q);
+  var reduce = false;
+  try {
+    if (forceMotion) sessionStorage.removeItem("vt-reduce");
+    else if (forceReduce) sessionStorage.setItem("vt-reduce", "1");
+    var stored = !forceMotion && sessionStorage.getItem("vt-reduce") === "1";
+    var os = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    reduce = forceMotion ? false : (stored || os);
+  } catch (e) {
+    try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e2) {}
+  }
+  if (reduce) document.documentElement.setAttribute("data-motion", "reduce");
+  var theme = "dark";
+  try { theme = localStorage.getItem("driftwood-theme") || "dark"; } catch (e) {}
+  if (theme === "light") document.documentElement.setAttribute("data-theme", "light");
+})();
+</script>
+<link rel="stylesheet" href="shared/site-header.css?v=9">
+<link rel="stylesheet" href="view-transitions.css">
+<script>
+(function () {
+  var reduce = document.documentElement.getAttribute("data-motion") === "reduce";
+  var motion = /(?:^|[?&])motion=1(?:&|$)/.test(location.search || "");
+  if (reduce) document.write("<style>@view-transition{navigation:none}</style>");
+  else if (motion) document.write("<style>@view-transition{navigation:auto}</style>");
+})();
+</script>
+</head>
+<body data-page="view-transitions" data-screen="trips">
+<main data-trips>
+  <header class="mast">
+    <div>
+      <p class="eyebrow"><span class="pill">Driftwood</span></p>
+      <h1>Saved trips</h1>
+      <p class="lead">Each row has its own name. Sort, filter, then open a guide.</p>
+    </div>
+    <button type="button" class="icon-btn" data-theme-toggle aria-pressed="false" aria-label="Switch color theme">
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14.5 2.6a8.2 8.2 0 1 0 6.4 13.2A6.7 6.7 0 0 1 14.5 2.6z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="currentColor"/><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M4.9 4.9l1.5 1.5M17.6 17.6l1.5 1.5M19.1 4.9l-1.5 1.5M6.4 17.6 4.9 19.1"/></g></svg>
+    </button>
+  </header>
+
+  <p class="fine"><a class="text-btn" href="view-transitions.html#p06">Guides</a></p>
+
+  <div class="warn">
+    <strong>Duplicate name = skipped / InvalidStateError.</strong>
+    A repeated view-transition-name is skipped. A second startViewTransition while one is running throws InvalidStateError, or skips the first with AbortError.
+  </div>
+  <div class="tries scroller">
+    <button type="button" class="try-btn" data-dup>Duplicate a name</button>
+    <button type="button" data-twice>Start twice</button>
+  </div>
+  <p class="status" data-status role="status"></p>
+
+  <div class="filters scroller" role="toolbar" aria-label="Sort and filter trips">
+    <button type="button" data-sort="city" aria-pressed="true">City</button>
+    <button type="button" data-sort="month" aria-pressed="false">Month</button>
+    <button type="button" data-filter="winter" aria-pressed="false">Winter</button>
+    <button type="button" data-filter="all" aria-pressed="true">All seasons</button>
+  </div>
+
+  <ul class="trips" data-list>
+    <li data-city="Hanoi" data-month="6" data-season="summer" style="view-transition-name: trip-5">
+      <a href="view-transitions-lisbon.html?city=hanoi">
+        <span class="sky sky-hanoi" aria-hidden="true"><span class="moon"></span><span class="fg"></span></span>
+        <span><span class="row-title">Hanoi</span><span class="row-meta">June · 7 nights</span></span>
+      </a>
+    </li>
+    <li data-city="Kyoto" data-month="11" data-season="autumn" style="view-transition-name: trip-2">
+      <a href="view-transitions-lisbon.html?city=kyoto">
+        <span class="sky sky-kyoto" aria-hidden="true"><span class="moon"></span><span class="fg"></span></span>
+        <span><span class="row-title">Kyoto</span><span class="row-meta">November · 6 nights</span></span>
+      </a>
+    </li>
+    <li data-city="Lisbon" data-month="3" data-season="spring" style="view-transition-name: trip-1">
+      <a href="view-transitions-lisbon.html">
+        <span class="sky sky-lisbon" aria-hidden="true"><span class="moon"></span><span class="fg"></span></span>
+        <span><span class="row-title">Lisbon</span><span class="row-meta">March · 4 nights</span></span>
+      </a>
+    </li>
+    <li data-city="Oaxaca" data-month="1" data-season="winter" style="view-transition-name: trip-3">
+      <a href="view-transitions-lisbon.html?city=oaxaca">
+        <span class="sky sky-oaxaca" aria-hidden="true"><span class="moon"></span><span class="fg"></span></span>
+        <span><span class="row-title">Oaxaca</span><span class="row-meta">January · 5 nights</span></span>
+      </a>
+    </li>
+    <li data-city="Tromso" data-month="12" data-season="winter" style="view-transition-name: trip-4">
+      <a href="view-transitions-lisbon.html?city=tromso">
+        <span class="sky sky-tromso" aria-hidden="true"><span class="moon"></span><span class="fg"></span></span>
+        <span><span class="row-title">Tromso</span><span class="row-meta">December · 3 nights</span></span>
+      </a>
+    </li>
+  </ul>
+
+  <figure class="editor bottom-rule">
+    <figcaption><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span>list.html</span></figcaption>
+    <pre><code>&lt;li style="view-transition-name: trip-1"&gt;
+
+<span class="tok-sel">@view-transition</span> {
+  <span class="tok-prop">navigation</span>: <span class="tok-val">auto</span>;
+}</code></pre>
+  </figure>
+  <p class="fine">This file is its own document. Opening Lisbon is a real navigation, not a view swap inside one page. <span class="pill">1 item = 1 name</span> <span class="pill pill-gold">no SPA needed</span></p>
+</main>
+
+<script src="shared/site-header.js?v=34" defer></script>
+<script src="view-transitions.js" defer></script>
+</body>
+</html>
