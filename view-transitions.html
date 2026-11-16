@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Driftwood · View Transitions</title>
+<meta name="description" content="Driftwood, a dark travel guide that runs seven CSS View Transitions patterns: card to page, snapshot morph, named rows, theme wipe, share modal, and real page loads.">
+<link rel="prefetch" href="view-transitions-lisbon.html">
+<link rel="prefetch" href="view-transitions-trips.html">
+<script>
+(function () {
+  var q = location.search || "";
+  var forceReduce = /(?:^|[?&])reduce=1(?:&|$)/.test(q);
+  var forceMotion = /(?:^|[?&])motion=1(?:&|$)/.test(q);
+  var reduce = false;
+  try {
+    if (forceMotion) sessionStorage.removeItem("vt-reduce");
+    else if (forceReduce) sessionStorage.setItem("vt-reduce", "1");
+    var stored = !forceMotion && sessionStorage.getItem("vt-reduce") === "1";
+    var os = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    reduce = forceMotion ? false : (stored || os);
+  } catch (e) {
+    try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e2) {}
+  }
+  if (reduce) document.documentElement.setAttribute("data-motion", "reduce");
+  var theme = "dark";
+  try { theme = localStorage.getItem("driftwood-theme") || "dark"; } catch (e) {}
+  if (theme === "light") document.documentElement.setAttribute("data-theme", "light");
+  var step = (location.hash || "").replace(/^#/, "");
+  if (!/^p0[1-7]$/.test(step)) step = "p01";
+  document.documentElement.setAttribute("data-step", step);
+})();
+</script>
+<link rel="stylesheet" href="shared/site-header.css?v=9">
+<link rel="stylesheet" href="view-transitions.css">
+<script>
+(function () {
+  var reduce = document.documentElement.getAttribute("data-motion") === "reduce";
+  var motion = /(?:^|[?&])motion=1(?:&|$)/.test(location.search || "");
+  if (reduce) document.write("<style>@view-transition{navigation:none}</style>");
+  else if (motion) document.write("<style>@view-transition{navigation:auto}</style>");
+})();
+</script>
+</head>
+<body data-page="view-transitions" data-screen="walkthrough">
+<main>
+  <header class="mast">
+    <div>
+      <p class="eyebrow"><span class="pill">View Transitions</span></p>
+      <h1>Driftwood</h1>
+      <p class="lead">A dark travel guide. Seven patterns, each one you can run.</p>
+    </div>
+    <button type="button" class="icon-btn" data-theme-toggle aria-pressed="false" aria-label="Switch color theme">
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14.5 2.6a8.2 8.2 0 1 0 6.4 13.2A6.7 6.7 0 0 1 14.5 2.6z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="currentColor"/><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M4.9 4.9l1.5 1.5M17.6 17.6l1.5 1.5M19.1 4.9l-1.5 1.5M6.4 17.6 4.9 19.1"/></g></svg>
+    </button>
+  </header>
+
+  <p class="trick">The trick is <code>view-transition-name</code>. Same name means morph. Unique names mean track and move. The browser snapshots the old state and the new state and animates between them.</p>
+  <p class="fine">Reduced motion, including <code>?reduce=1</code>, skips the animation. The screens still change.</p>
+
+  <div class="rail scroller" role="tablist" aria-label="Patterns" aria-orientation="horizontal">
+    <button type="button" role="tab" id="tab-p01" aria-controls="p01" aria-selected="true" tabindex="0">01 Card to page</button>
+    <button type="button" role="tab" id="tab-p02" aria-controls="p02" aria-selected="false" tabindex="-1">02 Two snapshots</button>
+    <button type="button" role="tab" id="tab-p03" aria-controls="p03" aria-selected="false" tabindex="-1">03 Named rows</button>
+    <button type="button" role="tab" id="tab-p04" aria-controls="p04" aria-selected="false" tabindex="-1">04 Theme wipe</button>
+    <button type="button" role="tab" id="tab-p05" aria-controls="p05" aria-selected="false" tabindex="-1">05 Modal</button>
+    <button type="button" role="tab" id="tab-p06" aria-controls="p06" aria-selected="false" tabindex="-1">06 Page loads</button>
+    <button type="button" role="tab" id="tab-p07" aria-controls="p07" aria-selected="false" tabindex="-1">07 Recap</button>
+  </div>
+
+  <noscript>
+    <p class="fine"><a href="view-transitions-lisbon.html">Lisbon</a> · <a href="view-transitions-trips.html">Saved trips</a></p>
+  </noscript>
+
+  <section class="step" id="p01" role="tabpanel" aria-labelledby="tab-p01">
+    <div class="step-head">
+      <div class="pills"><span class="pill">1 property</span></div>
+      <h2>Card becomes a page</h2>
+      <p>Give the card picture and the detail header the same name. The group <code>hero</code> moves that box from the card into the page.</p>
+    </div>
+    <div class="stage">
+      <div class="guide-stage" id="guide-stage">
+        <div class="appbar"><span>Driftwood</span><span class="pill">Guides</span></div>
+        <div class="grid">
+          <button type="button" class="card" data-city="lisbon">
+            <span class="sky sky-lisbon" aria-hidden="true"><span class="moon"></span><span class="fg"></span></span>
+            <span class="meta"><span class="card-title">Lisbon</span><span class="pill pill-gold">12 min read</span></span>
+          </button>
+          <button type="button" class="card" data-city="kyoto">
+            <span class="sky sky-kyoto" aria-hidden="true"><span class="moon"></span><span class="fg"></span></span>
+            <span class="meta"><span class="card-title">Kyoto</span><span class="pill pill-gold">12 min read</span></span>
+          </button>
+          <button type="button" class="card" data-city="oaxaca">
+            <span class="sky sky-oaxaca" aria-hidden="true"><span class="moon"></span><span class="fg"></span></span>
+            <span class="meta"><span class="card-title">Oaxaca</span><span class="pill pill-gold">12 min read</span></span>
+          </button>
+          <button type="button" class="card" data-city="tromso">
+            <span class="sky sky-tromso" aria-hidden="true"><span class="moon"></span><span class="fg"></span></span>
+            <span class="meta"><span class="card-title">Tromso</span><span class="pill pill-gold">12 min read</span></span>
+          </button>
+          <button type="button" class="card" data-city="hanoi">
+            <span class="sky sky-hanoi" aria-hidden="true"><span class="moon"></span><span class="fg"></span></span>
+            <span class="meta"><span class="card-title">Hanoi</span><span class="pill pill-gold">12 min read</span></span>
+          </button>
+        </div>
+        <article class="page">
+          <header>
+            <span class="sky sky-lisbon" role="img" aria-label="Night sky over Lisbon with a moon"><span class="moon" aria-hidden="true"></span><span class="fg" aria-hidden="true"></span></span>
+            <span class="sky sky-kyoto" role="img" aria-label="Night sky over Kyoto with a moon"><span class="moon" aria-hidden="true"></span><span class="fg" aria-hidden="true"></span></span>
+            <span class="sky sky-oaxaca" role="img" aria-label="Night sky over Oaxaca with a moon"><span class="moon" aria-hidden="true"></span><span class="fg" aria-hidden="true"></span></span>
+            <span class="sky sky-tromso" role="img" aria-label="Night sky over Tromso with a moon"><span class="moon" aria-hidden="true"></span><span class="fg" aria-hidden="true"></span></span>
+            <span class="sky sky-hanoi" role="img" aria-label="Night sky over Hanoi with a moon"><span class="moon" aria-hidden="true"></span><span class="fg" aria-hidden="true"></span></span>
+          </header>
+          <div class="prose">
+            <button type="button" class="text-btn" id="guide-back">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Guides
+            </button>
+            <div class="city city-lisbon">
+              <h3 tabindex="-1">Lisbon</h3>
+              <span class="pill pill-gold">12 min read</span>
+              <p>The hill keeps its lamps on after the kitchens close. From a miradouro the river is a dark band, and the bridge draws one thin line across it.</p>
+              <p>Walk down through Alfama and the streets turn into stairs. Stand still when the tram takes the corner. The pastel that is still warm is the one worth the wait.</p>
+            </div>
+            <div class="city city-kyoto">
+              <h3 tabindex="-1">Kyoto</h3>
+              <span class="pill pill-gold">12 min read</span>
+              <p>After the shutters come down, the lane is wood, shadow, and the last warm light in a paper window.</p>
+              <p>A gate holds the street for a moment. Follow the river path between the two bridges and the city gets quiet without going empty.</p>
+            </div>
+            <div class="city city-oaxaca">
+              <h3 tabindex="-1">Oaxaca</h3>
+              <span class="pill pill-gold">12 min read</span>
+              <p>The courtyard stays warm after dinner. Smoke hangs low, and the mountains cut a hard edge out of the sky.</p>
+              <p>This walk stays with the evening: stalls packing up, a quieter block, and the long way back to the zócalo.</p>
+            </div>
+            <div class="city city-tromso">
+              <h3 tabindex="-1">Tromso</h3>
+              <span class="pill pill-gold">12 min read</span>
+              <p>Harbour lights go green when the aurora shows, and plain white when it is only snow. The sun does not come up today.</p>
+              <p>The walk is short: from the quay to a window that faces north, then back before the wind picks up.</p>
+            </div>
+            <div class="city city-hanoi">
+              <h3 tabindex="-1">Hanoi</h3>
+              <span class="pill pill-gold">12 min read</span>
+              <p>The lake holds a still moon. Stools stack, then a few come out again. The motorbikes thin to a line you can cross.</p>
+              <p>Take the long way around the water after ten. The old quarter is louder on the far side and calm by the trees.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+    <div class="side">
+      <figure class="editor">
+        <figcaption><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span>styles.css</span></figcaption>
+        <pre><code><span class="tok-sel">.card img</span>,
+<span class="tok-sel">.page header</span> {
+  <span class="tok-prop">view-transition-name</span>: <span class="tok-val">hero</span>;
+}
+
+<span class="tok-sel">::view-transition-group(hero)</span> {
+  <span class="tok-prop">animation-duration</span>: <span class="tok-val">480ms</span>;
+}</code></pre>
+      </figure>
+      <figure class="editor">
+        <figcaption><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span>this grid</span></figcaption>
+        <pre><code><span class="tok-sel">.card.is-hero .sky</span>,
+<span class="tok-sel">.page.is-open header</span> {
+  <span class="tok-prop">view-transition-name</span>: <span class="tok-val">hero</span>;
+}</code></pre>
+      </figure>
+      <p class="editor-note">Five cards cannot share <code>hero</code>. The click marks one picture. The detail header takes the name on the next frame.</p>
+    </div>
+  </section>
+
+  <section class="step" id="p02" role="tabpanel" aria-labelledby="tab-p02">
+    <div class="step-head">
+      <div class="pills"><span class="pill">same name = morph</span></div>
+      <h2>Same name, two snapshots</h2>
+      <p>The browser keeps the old snapshot and the new snapshot. Width, top, and border-radius morph between them. On a wide stage that is about 353px to 100px, 137px to 15px, and 18px to 0px.</p>
+    </div>
+    <div class="stage">
+      <div class="metrics">
+        <div class="metric">
+          <span class="pill">Old snapshot</span>
+          <p data-side="old">
+            <span data-k="width">width 353px</span>
+            <span data-k="top">top 137px</span>
+            <span data-k="radius">radius 18px</span>
+          </p>
+        </div>
+        <div class="metric">
+          <span class="pill pill-gold">New snapshot</span>
+          <p data-side="new">
+            <span data-k="width">width 100px</span>
+            <span data-k="top">top 15px</span>
+            <span data-k="radius">radius 0px</span>
+          </p>
+        </div>
+      </div>
+      <p class="eq" id="morph-eq">width: 353px → 100px<br>top: 137px → 15px<br>radius: 18px → 0px</p>
+      <div class="morph-stage">
+        <div class="morph" id="morph">
+          <span data-k="width">width 353px</span>
+          <span data-k="top">top 137px</span>
+          <span data-k="radius">radius 18px</span>
+        </div>
+      </div>
+      <button type="button" class="morph-go" id="morph-go" aria-pressed="false">Morph snapshots</button>
+    </div>
+    <div class="side">
+      <figure class="editor">
+        <figcaption><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span>script.js</span></figcaption>
+        <pre><code><span class="tok-fn">document.startViewTransition</span>(() =&gt; showPage())</code></pre>
+      </figure>
+      <p class="editor-note">Same name on both snapshots. The group interpolates the box. The live numbers are measured from this stage.</p>
+    </div>
+  </section>
+
+  <section class="step" id="p03" role="tabpanel" aria-labelledby="tab-p03" data-trips>
+    <div class="step-head">
+      <div class="pills"><span class="pill">1 item = 1 name</span><span class="pill pill-gold">each row slides - 0 animation code</span></div>
+      <h2>Every row its own name</h2>
+      <p>Each saved trip has its own name. Sort and filter reorder the list. The rows slide. There is no animation code besides starting the transition.</p>
+      <div class="warn">
+        <strong>Duplicate name = skipped / InvalidStateError.</strong>
+        A repeated view-transition-name is skipped. A second startViewTransition while one is running throws InvalidStateError, or skips the first with AbortError.
+      </div>
+      <div class="tries scroller">
+        <button type="button" class="try-btn" data-dup>Duplicate a name</button>
+        <button type="button" data-twice>Start twice</button>
+      </div>
+      <p class="status" data-status role="status"></p>
+    </div>
+    <div class="stage">
+      <div class="appbar"><span>Saved trips</span><a class="text-btn" href="view-transitions-trips.html">Open document</a></div>
+      <div class="filters scroller" role="toolbar" aria-label="Sort and filter trips">
+        <button type="button" data-sort="city" aria-pressed="true">City</button>
+        <button type="button" data-sort="month" aria-pressed="false">Month</button>
+        <button type="button" data-filter="winter" aria-pressed="false">Winter</button>
+        <button type="button" data-filter="all" aria-pressed="true">All seasons</button>
+      </div>
+      <ul class="trips" data-list>
+        <li data-city="Hanoi" data-month="6" data-season="summer" style="view-transition-name: trip-5">
+          <a href="view-transitions-lisbon.html?city=hanoi">
+            <span class="sky sky-hanoi" aria-hidden="true"><span class="moon"></span><span class="fg"></span></span>
+            <span><span class="row-title">Hanoi</span><span class="row-meta">June · 7 nights</span></span>
+          </a>
+        </li>
+        <li data-city="Kyoto" data-month="11" data-season="autumn" style="view-transition-name: trip-2">
+          <a href="view-transitions-lisbon.html?city=kyoto">
+            <span class="sky sky-kyoto" aria-hidden="true"><span class="moon"></span><span class="fg"></span></span>
+            <span><span class="row-title">Kyoto</span><span class="row-meta">November · 6 nights</span></span>
+          </a>
+        </li>
+        <li data-city="Lisbon" data-month="3" data-season="spring" style="view-transition-name: trip-1">
+          <a href="view-transitions-lisbon.html">
+            <span class="sky sky-lisbon" aria-hidden="true"><span class="moon"></span><span class="fg"></span></span>
+            <span><span class="row-title">Lisbon</span><span class="row-meta">March · 4 nights</span></span>
+          </a>
+        </li>
+        <li data-city="Oaxaca" data-month="1" data-season="winter" style="view-transition-name: trip-3">
+          <a href="view-transitions-lisbon.html?city=oaxaca">
+            <span class="sky sky-oaxaca" aria-hidden="true"><span class="moon"></span><span class="fg"></span></span>
+            <span><span class="row-title">Oaxaca</span><span class="row-meta">January · 5 nights</span></span>
+          </a>
+        </li>
+        <li data-city="Tromso" data-month="12" data-season="winter" style="view-transition-name: trip-4">
+          <a href="view-transitions-lisbon.html?city=tromso">
+            <span class="sky sky-tromso" aria-hidden="true"><span class="moon"></span><span class="fg"></span></span>
+            <span><span class="row-title">Tromso</span><span class="row-meta">December · 3 nights</span></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="side">
+      <figure class="editor">
+        <figcaption><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span>list.html</span></figcaption>
+        <pre><code>&lt;li style="view-transition-name: trip-1"&gt;</code></pre>
+      </figure>
+      <p class="editor-note">One item, one name. <code>trip-1</code> through <code>trip-5</code> on these rows. Sort only reorders the DOM.</p>
+    </div>
+  </section>
+
+  <section class="step" id="p04" role="tabpanel" aria-labelledby="tab-p04">
+    <div class="step-head">
+      <div class="pills"><span class="pill">1 rule - circular wipe</span></div>
+      <h2>Theme toggle that spreads</h2>
+      <p>Click the moon or the sun. The pointer sets <code>--x</code> and <code>--y</code>. A circle opens from that point and reveals the next theme.</p>
+    </div>
+    <div class="stage">
+      <div class="orb-wrap">
+        <button type="button" class="theme-orb" data-theme-toggle aria-pressed="false" aria-label="Switch color theme">
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14.5 2.6a8.2 8.2 0 1 0 6.4 13.2A6.7 6.7 0 0 1 14.5 2.6z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="currentColor"/><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M4.9 4.9l1.5 1.5M17.6 17.6l1.5 1.5M19.1 4.9l-1.5 1.5M6.4 17.6 4.9 19.1"/></g></svg>
+          <span class="orb-label">Theme</span>
+        </button>
+      </div>
+    </div>
+    <div class="side">
+      <figure class="editor">
+        <figcaption><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span>styles.css</span></figcaption>
+        <pre><code><span class="tok-sel">::view-transition-new(root)</span> {
+  <span class="tok-prop">animation</span>: <span class="tok-val">reveal 600ms</span>;
+}
+<span class="tok-sel">@keyframes reveal</span> {
+  <span class="tok-prop">from</span> { <span class="tok-prop">clip-path</span>: <span class="tok-val">circle(0 at var(--x) var(--y))</span>; }
+  <span class="tok-prop">to</span> { <span class="tok-prop">clip-path</span>: <span class="tok-val">circle(150vmax at var(--x) var(--y))</span>; }
+}</code></pre>
+      </figure>
+      <p class="editor-note"><code>clip-path: none</code> does not interpolate, so the circle opens out to <code>150vmax</code>. The old root stays put underneath.</p>
+    </div>
+  </section>
+
+  <section class="step" id="p05" role="tabpanel" aria-labelledby="tab-p05">
+    <div class="step-head">
+      <div class="pills"><span class="pill">origin = button</span></div>
+      <h2>Modal born from the button</h2>
+      <p>The share button and the dialog use one name for a single transition. The modal grows from the button.</p>
+    </div>
+    <div class="stage">
+      <div class="appbar"><span>Driftwood</span><span class="pill">Share</span></div>
+      <article class="share-card">
+        <span class="sky sky-lisbon" aria-hidden="true"><span class="moon"></span><span class="fg"></span></span>
+        <div class="meta">
+          <span class="card-title">Lisbon</span>
+          <button type="button" class="share-btn" data-share>Share</button>
+        </div>
+      </article>
+    </div>
+    <div class="side">
+      <figure class="editor">
+        <figcaption><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span>script.js</span></figcaption>
+        <pre><code><span class="tok-fn">document.startViewTransition</span>(() =&gt; {
+  dialog.showModal();
+})
+
+button.style.viewTransitionName = <span class="tok-val">"origin"</span>
+<span class="tok-fn">document.startViewTransition</span>(() =&gt; {
+  button.style.viewTransitionName = <span class="tok-val">"none"</span>
+  dialog.style.viewTransitionName = <span class="tok-val">"origin"</span>
+  dialog.showModal()
+})</code></pre>
+      </figure>
+      <p class="editor-note">The name sits on the button in the old snapshot and on the dialog in the new one. Both at once would be skipped.</p>
+    </div>
+  </section>
+
+  <section class="step" id="p06" role="tabpanel" aria-labelledby="tab-p06">
+    <div class="step-head">
+      <div class="pills"><span class="pill">no SPA needed</span></div>
+      <h2>Works across real page loads</h2>
+      <p>This guides page, the Lisbon page, and the trips page each include <code>@view-transition { navigation: auto; }</code>. Open a card. Chrome 126+ and Safari 18.2+ morph the shared name. Other browsers swap instantly.</p>
+    </div>
+    <div class="stage">
+      <div class="appbar"><span>Guides</span><a class="text-btn" href="view-transitions-trips.html">Saved trips</a></div>
+      <div class="grid">
+        <a class="card" href="view-transitions-lisbon.html">
+          <span class="sky sky-lisbon" style="view-transition-name: hero" aria-hidden="true"><span class="moon"></span><span class="fg"></span></span>
+          <span class="meta"><span class="card-title">Lisbon</span><span class="pill pill-gold">12 min read</span></span>
+        </a>
+        <a class="card" href="view-transitions-lisbon.html?city=kyoto">
+          <span class="sky sky-kyoto" style="view-transition-name: hero-kyoto" aria-hidden="true"><span class="moon"></span><span class="fg"></span></span>
+          <span class="meta"><span class="card-title">Kyoto</span><span class="pill pill-gold">12 min read</span></span>
+        </a>
+        <a class="card" href="view-transitions-lisbon.html?city=oaxaca">
+          <span class="sky sky-oaxaca" style="view-transition-name: hero-oaxaca" aria-hidden="true"><span class="moon"></span><span class="fg"></span></span>
+          <span class="meta"><span class="card-title">Oaxaca</span><span class="pill pill-gold">12 min read</span></span>
+        </a>
+        <a class="card" href="view-transitions-lisbon.html?city=tromso">
+          <span class="sky sky-tromso" style="view-transition-name: hero-tromso" aria-hidden="true"><span class="moon"></span><span class="fg"></span></span>
+          <span class="meta"><span class="card-title">Tromso</span><span class="pill pill-gold">12 min read</span></span>
+        </a>
+        <a class="card" href="view-transitions-lisbon.html?city=hanoi">
+          <span class="sky sky-hanoi" style="view-transition-name: hero-hanoi" aria-hidden="true"><span class="moon"></span><span class="fg"></span></span>
+          <span class="meta"><span class="card-title">Hanoi</span><span class="pill pill-gold">12 min read</span></span>
+        </a>
+      </div>
+    </div>
+    <div class="side">
+      <figure class="editor">
+        <figcaption><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span>both documents</span></figcaption>
+        <pre><code><span class="tok-sel">@view-transition</span> {
+  <span class="tok-prop">navigation</span>: <span class="tok-val">auto</span>;
+}</code></pre>
+      </figure>
+      <p class="editor-note"><code>view-transitions.html</code>, <code>view-transitions-lisbon.html</code>, and <code>view-transitions-trips.html</code>. The Lisbon picture is named <code>hero</code> on both sides of the load.</p>
+    </div>
+  </section>
+
+  <section class="step" id="p07" role="tabpanel" aria-labelledby="tab-p07">
+    <div class="step-head">
+      <h2>Recap</h2>
+      <p>Same name morphs. Unique names track and move. The browser animates the two snapshots.</p>
+    </div>
+    <div class="recap">
+      <button type="button" data-goto="p01">
+        <h3>Card to page</h3>
+        <p>One shared name moves the picture into the header.</p>
+        <span class="tags"><span class="pill">Same name</span><span class="pill pill-gold">Cross-page</span></span>
+      </button>
+      <button type="button" data-goto="p03">
+        <h3>List reorder</h3>
+        <p>Each row keeps its own name and slides when the list changes.</p>
+        <span class="tags"><span class="pill">Unique per item</span></span>
+      </button>
+      <button type="button" data-goto="p04">
+        <h3>Theme wipe</h3>
+        <p>The new root opens as a circle from the button.</p>
+        <span class="tags"><span class="pill">Root wipe</span></span>
+      </button>
+      <button type="button" data-goto="p05">
+        <h3>Modal</h3>
+        <p>The dialog borrows the button’s name and grows from it.</p>
+        <span class="tags"><span class="pill">Button origin</span></span>
+      </button>
+    </div>
+    <p class="credit">Study of a CSS View Transitions walkthrough.</p>
+  </section>
+</main>
+
+<dialog class="share-dialog" aria-labelledby="share-title">
+  <p class="dialog-title" id="share-title">Share this guide</p>
+  <p class="fine">A link to the Lisbon night guide.</p>
+  <div class="share-actions">
+    <button type="button" class="share-btn copy-link">Copy link</button>
+    <button type="button" class="text-btn share-close">Close</button>
+  </div>
+</dialog>
+
+<script src="shared/site-header.js?v=32" defer></script>
+<script src="view-transitions.js" defer></script>
+</body>
+</html>

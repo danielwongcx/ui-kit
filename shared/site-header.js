@@ -41,6 +41,7 @@
         { id: 'kinetic-typography', label: 'Motion prompt', href: 'kinetic-typography.html', group: 'Playgrounds' },
         { id: 'wave-card-grid', label: 'Wave grid', href: 'wave-card-grid.html', group: 'Playgrounds' },
         { id: 'transition', label: 'Transition', href: 'transition.html', group: 'Playgrounds' },
+        { id: 'view-transitions', label: 'View Transitions', href: 'view-transitions.html', group: 'Playgrounds' },
         { id: 'atelier', label: 'Atelier', href: 'atelier.html', group: 'Playgrounds' },
         { id: 'atelier-orb', label: 'Atelier Orb', href: 'atelier-orb.html', group: 'Playgrounds' },
         { id: 'gemini-sparkles', label: 'Sparkles', href: 'gemini-sparkles.html', group: 'Playgrounds' },
