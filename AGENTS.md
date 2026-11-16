@@ -20,6 +20,7 @@ Multi-page **static** UI kit published on GitHub Pages from the `main` branch ro
 - Transition: https://danielwongcx.github.io/ui-kit/transition.html (`transition.html`) — interactive gallery of the 32 free transitions.dev motion recipes. Light chrome (`#fdfdfd`, white cards, Inter), inline CSS/JS, no build step.
 - View Transitions: https://danielwongcx.github.io/ui-kit/view-transitions.html (`view-transitions.html`) — Motion playground. Driftwood, a dark travel-guide study of the CSS View Transitions API: card to page, snapshot morph, per-row names, theme wipe, share modal, and real multi-page loads (`view-transitions-lisbon.html`, `view-transitions-trips.html`). `prefers-reduced-motion` and `?reduce=1` skip the animation. No build step.
 - Feels right: https://danielwongcx.github.io/ui-kit/feels-right.html (`feels-right.html`) — Motion playground. Six A/B micro-interaction rounds: spring switch, like burst, menu origin, password shake, sliding tab pill, and a delete that does not jump. `prefers-reduced-motion` and `?reduce=1` keep the quiz and skip the motion. No build step.
+- Motion hierarchy: https://danielwongcx.github.io/ui-kit/motion-hierarchy.html (`motion-hierarchy.html`) — Motion playground. A fictional bank card opens as Good UI (one fade) or Great UI (blur, tab bar out, card scale, then staggered controls and transactions). `prefers-reduced-motion` and `?reduce=1` open the detail immediately. No build step.
 - Atelier: https://danielwongcx.github.io/ui-kit/atelier.html (`atelier.html`) — interaction study in the locked Motion Atelier style: warm bone, dusty pastels, five bands, specimen grid. `atelier/DESIGN.md` is that style’s bible and is the file the page downloads. The repo-root `DESIGN.md` stays the Refactor UI rulebook.
 - Gemini Sparkles: https://danielwongcx.github.io/ui-kit/gemini-sparkles.html (`gemini-sparkles.html`) — one full-viewport page. A single div draws three parallax sparkle layers with CSS radial gradients and a slow `background-position` loop, plus a soft blue glow. Night stage, no build step.
 - One prompt: https://danielwongcx.github.io/ui-kit/one-prompt.html (`one-prompt.html`) — Guides. Plain-language page on seeco’s (@seeconvm) X article about viral “one-prompt” Opus motion videos. Spring-timed hero, a prompt-vs-setup chart, an eight-piece studio diagram, and the piece / without it / fix table. Numbers are the article’s. No build step.
@@ -88,6 +89,7 @@ Playgrounds:
 - Transition → `transition.html`
 - View Transitions → `view-transitions.html`
 - Feels right → `feels-right.html`
+- Motion hierarchy → `motion-hierarchy.html`
 - Atelier → `atelier.html`
 - Atelier Orb → `atelier-orb.html`
 - Sparkles → `gemini-sparkles.html`

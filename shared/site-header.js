@@ -43,6 +43,7 @@
         { id: 'transition', label: 'Transition', href: 'transition.html', group: 'Playgrounds' },
         { id: 'view-transitions', label: 'View Transitions', href: 'view-transitions.html', group: 'Playgrounds' },
         { id: 'feels-right', label: 'Feels right', href: 'feels-right.html', group: 'Playgrounds' },
+        { id: 'motion-hierarchy', label: 'Motion hierarchy', href: 'motion-hierarchy.html', group: 'Playgrounds' },
         { id: 'atelier', label: 'Atelier', href: 'atelier.html', group: 'Playgrounds' },
         { id: 'atelier-orb', label: 'Atelier Orb', href: 'atelier-orb.html', group: 'Playgrounds' },
         { id: 'gemini-sparkles', label: 'Sparkles', href: 'gemini-sparkles.html', group: 'Playgrounds' },

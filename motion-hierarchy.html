@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Motion hierarchy · ui-kit</title>
+<meta name="description" content="Good UI fades a bank card into its detail all at once. Great UI staggers blur, the tab bar, the card, then the controls.">
+<script>
+(function () {
+  var q = location.search || "";
+  var forceReduce = /(?:^|[?&])reduce=1(?:&|$)/.test(q);
+  var forceMotion = /(?:^|[?&])motion=1(?:&|$)/.test(q);
+  var reduce = false;
+  try {
+    if (forceMotion) sessionStorage.removeItem("mh-reduce");
+    else if (forceReduce) sessionStorage.setItem("mh-reduce", "1");
+    var stored = !forceMotion && sessionStorage.getItem("mh-reduce") === "1";
+    var os = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    reduce = forceMotion ? false : (stored || os);
+  } catch (e) {
+    try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e2) {}
+  }
+  if (reduce) document.documentElement.setAttribute("data-motion", "reduce");
+})();
+</script>
+<link rel="stylesheet" href="shared/site-header.css?v=9">
+<link rel="stylesheet" href="motion-hierarchy.css">
+</head>
+<body data-page="motion-hierarchy">
+<main>
+  <div class="layout">
+    <div class="copy-col">
+      <p><span class="pill">Motion hierarchy</span></p>
+      <h1>Good UI, Great UI</h1>
+      <p class="lead">Same card. Two ways to open it.</p>
+      <p class="trick">Great UI does not animate everything at once. It staggers with purpose.</p>
+      <ul class="principles">
+        <li>Depth · Blur <span>— where am I leaving</span></li>
+        <li>Space · Slide out <span>— clear the stage</span></li>
+        <li>Focus · Scale &amp; fade <span>— what is important now</span></li>
+        <li>Intent · Fade &amp; slide in <span>— what can I do next</span></li>
+      </ul>
+      <div class="modes" role="group" aria-label="Motion quality">
+        <button type="button" data-mode="good" aria-pressed="false">Good UI</button>
+        <button type="button" data-mode="great" aria-pressed="true">Great UI</button>
+      </div>
+      <div class="plays">
+        <button type="button" id="play">Play</button>
+        <button type="button" id="slow">Slow-mo Great</button>
+      </div>
+      <div class="steps" aria-hidden="true">
+        <span data-step="blur">Blur</span>
+        <span data-step="slide">Slide out</span>
+        <span data-step="scale">Scale &amp; fade</span>
+        <span data-step="fade">Fade &amp; slide in</span>
+      </div>
+      <p class="now" id="now" aria-live="polite">Tap the card.</p>
+    </div>
+    <div class="stage-col">
+      <div class="device">
+        <div class="home-body" id="home-body">
+          <p class="kicker">Northline</p>
+          <h2 class="home-title">Cards</h2>
+          <button type="button" class="bank" id="open-card">
+            <span class="bank-top"><span class="brand">NORTHLINE</span><span class="chip" aria-hidden="true"></span></span>
+            <span class="pan">•••• 4291</span>
+            <span class="bank-bot"><span class="name">M. HALE</span><span>Debit</span></span>
+          </button>
+          <p class="avail">Available · $2,480.00</p>
+          <ul class="quiet">
+            <li><span>Grocery</span><span>−$42.10</span></li>
+            <li><span>Transit</span><span>−$2.60</span></li>
+            <li><span>Pharmacy</span><span>−$16.80</span></li>
+          </ul>
+        </div>
+        <nav class="tabs" id="tabbar" aria-label="Sections">
+          <button type="button" aria-current="page">Home</button>
+          <button type="button">Cards</button>
+          <button type="button">Pay</button>
+          <button type="button">More</button>
+        </nav>
+        <div class="veil" id="veil"></div>
+        <div class="detail" id="detail">
+          <button type="button" class="close ctrl" id="close-detail">Close</button>
+          <article class="bank hero" id="hero" aria-label="Northline debit card">
+            <span class="bank-top"><span class="brand">NORTHLINE</span><span class="chip" aria-hidden="true"></span></span>
+            <span class="pan">•••• 4291</span>
+            <span class="bank-bot"><span class="name">M. HALE</span><span>Debit</span></span>
+          </article>
+          <div class="actions">
+            <button type="button" class="ctrl">Card details</button>
+            <button type="button" class="ctrl">Freeze</button>
+            <button type="button" class="ctrl">Settings</button>
+          </div>
+          <div class="sheet" id="sheet">
+            <p class="spend">$128.40<small>Spent this week</small></p>
+            <ul class="tx">
+              <li><span>Ferry Market</span><span>−$18.40</span></li>
+              <li><span>Night Bus</span><span>−$2.60</span></li>
+              <li><span>Corner Books</span><span>−$24.00</span></li>
+              <li><span>Harbor Coffee</span><span>−$6.20</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <p class="credit">Study of a staggered banking-card motion.</p>
+    </div>
+  </div>
+</main>
+<script src="shared/site-header.js?v=34" defer></script>
+<script src="motion-hierarchy.js" defer></script>
+</body>
+</html>
