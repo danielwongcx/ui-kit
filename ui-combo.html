@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>UI Library · Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow · Folder · Spacing · Hierarchy · Combos · Keywords · Backgrounds · Nudge · Prompting UI · Design tokens · iPhone polish</title>
+  <title>UI Library · Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Select · Glow · Folder · Spacing · Hierarchy · Combos · Keywords · Backgrounds · Nudge · Prompting UI · Design tokens · iPhone polish</title>
   <script>
     /* Apply saved page shell and glow stops before paint */
     (function () {
@@ -9377,6 +9377,125 @@
         border: 1px solid ButtonText;
       }
     }
+
+    /* —— Off-white (page tints; does not switch the page shell) —— */
+    #off-white .ow-lead {
+      max-width: 46rem;
+    }
+    #off-white .ow-pair,
+    #off-white .ow-dark,
+    #off-white .ow-grid {
+      display: grid;
+      gap: 12px;
+      min-width: 0;
+    }
+    #off-white .ow-pair { grid-template-columns: 1fr 1fr; margin-bottom: 12px; }
+    #off-white .ow-dark { grid-template-columns: 1fr; margin-bottom: 16px; }
+    #off-white .ow-dark .ow-swatch { min-height: 96px; }
+    #off-white .ow-dark .ow-sheet { min-height: 68px; }
+    #off-white .ow-grid { grid-template-columns: 1fr; }
+    @media (min-width: 720px) {
+      #off-white .ow-dark { grid-template-columns: 1fr 1fr 1fr; }
+      #off-white .ow-dark .ow-swatch { min-height: 168px; }
+      #off-white .ow-dark .ow-sheet { min-height: 112px; }
+      #off-white .ow-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (min-width: 1100px) {
+      #off-white .ow-grid { grid-template-columns: 1fr 1fr 1fr; }
+    }
+    #off-white .ow-swatch {
+      display: flex;
+      align-items: stretch;
+      width: 100%;
+      min-width: 0;
+      min-height: 168px;
+      margin: 0;
+      padding: 14px;
+      border: 1px solid rgba(28, 28, 34, 0.08);
+      border-radius: 16px;
+      text-align: left;
+      cursor: pointer;
+      color: #1c1c22;
+      font: inherit;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    #off-white .ow-swatch.is-dark {
+      color: #f4f4f4;
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    #off-white .ow-swatch:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    #off-white .ow-sheet {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 4px;
+      width: 100%;
+      min-height: 112px;
+      padding: 14px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid rgba(28, 28, 34, 0.08);
+    }
+    #off-white .ow-sheet.is-flat {
+      border-color: transparent;
+    }
+    #off-white .ow-swatch.is-dark .ow-sheet {
+      background: var(--ow-card);
+      border-color: rgba(255, 255, 255, 0.08);
+      color: #f4f4f4;
+    }
+    #off-white .ow-kicker {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      opacity: 0.72;
+    }
+    #off-white .ow-name {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+    #off-white .ow-use {
+      font-size: 13px;
+      line-height: 1.35;
+      color: #3f3f46;
+    }
+    #off-white .ow-swatch.is-dark .ow-use { color: #d4d4d4; }
+    #off-white .ow-hex {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      color: #3f3f46;
+    }
+    #off-white .ow-swatch.is-dark .ow-hex { color: #e8e8e8; }
+    #off-white .ow-swatch.is-copied .ow-hex {
+      color: var(--brand);
+      font-weight: 700;
+    }
+    #off-white .ow-status {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    #off-white .ow-credit {
+      margin: 14px 0 0;
+      font-size: 12px;
+      line-height: 1.4;
+      color: var(--muted);
+      text-align: center;
+    }
   </style>
 </head>
 <body data-page="gallery">
@@ -9388,6 +9507,7 @@
       <a href="#cards">Cards</a>
       <a href="#nested-radius">Nested radius</a>
       <a href="#palettes">Palettes</a>
+      <a href="#off-white">Off-white</a>
       <a href="#select">Select</a>
       <a href="#glow-border">Glow border</a>
       <a href="#folder">Folder</a>
@@ -9407,7 +9527,7 @@
     <header class="lib-hero">
       <h1>Component gallery</h1>
       <p>
-        Self-contained demos: Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications · Prompting UI · Design tokens · iPhone polish.
+        Self-contained demos: Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications · Prompting UI · Design tokens · iPhone polish.
         Digit scroll with a natural <code>linear()</code> spring (~10%
         overshoot), hard-coded glow CTAs (violet / teal / slate), nested-radius
         photo cards and a progressive dialog, ten page-shell colour palettes you can switch, twenty reference
@@ -10974,6 +11094,158 @@
 
     </section>
 
+
+    <!-- ===================== OFF-WHITE ===================== -->
+    <section class="sec" id="off-white">
+      <div class="sec-head">
+        <h2>Off-white</h2>
+        <p class="ow-lead">
+          Never use pure <code>#FFFFFF</code> as a page background. Pure white on a screen is harsh, glares, and feels like an unfinished default.
+          Use off-whites: white with a 2–3% tint of the brand color, so the surface is softer and can show depth.
+          In dark mode, never use pure <code>#000000</code>. Use <code>#0A0A0A</code> or <code>#121212</code>.
+        </p>
+        <p class="ow-lead">
+          Base the page on Bold White <code>#FBFCFD</code> and put pure white cards on top. The tint does the depth. Click a surface to copy its hex.
+        </p>
+      </div>
+
+      <div class="ow-pair">
+        <button type="button" class="ow-swatch" data-hex="#FFFFFF" aria-label="Copy #FFFFFF" style="background:#FFFFFF">
+          <span class="ow-sheet is-flat">
+            <span class="ow-kicker">Harsh</span>
+            <span class="ow-name">Pure white</span>
+            <span class="ow-use">The card disappears into the page.</span>
+            <span class="ow-hex">#FFFFFF</span>
+          </span>
+        </button>
+        <button type="button" class="ow-swatch" data-hex="#FBFCFD" aria-label="Copy #FBFCFD" style="background:#FBFCFD">
+          <span class="ow-sheet">
+            <span class="ow-kicker">Softer</span>
+            <span class="ow-name">Bold White</span>
+            <span class="ow-use">A white card sits on the tint.</span>
+            <span class="ow-hex">#FBFCFD</span>
+          </span>
+        </button>
+      </div>
+      <div class="ow-dark">
+        <button type="button" class="ow-swatch is-dark" data-hex="#000000" aria-label="Copy #000000" style="background:#000000;--ow-card:#000000">
+          <span class="ow-sheet is-flat">
+            <span class="ow-kicker">Harsh</span>
+            <span class="ow-name">Pure black</span>
+            <span class="ow-hex">#000000</span>
+          </span>
+        </button>
+        <button type="button" class="ow-swatch is-dark" data-hex="#0A0A0A" aria-label="Copy #0A0A0A" style="background:#0A0A0A;--ow-card:#161616">
+          <span class="ow-sheet">
+            <span class="ow-kicker">Dark</span>
+            <span class="ow-name">Off black</span>
+            <span class="ow-hex">#0A0A0A</span>
+          </span>
+        </button>
+        <button type="button" class="ow-swatch is-dark" data-hex="#121212" aria-label="Copy #121212" style="background:#121212;--ow-card:#1E1E1E">
+          <span class="ow-sheet">
+            <span class="ow-kicker">Dark</span>
+            <span class="ow-name">Elevated</span>
+            <span class="ow-hex">#121212</span>
+          </span>
+        </button>
+      </div>
+
+      <div class="ow-grid">
+        <button type="button" class="ow-swatch" data-hex="#FCF8F7" aria-label="Copy Vista White #FCF8F7" style="background:#FCF8F7">
+          <span class="ow-sheet"><span class="ow-name">Vista White</span><span class="ow-use">Warm pinkish, luxury / beauty</span><span class="ow-hex">#FCF8F7</span></span>
+        </button>
+        <button type="button" class="ow-swatch" data-hex="#FFFFF0" aria-label="Copy Ivory #FFFFF0" style="background:#FFFFF0">
+          <span class="ow-sheet"><span class="ow-name">Ivory</span><span class="ow-use">Slight yellow, classic / editorial</span><span class="ow-hex">#FFFFF0</span></span>
+        </button>
+        <button type="button" class="ow-swatch" data-hex="#F4F1F8" aria-label="Copy Lavender #F4F1F8" style="background:#F4F1F8">
+          <span class="ow-sheet"><span class="ow-name">Lavender</span><span class="ow-use">Purple tint, modern SaaS / light mode</span><span class="ow-hex">#F4F1F8</span></span>
+        </button>
+        <button type="button" class="ow-swatch" data-hex="#FBFCFD" aria-label="Copy Bold White #FBFCFD" style="background:#FBFCFD">
+          <span class="ow-sheet"><span class="ow-name">Bold White</span><span class="ow-use">Blue tint, tech / Apple-style</span><span class="ow-hex">#FBFCFD</span></span>
+        </button>
+        <button type="button" class="ow-swatch" data-hex="#FFFAFA" aria-label="Copy Snow #FFFAFA" style="background:#FFFAFA">
+          <span class="ow-sheet"><span class="ow-name">Snow</span><span class="ow-use">Reddish, soft and friendly</span><span class="ow-hex">#FFFAFA</span></span>
+        </button>
+        <button type="button" class="ow-swatch" data-hex="#F8F8FF" aria-label="Copy Ghost White #F8F8FF" style="background:#F8F8FF">
+          <span class="ow-sheet"><span class="ow-name">Ghost White</span><span class="ow-use">Blueish, very clean</span><span class="ow-hex">#F8F8FF</span></span>
+        </button>
+        <button type="button" class="ow-swatch" data-hex="#FBFAF5" aria-label="Copy Casual White #FBFAF5" style="background:#FBFAF5">
+          <span class="ow-sheet"><span class="ow-name">Casual White</span><span class="ow-use">Beige warm, lifestyle / Notion-style</span><span class="ow-hex">#FBFAF5</span></span>
+        </button>
+        <button type="button" class="ow-swatch" data-hex="#F0F1F6" aria-label="Copy Sporty White #F0F1F6" style="background:#F0F1F6">
+          <span class="ow-sheet"><span class="ow-name">Sporty White</span><span class="ow-use">Cool gray-blue, sport / dashboard</span><span class="ow-hex">#F0F1F6</span></span>
+        </button>
+        <button type="button" class="ow-swatch" data-hex="#F2F2F2" aria-label="Copy Alabaster #F2F2F2" style="background:#F2F2F2">
+          <span class="ow-sheet"><span class="ow-name">Alabaster</span><span class="ow-use">Neutral gray, minimal / luxury</span><span class="ow-hex">#F2F2F2</span></span>
+        </button>
+      </div>
+      <p class="ow-status" id="off-white-status" role="status" aria-live="polite"></p>
+      <p class="ow-credit">Study of an off-white page surface.</p>
+    </section>
+    <script>
+      (function () {
+        var root = document.getElementById('off-white');
+        if (!root) return;
+        var status = document.getElementById('off-white-status');
+        var buttons = Array.prototype.slice.call(root.querySelectorAll('[data-hex]'));
+        var timer = 0;
+        var current = null;
+
+        function restore() {
+          if (!current) return;
+          var label = current.querySelector('.ow-hex');
+          if (label) label.textContent = current.getAttribute('data-hex');
+          current.classList.remove('is-copied');
+          current = null;
+        }
+
+        function copyLegacy(value) {
+          return new Promise(function (resolve, reject) {
+            var area = document.createElement('textarea');
+            area.value = value;
+            area.setAttribute('readonly', '');
+            area.style.position = 'fixed';
+            area.style.left = '-9999px';
+            document.body.appendChild(area);
+            area.select();
+            var ok = false;
+            try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+            document.body.removeChild(area);
+            if (ok) resolve();
+            else reject(new Error('copy failed'));
+          });
+        }
+
+        function copyHex(value) {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            return navigator.clipboard.writeText(value).catch(function () {
+              return copyLegacy(value);
+            });
+          }
+          return copyLegacy(value);
+        }
+
+        buttons.forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var hex = btn.getAttribute('data-hex');
+            if (!hex) return;
+            copyHex(hex).then(function () {
+              if (timer) window.clearTimeout(timer);
+              if (current && current !== btn) restore();
+              current = btn;
+              var label = btn.querySelector('.ow-hex');
+              if (label) label.textContent = 'Copied';
+              btn.classList.add('is-copied');
+              if (status) status.textContent = 'Copied ' + hex;
+              timer = window.setTimeout(restore, 1400);
+            }).catch(function () {
+              if (status) status.textContent = 'Could not copy ' + hex;
+            });
+          });
+        });
+      })();
+    </script>
 
     <!-- ===================== SELECT ===================== -->
     <section class="sec" id="select">
@@ -15862,7 +16134,7 @@
     </script>
 
     <footer class="lib-foot">
-      Digits · Buttons · Cards · Nested radius · Palettes · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications · Prompting UI · Design tokens · iPhone polish. Digit-scroll <code>lh</code> + natural
+      Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications · Prompting UI · Design tokens · iPhone polish. Digit-scroll <code>lh</code> + natural
       <code>linear()</code> spring (~10% overshoot) · hard-coded glow buttons
       (violet / teal / slate) · nested radius · page-shell palettes · colour pairings · color combos · native
       <code>appearance: base-select</code> · rotating <code>conic-gradient</code> rim · SVG glass folder. No CDN.
@@ -16538,6 +16810,6 @@
     })();
   </script>
   <script src="shared/site-header.js?v=34" defer></script>
-  <script src="shared/section-fab.js?v=10" defer></script>
+  <script src="shared/section-fab.js?v=11" defer></script>
 </body>
 </html>
