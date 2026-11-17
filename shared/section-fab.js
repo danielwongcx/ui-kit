@@ -13,6 +13,7 @@
     { id: 'nested-radius', label: 'Nested radius' },
     { id: 'palettes', label: 'Palettes' },
     { id: 'off-white', label: 'Off-white' },
+    { id: 'brand-primary', label: 'Brand ≠ Primary' },
     { id: 'select', label: 'Select' },
     { id: 'glow-border', label: 'Glow border' },
     { id: 'folder', label: 'Folder' },

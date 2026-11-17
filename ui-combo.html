@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>UI Library · Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Select · Glow · Folder · Spacing · Hierarchy · Combos · Keywords · Backgrounds · Nudge · Prompting UI · Design tokens · iPhone polish</title>
+  <title>UI Library · Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Brand ≠ Primary · Select · Glow · Folder · Spacing · Hierarchy · Combos · Keywords · Backgrounds · Nudge · Prompting UI · Design tokens · iPhone polish</title>
   <script>
     /* Apply saved page shell and glow stops before paint */
     (function () {
@@ -9496,6 +9496,450 @@
       color: var(--muted);
       text-align: center;
     }
+
+    /* —— Brand ≠ Primary. Scoped to #brand-primary.
+       Brand is the mark. Product primary is the button, the link, and the focus ring.
+       Ratios use WCAG 2.x relative luminance (sRGB cutoff 0.03928) against #FFFFFF. —— */
+    #brand-primary {
+      --bp-brand: #F47C30;
+      --bp-600: #BA4E0A;
+      --bp-700: #984008;
+      --bp-ring: #BA4E0A;
+      position: relative;
+    }
+
+    #brand-primary .sec-head code,
+    #brand-primary .bp-note code,
+    #brand-primary .bp-refs code {
+      font-family: var(--mono);
+      font-size: 0.92em;
+      color: #3a3a44;
+    }
+
+    #brand-primary .bp-field {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 12px;
+      max-width: 100%;
+      margin: 0 0 14px;
+    }
+
+    #brand-primary .bp-field__label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    #brand-primary .bp-field__controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    #brand-primary .bp-color {
+      width: 44px;
+      height: 44px;
+      flex: none;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    #brand-primary .bp-color::-webkit-color-swatch-wrapper { padding: 0; }
+
+    #brand-primary .bp-color::-webkit-color-swatch {
+      border: 0;
+      border-radius: 6px;
+    }
+
+    #brand-primary .bp-hexinput {
+      width: 7.6rem;
+      max-width: 100%;
+      min-height: 44px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 16px;
+    }
+
+    #brand-primary .bp-hexinput[aria-invalid="true"] {
+      border-color: #9F1239;
+    }
+
+    #brand-primary .bp-color:focus-visible,
+    #brand-primary .bp-hexinput:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    #brand-primary .bp-field__note,
+    #brand-primary .bp-caption,
+    #brand-primary .bp-meter__cap,
+    #brand-primary .bp-tokenlead,
+    #brand-primary .bp-refs {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    #brand-primary .bp-field__note { flex: 1 1 100%; }
+
+    #brand-primary .bp-meter { margin: 0 0 16px; }
+
+    #brand-primary .bp-meter__track {
+      height: 10px;
+      border-radius: 99px;
+      background: #E6E4E1;
+      overflow: hidden;
+    }
+
+    #brand-primary .bp-meter__brand {
+      display: block;
+      width: 10%;
+      height: 100%;
+      background: var(--bp-brand);
+    }
+
+    #brand-primary .bp-meter__cap { margin-top: 6px; }
+
+    #brand-primary .bp-h {
+      margin: 2px 0 4px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    #brand-primary .bp-caption { margin-bottom: 10px; }
+
+    #brand-primary .bp-compare {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    #brand-primary .bp-col {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 12px 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    #brand-primary .bp-kicker,
+    #brand-primary .bp-method,
+    #brand-primary .bp-hex {
+      margin: 0;
+      text-align: center;
+    }
+
+    #brand-primary .bp-kicker {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      line-height: 1.3;
+      color: #1c1c22;
+    }
+
+    #brand-primary .bp-col.is-fail .bp-kicker { color: #7F1D1D; }
+    #brand-primary .bp-col.is-pass .bp-kicker { color: #14532D; }
+
+    #brand-primary .bp-method {
+      margin-top: 2px;
+      min-height: 2.6em;
+      font-size: 11px;
+      line-height: 1.3;
+      color: var(--muted);
+    }
+
+    #brand-primary .bp-btn,
+    #brand-primary .bp-join {
+      appearance: none;
+      border: 0;
+      font-family: var(--sans);
+      font-weight: 650;
+      line-height: 1.2;
+      color: #FFFFFF;
+      text-shadow: none;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #brand-primary .bp-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-width: 0;
+      min-height: 44px;
+      margin-top: 8px;
+      padding: 8px 6px;
+      border-radius: 10px;
+      background: var(--bp-fill);
+      font-size: 13px;
+      white-space: normal;
+    }
+
+    #brand-primary .bp-btn:focus,
+    #brand-primary .bp-join:focus,
+    #brand-primary .bp-link:focus {
+      outline: none;
+    }
+
+    #brand-primary .bp-btn:focus-visible,
+    #brand-primary .bp-join:focus-visible,
+    #brand-primary .bp-link:focus-visible {
+      outline: 2px solid var(--bp-focus, var(--bp-ring));
+      outline-offset: 3px;
+    }
+
+    #brand-primary .bp-link:focus-visible { border-radius: 4px; }
+
+    #brand-primary .bp-badge {
+      margin: 10px 0 0;
+      border-radius: 8px;
+      padding: 6px 4px;
+      text-align: center;
+    }
+
+    #brand-primary .bp-badge.is-fail { background: #FEE2E2; color: #7F1D1D; }
+    #brand-primary .bp-badge.is-pass { background: #DCFCE7; color: #14532D; }
+
+    #brand-primary .bp-ratio,
+    #brand-primary .bp-verdict {
+      display: block;
+      line-height: 1.3;
+    }
+
+    #brand-primary .bp-ratio {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    #brand-primary .bp-verdict {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    #brand-primary .bp-hex {
+      margin-top: 6px;
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.3;
+      color: #3a3a44;
+      overflow-wrap: anywhere;
+    }
+
+    #brand-primary .bp-note {
+      margin: 10px 0 0;
+      font-size: 13px;
+      line-height: 1.45;
+      color: #1c1c22;
+    }
+
+    #brand-primary .bp-split {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    #brand-primary .bp-split > * { min-width: 0; }
+
+    #brand-primary .bp-screen .canvas-body {
+      min-height: 0;
+      padding: 20px 16px 24px;
+    }
+
+    #brand-primary .bp-app {
+      width: min(100%, 280px);
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 22px 18px 18px;
+      border-radius: 16px;
+      background: #FBF7F4;
+    }
+
+    #brand-primary .bp-mark {
+      display: flex;
+      align-items: flex-end;
+      gap: 5px;
+      height: 36px;
+    }
+
+    #brand-primary .bp-mark span {
+      display: block;
+      width: 10px;
+      border-radius: 3px;
+      background: var(--bp-brand);
+    }
+
+    #brand-primary .bp-mark span:nth-child(1) { height: 14px; }
+    #brand-primary .bp-mark span:nth-child(2) { height: 28px; }
+    #brand-primary .bp-mark span:nth-child(3) { height: 20px; }
+
+    #brand-primary .bp-app__title {
+      margin: 0;
+      color: #1C1C22;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    #brand-primary .bp-join {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 48px;
+      margin: 2px 0 0;
+      padding: 0 16px;
+      border-radius: 12px;
+      background: var(--bp-600);
+      font-size: 16px;
+    }
+
+    #brand-primary .bp-link {
+      color: var(--bp-600);
+      font-size: 14px;
+      font-weight: 650;
+      line-height: 1.3;
+      text-underline-offset: 0.16em;
+    }
+
+    #brand-primary .bp-roles {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin: 0;
+      padding: 12px 12px 0;
+    }
+
+    #brand-primary .bp-role {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    #brand-primary .bp-disc {
+      width: 18px;
+      height: 18px;
+      flex: none;
+      border-radius: 5px;
+      box-shadow: inset 0 0 0 1px #00000014;
+    }
+
+    #brand-primary .bp-disc--brand { background: var(--bp-brand); }
+    #brand-primary .bp-disc--600 { background: var(--bp-600); }
+    #brand-primary .bp-disc--700 { background: var(--bp-700); }
+    #brand-primary .bp-disc--ring { background: var(--bp-ring); }
+
+    #brand-primary .bp-rolename,
+    #brand-primary .bp-rolehex {
+      display: block;
+      line-height: 1.3;
+    }
+
+    #brand-primary .bp-rolename {
+      font-size: 11px;
+      font-weight: 700;
+      color: #1c1c22;
+    }
+
+    #brand-primary .bp-rolehex {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      overflow-wrap: anywhere;
+    }
+
+    #brand-primary .bp-tokenlead {
+      margin: 10px 12px 0;
+    }
+
+    #brand-primary .bp-pre {
+      margin: 12px 0 0;
+      padding: 14px 16px 16px;
+      border-top: 1px solid var(--line);
+      background: #fff;
+      color: #1c1c22;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.45;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    #brand-primary .bp-refs { margin-top: 14px; }
+
+    #brand-primary .bp-status {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    #brand-primary .bp-btn,
+    #brand-primary .bp-join,
+    #brand-primary .bp-link {
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      #brand-primary .bp-btn:hover { background: var(--bp-hover); }
+      #brand-primary .bp-join:hover { background: var(--bp-700); }
+      #brand-primary .bp-link:hover { color: var(--bp-700); }
+    }
+
+    @media (min-width: 800px) {
+      #brand-primary .bp-compare { gap: 12px; }
+      #brand-primary .bp-col { padding: 14px 14px 16px; }
+      #brand-primary .bp-btn { font-size: 14px; padding: 8px 12px; }
+      #brand-primary .bp-split {
+        grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+        align-items: start;
+      }
+      #brand-primary .bp-roles { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #brand-primary .bp-btn,
+      #brand-primary .bp-join,
+      #brand-primary .bp-link { transition: none; }
+    }
+
+    @media (forced-colors: active) {
+      #brand-primary .bp-btn,
+      #brand-primary .bp-join { border: 1px solid ButtonText; }
+    }
+
   </style>
 </head>
 <body data-page="gallery">
@@ -9508,6 +9952,7 @@
       <a href="#nested-radius">Nested radius</a>
       <a href="#palettes">Palettes</a>
       <a href="#off-white">Off-white</a>
+      <a href="#brand-primary">Brand ≠ Primary</a>
       <a href="#select">Select</a>
       <a href="#glow-border">Glow border</a>
       <a href="#folder">Folder</a>
@@ -9527,7 +9972,7 @@
     <header class="lib-hero">
       <h1>Component gallery</h1>
       <p>
-        Self-contained demos: Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications · Prompting UI · Design tokens · iPhone polish.
+        Self-contained demos: Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Brand ≠ Primary · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications · Prompting UI · Design tokens · iPhone polish.
         Digit scroll with a natural <code>linear()</code> spring (~10%
         overshoot), hard-coded glow CTAs (violet / teal / slate), nested-radius
         photo cards and a progressive dialog, ten page-shell colour palettes you can switch, twenty reference
@@ -9539,6 +9984,7 @@
         Match the icon to the line-height and leave an 8px gap. Demote Log in so the primary button can lift.
         Semantic tokens paint the card; remap them and the theme follows.
         Six ON/OFF polish rules keep the pixel numbers on the canvas.
+        Brand color stays on the mark. Buttons, links, and focus use a product primary that clears 4.5:1 with white.
       </p>
     </header>
 
@@ -11244,6 +11690,435 @@
             });
           });
         });
+      })();
+    </script>
+    <!-- ===================== BRAND ≠ PRIMARY ===================== -->
+    <section class="sec" id="brand-primary">
+      <div class="sec-head">
+        <h2>Brand ≠ Primary</h2>
+        <p>
+          Brand color is not the product primary. Use the brand color for the logo, illustration, and empty state, and keep it to about 10% of the screen. Do not use it as a button background with white text when the contrast fails.
+        </p>
+        <p>
+          Buttons, links, and focus states use a separate product primary that passes WCAG AA, at least 4.5:1 with white <code>#FFFFFF</code>. When you derive it, aim for 5:1. Darken the brand until it clears that bar, or pick a complement. For this orange, the complement is <code>#0B6FF9</code>.
+        </p>
+      </div>
+
+      <div class="bp-field">
+        <label class="bp-field__label" for="bp-hex">Brand color</label>
+        <div class="bp-field__controls">
+          <input id="bp-color" class="bp-color" type="color" value="#f47c30" aria-label="Pick a brand color">
+          <input id="bp-hex" class="bp-hexinput" type="text" value="#F47C30" spellcheck="false" autocapitalize="characters" autocorrect="off" autocomplete="off" aria-describedby="bp-field-note">
+        </div>
+        <p class="bp-field__note" id="bp-field-note">Example brand for this study. Not a company palette.</p>
+      </div>
+
+      <div class="bp-meter">
+        <div class="bp-meter__track" role="img" aria-label="About 10 percent of the screen can be the brand color. The rest stays neutral.">
+          <span class="bp-meter__brand"></span>
+        </div>
+        <p class="bp-meter__cap">Brand color, about 10% of the screen. Logo, illustration, empty state.</p>
+      </div>
+
+      <h3 class="bp-h" id="bp-compare-label">Brand ≠ Product Primary</h3>
+      <p class="bp-caption" id="bp-compare-cap">White text on the resting fill.</p>
+      <div class="bp-compare" role="group" aria-labelledby="bp-compare-label">
+        <div class="bp-col is-fail" id="bp-col-fail">
+          <p class="bp-kicker" id="bp-kicker-fail">FAIL</p>
+          <p class="bp-method">Brand fill</p>
+          <button type="button" class="bp-btn" id="bp-btn-fail" style="--bp-fill:#F47C30;--bp-hover:#F47C30;--bp-focus:#1C1C22" aria-describedby="bp-badge-fail bp-hex-fail">Continue</button>
+          <p class="bp-badge is-fail" id="bp-badge-fail"><span class="bp-ratio" id="bp-ratio-fail">2.70:1</span><span class="bp-verdict" id="bp-verdict-fail">Fail</span></p>
+          <p class="bp-hex" id="bp-hex-fail">#F47C30</p>
+        </div>
+        <div class="bp-col" id="bp-col-a">
+          <p class="bp-kicker" id="bp-kicker-a">FIX A</p>
+          <p class="bp-method">Darken</p>
+          <button type="button" class="bp-btn" id="bp-btn-a" style="--bp-fill:#BA4E0A;--bp-hover:#984008;--bp-focus:#BA4E0A" aria-describedby="bp-badge-a bp-hex-a">Continue</button>
+          <p class="bp-badge is-pass" id="bp-badge-a"><span class="bp-ratio" id="bp-ratio-a">5.02:1</span><span class="bp-verdict" id="bp-verdict-a">AA</span></p>
+          <p class="bp-hex" id="bp-hex-a">#BA4E0A</p>
+        </div>
+        <div class="bp-col" id="bp-col-b">
+          <p class="bp-kicker" id="bp-kicker-b">FIX B</p>
+          <p class="bp-method">Complement</p>
+          <button type="button" class="bp-btn" id="bp-btn-b" style="--bp-fill:#0B6FF9;--bp-hover:#055FDB;--bp-focus:#0B6FF9" aria-describedby="bp-badge-b bp-hex-b">Continue</button>
+          <p class="bp-badge is-pass" id="bp-badge-b"><span class="bp-ratio" id="bp-ratio-b">4.51:1</span><span class="bp-verdict" id="bp-verdict-b">AA</span></p>
+          <p class="bp-hex" id="bp-hex-b">#0B6FF9</p>
+        </div>
+      </div>
+      <p class="bp-note" id="bp-note">Cited #C85A1A is 4.26:1 with white, under 4.5. Fix A uses #BA4E0A at 5.02:1.</p>
+
+      <div class="bp-split">
+        <article class="canvas bp-screen">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Onboarding</span>
+            <span class="canvas-tag">primary-600</span>
+          </div>
+          <div class="canvas-body">
+            <div class="bp-app">
+              <div class="bp-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+              <h3 class="bp-app__title">Track your activity in one place</h3>
+              <button type="button" class="bp-join" id="bp-join">Join for free</button>
+              <a class="bp-link" href="#brand-primary">How tracking works</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="canvas bp-tokens">
+          <div class="canvas-chrome">
+            <span class="canvas-name">Tokens</span>
+            <span class="canvas-tag">separate roles</span>
+          </div>
+          <ul class="bp-roles" aria-label="Color roles">
+            <li class="bp-role">
+              <span class="bp-disc bp-disc--brand" aria-hidden="true"></span>
+              <span><span class="bp-rolename">brand</span><span class="bp-rolehex" id="bp-role-brand">#F47C30</span></span>
+            </li>
+            <li class="bp-role">
+              <span class="bp-disc bp-disc--600" aria-hidden="true"></span>
+              <span><span class="bp-rolename">primary-600</span><span class="bp-rolehex" id="bp-role-600">#BA4E0A</span></span>
+            </li>
+            <li class="bp-role">
+              <span class="bp-disc bp-disc--700" aria-hidden="true"></span>
+              <span><span class="bp-rolename">primary-700</span><span class="bp-rolehex" id="bp-role-700">#984008</span></span>
+            </li>
+            <li class="bp-role">
+              <span class="bp-disc bp-disc--ring" aria-hidden="true"></span>
+              <span><span class="bp-rolename">ring</span><span class="bp-rolehex" id="bp-role-ring">#BA4E0A</span></span>
+            </li>
+          </ul>
+          <p class="bp-tokenlead">primary-700 is hover. The ring matches primary-600.</p>
+          <pre class="bp-pre" id="bp-pre">:root {
+  --brand: #F47C30;
+  --primary-600: #BA4E0A;
+  --primary-700: #984008;
+  --ring: #BA4E0A;
+}
+
+.button {
+  background: var(--primary-600);
+  color: #FFFFFF;
+}
+.button:hover {
+  background: var(--primary-700);
+}
+.button:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}</pre>
+        </article>
+      </div>
+
+      <p class="bp-refs">Other splits. Mailchimp brand <code>#FFE01B</code>, product <code>#007C89</code>. Airbnb brand <code>#FF5A5F</code>, product <code>#E0002B</code>.</p>
+      <p class="bp-status" id="bp-status" role="status" aria-live="polite"></p>
+    </section>
+    <script>
+      (function () {
+        'use strict';
+
+        var root = document.getElementById('brand-primary');
+        if (!root) return;
+
+        var EXAMPLE = '#F47C30';
+        var CITED_FIX_A = '#C85A1A';
+        var CITED_FIX_B = '#0B6FF9';
+        var AA = 4.5;
+        var AIM = 5;
+        var colorInput = document.getElementById('bp-color');
+        var hexInput = document.getElementById('bp-hex');
+        var note = document.getElementById('bp-note');
+        var status = document.getElementById('bp-status');
+        var pre = document.getElementById('bp-pre');
+        var spokenFor = '';
+
+        /* WCAG 2.x relative luminance. Cutoff is 0.03928, not the IEC 0.04045 value. */
+        function lin(c) {
+          var s = c / 255;
+          return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+        }
+
+        function rgbOf(hex) {
+          var n = parseInt(hex.slice(1), 16);
+          return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+        }
+
+        function rel(hex) {
+          var c = rgbOf(hex);
+          return 0.2126 * lin(c[0]) + 0.7152 * lin(c[1]) + 0.0722 * lin(c[2]);
+        }
+
+        function contrast(a, b) {
+          var L1 = rel(a);
+          var L2 = rel(b);
+          var hi = Math.max(L1, L2);
+          var lo = Math.min(L1, L2);
+          return (hi + 0.05) / (lo + 0.05);
+        }
+
+        function hslOf(hex) {
+          var c = rgbOf(hex);
+          var r = c[0] / 255;
+          var g = c[1] / 255;
+          var b = c[2] / 255;
+          var max = Math.max(r, g, b);
+          var min = Math.min(r, g, b);
+          var h;
+          var s;
+          var l = (max + min) / 2;
+          if (max === min) {
+            h = 0;
+            s = 0;
+          } else {
+            var d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+              case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+              case g: h = (b - r) / d + 2; break;
+              default: h = (r - g) / d + 4;
+            }
+            h /= 6;
+          }
+          return [h * 360, s * 100, l * 100];
+        }
+
+        function fromHsl(h, s, l) {
+          h = ((h % 360) + 360) % 360;
+          h /= 360;
+          s /= 100;
+          l /= 100;
+          var r;
+          var g;
+          var b;
+          if (s === 0) {
+            r = l;
+            g = l;
+            b = l;
+          } else {
+            var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            var p = 2 * l - q;
+            var hue = function (t) {
+              if (t < 0) t += 1;
+              if (t > 1) t -= 1;
+              if (t < 1 / 6) return p + (q - p) * 6 * t;
+              if (t < 1 / 2) return q;
+              if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+              return p;
+            };
+            r = hue(h + 1 / 3);
+            g = hue(h);
+            b = hue(h - 1 / 3);
+          }
+          function byte(v) {
+            return Math.round(Math.min(1, Math.max(0, v)) * 255);
+          }
+          function hexByte(v) {
+            var s = byte(v).toString(16);
+            return s.length === 1 ? '0' + s : s;
+          }
+          return ('#' + hexByte(r) + hexByte(g) + hexByte(b)).toUpperCase();
+        }
+
+        function darkenTo(hex, target) {
+          if (contrast(hex, '#FFFFFF') >= target) return hex;
+          var parts = hslOf(hex);
+          var prev = '';
+          var L;
+          for (L = parts[2]; L >= 0; L -= 0.05) {
+            var hx = fromHsl(parts[0], parts[1], L);
+            if (hx === prev) continue;
+            prev = hx;
+            if (contrast(hx, '#FFFFFF') >= target) return hx;
+          }
+          return '#000000';
+        }
+
+        function hoverFrom(hex) {
+          var parts = hslOf(hex);
+          var targetL = Math.max(0, parts[2] - 7);
+          var hx = fromHsl(parts[0], parts[1], targetL);
+          var L;
+          if (hx === hex) {
+            for (L = targetL; L >= 0; L -= 0.25) {
+              var next = fromHsl(parts[0], parts[1], L);
+              if (next !== hex) return next;
+            }
+            return '#000000';
+          }
+          return hx;
+        }
+
+        function complement(hex, target) {
+          var parts = hslOf(hex);
+          if (parts[1] < 8) return darkenTo('#0B6FF9', target);
+          var ch = (parts[0] + 180) % 360;
+          var cs = Math.min(100, Math.max(parts[1], 70));
+          var prev = '';
+          var L;
+          for (L = 64; L >= 0; L -= 0.05) {
+            var hx = fromHsl(ch, cs, L);
+            if (hx === prev) continue;
+            prev = hx;
+            if (contrast(hx, '#FFFFFF') >= target) return hx;
+          }
+          return '#000000';
+        }
+
+        function parseHex(value) {
+          var v = String(value || '').trim();
+          if (!v) return null;
+          if (v.charAt(0) !== '#') v = '#' + v;
+          if (/^#[0-9a-fA-F]{3}$/.test(v)) {
+            v = '#' + v.charAt(1) + v.charAt(1) + v.charAt(2) + v.charAt(2) + v.charAt(3) + v.charAt(3);
+          }
+          if (!/^#[0-9a-fA-F]{6}$/.test(v)) return null;
+          return v.toUpperCase();
+        }
+
+        function formatRatio(n) {
+          return (Math.round(n * 100) / 100).toFixed(2);
+        }
+
+        function pack(fill, hover, ring) {
+          return {
+            fill: fill,
+            hover: hover,
+            ring: ring,
+            ratio: contrast(fill, '#FFFFFF')
+          };
+        }
+
+        function derive(brand) {
+          var fixA = darkenTo(brand, AIM);
+          /* Keep the cited blue for the study orange. It clears 4.5. Other brands aim at 5:1. */
+          var fixB = brand === EXAMPLE ? CITED_FIX_B : complement(brand, AIM);
+          return {
+            brand: brand,
+            fail: pack(brand, brand, '#1C1C22'),
+            fixA: pack(fixA, hoverFrom(fixA), fixA),
+            fixB: pack(fixB, hoverFrom(fixB), fixB)
+          };
+        }
+
+        function snippet(model) {
+          return [
+            ':root {',
+            '  --brand: ' + model.brand + ';',
+            '  --primary-600: ' + model.fixA.fill + ';',
+            '  --primary-700: ' + model.fixA.hover + ';',
+            '  --ring: ' + model.fixA.ring + ';',
+            '}',
+            '',
+            '.button {',
+            '  background: var(--primary-600);',
+            '  color: #FFFFFF;',
+            '}',
+            '.button:hover {',
+            '  background: var(--primary-700);',
+            '}',
+            '.button:focus-visible {',
+            '  outline: 2px solid var(--ring);',
+            '  outline-offset: 3px;',
+            '}'
+          ].join('\n');
+        }
+
+        function paintColumn(key, part) {
+          var btn = document.getElementById('bp-btn-' + key);
+          var badge = document.getElementById('bp-badge-' + key);
+          var col = document.getElementById('bp-col-' + key);
+          btn.style.setProperty('--bp-fill', part.fill);
+          btn.style.setProperty('--bp-hover', part.hover);
+          btn.style.setProperty('--bp-focus', part.ring);
+          document.getElementById('bp-ratio-' + key).textContent = formatRatio(part.ratio) + ':1';
+          document.getElementById('bp-verdict-' + key).textContent = part.ratio >= AA ? 'AA' : 'Fail';
+          document.getElementById('bp-hex-' + key).textContent = part.fill;
+          badge.classList.toggle('is-fail', part.ratio < AA);
+          badge.classList.toggle('is-pass', part.ratio >= AA);
+          if (key === 'fail') {
+            document.getElementById('bp-kicker-fail').textContent = part.ratio >= AA ? 'PASS' : 'FAIL';
+            col.classList.toggle('is-fail', part.ratio < AA);
+            col.classList.toggle('is-pass', part.ratio >= AA);
+          }
+        }
+
+        function noteFor(model) {
+          if (model.brand === EXAMPLE) {
+            return 'Cited #C85A1A is ' + formatRatio(contrast(CITED_FIX_A, '#FFFFFF')) + ':1 with white, under 4.5. Fix A uses ' + model.fixA.fill + ' at ' + formatRatio(model.fixA.ratio) + ':1.';
+          }
+          if (model.fixA.fill === model.brand) {
+            return 'This brand already clears 5:1, so Fix A keeps the same hex. Keep brand and primary as separate roles.';
+          }
+          if (model.fail.ratio >= AA) {
+            return 'This brand clears 4.5:1 and sits under the 5:1 aim. Fix A darkens it to ' + model.fixA.fill + '.';
+          }
+          return '';
+        }
+
+        function render(hex, announceChange, fromField) {
+          var model = derive(hex);
+          root.style.setProperty('--bp-brand', model.brand);
+          root.style.setProperty('--bp-600', model.fixA.fill);
+          root.style.setProperty('--bp-700', model.fixA.hover);
+          root.style.setProperty('--bp-ring', model.fixA.ring);
+          paintColumn('fail', model.fail);
+          paintColumn('a', model.fixA);
+          paintColumn('b', model.fixB);
+          document.getElementById('bp-role-brand').textContent = model.brand;
+          document.getElementById('bp-role-600').textContent = model.fixA.fill;
+          document.getElementById('bp-role-700').textContent = model.fixA.hover;
+          document.getElementById('bp-role-ring').textContent = model.fixA.ring;
+          if (pre) pre.textContent = snippet(model);
+          var text = noteFor(model);
+          if (text) {
+            note.hidden = false;
+            note.textContent = text;
+          } else {
+            note.hidden = true;
+            note.textContent = '';
+          }
+          if (!fromField && hexInput.value.toUpperCase() !== hex) hexInput.value = hex;
+          hexInput.removeAttribute('aria-invalid');
+          if (colorInput.value.toLowerCase() !== hex.toLowerCase()) colorInput.value = hex.toLowerCase();
+          if (announceChange && spokenFor !== hex && status) {
+            status.textContent = 'Brand ' + model.brand + ', ' + formatRatio(model.fail.ratio) + ' to 1, ' +
+              (model.fail.ratio >= AA ? 'passes' : 'fails') + '. Fix A ' + model.fixA.fill + ', ' +
+              formatRatio(model.fixA.ratio) + ' to 1. Fix B ' + model.fixB.fill + ', ' +
+              formatRatio(model.fixB.ratio) + ' to 1.';
+            spokenFor = hex;
+          }
+        }
+
+        colorInput.addEventListener('input', function () {
+          var hex = parseHex(colorInput.value);
+          if (hex) render(hex, false, false);
+        });
+
+        colorInput.addEventListener('change', function () {
+          var hex = parseHex(colorInput.value);
+          if (hex) render(hex, true, false);
+        });
+
+        hexInput.addEventListener('input', function () {
+          var hex = parseHex(hexInput.value);
+          if (!hex) {
+            hexInput.setAttribute('aria-invalid', 'true');
+            return;
+          }
+          render(hex, false, true);
+        });
+
+        hexInput.addEventListener('blur', function () {
+          var hex = parseHex(hexInput.value);
+          if (!hex) {
+            hexInput.value = colorInput.value.toUpperCase();
+            hexInput.removeAttribute('aria-invalid');
+            if (status) status.textContent = 'Enter a hex color such as #F47C30.';
+            return;
+          }
+          hexInput.value = hex;
+          render(hex, true, true);
+        });
+
+        render(parseHex(hexInput.value) || EXAMPLE, false, true);
       })();
     </script>
 
@@ -16134,7 +17009,7 @@
     </script>
 
     <footer class="lib-foot">
-      Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications · Prompting UI · Design tokens · iPhone polish. Digit-scroll <code>lh</code> + natural
+      Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Brand ≠ Primary · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications · Prompting UI · Design tokens · iPhone polish. Digit-scroll <code>lh</code> + natural
       <code>linear()</code> spring (~10% overshoot) · hard-coded glow buttons
       (violet / teal / slate) · nested radius · page-shell palettes · colour pairings · color combos · native
       <code>appearance: base-select</code> · rotating <code>conic-gradient</code> rim · SVG glass folder. No CDN.
@@ -16810,6 +17685,6 @@
     })();
   </script>
   <script src="shared/site-header.js?v=34" defer></script>
-  <script src="shared/section-fab.js?v=11" defer></script>
+  <script src="shared/section-fab.js?v=12" defer></script>
 </body>
 </html>
