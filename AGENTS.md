@@ -37,6 +37,7 @@ Multi-page **static** UI kit published on GitHub Pages from the `main` branch ro
 - Mebius charts: https://danielwongcx.github.io/ui-kit/mebius-free-charts.html (`mebius-free-charts.html`) — Guides. Gallery of the 62 free Mebius finance chart cards, redrawn in HTML, CSS, and SVG from each chart’s sample data. Sticky search and type filters. `prefers-reduced-motion` holds entrance motion. No build step.
 - Design sites: https://danielwongcx.github.io/ui-kit/design-sites.html (`design-sites.html`) — Guides. 100 curated design-reference sites in nine categories, plus four use practices. `#design-sites`. No build step.
 - Dashboards: https://danielwongcx.github.io/ui-kit/dashboards.html (`dashboards.html`) — Guides. Two separate interactive product studies: a catalog overview with an assistant Fix-all sequence, and Settle invoices with aging, filters, and agent progress. Studies after Divan Raj and Daniel / Axion, not official products. `prefers-reduced-motion` and `?reduce=1` hold motion on the final state. No build step.
+- Chart cards: https://danielwongcx.github.io/ui-kit/chart-cards.html (`chart-cards.html`) — Guides. Before / after study of a dashboard chart card: hierarchy, comparison, a two-series line, time ranges, and point selection. Not an official product. `prefers-reduced-motion` and `?reduce=1` skip the draw-in. No build step.
 - Premium feel: https://danielwongcx.github.io/ui-kit/premium-feel.html (`premium-feel.html`) — Guides. Why premium apps feel smooth: six physics studies (button spring, pull resistance, rolling digits, drag lift, ease-out expand, drawn check). Each card opens a 1/4-speed breakdown with a graph, a With / Without comparison, and a prompt and code you can copy. `prefers-reduced-motion` and `?reduce=1` hold the motion. No build step.
 - Agent system: https://danielwongcx.github.io/ui-kit/agent-design-system.html (`agent-design-system.html`) — Guides. rico’s (@_heyrico) five-layer design system an agent can follow: primitives, semantic tokens, components, blocks, and rules plus a review-screen skill. `prefers-reduced-motion` and `?reduce=1` hold motion. No build step.
 - Underlay DS: https://danielwongcx.github.io/ui-kit/underlay-design-system.html (`underlay-design-system.html`) — Guides. Marcel’s (@marcelkargul) Underlay design system: violet foundations, theme, semantic tokens, elevation and state, an Inter type scale with Trim, and four rules. `prefers-reduced-motion` and `?reduce=1` hold motion. No build step.
@@ -82,6 +83,7 @@ Notes:
 - Mebius charts → `mebius-free-charts.html`
 - Design sites → `design-sites.html`
 - Dashboards → `dashboards.html`
+- Chart cards → `chart-cards.html`
 
 **Motion** (desktop two-column flyout, mobile group):
 
