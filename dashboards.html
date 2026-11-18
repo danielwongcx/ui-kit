@@ -1,0 +1,1751 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dashboards · ui-kit</title>
+<meta name="description" content="Two interactive dashboard studies: a catalog overview with an assistant, and Settle invoices. Not official products.">
+<script>
+  (function () {
+    var q = location.search || "";
+    var forceReduce = /(?:^|[?&])reduce=1(?:&|$)/.test(q);
+    var forceMotion = /(?:^|[?&])motion=1(?:&|$)/.test(q);
+    var reduce = false;
+    try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+    if (forceMotion) reduce = false;
+    if (forceReduce) reduce = true;
+    if (reduce) document.documentElement.setAttribute("data-motion", "reduce");
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/site-header.css?v=9">
+<style>
+  .dash-main, .dash-main *, .toast, dialog, dialog * { box-sizing: border-box; }
+  body.dash {
+    margin: 0;
+    background: #efece4;
+    color: #1c1c22;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 14px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+  .dash-main :focus-visible { outline: 2px solid #1c1c22; outline-offset: 2px; }
+  button, input { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  h1, h2, h3, p { margin: 0; }
+  .sr {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+  .ico { width: 16px; height: 16px; display: block; flex: none; }
+  .intro {
+    width: min(1160px, 100%);
+    margin: 0 auto;
+    padding: 32px 32px 16px;
+  }
+  .intro h1 {
+    font-size: 32px;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .credit { font-size: 14px; color: #3a3a42; max-width: 62ch; }
+  .credit a { color: inherit; text-underline-offset: 2px; }
+  .stage { position: relative; padding: 32px; scroll-margin-top: 64px; }
+  .stage-land { background: #d5dccf; }
+  .stage-flora {
+    background: linear-gradient(180deg, #8eabc2 0%, #a9bfd0 22%, #d9c6be 52%, #c45c4c 78%, #1c3330 100%);
+    padding-bottom: 64px;
+  }
+  .land { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .bokeh { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+  .bokeh i { position: absolute; border-radius: 50%; filter: blur(48px); }
+  .b1 { width: 280px; height: 220px; background: #f0b08a; left: 6%; bottom: 8%; }
+  .b2 { width: 340px; height: 280px; background: #e25b4a; left: 24%; bottom: -6%; }
+  .b3 { width: 260px; height: 240px; background: #f3c8ba; right: 8%; bottom: 6%; }
+  .b4 { width: 220px; height: 180px; background: #6f946c; left: 2%; bottom: -4%; }
+  .b5 { width: 380px; height: 200px; background: #1a3330; left: 38%; bottom: -8%; opacity: 0.9; }
+  .b6 { width: 180px; height: 160px; background: #ead8c4; right: 18%; top: 12%; }
+  .b7 { width: 160px; height: 160px; background: #d25a78; left: 16%; top: 28%; opacity: 0.75; }
+  .b8 { width: 200px; height: 140px; background: #f6d7a8; right: 30%; bottom: 18%; opacity: 0.8; }
+  .frame { position: relative; z-index: 1; width: min(1160px, 100%); margin: 0 auto; }
+  .study-credit {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin: 0 0 12px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: rgba(251, 250, 245, 0.86);
+    color: #1c1c22;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .study-credit a { color: inherit; text-underline-offset: 2px; }
+
+  .browser {
+    background: #f7f6f3;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 24px 64px rgba(40, 48, 30, 0.18), 0 0 0 1px rgba(28, 28, 34, 0.06);
+  }
+  .chrome {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #f3f2ee;
+    border-bottom: 1px solid rgba(28, 28, 34, 0.06);
+  }
+  .traffic { display: flex; gap: 8px; }
+  .traffic i { width: 12px; height: 12px; border-radius: 50%; display: block; }
+  .traffic i:nth-child(1) { background: #ff5f57; }
+  .traffic i:nth-child(2) { background: #febc2e; }
+  .traffic i:nth-child(3) { background: #28c840; }
+  .chrome-nav { display: flex; gap: 4px; }
+  .icon-btn {
+    width: 32px; height: 32px; border: 0; border-radius: 8px;
+    background: transparent; color: #3a3a42;
+    display: grid; place-items: center; padding: 0;
+  }
+  .icon-btn:hover { background: rgba(28, 28, 34, 0.06); }
+  .url {
+    margin: 0 auto;
+    background: #fbfaf5;
+    border-radius: 8px;
+    padding: 4px 16px;
+    min-width: 160px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: #5e5e68;
+  }
+  .cat-app { display: grid; grid-template-columns: 208px minmax(0, 1fr); min-height: 640px; }
+  .cat-app.is-collapsed { grid-template-columns: 64px minmax(0, 1fr); }
+  .cat-app.is-collapsed .nav-label,
+  .cat-app.is-collapsed .kicker,
+  .cat-app.is-collapsed .badge,
+  .cat-app.is-collapsed .user-copy,
+  .cat-app.is-collapsed .brand-name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .side {
+    display: flex; flex-direction: column;
+    background: #f7f6f3;
+    border-right: 1px solid rgba(28, 28, 34, 0.08);
+    padding: 12px;
+    min-width: 0;
+  }
+  .brand { display: flex; align-items: center; gap: 8px; padding: 8px; font-weight: 700; letter-spacing: -0.03em; }
+  .brand-mark {
+    width: 24px; height: 24px; border-radius: 8px; background: #17171b; color: #fbfaf5;
+    display: grid; place-items: center;
+  }
+  .brand-mark .ico { width: 14px; height: 14px; }
+  .brand .icon-btn { margin-left: auto; }
+  .side-scroll { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+  .kicker {
+    margin: 16px 8px 4px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; color: #5e5e68;
+  }
+  .navitem {
+    display: flex; align-items: center; gap: 8px;
+    width: 100%; text-align: left; text-decoration: none;
+    padding: 8px 12px; border-radius: 8px; border: 0; background: transparent;
+    color: #1c1c22; font-size: 13px; font-weight: 500; white-space: nowrap;
+  }
+  .navitem:hover { background: rgba(28, 28, 34, 0.05); }
+  .navitem.is-active { background: #17171b; color: #fbfaf5; font-weight: 600; }
+  .badge {
+    margin-left: auto; font-size: 11px; font-weight: 600; color: #5e5e68;
+    background: #eceae4; border-radius: 999px; padding: 0 8px;
+  }
+  .is-active .badge { background: rgba(251, 250, 245, 0.16); color: #fbfaf5; }
+  .side-foot {
+    margin-top: auto; padding-top: 12px;
+    border-top: 1px solid rgba(28, 28, 34, 0.08);
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .user { display: flex; align-items: center; gap: 8px; padding: 8px; width: 100%; border: 0; background: transparent; text-align: left; border-radius: 8px; }
+  .user:hover { background: rgba(28, 28, 34, 0.05); }
+  .face { width: 32px; height: 32px; border-radius: 50%; flex: none; display: block; }
+  .user-copy strong { display: block; font-size: 13px; }
+  .user-copy span { display: block; font-size: 12px; color: #5e5e68; font-weight: 500; }
+  .cat-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 308px;
+    column-gap: 16px;
+    align-items: start;
+    min-width: 0;
+    background: #f7f6f3;
+  }
+  .cat-main.is-assistant-closed { grid-template-columns: minmax(0, 1fr); }
+  .cat-main.is-assistant-closed .copilot { display: none; }
+  .reopen { display: none !important; }
+  .cat-main.is-assistant-closed .reopen { display: inline-flex !important; }
+  .dash-main [hidden] { display: none !important; }
+  .cat-top { grid-column: 1 / -1; padding: 12px 16px 0; display: flex; flex-direction: column; gap: 16px; }
+  .appbar { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .crumb { font-size: 13px; color: #5e5e68; white-space: nowrap; }
+  .crumb b { color: #1c1c22; font-weight: 600; }
+  .search, .find, .settle-search {
+    display: flex; align-items: center; gap: 8px; min-width: 0;
+    background: #fbfaf5; border: 1px solid rgba(28, 28, 34, 0.08);
+    border-radius: 999px; padding: 8px 12px;
+  }
+  .search { margin-left: auto; width: 360px; flex: 0 0 auto; }
+  .search input, .find input, .settle-search input {
+    border: 0; background: transparent; width: 100%; min-width: 0;
+    font-size: 13px; outline: none; padding: 0;
+  }
+  kbd {
+    font-family: inherit; font-size: 11px; font-weight: 600; color: #5e5e68;
+    border: 1px solid rgba(28, 28, 34, 0.12); border-radius: 4px;
+    padding: 0 4px; background: #f4f3ee;
+  }
+  .app-tools { display: flex; align-items: center; gap: 4px; }
+  .bell { position: relative; }
+  .ping {
+    position: absolute; top: 4px; right: 4px; width: 8px; height: 8px;
+    background: #0f7a45; border-radius: 50%; box-shadow: 0 0 0 2px #f3f2ee;
+  }
+  .avatar-row { display: flex; }
+  .avatar-row span, .av {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: grid; place-items: center; font-size: 11px; font-weight: 700; flex: none;
+  }
+  .avatar-row span { margin-left: -8px; box-shadow: 0 0 0 2px #f7f6f3; }
+  .avatar-row span:first-child { margin-left: 0; }
+  .hello { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; }
+  .hello h2 { font-size: 28px; letter-spacing: -0.03em; line-height: 1.15; }
+  .hello .sub { margin-top: 4px; color: #5e5e68; font-size: 13px; }
+  .hello-actions, .actions, .dialog-actions { display: flex; gap: 8px; }
+  .btn {
+    border-radius: 8px; padding: 8px 12px; font-size: 13px; font-weight: 600;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    border: 1px solid transparent; background: transparent; white-space: nowrap;
+  }
+  .btn.solid { background: #17171b; color: #fbfaf5; }
+  .btn.solid:hover { background: #2a2a30; }
+  .btn.line { background: #fbfaf5; color: #1c1c22; border-color: rgba(28, 28, 34, 0.14); }
+  .btn.line:hover { background: #f1f0ea; }
+  .cat-content { grid-column: 1; grid-row: 2; padding: 16px 0 16px 16px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .brief {
+    background: #f1f0ea; border-radius: 16px; padding: 16px;
+    display: grid; grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); gap: 16px;
+  }
+  .brief-head { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .brief-head h3 { font-size: 14px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .brief-head p, .sub { color: #5e5e68; font-size: 13px; }
+  .pill {
+    display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 999px;
+    background: #fbfaf5; color: #5e5e68; font-size: 12px; font-weight: 600;
+  }
+  .drop-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .drop-head strong { font-size: 14px; }
+  .drop-num { font-size: 32px; letter-spacing: -0.04em; font-weight: 700; line-height: 1; margin-bottom: 12px; }
+  .drop-num span { font-size: 13px; font-weight: 500; color: #5e5e68; letter-spacing: 0; margin-left: 8px; }
+  .ticks {
+    height: 16px; border-radius: 4px;
+    background: linear-gradient(90deg, #16a34a 0 57.14%, #2554e0 57.14% 80.36%, #db2777 80.36% 100%);
+    -webkit-mask: repeating-linear-gradient(90deg, #000 0 3px, transparent 3px 5px);
+    mask: repeating-linear-gradient(90deg, #000 0 3px, transparent 3px 5px);
+    transform-origin: left; transform: scaleX(0); animation: growx 0.9s ease forwards;
+  }
+  .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; font-size: 12px; font-weight: 600; }
+  .legend i, .sw, .lg { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
+  .lg { border-radius: 50%; }
+  .c-ready { color: #0f7a45; } .c-review { color: #1d4ed8; } .c-block { color: #be185d; }
+  .sq-ready, .sw.g { background: #16a34a; }
+  .sq-review, .sw.b { background: #2554e0; }
+  .sq-block, .sw.p { background: #db2777; }
+  .sw.v { background: #7c5cbf; } .sw.t { background: #0f9d8a; } .sw.n { background: #8a8a92; }
+  .lg.l { background: #c4b6ee; } .lg.k { background: #1c1c22; } .lg.r { background: #f15a2a; }
+  .prio { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid rgba(28, 28, 34, 0.08); }
+  .prio:first-child { border-top: 0; padding-top: 0; }
+  .ncircle {
+    width: 32px; height: 32px; border-radius: 50%; background: #fbfaf5;
+    display: grid; place-items: center; font-size: 13px; font-weight: 700;
+  }
+  .prio strong { display: block; font-size: 14px; }
+  .prio .meta { display: block; margin-top: 4px; color: #5e5e68; font-size: 12px; }
+  .metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .metric {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    background: #fbfaf5; border-radius: 12px; padding: 16px; min-width: 0;
+    box-shadow: 0 0 0 1px rgba(28, 28, 34, 0.05);
+  }
+  .metric .k, .stat .k { display: block; font-size: 12px; font-weight: 600; color: #5e5e68; margin-bottom: 8px; }
+  .metric strong, .stat strong, .money { font-size: 28px; letter-spacing: -0.03em; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .delta { display: block; margin: 4px 0 0; font-style: normal; font-size: 12px; font-weight: 700; color: #0f7a45; }
+  .metric strong, .stat strong { display: block; }
+  .spark { width: 96px; height: 32px; flex: none; }
+  .spark .line { stroke-dasharray: 180; stroke-dashoffset: 180; animation: draw 1.1s ease forwards; }
+  .pipe h3, .wip h3, .aging h3 { font-size: 16px; letter-spacing: -0.02em; }
+  .pipe .sub, .wip .sub { margin: 4px 0 16px; }
+  .pipe-cols, .avgs, .wip-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  .pipe-col { position: relative; background: transparent; border: 0; padding: 0; text-align: left; }
+  .pipe-col .k { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: #5e5e68; margin-bottom: 4px; }
+  .pipe-col strong { font-size: 28px; letter-spacing: -0.03em; }
+  .tip {
+    display: none; position: absolute; z-index: 3; left: 0; top: calc(100% + 8px);
+    width: min(240px, 70vw); background: #fbfaf5; border-radius: 12px; padding: 16px;
+    box-shadow: 0 16px 48px rgba(28, 28, 34, 0.16), 0 0 0 1px rgba(28, 28, 34, 0.06);
+    font-size: 13px;
+  }
+  .pipe-col:hover .tip, .pipe-col:focus-visible .tip { display: block; }
+  .tip b { display: block; margin-bottom: 8px; }
+  .tip p { color: #3a3a42; margin-top: 4px; }
+  .tip .gap { color: #6d4ea8; font-weight: 700; }
+  .funnel { position: relative; height: 96px; margin-top: 12px; }
+  .funnel-svg { position: absolute; inset: 0; width: 100%; height: 100%; transform-origin: bottom; transform: scaleY(0); animation: rise 0.8s ease forwards; }
+  .funnel-caps {
+    position: absolute; inset: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px; pointer-events: none;
+  }
+  .funnel-caps > div {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    padding: 0 8px 12px; overflow: hidden; min-width: 0;
+  }
+  .funnel-caps span { position: static; font-size: 12px; font-weight: 700; color: #1c1c22; }
+  .fpill { background: #fbfaf5; border-radius: 999px; padding: 4px 8px; box-shadow: 0 4px 12px rgba(28, 28, 34, 0.08); }
+  .avgs { margin-top: 12px; }
+  .avgs p { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #5e5e68; min-width: 0; }
+  .avgs b { color: #1c1c22; font-size: 13px; }
+  .avgs .hot b { color: #be185d; }
+  .wip-grid { gap: 16px; }
+  .stat .k { display: flex; align-items: center; gap: 8px; }
+  .copilot {
+    grid-column: 2; grid-row: 2; align-self: start;
+    margin: 16px 16px 16px 0;
+    background: #fbfaf5; border-radius: 16px; padding: 16px;
+    box-shadow: 0 16px 48px rgba(28, 28, 34, 0.12), 0 0 0 1px rgba(28, 28, 34, 0.06);
+    min-width: 0;
+  }
+  .cop-head { display: flex; align-items: center; gap: 8px; }
+  .cop-head strong { font-size: 14px; }
+  .beta {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+    border: 1px solid rgba(28, 28, 34, 0.16); border-radius: 999px; padding: 0 8px; color: #5e5e68;
+  }
+  .cop-tools { margin-left: auto; display: flex; gap: 4px; }
+  .when { text-align: right; color: #5e5e68; font-size: 12px; margin: 8px 0; }
+  .bubble {
+    margin: 8px 0 8px 32px; background: #f1f0ea; border-radius: 12px; padding: 12px;
+    font-size: 13px; font-weight: 600;
+  }
+  .reply { font-size: 13px; margin: 8px 0; }
+  .product {
+    width: 100%; display: grid; grid-template-columns: 32px minmax(0, 1fr) auto;
+    gap: 8px; align-items: center; text-align: left; background: #fbfaf5;
+    border: 1px solid rgba(28, 28, 34, 0.08); border-radius: 12px; padding: 8px; margin-top: 8px;
+  }
+  .product b { display: block; font-size: 13px; }
+  .issue { display: block; color: #9f1239; font-size: 12px; font-weight: 600; }
+  .detail { margin: 4px 0 0 48px; font-size: 12px; color: #5e5e68; }
+  .actions { margin-top: 12px; }
+  .actions .btn { flex: 1; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .chips button {
+    border-radius: 999px; border: 1px solid rgba(28, 28, 34, 0.12); background: #fbfaf5;
+    padding: 8px 12px; font-size: 12px; font-weight: 600;
+  }
+  .chips button:hover { background: #f1f0ea; }
+  .composer { margin-top: 12px; border: 1px solid rgba(28, 28, 34, 0.1); border-radius: 16px; padding: 12px; background: #fbfaf5; }
+  .composer:focus-within { box-shadow: 0 0 0 2px #1c1c22; }
+  .composer input:focus-visible { outline: none; }
+  .composer-bar { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+  .scope {
+    border: 0; border-radius: 999px; background: #f1f0ea; padding: 4px 8px;
+    font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;
+  }
+  .send {
+    margin-left: auto; width: 32px; height: 32px; border-radius: 50%; border: 0;
+    background: #17171b; color: #fbfaf5; display: grid; place-items: center; padding: 0;
+  }
+  .fix-card, .success {
+    margin-top: 12px; background: #f4f3ee; border-radius: 12px; padding: 12px;
+  }
+  .success { background: #fbfaf5; border: 1px solid rgba(28, 28, 34, 0.08); }
+  .fix-top, .sum-top { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; }
+  .fix-top span, .elapsed { margin-left: auto; color: #5e5e68; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .ascii {
+    margin: 12px 0; background: #fbfaf5; border-radius: 8px; padding: 8px;
+    color: #6d4ea8; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 11px; line-height: 1.35; white-space: pre; overflow: hidden; min-height: 64px;
+  }
+  .barline { height: 8px; background: #e6e2da; border-radius: 999px; overflow: hidden; }
+  .barline span { display: block; height: 100%; width: 0; background: #17171b; }
+  .fix-status { margin-top: 8px; font-size: 12px; color: #5e5e68; }
+  #action-slot.is-fading { opacity: 0; transition: opacity 0.28s ease; }
+  .ok {
+    width: 16px; height: 16px; border-radius: 50%; background: #0f7a45; color: #fbfaf5;
+    display: grid; place-items: center; font-size: 11px;
+  }
+  .sum-row {
+    display: grid; grid-template-columns: 8px minmax(0, 1fr) auto auto; gap: 8px; align-items: center;
+    padding: 8px 0; border-top: 1px solid rgba(28, 28, 34, 0.06); font-size: 13px;
+  }
+  .sq { width: 8px; height: 8px; border-radius: 2px; }
+  .sq.teal { background: #0f9d8a; } .sq.blue { background: #3454d1; } .sq.purp { background: #7c5cbf; }
+  .sum-row em { color: #5e5e68; font-style: normal; }
+  .text-btn {
+    background: none; border: 0; padding: 8px 0 0; font-weight: 600; font-size: 13px;
+    color: #1c1c22; text-decoration: underline; text-underline-offset: 2px;
+  }
+  .thumb {
+    width: 32px; height: 32px; border-radius: 8px; background: #efe6fb;
+    display: grid; place-items: center; color: #5c4a86;
+  }
+  .thumb.person { background: #d9e4fb; color: #243056; }
+
+  .settle-window {
+    background: #f3f0e8; border-radius: 32px; padding: 16px;
+    box-shadow: 0 32px 96px rgba(20, 24, 32, 0.28);
+    width: 100%;
+  }
+  .settle-top {
+    display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center; gap: 16px; margin-bottom: 16px;
+  }
+  .markrow { display: flex; align-items: center; gap: 8px; font-weight: 700; letter-spacing: -0.03em; }
+  .mark {
+    width: 16px; height: 16px; border-radius: 50%; background: #17171b;
+    box-shadow: inset 5px 4px 0 0 #fbfaf5;
+  }
+  .settle-nav {
+    justify-self: center; display: inline-flex; flex-wrap: wrap; gap: 4px;
+    padding: 4px; background: #e7e4dc; border-radius: 999px; max-width: 100%;
+  }
+  .settle-nav button {
+    border: 0; background: transparent; border-radius: 999px; padding: 8px 12px;
+    font-size: 13px; font-weight: 600; color: #3a3a42;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .settle-nav button[aria-current="page"] { background: #17171b; color: #fbfaf5; }
+  .settle-tools { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .settle-search { width: 148px; }
+  .mq { background: #d9c4f2; color: #3d3470; }
+  .ak { background: #f3c7b4; color: #4a2e24; }
+  .js { background: #f7e3c4; color: #4a3424; }
+  .sand { background: #f0c7b0; color: #4a2e24; }
+  .stone { background: #e4e0da; color: #2c2c32; }
+  .lilac { background: #ddd4f5; color: #332c5c; }
+  .peach { background: #f3d2c4; color: #4a2e24; }
+  .mist { background: #e7e4de; color: #2c2c32; }
+  .violet { background: #e4d8f6; color: #332c5c; }
+  .inv-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+  .eyebrow { color: #5e5e68; font-size: 13px; margin-bottom: 4px; }
+  .inv-head h2, .placeholder h2 { font-size: 32px; letter-spacing: -0.03em; line-height: 1.1; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .filters button[data-tab] {
+    border: 0; background: transparent; border-radius: 999px; padding: 8px 12px;
+    font-size: 13px; font-weight: 600; color: #3a3a42;
+  }
+  .filters button[data-tab] span { color: #5e5e68; font-weight: 500; margin-left: 4px; }
+  .filters button[aria-pressed="true"] {
+    background: #fbfaf5; color: #1c1c22;
+    box-shadow: 0 4px 12px rgba(28, 28, 34, 0.08), 0 0 0 1px rgba(28, 28, 34, 0.06);
+  }
+  .top-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(240px, 0.85fr); gap: 16px; margin-bottom: 16px; }
+  .aging,   .table-card, .placeholder {
+    background: #fbfaf5; border-radius: 16px; padding: 16px; min-width: 0;
+  }
+  .stage { overflow: hidden; }
+  .aging-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; margin-bottom: 16px; }
+  .aging-head p { color: #5e5e68; font-size: 12px; margin-top: 4px; }
+  .aging-head .legend { margin-top: 0; color: #5e5e68; font-weight: 600; }
+  .buckets { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+  .dots { display: grid; grid-template-columns: repeat(8, 8px); grid-auto-rows: 8px; gap: 4px; min-height: 64px; }
+  .dots i { border-radius: 50%; background: rgba(28, 28, 34, 0.08); }
+  .dots i.l { background: #c4b6ee; } .dots i.k { background: #1c1c22; } .dots i.r { background: #f15a2a; }
+  .dots i.l, .dots i.k, .dots i.r { opacity: 0; animation: pop 0.4s forwards; animation-delay: var(--d, 0ms); }
+  .money { display: block; margin-top: 12px; font-size: 16px; }
+  .bucket .sub { display: block; margin-top: 4px; font-size: 12px; color: #5e5e68; }
+  .due-card {
+    position: relative; border-radius: 16px; padding: 16px; color: #fbfaf5; min-height: 100%;
+    display: flex; flex-direction: column; overflow: hidden;
+    background:
+      radial-gradient(120px 80px at 72% 42%, rgba(255, 196, 150, 0.55), transparent 70%),
+      radial-gradient(140px 100px at 36% 78%, rgba(196, 70, 96, 0.5), transparent 72%),
+      radial-gradient(100px 80px at 84% 80%, rgba(70, 86, 140, 0.45), transparent 70%),
+      linear-gradient(165deg, #3a342f 0%, #6b5348 42%, #31445f 78%, #1c2430 100%);
+  }
+  .due-card h3 { font-size: 13px; font-weight: 600; color: rgba(251, 250, 245, 0.82); }
+  .due-go {
+    position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%;
+    border: 1px solid rgba(251, 250, 245, 0.4); background: transparent; color: #fbfaf5;
+    display: grid; place-items: center; padding: 0;
+  }
+  .led { display: flex; align-items: end; gap: 8px; min-height: 64px; margin: 16px 0; }
+  .glyph { display: grid; grid-template-columns: repeat(5, 5px); grid-auto-rows: 5px; gap: 3px; }
+  .glyph.dotg { grid-template-columns: repeat(2, 5px); }
+  .glyph i { border-radius: 50%; background: transparent; }
+  .glyph i.on { background: #fbfaf5; box-shadow: 0 0 8px rgba(251, 250, 245, 0.6); }
+  .week { margin-top: auto; height: 128px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+  .wcol { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 8px; height: 100%; }
+  .slot { flex: 1; display: flex; align-items: flex-end; justify-content: center; width: 100%; }
+  .bar {
+    width: 32px; height: var(--h); border-radius: 999px; transform-origin: bottom; transform: scaleY(0);
+    animation: rise 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    background: linear-gradient(#fbfaf5, rgba(251, 250, 245, 0.72));
+    box-shadow: 0 0 16px rgba(251, 250, 245, 0.45);
+  }
+  .bar.dim { background: linear-gradient(rgba(251, 250, 245, 0.68), rgba(251, 250, 245, 0.28)); box-shadow: 0 0 12px rgba(251, 250, 245, 0.18); }
+  .wcol:nth-child(2) .bar { animation-delay: 0.08s; }
+  .wcol:nth-child(3) .bar { animation-delay: 0.16s; }
+  .wcol:nth-child(4) .bar { animation-delay: 0.24s; }
+  .wcol:nth-child(5) .bar { animation-delay: 0.32s; }
+  .week em { font-style: normal; font-size: 12px; font-weight: 600; color: rgba(251, 250, 245, 0.78); }
+  .table-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
+  .table-head h3 { font-size: 16px; }
+  #table-detail { color: #5e5e68; font-weight: 500; font-size: 13px; margin-left: 8px; }
+  .find { width: min(220px, 100%); }
+  .inv { width: 100%; border-collapse: separate; border-spacing: 0 4px; }
+  .inv th { text-align: left; padding: 4px 12px; }
+  .inv th button {
+    background: none; border: 0; padding: 0; font-size: 12px; font-weight: 600; color: #5e5e68;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .inv td { padding: 8px 12px; font-size: 13px; vertical-align: middle; font-variant-numeric: tabular-nums; }
+  tr.is-pick td { background: #f3f0e8; }
+  tr.is-pick td:first-child { border-radius: 12px 0 0 12px; }
+  tr.is-pick td:last-child { border-radius: 0 12px 12px 0; }
+  .who { display: flex; align-items: center; gap: 12px; }
+  .who b { display: block; font-size: 13px; }
+  .who small { display: block; color: #5e5e68; font-size: 12px; }
+  .is-late { color: #b23a28; font-weight: 600; }
+  .status { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
+  .status i { width: 8px; height: 8px; border-radius: 50%; background: #1c1c22; }
+  .status[data-tone="risk"] { color: #9a3412; }
+  .status[data-tone="risk"] i { background: #e25a2a; }
+  .status[data-tone="good"] { color: #5b4d96; }
+  .status[data-tone="good"] i { background: #b7a6e6; }
+  .track { display: inline-flex; gap: 4px; }
+  .track i { width: 16px; height: 8px; border-radius: 999px; background: #e6e2da; position: relative; overflow: hidden; }
+  .track i::after {
+    content: ""; position: absolute; inset: 0; background: #17171b;
+    transform: scaleX(0); transform-origin: left;
+  }
+  .track i.on::after { transform: scaleX(1); transition: transform 0.35s ease; }
+  .track i.risk::after { background: #e25a2a; }
+  td.trail, .trail { text-align: right; }
+  .msg, .chev {
+    width: 32px; height: 32px; border-radius: 50%; border: 0; padding: 0;
+    display: grid; place-items: center;
+  }
+  .msg { background: #17171b; color: #fbfaf5; }
+  .chev { background: transparent; color: #3a3a42; }
+  .empty { padding: 16px; color: #5e5e68; }
+  .placeholder { min-height: 240px; }
+  .placeholder p { margin-top: 8px; color: #5e5e68; max-width: 42ch; }
+  dialog {
+    border: 0; border-radius: 16px; padding: 24px; background: #fbfaf5; color: #1c1c22;
+    width: min(400px, calc(100% - 32px));
+    box-shadow: 0 24px 64px rgba(28, 28, 34, 0.24);
+  }
+  dialog::backdrop { background: rgba(28, 28, 34, 0.46); }
+  dialog h3 { font-size: 18px; margin-bottom: 16px; letter-spacing: -0.02em; }
+  dialog label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 600; margin-bottom: 12px; }
+  dialog input {
+    border: 1px solid rgba(28, 28, 34, 0.14); border-radius: 8px; padding: 8px 12px; background: #f7f6f2;
+  }
+  .toast {
+    position: fixed; left: 50%; bottom: 24px; z-index: 70;
+    transform: translateX(-50%) translateY(12px);
+    background: #17171b; color: #fbfaf5; padding: 12px 16px; border-radius: 999px;
+    font-size: 13px; font-weight: 600; opacity: 0; pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .toast.is-on { opacity: 1; transform: translateX(-50%) translateY(0); }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes growx { to { transform: scaleX(1); } }
+  @keyframes rise { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  @keyframes pop { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: scale(1); } }
+  html[data-motion="reduce"] .ticks,
+  html[data-motion="reduce"] .spark .line,
+  html[data-motion="reduce"] .funnel-svg,
+  html[data-motion="reduce"] .bar,
+  html[data-motion="reduce"] .dots i.l,
+  html[data-motion="reduce"] .dots i.k,
+  html[data-motion="reduce"] .dots i.r,
+  html[data-motion="reduce"] .track i.on::after,
+  html[data-motion="reduce"] .toast,
+  html[data-motion="reduce"] #action-slot.is-fading {
+    animation: none !important; transition: none !important; transform: none !important; opacity: 1 !important;
+    stroke-dashoffset: 0 !important;
+  }
+  @media (max-width: 1100px) {
+    .cat-app, .cat-app.is-collapsed { display: block; }
+    .collapse { display: none; }
+    .side {
+      flex-direction: row; align-items: center; gap: 8px; overflow-x: auto;
+      border-right: 0; border-bottom: 1px solid rgba(28, 28, 34, 0.08); padding: 8px;
+    }
+    .side-scroll, .side-foot { flex: none; flex-direction: row; margin: 0; padding: 0; border: 0; align-items: center; }
+    .kicker { display: none; }
+    .cat-main, .cat-main.is-assistant-closed { display: block; }
+    .cat-content { padding: 16px; }
+    .copilot { margin: 0 16px 16px; max-height: none; }
+  }
+  @media (max-width: 720px) {
+    .intro { padding: 16px 16px 8px; }
+    .intro h1, .inv-head h2, .placeholder h2 { font-size: 28px; }
+    .stage { padding: 16px; }
+    .stage-flora { padding-bottom: 32px; }
+    .settle-window { border-radius: 16px; padding: 12px; }
+    .settle-top { display: flex; flex-direction: column; align-items: stretch; }
+    .settle-nav { justify-content: flex-start; }
+    .settle-tools { width: 100%; }
+    .settle-search { flex: 1; width: auto; }
+    .hello { flex-direction: column; align-items: flex-start; }
+    .hello-actions { width: 100%; }
+    .hello-actions .btn { flex: 1; }
+    .appbar { flex-wrap: wrap; }
+    .search { width: 100%; margin-left: 0; order: 3; }
+    .brief, .metrics, .pipe-cols, .avgs, .wip-grid, .top-grid, .buckets { grid-template-columns: 1fr 1fr; }
+    .metrics { grid-template-columns: 1fr; }
+    .brief { grid-template-columns: 1fr; }
+    .buckets { grid-template-columns: 1fr 1fr; }
+    .top-grid { grid-template-columns: 1fr; }
+    .funnel-caps span { font-size: 11px; }
+    .inv { min-width: 0; }
+  }
+  @media (min-width: 721px) and (max-width: 1100px) {
+    .table-card { overflow-x: auto; }
+    .inv { min-width: 720px; }
+  }
+  @media (max-width: 720px) {
+    .inv thead { display: none; }
+    .inv, .inv tbody, .inv tr, .inv td { display: block; width: auto; }
+    .inv tr { position: relative; padding: 12px; margin-bottom: 8px; background: #fbfaf5; border-radius: 12px; }
+    tr.is-pick td { background: transparent; }
+    tr.is-pick { background: #f3f0e8; }
+    .inv td { padding: 4px 0; }
+    .inv td[data-label]::before {
+      content: attr(data-label); display: block; font-size: 11px; font-weight: 600; color: #5e5e68;
+    }
+    td.trail { position: absolute; top: 12px; right: 12px; padding: 0; }
+    .url { min-width: 0; flex: 1; }
+  }
+</style>
+</head>
+<body class="dash" data-page="dashboards">
+<main class="dash-main">
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0" aria-hidden="true">
+  <symbol id="i-grid" viewBox="0 0 16 16"><path d="M2.5 2.5h4.2v4.2H2.5zM9.3 2.5h4.2v4.2H9.3zM2.5 9.3h4.2v4.2H2.5zM9.3 9.3h4.2v4.2H9.3z" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+  <symbol id="i-box" viewBox="0 0 16 16"><path d="M3 5.5 8 3l5 2.5V11L8 13.5 3 11z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M3 5.5 8 8l5-2.5M8 8v5.5" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+  <symbol id="i-image" viewBox="0 0 16 16"><rect x="2.5" y="3.5" width="11" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="6" cy="7" r="1" fill="currentColor"/><path d="M3.5 11.5 6.5 8.5 9 11l1.5-1.5 2 2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+  <symbol id="i-nodes" viewBox="0 0 16 16"><circle cx="4" cy="8" r="1.6" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="4" r="1.6" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="1.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 7.2 10.4 4.6M5.5 8.8l4.9 2.6" stroke="currentColor" stroke-width="1.4"/></symbol>
+  <symbol id="i-bars" viewBox="0 0 16 16"><path d="M3 13V8M8 13V3M13 13V6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 16 16"><path d="M4 13V4h5M9 4v4h4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 8.2 7.2 10l3.4-4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 16 16"><path d="M8 2.5 13 4.5v4.2c0 2.8-2 4.4-5 5.3-3-.9-5-2.5-5-5.3V4.5z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M5.8 8.1 7.3 9.6 10.3 6.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-help" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M6.1 6.4a1.9 1.9 0 1 1 2.5 1.8c-.6.3-.8.7-.8 1.3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="8" cy="11.6" r="0.7" fill="currentColor"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.1" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.8v2M8 12.2v2M1.8 8h2M12.2 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M12.5 3.5 11.1 4.9M4.9 11.1 3.5 12.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-dots" viewBox="0 0 16 16"><circle cx="4" cy="8" r="1.1" fill="currentColor"/><circle cx="8" cy="8" r="1.1" fill="currentColor"/><circle cx="12" cy="8" r="1.1" fill="currentColor"/></symbol>
+  <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M10.2 10.2 13.5 13.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 16 16"><path d="M4 11.5h8l-.8-1.4V7.2a3.2 3.2 0 0 0-6.4 0v2.9z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M7 13.2a1 1 0 0 0 2 0" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 16 16"><path d="M8 1.6 9.2 6 13.6 8 9.2 10 8 14.4 6.8 10 2.4 8 6.8 6z" fill="currentColor"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v3.2l2 1.4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-close" viewBox="0 0 16 16"><path d="M4 4l8 8M12 4 4 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 16 16"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 16 16"><rect x="6" y="2" width="4" height="7" rx="2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M4.2 7.5a3.8 3.8 0 0 0 7.6 0M8 11.3V14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-send" viewBox="0 0 16 16"><path d="M3.5 8h8M8 4.5 11.5 8 8 11.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-down" viewBox="0 0 16 16"><path d="M8 3v7M5 8l3 3 3-3M3.5 13h9" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-home" viewBox="0 0 16 16"><path d="M3 7.2 8 3.2l5 4V13H3z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+  <symbol id="i-file" viewBox="0 0 16 16"><path d="M5 2.5h4l3 3V13.5H5z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M9 2.8V6h3" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+  <symbol id="i-people" viewBox="0 0 16 16"><circle cx="6" cy="6" r="2" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="11" cy="6.5" r="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2.8 12.5c.6-1.8 2-2.7 3.2-2.7s2.6.9 3.2 2.7M9.2 10c.8-.3 1.6-.2 2.4.4 1 .7 1.4 1.5 1.6 2.1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-back" viewBox="0 0 16 16"><path d="M10 3.5 5.5 8 10 12.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-fwd" viewBox="0 0 16 16"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-reload" viewBox="0 0 16 16"><path d="M13 8a5 5 0 1 1-1.4-3.4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M12 2.8V5.4H9.4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-msg" viewBox="0 0 16 16"><path d="M3 4h10v6.5H6.2L3 12.5z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+  <symbol id="i-panel" viewBox="0 0 16 16"><rect x="2.5" y="3" width="11" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M6 3v10" stroke="currentColor" stroke-width="1.4"/></symbol>
+</svg>
+
+<header class="intro">
+  <h1>Dashboards</h1>
+  <p class="credit"><a href="#catalog">Catalog</a> is a study after <a href="https://x.com/desdivj/status/2122652755521364344" target="_blank" rel="noopener noreferrer">Divan Raj</a>. <a href="#settle">Settle invoices</a> is a study after <a href="https://x.com/byDaniel_Axion/status/2122354144363102353" target="_blank" rel="noopener noreferrer">Daniel / Axion</a>.</p>
+</header>
+
+<section class="stage stage-land" id="catalog">
+  <svg class="land" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#e6ebe4"/>
+        <stop offset="1" stop-color="#d3dccb"/>
+      </linearGradient>
+    </defs>
+    <rect width="1440" height="900" fill="url(#sky)"/>
+    <circle cx="240" cy="150" r="80" fill="#f4edd6"/>
+    <path d="M0 390C200 330 340 380 540 320c240-70 360 20 560-30 120-30 240 20 340-20v560H0Z" fill="#c9d4b6"/>
+    <path d="M0 500C220 440 400 540 680 470c260-60 420 40 760-40v470H0Z" fill="#b7c79a"/>
+    <path d="M0 640C220 590 380 710 660 640c260-60 420 50 780-30v290H0Z" fill="#d4c48a"/>
+    <path d="M0 760C280 700 520 830 880 760c220-40 360 30 560-20v160H0Z" fill="#8ea06c"/>
+  </svg>
+  <div class="frame">
+    <p class="study-credit"><span>Study after</span><a href="https://x.com/desdivj/status/2122652755521364344" target="_blank" rel="noopener noreferrer">Divan Raj</a></p>
+    <div class="browser">
+      <div class="chrome">
+        <div class="traffic" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="chrome-nav">
+          <button type="button" class="icon-btn" data-act="back" aria-label="Back"><svg class="ico"><use href="#i-back"/></svg></button>
+          <button type="button" class="icon-btn" data-act="forward" aria-label="Forward"><svg class="ico"><use href="#i-fwd"/></svg></button>
+        </div>
+        <div class="url">catalog.studio</div>
+        <button type="button" class="icon-btn" data-act="reload" aria-label="Reload"><svg class="ico"><use href="#i-reload"/></svg></button>
+      </div>
+      <div class="cat-app" id="cat-app">
+        <aside class="side">
+          <div class="brand">
+            <span class="brand-mark" aria-hidden="true"><svg class="ico"><use href="#i-grid"/></svg></span>
+            <span class="brand-name">Catalog</span>
+            <button type="button" class="icon-btn collapse" data-act="collapse" aria-expanded="true" aria-label="Collapse sidebar"><svg class="ico"><use href="#i-panel"/></svg></button>
+          </div>
+          <div class="side-scroll">
+            <p class="kicker">Core</p>
+            <a class="navitem is-active" href="#catalog" aria-current="page" aria-label="Overview"><svg class="ico" aria-hidden="true"><use href="#i-grid"/></svg><span class="nav-label">Overview</span></a>
+            <button type="button" class="navitem" data-act="soon" data-name="Products" aria-label="Products"><svg class="ico" aria-hidden="true"><use href="#i-box"/></svg><span class="nav-label">Products</span><span class="badge">214</span></button>
+            <button type="button" class="navitem" data-act="soon" data-name="Digital Assets" aria-label="Digital Assets"><svg class="ico" aria-hidden="true"><use href="#i-image"/></svg><span class="nav-label">Digital Assets</span></button>
+            <button type="button" class="navitem" data-act="soon" data-name="Taxonomy" aria-label="Taxonomy"><svg class="ico" aria-hidden="true"><use href="#i-nodes"/></svg><span class="nav-label">Taxonomy</span></button>
+            <button type="button" class="navitem" data-act="soon" data-name="Reports" aria-label="Reports"><svg class="ico" aria-hidden="true"><use href="#i-bars"/></svg><span class="nav-label">Reports</span></button>
+            <p class="kicker">Workflows</p>
+            <button type="button" class="navitem" data-act="soon" data-name="Enrichment" aria-label="Enrichment"><svg class="ico" aria-hidden="true"><use href="#i-branch"/></svg><span class="nav-label">Enrichment</span><span class="badge">3</span></button>
+            <button type="button" class="navitem" data-act="soon" data-name="SKU Onboarding" aria-label="SKU Onboarding"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span class="nav-label">SKU Onboarding</span></button>
+            <button type="button" class="navitem" data-act="soon" data-name="Compliance" aria-label="Compliance"><svg class="ico" aria-hidden="true"><use href="#i-shield"/></svg><span class="nav-label">Compliance</span></button>
+          </div>
+          <div class="side-foot">
+            <button type="button" class="navitem" data-act="soon" data-name="Help" aria-label="Help"><svg class="ico" aria-hidden="true"><use href="#i-help"/></svg><span class="nav-label">Help</span></button>
+            <button type="button" class="navitem" data-act="soon" data-name="Settings" aria-label="Settings"><svg class="ico" aria-hidden="true"><use href="#i-gear"/></svg><span class="nav-label">Settings</span></button>
+            <button type="button" class="user" data-act="workspace" aria-label="Jessica Maxx, Sandbox workspace">
+              <svg class="face" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#e7b89a"/><path d="M6 26c2-6 6-8 10-8s8 2 10 8" fill="#2c241f"/><path d="M7 14c1-7 6-10 10-9 5 1 8 5 8 10-4-2-8-1-12 1-3 1-5 0-6-2z" fill="#2a211c"/><circle cx="12.5" cy="15" r="1.1" fill="#2a211c"/><circle cx="19.5" cy="15" r="1.1" fill="#2a211c"/></svg>
+              <span class="user-copy"><strong>Jessica Maxx</strong><span>Sandbox workspace</span></span>
+              <svg class="ico" aria-hidden="true" style="margin-left:auto"><use href="#i-dots"/></svg>
+            </button>
+          </div>
+        </aside>
+        <div class="cat-main" id="cat-main">
+          <div class="cat-top">
+            <div class="appbar">
+              <p class="crumb">Workspace / <b>Overview</b></p>
+              <label class="search">
+                <svg class="ico" aria-hidden="true"><use href="#i-search"/></svg>
+                <span class="sr">Search products, SKUs, assets</span>
+                <input id="catalog-search" type="search" placeholder="Search products, SKUs, assets…" autocomplete="off">
+                <kbd>⌘K</kbd>
+              </label>
+              <div class="app-tools">
+                <button type="button" class="icon-btn" data-act="quick-add" aria-label="Quick add"><svg class="ico"><use href="#i-plus"/></svg></button>
+                <button type="button" class="icon-btn" data-act="soon" data-name="Help" aria-label="Help"><svg class="ico"><use href="#i-help"/></svg></button>
+                <button type="button" class="icon-btn bell" data-act="bell" aria-label="Notifications"><svg class="ico"><use href="#i-bell"/></svg><i class="ping" aria-hidden="true"></i></button>
+                <div class="avatar-row" role="img" aria-label="Jessica and the workspace">
+                  <svg class="face" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#e7b89a"/><path d="M6 27c2-7 6-9 10-9s8 2 10 9" fill="#243056"/><path d="M8 13c1-6 5-9 9-8 4 1 7 5 7 9-4-1-7 0-11 2-2 1-4 0-5-3z" fill="#3a2a24"/><circle cx="13" cy="15" r="1" fill="#2a211c"/><circle cx="19" cy="15" r="1" fill="#2a211c"/></svg>
+                  <span class="ak" aria-hidden="true"></span>
+                </div>
+              </div>
+            </div>
+            <div class="hello">
+              <div>
+                <h2>Good morning, Jessica</h2>
+                <p class="sub">Monday, Nov 16 · 12,486 products across 5 categories</p>
+              </div>
+              <div class="hello-actions">
+                <button type="button" class="btn line" data-act="export"><svg class="ico" aria-hidden="true"><use href="#i-down"/></svg>Export</button>
+                <button type="button" class="btn solid" data-act="new-product"><svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg>New product</button>
+                <button type="button" class="btn line reopen" data-act="open-assistant"><svg class="ico" aria-hidden="true"><use href="#i-spark"/></svg>Assistant</button>
+              </div>
+            </div>
+          </div>
+          <div class="cat-content">
+            <section class="brief" aria-labelledby="brief-title">
+              <div class="brief-head">
+                <h3 id="brief-title">Today’s briefing <span class="pill">Mon, Nov 16</span></h3>
+                <p>3 priorities · ~2 h of work</p>
+              </div>
+              <div class="drop">
+                <div class="drop-head">
+                  <strong>Holiday Drop</strong>
+                  <span class="pill">Launches in 4 days</span>
+                </div>
+                <p class="drop-num">32 <span>of 56 products ready</span></p>
+                <div class="ticks" role="img" aria-label="Ready 32, in review 13, blocked 11"></div>
+                <p class="legend">
+                  <span class="c-ready"><i class="sq-ready"></i> Ready 32</span>
+                  <span class="c-review"><i class="sq-review"></i> In review 13</span>
+                  <span class="c-block"><i class="sq-block"></i> Blocked 11</span>
+                </p>
+              </div>
+              <div class="prios">
+                <div class="prio">
+                  <span class="ncircle">1</span>
+                  <div>
+                    <strong>Translate 24 Holiday Drop products</strong>
+                    <span class="meta">FR and DE copy missing · blocks launch</span>
+                  </div>
+                  <button type="button" class="btn solid" data-act="translate">Translate →</button>
+                </div>
+                <div class="prio">
+                  <span class="ncircle">2</span>
+                  <div>
+                    <strong>Write 38 missing descriptions</strong>
+                    <span class="meta">12 are in the Holiday Drop</span>
+                  </div>
+                </div>
+                <div class="prio">
+                  <span class="ncircle">3</span>
+                  <div>
+                    <strong>Tag 112 product images</strong>
+                    <span class="meta">Mostly Footwear and Watches</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <div class="metrics">
+              <article class="metric">
+                <div>
+                  <span class="k">Completeness</span>
+                  <p><strong>82%</strong><em class="delta">+3.1 pt</em></p>
+                </div>
+                <svg class="spark" viewBox="0 0 120 40" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="sg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7c5cbf" stop-opacity="0.28"/><stop offset="1" stop-color="#7c5cbf" stop-opacity="0"/></linearGradient>
+                  </defs>
+                  <path d="M0 30C14 28 22 18 36 22S58 14 72 16 96 8 120 6V40H0Z" fill="url(#sg1)"/>
+                  <path class="line" d="M0 30C14 28 22 18 36 22S58 14 72 16 96 8 120 6" fill="none" stroke="#7c5cbf" stroke-width="2" stroke-linecap="round"/>
+                  <circle cx="120" cy="6" r="2.4" fill="#7c5cbf"/>
+                </svg>
+              </article>
+              <article class="metric">
+                <div>
+                  <span class="k">Live products</span>
+                  <p><strong>9,842</strong><em class="delta">+214</em></p>
+                </div>
+                <svg class="spark" viewBox="0 0 120 40" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="sg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0f7a45" stop-opacity="0.22"/><stop offset="1" stop-color="#0f7a45" stop-opacity="0"/></linearGradient>
+                  </defs>
+                  <path d="M0 32C16 30 28 24 40 26S64 16 80 14 104 8 120 6V40H0Z" fill="url(#sg2)"/>
+                  <path class="line" d="M0 32C16 30 28 24 40 26S64 16 80 14 104 8 120 6" fill="none" stroke="#0f7a45" stroke-width="2" stroke-linecap="round"/>
+                  <circle cx="120" cy="6" r="2.4" fill="#0f7a45"/>
+                </svg>
+              </article>
+              <article class="metric">
+                <div>
+                  <span class="k">Open issues</span>
+                  <p><strong>214</strong><em class="delta">−14</em></p>
+                </div>
+                <svg class="spark" viewBox="0 0 120 40" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="sg3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#db2777" stop-opacity="0.2"/><stop offset="1" stop-color="#db2777" stop-opacity="0"/></linearGradient>
+                  </defs>
+                  <path d="M0 16C14 12 24 24 40 20S62 10 76 16 98 26 120 14V40H0Z" fill="url(#sg3)"/>
+                  <path class="line" d="M0 16C14 12 24 24 40 20S62 10 76 16 98 26 120 14" fill="none" stroke="#db2777" stroke-width="2" stroke-linecap="round"/>
+                  <circle cx="120" cy="14" r="2.4" fill="#db2777"/>
+                </svg>
+              </article>
+            </div>
+            <section class="pipe" aria-labelledby="pipe-title">
+              <h3 id="pipe-title">Publish pipeline</h3>
+              <p class="sub">How products flow from creation to live · last 30 days</p>
+              <div class="pipe-cols">
+                <button type="button" class="pipe-col">
+                  <span class="k"><i class="sw b"></i> Created</span>
+                  <strong>1,860</strong>
+                  <span class="tip" role="tooltip"><b>Created · last 30 days</b><p>1,860 products · 100% entered</p><p>Avg time in stage 0.4 d</p><p>Moved forward 82%</p></span>
+                </button>
+                <button type="button" class="pipe-col">
+                  <span class="k"><i class="sw v"></i> Enriched</span>
+                  <strong>1,520</strong>
+                  <span class="tip" role="tooltip"><b>Enriched · last 30 days</b><p>1,520 products · 82% of created</p><p>Avg time in stage 1.1 d</p><p>Moved to review 80%</p><p class="gap">Top gap · SEO titles · 212</p></span>
+                </button>
+                <button type="button" class="pipe-col">
+                  <span class="k"><i class="sw p"></i> Reviewed</span>
+                  <strong>1,210</strong>
+                  <span class="tip" role="tooltip"><b>Reviewed · last 30 days</b><p>1,210 products · 65% of created</p><p>Avg time in stage 2.4 d</p><p>Moved forward 94%</p></span>
+                </button>
+                <button type="button" class="pipe-col">
+                  <span class="k"><i class="sw t"></i> Approved</span>
+                  <strong>1,140</strong>
+                  <span class="tip" role="tooltip"><b>Approved · last 30 days</b><p>1,140 products · 61% of created</p><p>Avg time in stage 0.3 d</p></span>
+                </button>
+              </div>
+              <div class="funnel" role="img" aria-label="Funnel from 100 percent created to 61 percent approved">
+                <svg class="funnel-svg" viewBox="0 0 640 88" preserveAspectRatio="none">
+                  <polygon points="0,8 152,18 152,88 0,88" fill="#dceafb"/>
+                  <polygon points="160,18 312,24 312,88 160,88" fill="#efe4fb"/>
+                  <polygon points="320,26 472,14 472,88 320,88" fill="#fbe3ee"/>
+                  <polygon points="480,14 640,26 640,88 480,88" fill="#d9f3ec"/>
+                  <path d="M0 8 L152 18" stroke="#6d95d6" stroke-width="3" fill="none"/>
+                  <path d="M160 18 L312 24" stroke="#b08be0" stroke-width="3" fill="none"/>
+                  <path d="M320 26 L472 14" stroke="#e56aa0" stroke-width="3" fill="none"/>
+                  <path d="M480 14 L640 26" stroke="#3cb99a" stroke-width="3" fill="none"/>
+                </svg>
+                <div class="funnel-caps" aria-hidden="true">
+                  <div><span class="left">100%</span><span class="right fpill">82%</span></div>
+                  <div><span class="right fpill">80%</span></div>
+                  <div><span class="left">65%</span><span class="right">94%</span></div>
+                  <div><span class="mid">61%</span></div>
+                </div>
+              </div>
+              <div class="avgs">
+                <p><i class="sw n"></i><b>0.4 d</b> avg in stage</p>
+                <p><i class="sw v"></i><b>1.1 d</b> avg in stage</p>
+                <p class="hot"><i class="sw p"></i><b>2.4 d</b> avg in stage</p>
+                <p><i class="sw t"></i><b>0.3 d</b> avg in stage</p>
+              </div>
+            </section>
+            <section class="wip" aria-labelledby="wip-title">
+              <h3 id="wip-title">Work in progress</h3>
+              <p class="sub">Products not yet live, by status · last 12 weeks</p>
+              <div class="wip-grid">
+                <div class="stat"><span class="k">Total in progress</span><p><strong>2,392</strong><em class="delta">−298 vs Aug</em></p></div>
+                <div class="stat"><span class="k"><i class="sw v"></i> Enrichment</span><p><strong>1,380</strong><em class="delta">−300</em></p></div>
+                <div class="stat"><span class="k"><i class="sw b"></i> In review</span><p><strong>312</strong><em class="delta">−68</em></p></div>
+                <div class="stat"><span class="k"><i class="sw t"></i> Ready</span><p><strong>486</strong><em class="delta">+66</em></p></div>
+              </div>
+            </section>
+          </div>
+          <aside class="copilot" aria-label="Catalog assistant">
+            <div class="cop-head">
+              <svg class="ico" aria-hidden="true"><use href="#i-spark"/></svg>
+              <strong>Copilot</strong>
+              <span class="beta">BETA</span>
+              <div class="cop-tools">
+                <button type="button" class="icon-btn" data-act="reset-chat" aria-label="Reset conversation"><svg class="ico"><use href="#i-clock"/></svg></button>
+                <button type="button" class="icon-btn" data-act="close-assistant" aria-label="Close assistant"><svg class="ico"><use href="#i-close"/></svg></button>
+              </div>
+            </div>
+            <p class="sr" id="copilot-live" aria-live="polite"></p>
+            <p class="when">Today · 9:41 AM</p>
+            <p class="bubble">Which products are blocking the Holiday Drop on Friday?</p>
+            <p class="reply">24 of 86 products in the Holiday Drop aren’t ready. 3 need your attention first:</p>
+            <div id="chat-log"></div>
+            <div id="action-slot">
+              <button type="button" class="product" data-act="product" data-detail="Blocks the Friday launch until the FR and DE descriptions land." aria-expanded="false">
+                <span class="thumb person" aria-hidden="true"><svg class="ico"><use href="#i-image"/></svg></span>
+                <span><b>French Terry T-shirt</b><span class="issue">No FR · DE copy</span></span>
+                <svg class="ico" aria-hidden="true"><use href="#i-chev"/></svg>
+              </button>
+              <button type="button" class="product" data-act="product" data-detail="Two studio shots have no Footwear tag." aria-expanded="false">
+                <span class="thumb" aria-hidden="true"><svg class="ico"><use href="#i-box"/></svg></span>
+                <span><b>Supernova Running Shoe</b><span class="issue">2 images untagged</span></span>
+                <svg class="ico" aria-hidden="true"><use href="#i-chev"/></svg>
+              </button>
+              <button type="button" class="product" data-act="product" data-detail="Care and material are empty on the product record." aria-expanded="false">
+                <span class="thumb" aria-hidden="true"><svg class="ico"><use href="#i-box"/></svg></span>
+                <span><b>Chrono Steel Watch</b><span class="issue">Missing care info</span></span>
+                <svg class="ico" aria-hidden="true"><use href="#i-chev"/></svg>
+              </button>
+              <div class="actions">
+                <button type="button" class="btn solid" data-act="fix"><svg class="ico" aria-hidden="true"><use href="#i-spark"/></svg>Fix all 18 with AI</button>
+                <button type="button" class="btn line" data-act="review">Review list</button>
+              </div>
+            </div>
+            <div class="chips">
+              <button type="button" data-act="chip" data-chip="week">Summarize this week</button>
+              <button type="button" data-act="chip" data-chip="dupe">Find duplicate SKUs</button>
+              <button type="button" data-act="chip" data-chip="seo">Write SEO titles</button>
+            </div>
+            <form class="composer" id="composer">
+              <label class="sr" for="ask">Ask Copilot about your catalog</label>
+              <input id="ask" type="text" placeholder="Ask Copilot about your catalog…" autocomplete="off">
+              <div class="composer-bar">
+                <button type="button" class="scope" data-act="scope" id="scope-btn">All products</button>
+                <button type="button" class="icon-btn" data-act="mic" aria-label="Voice"><svg class="ico"><use href="#i-mic"/></svg></button>
+                <button type="submit" class="send" aria-label="Send"><svg class="ico"><use href="#i-send"/></svg></button>
+              </div>
+            </form>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stage stage-flora" id="settle">
+  <div class="bokeh" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i><i class="b4"></i><i class="b5"></i><i class="b6"></i><i class="b7"></i><i class="b8"></i></div>
+  <div class="frame">
+    <p class="study-credit"><span>Study after</span><a href="https://x.com/byDaniel_Axion/status/2122354144363102353" target="_blank" rel="noopener noreferrer">Daniel / Axion</a></p>
+    <div class="settle-window">
+      <header class="settle-top">
+        <div class="markrow"><span class="mark" aria-hidden="true"></span> Settle</div>
+        <nav class="settle-nav" aria-label="Settle">
+          <button type="button" data-view="overview"><svg class="ico" aria-hidden="true"><use href="#i-home"/></svg>Overview</button>
+          <button type="button" data-view="invoices" aria-current="page"><svg class="ico" aria-hidden="true"><use href="#i-file"/></svg>Invoices</button>
+          <button type="button" data-view="agent"><svg class="ico" aria-hidden="true"><use href="#i-spark"/></svg>Agent</button>
+          <button type="button" data-view="customers"><svg class="ico" aria-hidden="true"><use href="#i-people"/></svg>Customers</button>
+        </nav>
+        <div class="settle-tools">
+          <label class="settle-search">
+            <svg class="ico" aria-hidden="true"><use href="#i-search"/></svg>
+            <span class="sr">Search invoices</span>
+            <input id="settle-search" type="search" placeholder="Search" autocomplete="off">
+            <kbd>⌘K</kbd>
+          </label>
+          <div class="avatar-row" role="img" aria-label="MQ, AK, and JS">
+            <span class="mq">MQ</span><span class="ak">AK</span><span class="js">JS</span>
+          </div>
+          <button type="button" class="icon-btn bell" data-act="bell" aria-label="Notifications" style="background:#fbfaf5;border-radius:50%"><svg class="ico"><use href="#i-bell"/></svg></button>
+        </div>
+      </header>
+      <div id="view-invoices">
+        <div class="inv-head">
+          <div>
+            <p class="eyebrow">214 invoices · $412.8k outstanding</p>
+            <h2>Invoices</h2>
+          </div>
+          <div class="filters" role="group" aria-label="Invoice filters">
+            <button type="button" data-tab="all" aria-pressed="false">All <span>214</span></button>
+            <button type="button" data-tab="overdue" aria-pressed="true">Overdue <span>61</span></button>
+            <button type="button" data-tab="promised" aria-pressed="false">Promised <span>14</span></button>
+            <button type="button" data-tab="settled" aria-pressed="false">Settled <span>139</span></button>
+            <button type="button" class="btn solid" data-act="new-invoice">+ New invoice</button>
+          </div>
+        </div>
+        <div class="top-grid">
+          <section class="aging" aria-labelledby="aging-title">
+            <div class="aging-head">
+              <div>
+                <h3 id="aging-title">Aging</h3>
+                <p>Each dot is about $4k</p>
+              </div>
+              <p class="legend">
+                <span><i class="lg l"></i> Not due</span>
+                <span><i class="lg k"></i> Overdue</span>
+                <span><i class="lg r"></i> At risk</span>
+              </p>
+            </div>
+            <div class="buckets">
+              <div class="bucket" role="img" aria-label="Current. 118 invoices. $152.4k.">
+                <div class="dots" data-bucket="current"></div>
+                <strong class="money" data-money="152.4">$152.4k</strong>
+                <span class="sub">Current · <b class="count" data-count="118">118</b></span>
+              </div>
+              <div class="bucket" role="img" aria-label="1 to 30 days. 54 invoices. $131.2k.">
+                <div class="dots" data-bucket="d30"></div>
+                <strong class="money" data-money="131.2">$131.2k</strong>
+                <span class="sub">1–30 days · <b class="count" data-count="54">54</b></span>
+              </div>
+              <div class="bucket" role="img" aria-label="31 to 60 days. 22 invoices. $74.9k.">
+                <div class="dots" data-bucket="d60"></div>
+                <strong class="money" data-money="74.9">$74.9k</strong>
+                <span class="sub">31–60 days · <b class="count" data-count="22">22</b></span>
+              </div>
+              <div class="bucket" role="img" aria-label="61 to 90 days. 9 invoices. $38.1k.">
+                <div class="dots" data-bucket="d90"></div>
+                <strong class="money" data-money="38.1">$38.1k</strong>
+                <span class="sub">61–90 days · <b class="count" data-count="9">9</b></span>
+              </div>
+              <div class="bucket" role="img" aria-label="90 plus days. 4 invoices. $16.2k.">
+                <div class="dots" data-bucket="d90p"></div>
+                <strong class="money" data-money="16.2">$16.2k</strong>
+                <span class="sub">90+ days · <b class="count" data-count="4">4</b></span>
+              </div>
+            </div>
+          </section>
+          <section class="due-card" aria-labelledby="due-title">
+            <h3 id="due-title">Due this week</h3>
+            <button type="button" class="due-go" data-act="week" aria-label="This week"><svg class="ico"><use href="#i-fwd"/></svg></button>
+            <div class="led" id="led" role="img" aria-label="$57.8K due this week"></div>
+            <div class="week">
+              <div class="wcol"><span class="slot"><i class="bar" style="--h:58%"></i></span><em>M</em></div>
+              <div class="wcol"><span class="slot"><i class="bar" style="--h:100%"></i></span><em>T</em></div>
+              <div class="wcol"><span class="slot"><i class="bar dim" style="--h:76%"></i></span><em>W</em></div>
+              <div class="wcol"><span class="slot"><i class="bar dim" style="--h:40%"></i></span><em>T</em></div>
+              <div class="wcol"><span class="slot"><i class="bar dim" style="--h:28%"></i></span><em>F</em></div>
+            </div>
+          </section>
+        </div>
+        <section class="table-card" aria-labelledby="table-title">
+          <div class="table-head">
+            <h3 id="table-title"><span id="table-name">Overdue</span> <span id="table-detail">61 invoices · $260.4k</span></h3>
+            <label class="find">
+              <svg class="ico" aria-hidden="true"><use href="#i-search"/></svg>
+              <span class="sr">Find an invoice</span>
+              <input id="inv-find" type="search" placeholder="Find an invoice" autocomplete="off">
+            </label>
+          </div>
+          <table class="inv">
+            <caption class="sr">Invoices in the selected filter</caption>
+            <thead>
+              <tr>
+                <th scope="col"><button type="button" data-sort="name">Customer</button></th>
+                <th scope="col"><button type="button" data-sort="issued">Issued</button></th>
+                <th scope="col"><button type="button" data-sort="due">Due</button></th>
+                <th scope="col"><button type="button" data-sort="amount">Amount</button></th>
+                <th scope="col"><button type="button" data-sort="status">Status</button></th>
+                <th scope="col">Agent progress</th>
+                <th scope="col"><span class="sr">Open</span></th>
+              </tr>
+            </thead>
+            <tbody id="inv-body">
+              <tr class="is-pick" data-id="2041" data-tabs="all overdue" data-amount="8400" data-issued="20261021" data-due="20261104" data-name="northwind labs" data-status="plan agreed" data-q="northwind labs invoice 2041 plan agreed 8400">
+                <td><span class="who"><span class="av sand">NL</span><span><b>Northwind Labs</b><small>Invoice #2041</small></span></span></td>
+                <td data-label="Issued">Oct 21</td>
+                <td data-label="Due" class="is-late">Nov 4</td>
+                <td data-label="Amount">$8,400</td>
+                <td data-label="Status"><span class="status" data-tone="risk"><i></i>Plan agreed</span></td>
+                <td data-label="Agent progress"><span class="track" data-pattern="111r0"><i></i><i></i><i></i><i></i><i></i></span></td>
+                <td class="trail"><button type="button" class="msg" data-act="thread" data-name="Northwind Labs" aria-label="Message Northwind Labs"><svg class="ico"><use href="#i-msg"/></svg></button><button type="button" class="chev" data-act="open" data-blurb="Invoice #2041 · Northwind Labs · $8,400" aria-label="Open invoice 2041" hidden><svg class="ico"><use href="#i-chev"/></svg></button></td>
+              </tr>
+              <tr data-id="2037" data-tabs="all overdue promised" data-amount="12900" data-issued="20261018" data-due="20261101" data-name="orbit retail" data-status="promised fri" data-q="orbit retail invoice 2037 promised fri 12900">
+                <td><span class="who"><span class="av stone">OR</span><span><b>Orbit Retail</b><small>Invoice #2037</small></span></span></td>
+                <td data-label="Issued">Oct 18</td>
+                <td data-label="Due" class="is-late">Nov 1</td>
+                <td data-label="Amount">$12,900</td>
+                <td data-label="Status"><span class="status" data-tone="risk"><i></i>Promised Fri</span></td>
+                <td data-label="Agent progress"><span class="track" data-pattern="11110"><i></i><i></i><i></i><i></i><i></i></span></td>
+                <td class="trail"><button type="button" class="chev" data-act="open" data-blurb="Invoice #2037 · Orbit Retail · $12,900" aria-label="Open invoice 2037"><svg class="ico"><use href="#i-chev"/></svg></button></td>
+              </tr>
+              <tr data-id="2052" data-tabs="all overdue" data-status-next="Promised Mon" data-amount="3150" data-issued="20261028" data-due="20261111" data-name="halcyon studio" data-status="in conversation" data-q="halcyon studio invoice 2052 in conversation promised mon 3150">
+                <td><span class="who"><span class="av lilac">HS</span><span><b>Halcyon Studio</b><small>Invoice #2052</small></span></span></td>
+                <td data-label="Issued">Oct 28</td>
+                <td data-label="Due" class="is-late">Nov 11</td>
+                <td data-label="Amount">$3,150</td>
+                <td data-label="Status"><span class="status" data-tone="ink"><i></i>In conversation</span></td>
+                <td data-label="Agent progress"><span class="track" data-pattern="11000" data-next="11r00"><i></i><i></i><i></i><i></i><i></i></span></td>
+                <td class="trail"><button type="button" class="msg" data-act="thread" data-name="Halcyon Studio" aria-label="Message Halcyon Studio" hidden><svg class="ico"><use href="#i-msg"/></svg></button><button type="button" class="chev" data-act="open" data-blurb="Invoice #2052 · Halcyon Studio · $3,150" aria-label="Open invoice 2052"><svg class="ico"><use href="#i-chev"/></svg></button></td>
+              </tr>
+              <tr data-id="2029" data-tabs="all overdue" data-amount="6720" data-issued="20261009" data-due="20261023" data-name="bramble and wren" data-status="waiting reply" data-q="bramble wren invoice 2029 waiting reply 6720">
+                <td><span class="who"><span class="av peach">BW</span><span><b>Bramble &amp; Wren</b><small>Invoice #2029</small></span></span></td>
+                <td data-label="Issued">Oct 9</td>
+                <td data-label="Due" class="is-late">Oct 23</td>
+                <td data-label="Amount">$6,720</td>
+                <td data-label="Status"><span class="status" data-tone="ink"><i></i>Waiting reply</span></td>
+                <td data-label="Agent progress"><span class="track" data-pattern="11100"><i></i><i></i><i></i><i></i><i></i></span></td>
+                <td class="trail"><button type="button" class="chev" data-act="open" data-blurb="Invoice #2029 · Bramble &amp; Wren · $6,720" aria-label="Open invoice 2029"><svg class="ico"><use href="#i-chev"/></svg></button></td>
+              </tr>
+              <tr data-id="2058" data-tabs="all overdue" data-amount="4400" data-issued="20261102" data-due="20261116" data-name="pelican vans" data-status="reminder sent" data-q="pelican vans invoice 2058 reminder sent 4400">
+                <td><span class="who"><span class="av mist">PV</span><span><b>Pelican Vans</b><small>Invoice #2058</small></span></span></td>
+                <td data-label="Issued">Nov 2</td>
+                <td data-label="Due" class="is-late">Nov 16</td>
+                <td data-label="Amount">$4,400</td>
+                <td data-label="Status"><span class="status" data-tone="ink"><i></i>Reminder sent</span></td>
+                <td data-label="Agent progress"><span class="track" data-pattern="11000"><i></i><i></i><i></i><i></i><i></i></span></td>
+                <td class="trail"><button type="button" class="chev" data-act="open" data-blurb="Invoice #2058 · Pelican Vans · $4,400" aria-label="Open invoice 2058"><svg class="ico"><use href="#i-chev"/></svg></button></td>
+              </tr>
+              <tr data-id="2044" data-tabs="all overdue settled" data-amount="2040" data-issued="20261024" data-due="20261107" data-name="kestrel foods" data-status="settled" data-q="kestrel foods invoice 2044 settled 2040">
+                <td><span class="who"><span class="av violet">KF</span><span><b>Kestrel Foods</b><small>Invoice #2044</small></span></span></td>
+                <td data-label="Issued">Oct 24</td>
+                <td data-label="Due">Nov 7</td>
+                <td data-label="Amount">$2,040</td>
+                <td data-label="Status"><span class="status" data-tone="good"><i></i>Settled</span></td>
+                <td data-label="Agent progress"><span class="track" data-pattern="11111"><i></i><i></i><i></i><i></i><i></i></span></td>
+                <td class="trail"><button type="button" class="chev" data-act="open" data-blurb="Invoice #2044 · Kestrel Foods · $2,040" aria-label="Open invoice 2044"><svg class="ico"><use href="#i-chev"/></svg></button></td>
+              </tr>
+              <tr hidden data-id="2061" data-tabs="all promised" data-amount="5280" data-issued="20261030" data-due="20261118" data-name="lumen market" data-status="promised thu" data-q="lumen market invoice 2061 promised thu 5280">
+                <td><span class="who"><span class="av sand">LM</span><span><b>Lumen Market</b><small>Invoice #2061</small></span></span></td>
+                <td data-label="Issued">Oct 30</td>
+                <td data-label="Due">Nov 18</td>
+                <td data-label="Amount">$5,280</td>
+                <td data-label="Status"><span class="status" data-tone="risk"><i></i>Promised Thu</span></td>
+                <td data-label="Agent progress"><span class="track" data-pattern="11100"><i></i><i></i><i></i><i></i><i></i></span></td>
+                <td class="trail"><button type="button" class="chev" data-act="open" data-blurb="Invoice #2061 · Lumen Market · $5,280" aria-label="Open invoice 2061"><svg class="ico"><use href="#i-chev"/></svg></button></td>
+              </tr>
+              <tr hidden data-id="2018" data-tabs="all promised" data-amount="9150" data-issued="20261004" data-due="20261019" data-name="cedar and vale" data-status="promised wed" data-q="cedar vale invoice 2018 promised wed 9150">
+                <td><span class="who"><span class="av stone">CV</span><span><b>Cedar &amp; Vale</b><small>Invoice #2018</small></span></span></td>
+                <td data-label="Issued">Oct 4</td>
+                <td data-label="Due" class="is-late">Oct 19</td>
+                <td data-label="Amount">$9,150</td>
+                <td data-label="Status"><span class="status" data-tone="risk"><i></i>Promised Wed</span></td>
+                <td data-label="Agent progress"><span class="track" data-pattern="111r0"><i></i><i></i><i></i><i></i><i></i></span></td>
+                <td class="trail"><button type="button" class="chev" data-act="open" data-blurb="Invoice #2018 · Cedar &amp; Vale · $9,150" aria-label="Open invoice 2018"><svg class="ico"><use href="#i-chev"/></svg></button></td>
+              </tr>
+              <tr hidden data-id="2066" data-tabs="all promised" data-amount="1860" data-issued="20261106" data-due="20261120" data-name="ibis books" data-status="promised tue" data-q="ibis books invoice 2066 promised tue 1860">
+                <td><span class="who"><span class="av lilac">IB</span><span><b>Ibis Books</b><small>Invoice #2066</small></span></span></td>
+                <td data-label="Issued">Nov 6</td>
+                <td data-label="Due">Nov 20</td>
+                <td data-label="Amount">$1,860</td>
+                <td data-label="Status"><span class="status" data-tone="risk"><i></i>Promised Tue</span></td>
+                <td data-label="Agent progress"><span class="track" data-pattern="11000"><i></i><i></i><i></i><i></i><i></i></span></td>
+                <td class="trail"><button type="button" class="chev" data-act="open" data-blurb="Invoice #2066 · Ibis Books · $1,860" aria-label="Open invoice 2066"><svg class="ico"><use href="#i-chev"/></svg></button></td>
+              </tr>
+              <tr hidden data-id="1994" data-tabs="all promised" data-amount="7440" data-issued="20260922" data-due="20261006" data-name="sable atelier" data-status="promised fri" data-q="sable atelier invoice 1994 promised fri 7440">
+                <td><span class="who"><span class="av peach">SA</span><span><b>Sable Atelier</b><small>Invoice #1994</small></span></span></td>
+                <td data-label="Issued">Sep 22</td>
+                <td data-label="Due" class="is-late">Oct 6</td>
+                <td data-label="Amount">$7,440</td>
+                <td data-label="Status"><span class="status" data-tone="risk"><i></i>Promised Fri</span></td>
+                <td data-label="Agent progress"><span class="track" data-pattern="11110"><i></i><i></i><i></i><i></i><i></i></span></td>
+                <td class="trail"><button type="button" class="chev" data-act="open" data-blurb="Invoice #1994 · Sable Atelier · $7,440" aria-label="Open invoice 1994"><svg class="ico"><use href="#i-chev"/></svg></button></td>
+              </tr>
+              <tr hidden data-id="2070" data-tabs="all promised" data-amount="2275" data-issued="20261108" data-due="20261121" data-name="moor and rye" data-status="promised mon" data-q="moor rye invoice 2070 promised mon 2275">
+                <td><span class="who"><span class="av mist">MR</span><span><b>Moor &amp; Rye</b><small>Invoice #2070</small></span></span></td>
+                <td data-label="Issued">Nov 8</td>
+                <td data-label="Due">Nov 21</td>
+                <td data-label="Amount">$2,275</td>
+                <td data-label="Status"><span class="status" data-tone="risk"><i></i>Promised Mon</span></td>
+                <td data-label="Agent progress"><span class="track" data-pattern="10000"><i></i><i></i><i></i><i></i><i></i></span></td>
+                <td class="trail"><button type="button" class="chev" data-act="open" data-blurb="Invoice #2070 · Moor &amp; Rye · $2,275" aria-label="Open invoice 2070"><svg class="ico"><use href="#i-chev"/></svg></button></td>
+              </tr>
+              <tr hidden data-id="1988" data-tabs="all settled" data-amount="4980" data-issued="20260912" data-due="20260926" data-name="harbor and north" data-status="settled" data-q="harbor north invoice 1988 settled 4980">
+                <td><span class="who"><span class="av sand">HN</span><span><b>Harbor &amp; North</b><small>Invoice #1988</small></span></span></td>
+                <td data-label="Issued">Sep 12</td>
+                <td data-label="Due">Sep 26</td>
+                <td data-label="Amount">$4,980</td>
+                <td data-label="Status"><span class="status" data-tone="good"><i></i>Settled</span></td>
+                <td data-label="Agent progress"><span class="track" data-pattern="11111"><i></i><i></i><i></i><i></i><i></i></span></td>
+                <td class="trail"><button type="button" class="chev" data-act="open" data-blurb="Invoice #1988 · Harbor &amp; North · $4,980" aria-label="Open invoice 1988"><svg class="ico"><use href="#i-chev"/></svg></button></td>
+              </tr>
+              <tr hidden data-id="2002" data-tabs="all settled" data-amount="11200" data-issued="20260928" data-due="20261012" data-name="yellowline" data-status="settled" data-q="yellowline invoice 2002 settled 11200">
+                <td><span class="who"><span class="av stone">YL</span><span><b>Yellowline</b><small>Invoice #2002</small></span></span></td>
+                <td data-label="Issued">Sep 28</td>
+                <td data-label="Due">Oct 12</td>
+                <td data-label="Amount">$11,200</td>
+                <td data-label="Status"><span class="status" data-tone="good"><i></i>Settled</span></td>
+                <td data-label="Agent progress"><span class="track" data-pattern="11111"><i></i><i></i><i></i><i></i><i></i></span></td>
+                <td class="trail"><button type="button" class="chev" data-act="open" data-blurb="Invoice #2002 · Yellowline · $11,200" aria-label="Open invoice 2002"><svg class="ico"><use href="#i-chev"/></svg></button></td>
+              </tr>
+              <tr hidden data-id="2033" data-tabs="all settled" data-amount="890" data-issued="20261015" data-due="20261029" data-name="drift press" data-status="settled" data-q="drift press invoice 2033 settled 890">
+                <td><span class="who"><span class="av lilac">DP</span><span><b>Drift Press</b><small>Invoice #2033</small></span></span></td>
+                <td data-label="Issued">Oct 15</td>
+                <td data-label="Due">Oct 29</td>
+                <td data-label="Amount">$890</td>
+                <td data-label="Status"><span class="status" data-tone="good"><i></i>Settled</span></td>
+                <td data-label="Agent progress"><span class="track" data-pattern="11111"><i></i><i></i><i></i><i></i><i></i></span></td>
+                <td class="trail"><button type="button" class="chev" data-act="open" data-blurb="Invoice #2033 · Drift Press · $890" aria-label="Open invoice 2033"><svg class="ico"><use href="#i-chev"/></svg></button></td>
+              </tr>
+              <tr hidden data-id="1960" data-tabs="all settled" data-amount="6050" data-issued="20260830" data-due="20260914" data-name="quill and co" data-status="settled" data-q="quill co invoice 1960 settled 6050">
+                <td><span class="who"><span class="av peach">QC</span><span><b>Quill &amp; Co</b><small>Invoice #1960</small></span></span></td>
+                <td data-label="Issued">Aug 30</td>
+                <td data-label="Due">Sep 14</td>
+                <td data-label="Amount">$6,050</td>
+                <td data-label="Status"><span class="status" data-tone="good"><i></i>Settled</span></td>
+                <td data-label="Agent progress"><span class="track" data-pattern="11111"><i></i><i></i><i></i><i></i><i></i></span></td>
+                <td class="trail"><button type="button" class="chev" data-act="open" data-blurb="Invoice #1960 · Quill &amp; Co · $6,050" aria-label="Open invoice 1960"><svg class="ico"><use href="#i-chev"/></svg></button></td>
+              </tr>
+              <tr hidden data-id="2048" data-tabs="all settled" data-amount="3640" data-issued="20261026" data-due="20261109" data-name="thorn mail" data-status="settled" data-q="thorn mail invoice 2048 settled 3640">
+                <td><span class="who"><span class="av violet">TM</span><span><b>Thorn Mail</b><small>Invoice #2048</small></span></span></td>
+                <td data-label="Issued">Oct 26</td>
+                <td data-label="Due">Nov 9</td>
+                <td data-label="Amount">$3,640</td>
+                <td data-label="Status"><span class="status" data-tone="good"><i></i>Settled</span></td>
+                <td data-label="Agent progress"><span class="track" data-pattern="11111"><i></i><i></i><i></i><i></i><i></i></span></td>
+                <td class="trail"><button type="button" class="chev" data-act="open" data-blurb="Invoice #2048 · Thorn Mail · $3,640" aria-label="Open invoice 2048"><svg class="ico"><use href="#i-chev"/></svg></button></td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="empty" id="inv-empty" hidden>No invoices match.</p>
+        </section>
+      </div>
+      <div class="placeholder" id="view-placeholder" hidden>
+        <h2 id="ph-title">Overview</h2>
+        <p id="ph-copy">Promises and collections for the week are on Invoices.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<dialog id="invoice-dialog" aria-labelledby="dlg-title">
+  <form method="dialog">
+    <h3 id="dlg-title">New invoice</h3>
+    <label>Customer <input name="customer" autocomplete="off" required></label>
+    <label>Amount <input name="amount" inputmode="decimal" autocomplete="off" placeholder="4200" required></label>
+    <label>Due <input name="due" autocomplete="off" placeholder="Dec 2" required></label>
+    <div class="dialog-actions">
+      <button type="submit" class="btn line" value="cancel" formnovalidate>Cancel</button>
+      <button type="submit" class="btn solid" value="create">Create invoice</button>
+    </div>
+  </form>
+</dialog>
+<div class="toast" id="toast" role="status"></div>
+<script>
+(function () {
+  var reduce = document.documentElement.getAttribute("data-motion") === "reduce";
+  var toastEl = document.getElementById("toast");
+  var toastTimer = 0;
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add("is-on");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove("is-on"); }, 2400);
+  }
+
+  var slot = document.getElementById("action-slot");
+  var initialHTML = slot.innerHTML;
+  var log = document.getElementById("chat-log");
+  var live = document.getElementById("copilot-live");
+  var fixing = false;
+  var fixTimer = 0;
+  var fixGen = 0;
+  var scope = "All products";
+  var scopes = ["All products", "Holiday Drop", "Footwear"];
+  var CHIPS = {
+    week: "This week, 32 of 56 Holiday Drop products are ready. Translation blocks Friday, then 38 descriptions and 112 untagged images.",
+    dupe: "4 likely duplicate SKUs in Footwear. SKU-1842 and SKU-1842-B share a title and a price.",
+    seo: "Drafted 12 SEO titles for the Holiday Drop. 212 products still have no title."
+  };
+
+  function addMsg(role, text) {
+    var p = document.createElement("p");
+    p.className = role === "user" ? "bubble" : "reply";
+    p.textContent = text;
+    log.appendChild(p);
+    while (log.children.length > 8) log.removeChild(log.firstChild);
+    var cop = document.querySelector(".copilot");
+    if (cop) cop.scrollTop = cop.scrollHeight;
+  }
+
+  function noise() {
+    var chars = " .:-=+*#%@";
+    var lines = [];
+    for (var r = 0; r < 5; r++) {
+      var s = "";
+      for (var c = 0; c < 46; c++) s += chars[(Math.random() * chars.length) | 0];
+      lines.push(s);
+    }
+    return lines.join("\n");
+  }
+
+  function statusFor(n) {
+    if (n < 8) return "Translating copy · FR - DE";
+    if (n < 14) return "Tagging images · Footwear";
+    return "Filling attributes · Care, material";
+  }
+
+  function showSuccess() {
+    slot.classList.remove("is-fading");
+    slot.innerHTML =
+      '<div class="success" data-state="success">' +
+        '<div class="sum-top"><span class="ok" aria-hidden="true">✓</span><strong>18 products ready to publish</strong><span class="elapsed">8.2 s</span></div>' +
+        '<div class="sum-row"><i class="sq teal"></i><span>Translations added</span><em>FR · DE</em><b>18</b></div>' +
+        '<div class="sum-row"><i class="sq blue"></i><span>Images tagged</span><em>Footwear</em><b>4</b></div>' +
+        '<div class="sum-row"><i class="sq purp"></i><span>Attributes filled</span><em>Care, material</em><b>2</b></div>' +
+        '<div class="actions"><button type="button" class="btn solid" data-act="publish">Publish 18</button><button type="button" class="btn line" data-act="download"><svg class="ico" aria-hidden="true"><use href="#i-down"/></svg>Download copy</button></div>' +
+        '<button type="button" class="text-btn" data-act="again">Run again</button>' +
+      '</div>';
+    live.textContent = "18 products ready to publish. 8.2 seconds.";
+  }
+
+  function stopFix() {
+    fixGen += 1;
+    if (fixTimer) clearInterval(fixTimer);
+    fixTimer = 0;
+    fixing = false;
+  }
+
+  function startFix() {
+    if (fixing) return;
+    if (reduce) { showSuccess(); return; }
+    fixing = true;
+    var gen = ++fixGen;
+    slot.classList.remove("is-fading");
+    slot.innerHTML =
+      '<div class="fix-card">' +
+        '<div class="fix-top"><svg class="ico" aria-hidden="true"><use href="#i-spark"/></svg><strong>Fixing 18 products</strong><span id="fix-count">0/18</span></div>' +
+        '<pre class="ascii" id="fix-ascii"></pre>' +
+        '<div class="barline" aria-hidden="true"><span id="fix-bar"></span></div>' +
+        '<p class="fix-status" id="fix-status">› Translating copy · FR - DE</p>' +
+      '</div>';
+    var n = 0;
+    function paint() {
+      var count = document.getElementById("fix-count");
+      var bar = document.getElementById("fix-bar");
+      var ascii = document.getElementById("fix-ascii");
+      var status = document.getElementById("fix-status");
+      var line = statusFor(n);
+      if (count) count.textContent = n + "/18";
+      if (bar) bar.style.width = (n / 18 * 100) + "%";
+      if (ascii) ascii.textContent = noise();
+      if (status) status.textContent = "› " + line;
+      live.textContent = "Fixing " + n + " of 18. " + line;
+    }
+    paint();
+    fixTimer = setInterval(function () {
+      if (gen !== fixGen) { clearInterval(fixTimer); return; }
+      n += 1;
+      paint();
+      if (n >= 18) {
+        clearInterval(fixTimer);
+        fixTimer = 0;
+        setTimeout(function () {
+          if (gen !== fixGen) return;
+          slot.classList.add("is-fading");
+          setTimeout(function () {
+            if (gen !== fixGen) return;
+            showSuccess();
+            fixing = false;
+          }, 280);
+        }, 220);
+      }
+    }, 150);
+  }
+
+  function resetChat() {
+    stopFix();
+    slot.classList.remove("is-fading");
+    slot.innerHTML = initialHTML;
+    log.innerHTML = "";
+    live.textContent = "";
+  }
+
+  var tab = "overdue";
+  var query = "";
+  var sortKey = "";
+  var sortDir = 1;
+  var META = {
+    all: { title: "All", detail: "214 invoices · $412.8k" },
+    overdue: { title: "Overdue", detail: "61 invoices · $260.4k" },
+    promised: { title: "Promised", detail: "14 invoices · $152.4k" },
+    settled: { title: "Settled", detail: "139 invoices · $224.6k" }
+  };
+  var nameEl = document.getElementById("table-name");
+  var detailEl = document.getElementById("table-detail");
+  var emptyEl = document.getElementById("inv-empty");
+  var rows = Array.prototype.slice.call(document.querySelectorAll("#inv-body tr"));
+
+  function applyFilter() {
+    var q = query.trim().toLowerCase();
+    var n = 0;
+    rows.forEach(function (row) {
+      var tabs = row.getAttribute("data-tabs").split(/\s+/);
+      var show = tabs.indexOf(tab) !== -1 && (!q || row.getAttribute("data-q").indexOf(q) !== -1);
+      row.hidden = !show;
+      if (show) n += 1;
+    });
+    var meta = META[tab];
+    nameEl.textContent = meta.title;
+    detailEl.textContent = q ? (n + (n === 1 ? " match" : " matches")) : meta.detail;
+    emptyEl.hidden = n !== 0;
+  }
+
+  function setTab(name) {
+    tab = name;
+    document.querySelectorAll("[data-tab]").forEach(function (btn) {
+      btn.setAttribute("aria-pressed", btn.getAttribute("data-tab") === name ? "true" : "false");
+    });
+    applyFilter();
+  }
+
+  function sortRows(key) {
+    if (sortKey === key) sortDir *= -1;
+    else { sortKey = key; sortDir = 1; }
+    var body = document.getElementById("inv-body");
+    var list = Array.prototype.slice.call(body.querySelectorAll("tr"));
+    list.sort(function (a, b) {
+      var va = a.dataset[key];
+      var vb = b.dataset[key];
+      if (key === "amount" || key === "issued" || key === "due") return (Number(va) - Number(vb)) * sortDir;
+      return va.localeCompare(vb) * sortDir;
+    });
+    list.forEach(function (row) { body.appendChild(row); });
+    rows = list;
+    document.querySelectorAll("[data-sort]").forEach(function (btn) {
+      var th = btn.parentNode;
+      if (btn.getAttribute("data-sort") === key) th.setAttribute("aria-sort", sortDir > 0 ? "ascending" : "descending");
+      else th.removeAttribute("aria-sort");
+    });
+  }
+
+  function syncSearch(value, source) {
+    query = value;
+    ["inv-find", "settle-search"].forEach(function (id) {
+      var input = document.getElementById(id);
+      if (input && input !== source) input.value = value;
+    });
+    if (document.getElementById("view-invoices").hidden) showView("invoices");
+    applyFilter();
+  }
+
+  var PH = {
+    overview: ["Overview", "Promises and collections for the week are on Invoices."],
+    agent: ["Agent", "Progress for the overdue rows fills in on Invoices."],
+    customers: ["Customers", "The 214 invoices are the customer list in this study."]
+  };
+
+  function showView(name) {
+    var inv = document.getElementById("view-invoices");
+    var ph = document.getElementById("view-placeholder");
+    var onInv = name === "invoices";
+    inv.hidden = !onInv;
+    ph.hidden = onInv;
+    if (!onInv) {
+      document.getElementById("ph-title").textContent = PH[name][0];
+      document.getElementById("ph-copy").textContent = PH[name][1];
+    }
+    document.querySelectorAll("[data-view]").forEach(function (btn) {
+      if (btn.getAttribute("data-view") === name) btn.setAttribute("aria-current", "page");
+      else btn.removeAttribute("aria-current");
+    });
+  }
+
+  function paintTrack(track, pattern) {
+    var cells = track.querySelectorAll("i");
+    for (var i = 0; i < pattern.length && i < cells.length; i++) {
+      cells[i].classList.remove("on", "risk");
+      if (pattern[i] === "1") cells[i].classList.add("on");
+      if (pattern[i] === "r") cells[i].classList.add("on", "risk");
+    }
+  }
+
+  function playTracks() {
+    document.querySelectorAll(".track").forEach(function (track, row) {
+      var pattern = track.getAttribute("data-pattern") || "";
+      var cells = track.querySelectorAll("i");
+      for (var i = 0; i < pattern.length; i++) {
+        (function (i, ch) {
+          if (ch === "0") return;
+          var apply = function () {
+            cells[i].classList.add("on");
+            if (ch === "r") cells[i].classList.add("risk");
+          };
+          if (reduce) apply();
+          else setTimeout(apply, 180 + row * 70 + i * 140);
+        })(i, pattern[i]);
+      }
+    });
+  }
+
+  function finishHalcyon() {
+    var row = document.querySelector('[data-id="2052"]');
+    if (!row) return;
+    var status = row.querySelector(".status");
+    status.dataset.tone = "risk";
+    status.lastChild.textContent = "Promised Mon";
+    row.dataset.status = "promised mon";
+    var tabs = row.getAttribute("data-tabs").split(/\s+/);
+    if (tabs.indexOf("promised") === -1) {
+      tabs.push("promised");
+      row.setAttribute("data-tabs", tabs.join(" "));
+    }
+    var q = row.getAttribute("data-q");
+    if (q.indexOf("promised mon") === -1) row.setAttribute("data-q", q + " promised mon");
+    paintTrack(row.querySelector(".track"), row.querySelector(".track").getAttribute("data-next"));
+    var north = document.querySelector('[data-id="2041"] .trail');
+    var here = row.querySelector(".trail");
+    var fromMsg = north.querySelector(".msg");
+    var fromChev = north.querySelector(".chev");
+    var toMsg = here.querySelector(".msg");
+    var toChev = here.querySelector(".chev");
+    if (fromMsg) fromMsg.hidden = true;
+    if (fromChev) fromChev.hidden = false;
+    if (toMsg) toMsg.hidden = false;
+    if (toChev) toChev.hidden = true;
+    applyFilter();
+  }
+
+  var SPECS = {
+    current: [["l", 40], ["k", 2], ["g", 6]],
+    d30: [["k", 34], ["r", 2], ["g", 12]],
+    d60: [["k", 10], ["g", 6], ["k", 6], ["r", 6], ["g", 20]],
+    d90: [["g", 14], ["r", 8], ["k", 2], ["g", 24]],
+    d90p: [["g", 20], ["r", 4], ["g", 24]]
+  };
+
+  function fillDots(el, parts) {
+    var html = "";
+    var i = 0;
+    parts.forEach(function (part) {
+      for (var k = 0; k < part[1]; k++) {
+        var kind = part[0];
+        if (kind === "g") html += "<i></i>";
+        else html += '<i class="' + kind + '" style="--d:' + (i * 16) + 'ms"></i>';
+        i += 1;
+      }
+    });
+    el.innerHTML = html;
+  }
+
+  function tween(el, to, fmt, ms) {
+    if (reduce) { el.textContent = fmt(to); return; }
+    var t0 = performance.now();
+    function frame(now) {
+      var p = Math.min(1, (now - t0) / ms);
+      var e = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(to * e);
+      if (p < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+  function moneyFmt(v) { return "$" + v.toFixed(1) + "k"; }
+
+  var GLYPH = {
+    "0": ["01110","10001","10001","10001","10001","10001","01110"],
+    "1": ["00100","01100","00100","00100","00100","00100","01110"],
+    "2": ["01110","10001","00001","00010","00100","01000","11111"],
+    "3": ["01110","10001","00001","00110","00001","10001","01110"],
+    "4": ["00100","01100","10100","10100","11111","00100","00100"],
+    "5": ["11111","10000","11110","00001","00001","10001","01110"],
+    "6": ["01110","10000","10000","11110","10001","10001","01110"],
+    "7": ["11111","00001","00010","00100","01000","01000","01000"],
+    "8": ["01110","10001","10001","01110","10001","10001","01110"],
+    "9": ["01110","10001","10001","01111","00001","00001","01110"],
+    "$": ["00100","01111","10100","01110","00101","11110","00100"],
+    "K": ["10001","10010","10100","11000","10100","10010","10001"],
+    ".": ["00","00","00","00","00","01","11"]
+  };
+  var led = document.getElementById("led");
+  function renderLed(text) {
+    var html = "";
+    for (var i = 0; i < text.length; i++) {
+      var g = GLYPH[text[i]];
+      if (!g) continue;
+      html += '<span class="glyph' + (text[i] === "." ? " dotg" : "") + '">';
+      for (var y = 0; y < g.length; y++) {
+        for (var x = 0; x < g[y].length; x++) html += "<i" + (g[y][x] === "1" ? ' class="on"' : "") + "></i>";
+      }
+      html += "</span>";
+    }
+    led.innerHTML = html;
+  }
+  function animateLed() {
+    if (reduce) { renderLed("$57.8K"); return; }
+    var t0 = performance.now();
+    var last = 0;
+    function frame(now) {
+      var p = Math.min(1, (now - t0) / 1100);
+      if (now - last > 70 || p === 1) {
+        last = now;
+        var e = 1 - Math.pow(1 - p, 3);
+        renderLed("$" + (57.8 * e).toFixed(1) + "K");
+      }
+      if (p < 1) requestAnimationFrame(frame);
+      else renderLed("$57.8K");
+    }
+    requestAnimationFrame(frame);
+  }
+
+  document.querySelectorAll("[data-bucket]").forEach(function (el) {
+    fillDots(el, SPECS[el.getAttribute("data-bucket")]);
+  });
+  document.querySelectorAll("[data-money]").forEach(function (el) {
+    tween(el, Number(el.getAttribute("data-money")), moneyFmt, 1100);
+  });
+  document.querySelectorAll("[data-count]").forEach(function (el) {
+    tween(el, Number(el.getAttribute("data-count")), function (v) { return String(Math.round(v)); }, 1100);
+  });
+  animateLed();
+  playTracks();
+  if (reduce) finishHalcyon();
+  else setTimeout(finishHalcyon, 1700);
+  applyFilter();
+
+  document.getElementById("inv-find").addEventListener("input", function (e) { syncSearch(e.target.value, e.target); });
+  document.getElementById("settle-search").addEventListener("input", function (e) { syncSearch(e.target.value, e.target); });
+
+  document.getElementById("composer").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var input = document.getElementById("ask");
+    var q = input.value.trim();
+    if (!q) return;
+    addMsg("user", q);
+    addMsg("bot", "Across " + scope.toLowerCase() + ", 24 Holiday Drop products are still blocking Friday. I would start with the French Terry T-shirt.");
+    input.value = "";
+  });
+
+  document.getElementById("invoice-dialog").addEventListener("close", function () {
+    var dialog = document.getElementById("invoice-dialog");
+    if (dialog.returnValue !== "create") return;
+    var data = new FormData(dialog.querySelector("form"));
+    var name = String(data.get("customer") || "").trim();
+    dialog.querySelector("form").reset();
+    if (!name) { toast("Add a customer to draft an invoice."); return; }
+    toast("Draft saved for " + name + ". Nothing was sent.");
+  });
+
+  document.addEventListener("click", function (e) {
+    var el = e.target.closest("[data-act], [data-tab], [data-sort], [data-view]");
+    if (!el || !document.body.contains(el)) return;
+    if (el.hasAttribute("data-tab")) { setTab(el.getAttribute("data-tab")); return; }
+    if (el.hasAttribute("data-sort")) { sortRows(el.getAttribute("data-sort")); return; }
+    if (el.hasAttribute("data-view")) { showView(el.getAttribute("data-view")); return; }
+    var act = el.getAttribute("data-act");
+    if (act === "fix") startFix();
+    else if (act === "again" || act === "reset-chat") resetChat();
+    else if (act === "review") {
+      document.querySelectorAll(".product").forEach(function (row) { row.style.boxShadow = "0 0 0 2px #17171b"; });
+      setTimeout(function () {
+        document.querySelectorAll(".product").forEach(function (row) { row.style.boxShadow = ""; });
+      }, 700);
+      toast("3 products need you first.");
+    }
+    else if (act === "product") {
+      var detail = el.nextElementSibling;
+      if (!detail || !detail.classList.contains("detail")) {
+        detail = document.createElement("p");
+        detail.className = "detail";
+        detail.textContent = el.getAttribute("data-detail");
+        el.after(detail);
+        el.setAttribute("aria-expanded", "true");
+      } else {
+        detail.hidden = !detail.hidden;
+        el.setAttribute("aria-expanded", detail.hidden ? "false" : "true");
+      }
+    }
+    else if (act === "chip") {
+      addMsg("user", el.textContent.trim());
+      addMsg("bot", CHIPS[el.getAttribute("data-chip")]);
+    }
+    else if (act === "scope") {
+      var i = scopes.indexOf(scope);
+      scope = scopes[(i + 1) % scopes.length];
+      el.textContent = scope;
+    }
+    else if (act === "mic") toast("Voice input stays in the study.");
+    else if (act === "publish") toast("18 products queued to publish.");
+    else if (act === "download") {
+      var text = [
+        "Catalog study — Holiday Drop copy",
+        "",
+        "French Terry T-shirt",
+        "FR: Tee-shirt en French terry, coupe décontractée, prêt pour la livraison de vendredi.",
+        "DE: French-Terry-Shirt, entspannte Passform, bereit für die Freitagslieferung.",
+        "",
+        "Supernova Running Shoe — tagged Footwear (2 images).",
+        "Chrono Steel Watch — care: wipe dry. Material: steel."
+      ].join("\n");
+      var blob = new Blob([text], { type: "text/plain" });
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "holiday-drop-copy.txt";
+      a.click();
+      URL.revokeObjectURL(a.href);
+      toast("Copy downloaded.");
+    }
+    else if (act === "close-assistant") {
+      document.getElementById("cat-main").classList.add("is-assistant-closed");
+    }
+    else if (act === "open-assistant") {
+      document.getElementById("cat-main").classList.remove("is-assistant-closed");
+    }
+    else if (act === "collapse") {
+      var app = document.getElementById("cat-app");
+      var closed = app.classList.toggle("is-collapsed");
+      el.setAttribute("aria-expanded", closed ? "false" : "true");
+      el.setAttribute("aria-label", closed ? "Expand sidebar" : "Collapse sidebar");
+    }
+    else if (act === "soon") toast(el.getAttribute("data-name") + " stays on Overview in this study.");
+    else if (act === "export") toast("Export started for 12,486 products.");
+    else if (act === "new-product" || act === "quick-add") toast("New product draft opened in this study.");
+    else if (act === "translate") toast("Queued 24 Holiday Drop products for FR and DE.");
+    else if (act === "bell") toast("No new notifications.");
+    else if (act === "workspace") toast("Sandbox workspace.");
+    else if (act === "back" || act === "forward") toast("This study has one view.");
+    else if (act === "reload") location.reload();
+    else if (act === "new-invoice") document.getElementById("invoice-dialog").showModal();
+    else if (act === "week") toast("Due this week, Monday through Friday.");
+    else if (act === "thread") toast("Opened the thread with " + el.getAttribute("data-name") + ".");
+    else if (act === "open") toast(el.getAttribute("data-blurb"));
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if ((e.metaKey || e.ctrlKey) && (e.key === "k" || e.key === "K")) {
+      e.preventDefault();
+      var ss = document.getElementById("settle").getBoundingClientRect();
+      var focusSettle = ss.top < window.innerHeight * 0.35 && ss.bottom > 80;
+      document.getElementById(focusSettle ? "settle-search" : "catalog-search").focus();
+    }
+    if (e.key === "Enter" && e.target && e.target.id === "catalog-search") {
+      e.preventDefault();
+      toast("Ask Copilot to search the catalog.");
+    }
+  });
+})();
+</script>
+<script src="shared/site-header.js?v=35" defer></script>
+</body>
+</html>
