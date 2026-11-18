@@ -47,6 +47,7 @@
         { id: 'atelier', label: 'Atelier', href: 'atelier.html', group: 'Playgrounds' },
         { id: 'atelier-orb', label: 'Atelier Orb', href: 'atelier-orb.html', group: 'Playgrounds' },
         { id: 'gemini-sparkles', label: 'Sparkles', href: 'gemini-sparkles.html', group: 'Playgrounds' },
+        { id: 'loading-icons', label: 'Loading', href: 'loading-icons.html', group: 'Playgrounds' },
         { id: 'onboarding', label: 'Onboarding', href: 'onboarding.html', group: 'Films' },
         { id: 'grok-bot-showreel', label: 'Grok Bot reel', href: 'grok-bot-showreel.html', group: 'Films' },
         { id: 'dub-promo-showreel', label: 'Dub promo', href: 'dub-promo-showreel.html', group: 'Films' },

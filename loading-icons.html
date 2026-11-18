@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loading · ui-kit</title>
+<meta name="description" content="Study of 36 monochrome loading icons from Ramin Nasibov’s film still loading. Six rows, CSS and inline SVG.">
+<script>
+(function () {
+  var q = location.search || "";
+  var forceReduce = /(?:^|[?&])reduce=1(?:&|$)/.test(q);
+  var forceMotion = /(?:^|[?&])motion=1(?:&|$)/.test(q);
+  var reduce = false;
+  try {
+    reduce = forceMotion ? false : (forceReduce || window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  } catch (e) {}
+  if (reduce) document.documentElement.setAttribute("data-motion", "reduce");
+})();
+</script>
+<link rel="stylesheet" href="shared/site-header.css?v=9">
+<style>
+@font-face {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("vendor/inter/inter-latin-500.woff2") format("woff2");
+}
+@property --pie {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 180deg;
+}
+:root {
+  --page: #141316;
+  --tile: #000;
+  --ink: #fff;
+  --label: #8a8a8e;
+  --ease: cubic-bezier(0.65, 0, 0.35, 1);
+  --soft: cubic-bezier(0.45, 0.05, 0.2, 1);
+}
+* { box-sizing: border-box; }
+html { background: var(--page); color-scheme: dark; }
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--page);
+  color: var(--ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+}
+body[data-page="loading-icons"] {
+  --site-ink: #f3f3f4;
+  --site-muted: #a4a4a8;
+  --site-line: rgba(255, 255, 255, 0.12);
+  --site-bar-bg: color-mix(in srgb, #141316 84%, transparent);
+  --site-pill: rgba(255, 255, 255, 0.08);
+  --site-accent: #fff;
+}
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.stage {
+  width: min(920px, calc(100% - 96px));
+  margin: 48px auto 64px;
+}
+.row + .row { margin-top: 32px; }
+.row-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 0 8px;
+  color: var(--label);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.row-head h2 { margin: 0; font: inherit; letter-spacing: inherit; }
+.row-head span { font-variant-numeric: tabular-nums; letter-spacing: 0.12em; }
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 16px;
+}
+.tile { position: relative; min-width: 0; user-select: none; }
+.face {
+  aspect-ratio: 1;
+  background: var(--tile);
+  border-radius: 16%;
+  display: grid;
+  place-items: center;
+  position: relative;
+  overflow: hidden;
+  container-type: inline-size;
+}
+.face svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 4.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.fill { fill: var(--ink); stroke: none; }
+.hole { fill: #000; stroke: none; }
+.key { fill: none; stroke: #000; stroke-width: 3.2; }
+.tile figcaption {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #2c2c30;
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.16s ease;
+}
+.tile:hover figcaption,
+.tile:focus-within figcaption { opacity: 1; }
+.credit {
+  margin: 48px 0 0;
+  max-width: 36rem;
+  color: var(--label);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+}
+.credit a { color: inherit; margin-left: 12px; text-underline-offset: 3px; }
+.credit a:focus-visible { outline: 2px solid #fff; outline-offset: 3px; border-radius: 2px; }
+
+/* BARS */
+.eq { width: 52%; height: 58%; display: flex; align-items: center; justify-content: space-between; }
+.eq i {
+  width: 12%;
+  height: 100%;
+  border-radius: 99px;
+  background: #fff;
+  transform-origin: center;
+  animation: eq 2.4s var(--ease) infinite;
+}
+.eq i:nth-child(1) { transform: scaleY(0.55); animation-delay: 0s; }
+.eq i:nth-child(2) { transform: scaleY(0.9); animation-delay: -0.4s; }
+.eq i:nth-child(3) { transform: scaleY(0.4); animation-delay: -0.8s; }
+.eq i:nth-child(4) { transform: scaleY(0.75); animation-delay: -1.2s; }
+.eq i:nth-child(5) { transform: scaleY(0.5); animation-delay: -1.6s; }
+@keyframes eq {
+  0%, 100% { transform: scaleY(0.32); }
+  18% { transform: scaleY(0.62); }
+  36% { transform: scaleY(1); }
+  54% { transform: scaleY(0.7); }
+  72% { transform: scaleY(0.38); }
+  88% { transform: scaleY(0.28); }
+}
+.wave { width: 72%; height: 52%; display: flex; align-items: center; justify-content: space-between; }
+.wave i {
+  width: 1.5cqw;
+  height: 100%;
+  border-radius: 99px;
+  background: #fff;
+  transform-origin: center;
+  animation: wave 1.7s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -0.09s);
+}
+.wave i:nth-child(1), .wave i:nth-child(2), .wave i:nth-child(13), .wave i:nth-child(14) { transform: scaleY(0.16); }
+.wave i:nth-child(6), .wave i:nth-child(7), .wave i:nth-child(8) { transform: scaleY(0.85); }
+@keyframes wave {
+  0%, 100% { transform: scaleY(0.12); }
+  32% { transform: scaleY(1); }
+  58% { transform: scaleY(0.2); }
+}
+.rule { width: 58%; height: 4.4cqw; position: relative; }
+.rule .ghost, .rule .draw { position: absolute; inset: 0; border-radius: 99px; background: #fff; }
+.rule .ghost { opacity: 0.28; }
+.rule .draw { animation: rule 1.6s var(--ease) infinite; }
+@keyframes rule {
+  0% { clip-path: inset(0 94% 0 0); }
+  40%, 58% { clip-path: inset(0 0 0 0); }
+  100% { clip-path: inset(0 0 0 94%); }
+}
+.rules, .tlines { width: 54%; display: flex; flex-direction: column; gap: 5.2cqw; }
+.rules i, .tlines i { display: block; height: 4.2cqw; border-radius: 99px; background: #fff; }
+.rules i {
+  transform-origin: left center;
+  animation: rules 1.8s var(--ease) infinite;
+}
+.rules i:nth-child(1) { transform: scaleX(0.42); animation-delay: -0.15s; }
+.rules i:nth-child(2) { transform: scaleX(1); animation-delay: -0.7s; }
+.rules i:nth-child(3) { transform: scaleX(0.72); animation-delay: -1.2s; }
+@keyframes rules {
+  0%, 100% { transform: scaleX(0.32); opacity: 0.4; }
+  42% { transform: scaleX(1); opacity: 1; }
+  70% { transform: scaleX(0.58); opacity: 0.72; }
+}
+.plus, .fr, .atom, .pair, .shackle, .bell, .plane, .sat-free {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+}
+.plus { animation: plusx 1.6s var(--ease) infinite; }
+@keyframes plusx {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(45deg); }
+}
+.cell { fill: #fff; stroke: none; animation: charge 1.9s ease-in-out infinite; }
+.cell:nth-child(2) { animation-delay: 0.16s; }
+.cell:nth-child(3) { animation-delay: 0.32s; }
+.cell:nth-child(4) { animation-delay: 0.48s; }
+@keyframes charge {
+  0%, 8% { opacity: 0; }
+  24%, 70% { opacity: 1; }
+  88%, 100% { opacity: 0; }
+}
+
+/* SQUARES */
+.sq {
+  width: 34%;
+  aspect-ratio: 1;
+  background: #fff;
+  border-radius: 18%;
+  animation: turn90 1.8s var(--ease) infinite;
+}
+@keyframes turn90 { to { transform: rotate(90deg); } }
+.cluster { position: relative; width: 52%; height: 52%; }
+.cluster i {
+  position: absolute;
+  width: 38%;
+  height: 38%;
+  border-radius: 24%;
+  background: #8e8e8e;
+  animation: cluster 2.4s var(--soft) infinite;
+}
+.c1 { left: 0; top: 0; animation-name: c1; }
+.c2 { left: 62%; top: 0; background: #fff; animation-name: c2; }
+.c3 { left: 0; top: 62%; animation-name: c3; }
+.c4 { left: 62%; top: 62%; animation-name: c4; }
+@keyframes c1 {
+  0%, 22% { left: 0; top: 0; background: #8e8e8e; }
+  46%, 60% { left: 0; top: 31%; background: #fff; }
+  78%, 100% { left: 0; top: 0; background: #8e8e8e; }
+}
+@keyframes c2 {
+  0%, 22% { left: 62%; top: 0; background: #fff; }
+  46%, 60% { left: 62%; top: 0; background: #8e8e8e; }
+  78%, 100% { left: 62%; top: 0; background: #fff; }
+}
+@keyframes c3 {
+  0%, 22% { left: 0; top: 62%; background: #8e8e8e; }
+  46%, 60% { left: 62%; top: 31%; background: #8e8e8e; }
+  78% { left: 0; top: 62%; background: #fff; }
+  100% { left: 0; top: 62%; background: #8e8e8e; }
+}
+@keyframes c4 {
+  0%, 22% { left: 62%; top: 62%; background: #8e8e8e; }
+  46%, 60% { left: 62%; top: 62%; background: #8e8e8e; }
+  78%, 100% { left: 62%; top: 62%; background: #8e8e8e; }
+}
+.blob {
+  width: 46%;
+  aspect-ratio: 1;
+  border: 4.4cqw solid #fff;
+  border-radius: 22%;
+  animation: blob 2.4s var(--ease) infinite;
+}
+@keyframes blob {
+  0%, 100% { border-radius: 18%; transform: rotate(-10deg); }
+  28% { border-radius: 26%; transform: rotate(0deg); }
+  52% { border-radius: 50%; transform: rotate(0deg); }
+  78% { border-radius: 16%; transform: rotate(8deg); }
+}
+.fr-a { animation: turn90 2.6s var(--ease) infinite; }
+.fr-b { animation: turn90 3.8s var(--ease) infinite reverse; }
+.grid {
+  width: 52%;
+  height: 52%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14%;
+}
+.grid i {
+  background: #fff;
+  border-radius: 24%;
+  opacity: 0.28;
+  animation: cell 1.8s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.12s);
+}
+.grid i:nth-child(1), .grid i:nth-child(5), .grid i:nth-child(9) { opacity: 0.95; }
+@keyframes cell {
+  0%, 100% { opacity: 0.22; transform: scale(0.86); }
+  36% { opacity: 1; transform: scale(1); }
+}
+.morph {
+  width: 40%;
+  height: 40%;
+  border: 4.4cqw solid #fff;
+  border-radius: 16%;
+  background: transparent;
+  animation: morph 2.8s var(--ease) infinite;
+}
+@keyframes morph {
+  0%, 10% { width: 40%; height: 40%; background: transparent; border-radius: 16%; }
+  24% { width: 52%; height: 28%; background: transparent; border-radius: 24%; }
+  42%, 56% { width: 42%; height: 42%; background: #fff; border-radius: 16%; }
+  74%, 86% { width: 26%; height: 48%; background: transparent; border-radius: 30%; }
+  100% { width: 40%; height: 40%; background: transparent; border-radius: 16%; }
+}
+
+/* ORBIT */
+.atom { animation: spin 18s linear infinite; }
+.pair { animation: spin 2.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.spin, .arc { width: 52%; aspect-ratio: 1; position: relative; }
+.spin i, .arc {
+  border-radius: 50%;
+  -webkit-mask: radial-gradient(closest-side, transparent 73%, #000 75%);
+  mask: radial-gradient(closest-side, transparent 73%, #000 75%);
+}
+.spin i {
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(from 20deg, transparent 0 16%, #fff 62%, transparent 86% 100%);
+  animation: spin 1.15s linear infinite;
+}
+.spin i:last-child {
+  inset: 24%;
+  animation-duration: 1.65s;
+  animation-direction: reverse;
+  background: conic-gradient(from 200deg, transparent 0 30%, #fff 78%, transparent 100%);
+}
+.arc {
+  width: 48%;
+  background: conic-gradient(#fff 0 312deg, transparent 312deg);
+  animation: spin 1.9s linear infinite;
+}
+.dots, .burst { position: relative; width: 64%; aspect-ratio: 1; }
+.dots span, .burst span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  transform: rotate(calc(var(--i) * var(--step)));
+}
+.dots { --step: 45deg; }
+.burst { --step: 30deg; width: 68%; }
+.dots i {
+  position: absolute;
+  width: 7cqw;
+  height: 7cqw;
+  margin: -3.5cqw 0 0 -3.5cqw;
+  border-radius: 50%;
+  background: #fff;
+  transform: translateY(-19cqw) scale(0.7);
+  opacity: 0.8;
+  animation: dot 1.6s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -0.2s);
+}
+@keyframes dot {
+  0%, 100% { transform: translateY(-19cqw) scale(0.4); opacity: 0.28; }
+  42% { transform: translateY(-19cqw) scale(1.05); opacity: 1; }
+}
+.burst i {
+  position: absolute;
+  width: 4cqw;
+  height: 13cqw;
+  margin: 0 0 0 -2cqw;
+  border-radius: 99px;
+  background: #fff;
+  transform: translateY(-22cqw);
+  animation: tick 1.2s linear infinite;
+  animation-delay: calc(var(--i) * -0.1s);
+}
+@keyframes tick {
+  0%, 18% { opacity: 1; }
+  50%, 78% { opacity: 0.16; }
+  100% { opacity: 1; }
+}
+
+/* PROGRESS */
+.pct {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8cqw;
+  font-size: 30cqw;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.pct b { font-weight: 500; }
+.pct i {
+  display: block;
+  width: 62cqw;
+  height: 4.2cqw;
+  border-radius: 99px;
+  background: #fff;
+  transform: scaleX(0.62);
+  transform-origin: center;
+}
+.pill {
+  width: 64%;
+  height: 28%;
+  border: 4.2cqw solid #fff;
+  border-radius: 999px;
+  position: relative;
+}
+.pill i {
+  position: absolute;
+  top: 12%;
+  bottom: 12%;
+  left: 6%;
+  width: 42%;
+  border-radius: 999px;
+  background: #fff;
+  animation: pill 1.5s var(--ease) infinite alternate;
+}
+@keyframes pill { to { transform: translateX(124%); } }
+.pie { width: 50%; aspect-ratio: 1; display: grid; place-items: center; position: relative; }
+.pie-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 4.4cqw solid #fff;
+}
+.pie-fill {
+  width: 74%;
+  height: 74%;
+  border-radius: 50%;
+  background: conic-gradient(from -90deg, #fff var(--pie), transparent 0);
+  animation: piefill 2.4s var(--ease) infinite;
+}
+@keyframes piefill {
+  0%, 8% { --pie: 0deg; }
+  50%, 64% { --pie: 360deg; }
+  100% { --pie: 0deg; }
+}
+.beads { position: relative; width: 72%; height: 18%; }
+.beads .line {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 50%;
+  height: 3.4cqw;
+  margin-top: -1.7cqw;
+  border-radius: 99px;
+  background: #fff;
+}
+.beads .node, .beads .bead {
+  position: absolute;
+  top: 50%;
+  width: 16%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.beads .node { border: 3.2cqw solid #fff; background: #000; }
+.beads .n1 { left: 12%; }
+.beads .n2 { left: 50%; }
+.beads .n3 { left: 88%; }
+.beads .bead {
+  left: 12%;
+  background: #fff;
+  animation: bead 1.5s var(--ease) infinite;
+}
+@keyframes bead {
+  0%, 14% { left: 12%; }
+  40%, 54% { left: 50%; }
+  80%, 100% { left: 88%; }
+}
+.check { stroke-dasharray: 100; stroke-dashoffset: 0; }
+.check-ring { animation: draw-ring 3.2s var(--ease) infinite; }
+.check-tick { animation: draw-tick 3.2s var(--ease) infinite; }
+@keyframes draw-ring {
+  0% { stroke-dashoffset: 100; opacity: 0; }
+  8% { opacity: 1; }
+  36% { stroke-dashoffset: 0; opacity: 1; }
+  78% { stroke-dashoffset: 0; opacity: 1; }
+  90%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}
+@keyframes draw-tick {
+  0%, 36% { stroke-dashoffset: 100; opacity: 0; }
+  40% { stroke-dashoffset: 100; opacity: 1; }
+  58% { stroke-dashoffset: 0; opacity: 1; }
+  78% { stroke-dashoffset: 0; opacity: 1; }
+  90%, 100% { stroke-dashoffset: 100; opacity: 0; }
+}
+
+/* TYPE */
+.type {
+  display: flex;
+  align-items: center;
+  font-size: 28cqw;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.type i {
+  width: 0.08em;
+  height: 0.92em;
+  margin-left: 0.04em;
+  background: #fff;
+  animation: blink 1.05s steps(1) infinite;
+}
+.type i.is-busy { animation: none; opacity: 1; }
+@keyframes blink { 50% { opacity: 0; } }
+.bubble-dot { fill: #fff; stroke: none; transform-box: fill-box; transform-origin: center; animation: hop 0.9s ease-in-out infinite; }
+.bubble-dot:nth-of-type(2) { animation-delay: 0.15s; }
+.bubble-dot:nth-of-type(3) { animation-delay: 0.3s; }
+@keyframes hop {
+  0%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-3.5cqw); }
+}
+.letter {
+  height: 1em;
+  overflow: hidden;
+  font-size: 42cqw;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+.letter-strip { animation: roll 2.4s infinite; }
+.letter-strip span { display: flex; height: 1em; align-items: center; justify-content: center; }
+@keyframes roll {
+  0%, 14% { transform: translateY(0); animation-timing-function: var(--ease); }
+  25%, 39% { transform: translateY(-1em); animation-timing-function: var(--ease); }
+  50%, 64% { transform: translateY(-2em); animation-timing-function: var(--ease); }
+  75%, 89% { transform: translateY(-3em); animation-timing-function: var(--ease); }
+  100% { transform: translateY(-4em); }
+}
+.abc {
+  position: relative;
+  font-size: 26cqw;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #fff;
+}
+.abc-base { position: relative; z-index: 0; }
+.abc-sel {
+  position: absolute;
+  z-index: 1;
+  top: -0.1em;
+  height: 1.2em;
+  left: 0;
+  width: 0.62em;
+  overflow: hidden;
+  background: #fff;
+  color: #000;
+  border-radius: 0.16em;
+  animation: sel 2.4s var(--ease) infinite;
+}
+.abc-inv {
+  display: block;
+  padding-top: 0.1em;
+  animation: selshift 2.4s var(--ease) infinite;
+}
+.abc-caret {
+  position: absolute;
+  z-index: 2;
+  top: -0.12em;
+  bottom: -0.12em;
+  width: 0.07em;
+  background: #fff;
+  left: 0.7em;
+  animation: caret 2.4s var(--ease) infinite;
+}
+@keyframes sel {
+  0%, 14% { left: 0; width: 0.66em; }
+  34%, 48% { left: 0.52em; width: 0.62em; }
+  66%, 80% { left: 1.08em; width: 0.58em; }
+  100% { left: 0; width: 0.66em; }
+}
+@keyframes selshift {
+  0%, 14% { transform: translateX(0); }
+  34%, 48% { transform: translateX(-0.52em); }
+  66%, 80% { transform: translateX(-1.08em); }
+  100% { transform: translateX(0); }
+}
+@keyframes caret {
+  0%, 14% { left: 0.72em; }
+  34%, 48% { left: 1.2em; }
+  66%, 80% { left: 1.72em; }
+  100% { left: 0.72em; }
+}
+.tlines { width: 50%; align-items: center; }
+.tlines i { transform-origin: center; animation: tlines 1.6s ease-in-out infinite; }
+.tlines i:nth-child(1) { width: 100%; opacity: 0.45; }
+.tlines i:nth-child(2) { width: 100%; animation-delay: -0.22s; opacity: 1; }
+.tlines i:nth-child(3) { width: 70%; animation-delay: -0.44s; opacity: 0.7; }
+@keyframes tlines {
+  0%, 100% { transform: scaleY(0.65) scaleX(0.86); opacity: 0.35; }
+  40% { transform: scaleY(1.2) scaleX(1); opacity: 1; }
+  72% { transform: scaleY(0.8) scaleX(0.92); opacity: 0.6; }
+}
+.count {
+  display: flex;
+  font-size: 34cqw;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+.win { height: 1em; overflow: hidden; width: 0.62em; text-align: center; }
+.strip { display: block; }
+.strip span { display: block; height: 1em; }
+
+/* OBJECTS */
+.steam { animation: steam 1.8s ease-in infinite; opacity: 0.75; }
+.steam:nth-of-type(2) { animation-delay: -0.45s; }
+.steam:nth-of-type(3) { animation-delay: -0.9s; }
+@keyframes steam {
+  0% { transform: translateY(15%); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateY(-80%); opacity: 0; }
+}
+.plane { animation: nudge 1.8s var(--soft) infinite; }
+.trails { animation: trails 1.8s ease-out infinite; opacity: 0; }
+@keyframes nudge {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  30% { transform: translate(4%, -5%) rotate(-12deg); }
+  52% { transform: translate(1%, -1%) rotate(-2deg); }
+}
+@keyframes trails {
+  0%, 18% { opacity: 0; }
+  32% { opacity: 1; }
+  58%, 100% { opacity: 0; }
+}
+.bell { animation: swing 0.85s var(--ease) infinite alternate; transform-origin: 50% 28%; }
+.sound { animation: sound 0.85s ease-in-out infinite; opacity: 0; }
+@keyframes swing {
+  from { transform: rotate(-14deg); }
+  to { transform: rotate(14deg); }
+}
+@keyframes sound {
+  0%, 100% { opacity: 0; }
+  45%, 70% { opacity: 0.9; }
+}
+.shackle { animation: unlock 2.4s var(--ease) infinite; transform-origin: 36% 48%; }
+@keyframes unlock {
+  0%, 24% { transform: none; }
+  46%, 70% { transform: translateY(-7%) rotate(-32deg); }
+  100% { transform: none; }
+}
+.sun { opacity: 0; animation: sun 4.8s ease-in-out infinite; }
+.moon { opacity: 1; animation: moon 4.8s ease-in-out infinite; }
+.rays { transform-box: view-box; transform-origin: 50% 50%; animation: rays 4.8s ease-in-out infinite; }
+@keyframes sun {
+  0%, 16% { opacity: 0; }
+  36%, 64% { opacity: 1; }
+  84%, 100% { opacity: 0; }
+}
+@keyframes moon {
+  0%, 16% { opacity: 1; }
+  36%, 64% { opacity: 0; }
+  84%, 100% { opacity: 1; }
+}
+@keyframes rays {
+  0%, 16% { transform: scale(0.35); opacity: 0; }
+  36%, 64% { transform: scale(1); opacity: 1; }
+  84%, 100% { transform: scale(0.35); opacity: 0; }
+}
+.ecg-clip { width: 74%; height: 56%; overflow: hidden; }
+.ecg-clip svg {
+  position: relative;
+  inset: auto;
+  width: 200%;
+  height: 100%;
+  animation: trace 1.6s linear infinite;
+}
+@keyframes trace { to { transform: translateX(-50%); } }
+
+@media (max-width: 800px) {
+  .stage { width: calc(100% - 32px); margin: 24px auto 48px; }
+  .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .row + .row { margin-top: 24px; }
+  .credit { margin-top: 32px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .face, .face * { animation: none !important; }
+  .ecg-clip svg { animation: none !important; }
+}
+html[data-motion="reduce"] .face,
+html[data-motion="reduce"] .face *,
+html[data-motion="reduce"] .ecg-clip svg { animation: none !important; }
+</style>
+</head>
+<body data-page="loading-icons">
+<h1 class="sr">Loading</h1>
+<main class="stage">
+  <section class="row" aria-labelledby="row-bars">
+    <header class="row-head">
+      <h2 id="row-bars">Bars</h2>
+      <span>01</span>
+    </header>
+    <div class="tiles">
+      <figure class="tile" data-name="Equalizer">
+        <div class="face" aria-hidden="true"><div class="eq"><i></i><i></i><i></i><i></i><i></i></div></div>
+        <figcaption>Equalizer</figcaption>
+      </figure>
+      <figure class="tile" data-name="Waveform">
+        <div class="face" aria-hidden="true"><div class="wave"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i><i style="--i:6"></i><i style="--i:7"></i><i style="--i:8"></i><i style="--i:9"></i><i style="--i:10"></i><i style="--i:11"></i><i style="--i:12"></i><i style="--i:13"></i></div></div>
+        <figcaption>Waveform</figcaption>
+      </figure>
+      <figure class="tile" data-name="Rule">
+        <div class="face" aria-hidden="true"><div class="rule"><i class="ghost"></i><i class="draw"></i></div></div>
+        <figcaption>Rule</figcaption>
+      </figure>
+      <figure class="tile" data-name="Menu">
+        <div class="face" aria-hidden="true"><div class="rules"><i></i><i></i><i></i></div></div>
+        <figcaption>Menu</figcaption>
+      </figure>
+      <figure class="tile" data-name="Plus">
+        <div class="face" aria-hidden="true">
+          <svg viewBox="0 0 100 100"><g class="plus"><path d="M50 30v40M30 50h40"/></g></svg>
+        </div>
+        <figcaption>Plus</figcaption>
+      </figure>
+      <figure class="tile" data-name="Battery">
+        <div class="face" aria-hidden="true">
+          <svg viewBox="0 0 100 100">
+            <rect x="18" y="38" width="56" height="26" rx="6"/>
+            <rect class="fill" x="74" y="46" width="6" height="10" rx="2"/>
+            <g>
+              <rect class="cell" x="24" y="44" width="8.5" height="14" rx="1.5"/>
+              <rect class="cell" x="35.5" y="44" width="8.5" height="14" rx="1.5"/>
+              <rect class="cell" x="47" y="44" width="8.5" height="14" rx="1.5"/>
+              <rect class="cell" x="58.5" y="44" width="8.5" height="14" rx="1.5"/>
+            </g>
+          </svg>
+        </div>
+        <figcaption>Battery</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="row" aria-labelledby="row-squares">
+    <header class="row-head">
+      <h2 id="row-squares">Squares</h2>
+      <span>02</span>
+    </header>
+    <div class="tiles">
+      <figure class="tile" data-name="Square">
+        <div class="face" aria-hidden="true"><div class="sq"></div></div>
+        <figcaption>Square</figcaption>
+      </figure>
+      <figure class="tile" data-name="Cluster">
+        <div class="face" aria-hidden="true"><div class="cluster"><i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="c4"></i></div></div>
+        <figcaption>Cluster</figcaption>
+      </figure>
+      <figure class="tile" data-name="Squircle">
+        <div class="face" aria-hidden="true"><div class="blob"></div></div>
+        <figcaption>Squircle</figcaption>
+      </figure>
+      <figure class="tile" data-name="Frames">
+        <div class="face" aria-hidden="true">
+          <svg viewBox="0 0 100 100">
+            <rect class="fr fr-a" x="22" y="22" width="56" height="56" rx="8"/>
+            <rect class="fr fr-b" x="36" y="36" width="28" height="28" rx="5"/>
+          </svg>
+        </div>
+        <figcaption>Frames</figcaption>
+      </figure>
+      <figure class="tile" data-name="Grid">
+        <div class="face" aria-hidden="true">
+          <div class="grid">
+            <i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i>
+            <i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i>
+            <i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i>
+          </div>
+        </div>
+        <figcaption>Grid</figcaption>
+      </figure>
+      <figure class="tile" data-name="Morph">
+        <div class="face" aria-hidden="true"><div class="morph"></div></div>
+        <figcaption>Morph</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="row" aria-labelledby="row-orbit">
+    <header class="row-head">
+      <h2 id="row-orbit">Orbit</h2>
+      <span>03</span>
+    </header>
+    <div class="tiles">
+      <figure class="tile" data-name="Planet">
+        <div class="face" aria-hidden="true">
+          <svg viewBox="0 0 100 100">
+            <ellipse cx="50" cy="50" rx="30" ry="11.5" transform="rotate(-26 50 50)" stroke-width="3.4"/>
+            <circle class="fill" cx="50" cy="50" r="8.2"/>
+            <circle class="fill" r="4.4">
+              <animateMotion dur="4.2s" repeatCount="indefinite" path="M80.56,35.10 A34,16 -26 1 1 19.44,64.90 A34,16 -26 1 1 80.56,35.10"/>
+            </circle>
+          </svg>
+        </div>
+        <figcaption>Planet</figcaption>
+      </figure>
+      <figure class="tile" data-name="Pair">
+        <div class="face" aria-hidden="true">
+          <svg viewBox="0 0 100 100">
+            <defs>
+              <filter id="pair-blur" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="0.7"/>
+              </filter>
+            </defs>
+            <g class="pair">
+              <g opacity="0.32" filter="url(#pair-blur)" transform="rotate(-22 50 50)">
+                <path stroke-width="6.5" d="M32 40c8-8 18-6 16 4-1 6-8 8-12 4"/>
+                <path stroke-width="6.5" d="M68 60c-8 8-18 6-16-4 1-6 8-8 12-4"/>
+              </g>
+              <path stroke-width="6.5" d="M32 40c8-8 18-6 16 4-1 6-8 8-12 4"/>
+              <path stroke-width="6.5" d="M68 60c-8 8-18 6-16-4 1-6 8-8 12-4"/>
+            </g>
+          </svg>
+        </div>
+        <figcaption>Pair</figcaption>
+      </figure>
+      <figure class="tile" data-name="Spinner">
+        <div class="face" aria-hidden="true"><div class="spin"><i></i><i></i></div></div>
+        <figcaption>Spinner</figcaption>
+      </figure>
+      <figure class="tile" data-name="Atom">
+        <div class="face" aria-hidden="true">
+          <svg viewBox="0 0 100 100">
+            <g class="atom">
+              <ellipse cx="50" cy="50" rx="27" ry="9.2" transform="rotate(18 50 50)" stroke-width="3.2"/>
+              <ellipse cx="50" cy="50" rx="27" ry="9.2" transform="rotate(78 50 50)" stroke-width="3.2"/>
+              <ellipse cx="50" cy="50" rx="27" ry="9.2" transform="rotate(138 50 50)" stroke-width="3.2"/>
+              <circle class="fill" r="3.4">
+                <animateMotion dur="2.8s" repeatCount="indefinite" path="M75.68,58.34 A27,9.2 18 1 1 24.32,41.66 A27,9.2 18 1 1 75.68,58.34"/>
+              </circle>
+              <circle class="fill" r="3.4">
+                <animateMotion dur="3.4s" begin="-1.2s" repeatCount="indefinite" path="M55.61,76.41 A27,9.2 78 1 1 44.39,23.59 A27,9.2 78 1 1 55.61,76.41"/>
+              </circle>
+              <circle class="fill" r="3.4">
+                <animateMotion dur="4s" begin="-2.1s" repeatCount="indefinite" path="M29.94,68.07 A27,9.2 138 1 1 70.06,31.93 A27,9.2 138 1 1 29.94,68.07"/>
+              </circle>
+              <circle class="fill" cx="50" cy="50" r="3.8"/>
+            </g>
+          </svg>
+        </div>
+        <figcaption>Atom</figcaption>
+      </figure>
+      <figure class="tile" data-name="Arc">
+        <div class="face" aria-hidden="true"><div class="arc"></div></div>
+        <figcaption>Arc</figcaption>
+      </figure>
+      <figure class="tile" data-name="Dots">
+        <div class="face" aria-hidden="true">
+          <div class="dots">
+            <span style="--i:0"><i></i></span><span style="--i:1"><i></i></span><span style="--i:2"><i></i></span><span style="--i:3"><i></i></span>
+            <span style="--i:4"><i></i></span><span style="--i:5"><i></i></span><span style="--i:6"><i></i></span><span style="--i:7"><i></i></span>
+          </div>
+        </div>
+        <figcaption>Dots</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="row" aria-labelledby="row-progress">
+    <header class="row-head">
+      <h2 id="row-progress">Progress</h2>
+      <span>04</span>
+    </header>
+    <div class="tiles">
+      <figure class="tile" data-name="Sunburst">
+        <div class="face" aria-hidden="true">
+          <div class="burst">
+            <span style="--i:0"><i></i></span><span style="--i:1"><i></i></span><span style="--i:2"><i></i></span><span style="--i:3"><i></i></span>
+            <span style="--i:4"><i></i></span><span style="--i:5"><i></i></span><span style="--i:6"><i></i></span><span style="--i:7"><i></i></span>
+            <span style="--i:8"><i></i></span><span style="--i:9"><i></i></span><span style="--i:10"><i></i></span><span style="--i:11"><i></i></span>
+          </div>
+        </div>
+        <figcaption>Sunburst</figcaption>
+      </figure>
+      <figure class="tile" data-name="Percent">
+        <div class="face" aria-hidden="true">
+          <div class="pct"><b data-pct>60</b><i data-pct-bar></i></div>
+        </div>
+        <figcaption>Percent</figcaption>
+      </figure>
+      <figure class="tile" data-name="Pill">
+        <div class="face" aria-hidden="true"><div class="pill"><i></i></div></div>
+        <figcaption>Pill</figcaption>
+      </figure>
+      <figure class="tile" data-name="Pie">
+        <div class="face" aria-hidden="true"><div class="pie"><i class="pie-ring"></i><i class="pie-fill"></i></div></div>
+        <figcaption>Pie</figcaption>
+      </figure>
+      <figure class="tile" data-name="Beads">
+        <div class="face" aria-hidden="true">
+          <div class="beads">
+            <i class="line"></i>
+            <i class="node n1"></i><i class="node n2"></i><i class="node n3"></i>
+            <i class="bead"></i>
+          </div>
+        </div>
+        <figcaption>Beads</figcaption>
+      </figure>
+      <figure class="tile" data-name="Check">
+        <div class="face" aria-hidden="true">
+          <svg viewBox="0 0 100 100">
+            <circle class="check check-ring" cx="50" cy="50" r="24" pathLength="100"/>
+            <path class="check check-tick" pathLength="100" d="M36 51 L46 62 L66 40"/>
+          </svg>
+        </div>
+        <figcaption>Check</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="row" aria-labelledby="row-type">
+    <header class="row-head">
+      <h2 id="row-type">Type</h2>
+      <span>05</span>
+    </header>
+    <div class="tiles">
+      <figure class="tile" data-name="Type">
+        <div class="face" aria-hidden="true"><div class="type"><span data-type>type</span><i data-caret></i></div></div>
+        <figcaption>Type</figcaption>
+      </figure>
+      <figure class="tile" data-name="Bubble">
+        <div class="face" aria-hidden="true">
+          <svg viewBox="0 0 100 100">
+            <path d="M28 36h40a8 8 0 0 1 8 8v12a8 8 0 0 1-8 8H46l-10 9v-9H28a8 8 0 0 1-8-8V44a8 8 0 0 1 8-8z"/>
+            <circle class="bubble-dot" cx="40" cy="52" r="3.1"/>
+            <circle class="bubble-dot" cx="50" cy="52" r="3.1"/>
+            <circle class="bubble-dot" cx="60" cy="52" r="3.1"/>
+          </svg>
+        </div>
+        <figcaption>Bubble</figcaption>
+      </figure>
+      <figure class="tile" data-name="Letter">
+        <div class="face" aria-hidden="true">
+          <div class="letter"><div class="letter-strip"><span>D</span><span>L</span><span>O</span><span>A</span><span>D</span></div></div>
+        </div>
+        <figcaption>Letter</figcaption>
+      </figure>
+      <figure class="tile" data-name="Abc">
+        <div class="face" aria-hidden="true">
+          <div class="abc"><span class="abc-base">Abc</span><span class="abc-sel"><span class="abc-inv">Abc</span></span><i class="abc-caret"></i></div>
+        </div>
+        <figcaption>Abc</figcaption>
+      </figure>
+      <figure class="tile" data-name="Lines">
+        <div class="face" aria-hidden="true"><div class="tlines"><i></i><i></i><i></i></div></div>
+        <figcaption>Lines</figcaption>
+      </figure>
+      <figure class="tile" data-name="Counter">
+        <div class="face" aria-hidden="true">
+          <div class="count">
+            <span class="win"><span class="strip" data-tens><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>0</span></span></span>
+            <span class="win"><span class="strip" data-ones style="transform:translateY(-4em)"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>0</span></span></span>
+          </div>
+        </div>
+        <figcaption>Counter</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="row" aria-labelledby="row-objects">
+    <header class="row-head">
+      <h2 id="row-objects">Objects</h2>
+      <span>06</span>
+    </header>
+    <div class="tiles">
+      <figure class="tile" data-name="Coffee">
+        <div class="face" aria-hidden="true">
+          <svg viewBox="0 0 100 100">
+            <g class="steam"><path d="M38 40c2-4-1-6 2-12"/></g>
+            <g class="steam"><path d="M48 38c2-4-1-7 2-13"/></g>
+            <g class="steam"><path d="M58 40c2-4-1-6 2-12"/></g>
+            <path d="M32 48h30"/>
+            <path d="M34 48v5c0 11 6 16 13 16s13-5 13-16v-5"/>
+            <path d="M60 53h5a6.5 6.5 0 0 1 0 13h-6"/>
+          </svg>
+        </div>
+        <figcaption>Coffee</figcaption>
+      </figure>
+      <figure class="tile" data-name="Plane">
+        <div class="face" aria-hidden="true">
+          <svg viewBox="0 0 100 100">
+            <g class="trails" stroke-width="3.4">
+              <path d="M16 62h14"/>
+              <path d="M12 70h16"/>
+              <path d="M20 78h10"/>
+            </g>
+            <g class="plane">
+              <path d="M16 62 L84 32 L40 70 Z"/>
+              <path d="M40 58 L72 44"/>
+            </g>
+          </svg>
+        </div>
+        <figcaption>Plane</figcaption>
+      </figure>
+      <figure class="tile" data-name="Bell">
+        <div class="face" aria-hidden="true">
+          <svg viewBox="0 0 100 100">
+            <g class="sound">
+              <path d="M22 46c-4 5-5 10-3 15"/>
+              <path d="M78 46c4 5 5 10 3 15"/>
+            </g>
+            <g class="bell">
+              <path d="M50 26v6"/>
+              <path d="M34 64c1-18 7-28 16-30 9 2 15 12 16 30"/>
+              <path d="M28 64h44"/>
+              <circle class="fill" cx="50" cy="72" r="3.3"/>
+            </g>
+          </svg>
+        </div>
+        <figcaption>Bell</figcaption>
+      </figure>
+      <figure class="tile" data-name="Sun and moon">
+        <div class="face" aria-hidden="true">
+          <svg viewBox="0 0 100 100">
+            <defs>
+              <mask id="moon-cut" maskUnits="userSpaceOnUse">
+                <rect x="0" y="0" width="100" height="100" style="fill:#fff"/>
+                <circle cx="62" cy="46" r="14" style="fill:#000"/>
+              </mask>
+            </defs>
+            <g class="moon">
+              <circle cx="48" cy="50" r="16" class="fill" mask="url(#moon-cut)"/>
+            </g>
+            <g class="sun">
+              <g class="rays">
+                <path d="M50 16v10M50 74v10M16 50h10M74 50h10M26 26l7 7M67 67l7 7M74 26l-7 7M33 67l-7 7"/>
+              </g>
+              <circle class="fill" cx="50" cy="50" r="9"/>
+            </g>
+          </svg>
+        </div>
+        <figcaption>Sun and moon</figcaption>
+      </figure>
+      <figure class="tile" data-name="Pulse">
+        <div class="face" aria-hidden="true">
+          <div class="ecg-clip">
+            <svg viewBox="0 0 200 100">
+              <path d="M0 58H24l7-10 9 22 8-48 9 40 6-4H100l7-10 9 22 8-48 9 40 6-4H200"/>
+            </svg>
+          </div>
+        </div>
+        <figcaption>Pulse</figcaption>
+      </figure>
+      <figure class="tile" data-name="Lock">
+        <div class="face" aria-hidden="true">
+          <svg viewBox="0 0 100 100">
+            <g class="shackle"><path d="M36 48V36a14 14 0 0 1 28 0v12"/></g>
+            <rect class="fill" x="30" y="46" width="40" height="30" rx="6"/>
+            <circle class="hole" cx="50" cy="58" r="3.5"/>
+            <path class="key" d="M50 60.2v7.2"/>
+          </svg>
+        </div>
+        <figcaption>Lock</figcaption>
+      </figure>
+    </div>
+  </section>
+  <p class="credit">Study of Ramin Nasibov’s film “still loading”, 15 Nov 2026. Not an official product.<a href="https://x.com/RaminNasibov/status/2122045748623609935">Original</a><a href="https://x.com/guanmo_ai/status/2122526137305960664">Reshare</a></p>
+</main>
+<script src="shared/site-header.js?v=35" defer></script>
+<script>
+(function () {
+  var reduce = document.documentElement.getAttribute("data-motion") === "reduce";
+  if (reduce) {
+    document.querySelectorAll("svg").forEach(function (svg) {
+      try { svg.setCurrentTime(0); svg.pauseAnimations(); } catch (e) {}
+    });
+    return;
+  }
+  var num = document.querySelector("[data-pct]");
+  var bar = document.querySelector("[data-pct-bar]");
+  var typeTxt = document.querySelector("[data-type]");
+  var typeCaret = document.querySelector("[data-caret]");
+  var tens = document.querySelector("[data-tens]");
+  var ones = document.querySelector("[data-ones]");
+  var word = "type";
+  var t0 = performance.now();
+  function ease(x) {
+    return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+  }
+  function smooth(x) { return x * x * (3 - 2 * x); }
+  function frame(now) {
+    if (!document.hidden) {
+      var t = (now - t0) / 1000;
+      var u = (t % 3) / 3;
+      var p = u < 0.54 ? Math.round(smooth(u / 0.54) * 100) : (u < 0.9 ? 100 : 0);
+      if (num.textContent !== String(p)) num.textContent = String(p);
+      bar.style.transform = "scaleX(" + (0.16 + 0.84 * p / 100).toFixed(3) + ")";
+      var cyc = t % 2.4;
+      var n;
+      var busy = true;
+      if (cyc < 0.6) n = Math.max(0, 4 - Math.floor(cyc / 0.15));
+      else if (cyc < 0.95) { n = 0; busy = false; }
+      else if (cyc < 1.62) n = Math.min(4, Math.floor((cyc - 0.95) / 0.16) + 1);
+      else { n = 4; busy = false; }
+      var next = word.slice(0, n);
+      if (typeTxt.textContent !== next) typeTxt.textContent = next;
+      typeCaret.classList.toggle("is-busy", busy);
+      var tick = 0.55;
+      var idx = Math.floor(t / tick);
+      var f = (t - idx * tick) / tick;
+      var roll = f < 0.34 ? ease(f / 0.34) : 1;
+      var dest = idx % 100;
+      var o = dest % 10;
+      var tn = Math.floor(dest / 10);
+      var oPos = o === 0 ? 9 + roll : (o - 1) + roll;
+      var tPos = tn;
+      if (o === 0) tPos = (tn === 0 ? 9 : tn - 1) + roll;
+      ones.style.transform = "translateY(" + (-oPos) + "em)";
+      tens.style.transform = "translateY(" + (-tPos) + "em)";
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
