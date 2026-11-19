@@ -149,6 +149,19 @@ In-page `.lib-nav` is for **section anchors only**. Cross-page links belong in t
 
 `index.html` and `ui-combo.html` are byte-identical, including Color combos (`#color-combos`). After gallery edits, copy `index.html` over `ui-combo.html`.
 
+## CSS units
+
+New CSS follows this hierarchy. Do not mass-convert existing studies that teach named pixel values (for example iPhone polish).
+
+1. Text, spacing, and text-tied icons → `rem`. Assume a 16px root; do not set `html { font-size: 16px }`. Spacing stays on the 4px ladder as `0.25rem` steps: `0.25 0.5 0.75 1 1.5 2 3 4 6 8`. `line-height` is unitless, or `rem` when it must match an icon box. Icon size equals line-height; icon-to-label gap is `0.5rem`.
+2. Layout structure → `%`, `fr`, flex, grid, plus `max-width` in `rem`. Do not use a raw `px` width on a layout container (`width: 560px` → `width: 100%; max-width: 35rem`).
+3. `clamp()` only when type or width must track the viewport.
+4. Full-bleed height → `100dvh`. Never bare `100vw` for width; use `100%` or a checked `100dvw`.
+5. Hairlines, borders, shadows, and small radii → `px`. Pill or growing radii → `rem` or `%`. Breakpoints and canvas/SVG strokes may stay in `px`.
+6. Do not use nested `em` for `font-size`. `em` is only for padding that should scale with the local font-size.
+
+Do not use a 100px cutoff as a ban. Small chrome (avatars, icon buttons) is not a layout container.
+
 ## UI copy
 
 Avoid unnecessary secondary labels and descriptions. Let the layout do the explaining.
