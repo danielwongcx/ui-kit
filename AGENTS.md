@@ -24,6 +24,7 @@ Multi-page **static** UI kit published on GitHub Pages from the `main` branch ro
 - Atelier: https://danielwongcx.github.io/ui-kit/atelier.html (`atelier.html`) — interaction study in the locked Motion Atelier style: warm bone, dusty pastels, five bands, specimen grid. `atelier/DESIGN.md` is that style’s bible and is the file the page downloads. The repo-root `DESIGN.md` stays the Refactor UI rulebook.
 - Gemini Sparkles: https://danielwongcx.github.io/ui-kit/gemini-sparkles.html (`gemini-sparkles.html`) — one full-viewport page. A single div draws three parallax sparkle layers with CSS radial gradients and a slow `background-position` loop, plus a soft blue glow. Night stage, no build step.
 - Loading: https://danielwongcx.github.io/ui-kit/loading-icons.html (`loading-icons.html`) — Motion playground. Study of the 36 monochrome loaders in Ramin Nasibov’s film “still loading”: Bars, Squares, Orbit, Progress, Type, Objects. CSS and inline SVG on a dark stage. `prefers-reduced-motion` and `?reduce=1` hold a static pose. No build step.
+- Collapsing header: https://danielwongcx.github.io/ui-kit/collapsing-header.html (`collapsing-header.html`) — Motion playground. A sticky inbox bar inside a demo scroller collapses on a named scroll timeline (`--page`, `animation: collapse linear both`, `animation-range: 0 6.25rem`). No scroll listeners. `@supports not (animation-timeline: scroll())` keeps the expanded bar. `prefers-reduced-motion` and `?reduce=1` snap the two heights. No build step.
 - One prompt: https://danielwongcx.github.io/ui-kit/one-prompt.html (`one-prompt.html`) — Guides. Plain-language page on seeco’s (@seeconvm) X article about viral “one-prompt” Opus motion videos. Spring-timed hero, a prompt-vs-setup chart, an eight-piece studio diagram, and the piece / without it / fix table. Numbers are the article’s. No build step.
 - Motion studio: https://danielwongcx.github.io/ui-kit/motion-studio.html (`motion-studio.html`) — Guides. Plain-language page on Movez’s (@0xMovez) X article, a 12-step course for turning a one-line motion prompt into a studio. Light seek(t) hero, a prompt-vs-harness chart, a four-part step diagram, and a without-it / fix table. Numbers are the article’s. No build step.
 - UI aesthetic: https://danielwongcx.github.io/ui-kit/ui-aesthetic.html (`ui-aesthetic.html`) — Guides. Plain-language page on Xian’s (@Xian0063) X article, eight working principles and five AI design skills, with the article’s 15 images. Numbers and install commands are the article’s. No build step.
@@ -99,6 +100,7 @@ Playgrounds:
 - Atelier Orb → `atelier-orb.html`
 - Sparkles → `gemini-sparkles.html`
 - Loading → `loading-icons.html`
+- Collapsing header → `collapsing-header.html`
 
 Films:
 

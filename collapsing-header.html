@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Collapsing header · ui-kit</title>
+<meta name="description" content="A sticky inbox bar collapses on a CSS scroll timeline. The scrollbar drives the animation. No scroll listener.">
+<meta name="theme-color" content="#F0F1F6">
+<script>
+(function () {
+  var q = location.search || "";
+  var forceReduce = /(?:^|[?&])reduce=1(?:&|$)/.test(q);
+  var forceMotion = /(?:^|[?&])motion=1(?:&|$)/.test(q);
+  var reduce = false;
+  try {
+    if (forceMotion) sessionStorage.removeItem("ch-reduce");
+    else if (forceReduce) sessionStorage.setItem("ch-reduce", "1");
+    var stored = !forceMotion && sessionStorage.getItem("ch-reduce") === "1";
+    var os = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    reduce = forceMotion ? false : (stored || os);
+  } catch (e) {
+    try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e2) {}
+  }
+  if (reduce) document.documentElement.setAttribute("data-motion", "reduce");
+})();
+</script>
+<link rel="stylesheet" href="shared/site-header.css?v=9">
+<style>
+:root {
+  --page: #F0F1F6;
+  --sheet: #FBFCFD;
+  --ink: #1C1C22;
+  --muted: #6B6B76;
+  --line: #D5D8E3;
+  --accent: #1E6851;
+  --avatar-1: #E4E7F2;
+  --avatar-2: #E7F0EA;
+  --avatar-3: #F3E8E4;
+  --avatar-4: #E8EEF6;
+  --avatar-5: #F0E9F3;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  background: var(--page);
+  color: var(--ink);
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--page);
+  color: var(--ink);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: #C9E6DA;
+  color: var(--ink);
+}
+
+main {
+  width: min(64rem, 100%);
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+@media (min-width: 720px) {
+  main { padding: 2rem 1.5rem 4rem; }
+}
+
+.layout {
+  display: grid;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.intro,
+.lesson,
+.stage { min-width: 0; }
+
+@media (min-width: 960px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 24rem);
+    column-gap: 2rem;
+  }
+
+  .stage {
+    position: sticky;
+    top: 4rem;
+    z-index: 1;
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .intro { grid-column: 1; grid-row: 1; }
+  .lesson { grid-column: 1; grid-row: 2; }
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 2rem;
+  background: var(--accent);
+  color: var(--sheet);
+  font-family: ui-monospace, "SFMono-Regular", "Cascadia Code", monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.eyebrow { margin: 0; }
+
+h1 {
+  margin: 0.5rem 0 0;
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.lead {
+  margin: 0.75rem 0 0;
+  color: var(--muted);
+  font-size: 1.5rem;
+  line-height: 1.3;
+}
+
+.notes {
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.notes li {
+  margin: 0;
+  padding-left: 1rem;
+  border-left: 2px solid var(--accent);
+}
+
+code {
+  font-family: ui-monospace, "SFMono-Regular", "Cascadia Code", monospace;
+  font-size: inherit;
+}
+
+pre {
+  margin: 1.5rem 0 0;
+  padding: 1rem 1.5rem;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: var(--sheet);
+  color: var(--ink);
+  font-family: ui-monospace, "SFMono-Regular", "Cascadia Code", monospace;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.fallback {
+  display: none;
+  margin: 0 0 0.75rem;
+}
+
+.frame {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: calc(100dvh - 8rem);
+  max-height: 32rem;
+  min-height: 16rem;
+}
+
+.scroller {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-timeline-name: --page;
+  scroll-timeline-axis: block;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--sheet);
+}
+
+.scroller,
+.scroller * { overflow-anchor: none; }
+
+.scroller:focus-visible { outline-offset: 3px; }
+
+.app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 8rem;
+  padding: 1.5rem;
+  overflow: hidden;
+  background: var(--sheet);
+  border-bottom: 1px solid var(--line);
+  animation: collapse linear both;
+  animation-timeline: --page;
+  animation-range: 0 6.25rem;
+}
+
+.app-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  animation: collapse-title linear both;
+  animation-timeline: --page;
+  animation-range: 0 6.25rem;
+}
+
+.app-count {
+  margin: 0;
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.app-sub {
+  margin: 0.5rem 0 0;
+  max-height: 1.5rem;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.5;
+  animation: quiet linear both;
+  animation-timeline: --page;
+  animation-range: 0 6.25rem;
+}
+
+@keyframes collapse {
+  to {
+    height: 4rem;
+    padding-block: 0.75rem;
+  }
+}
+
+@keyframes collapse-title {
+  to { font-size: 1.5rem; }
+}
+
+@keyframes quiet {
+  to {
+    max-height: 0;
+    margin-top: 0;
+    opacity: 0;
+  }
+}
+
+.mail {
+  margin: 0;
+  padding: 0 0 1.5rem;
+  list-style: none;
+  user-select: none;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) auto;
+  gap: 0.5rem;
+  align-items: center;
+  min-height: 4rem;
+  padding: 0.75rem 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.item.is-new { box-shadow: inset 2px 0 0 var(--accent); }
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  color: var(--ink);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.item:nth-child(5n + 1) .avatar { background: var(--avatar-1); }
+.item:nth-child(5n + 2) .avatar { background: var(--avatar-2); }
+.item:nth-child(5n + 3) .avatar { background: var(--avatar-3); }
+.item:nth-child(5n + 4) .avatar { background: var(--avatar-4); }
+.item:nth-child(5n + 5) .avatar { background: var(--avatar-5); }
+
+.who {
+  min-width: 0;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.name,
+.subject {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.name {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.is-new .name { font-weight: 700; }
+
+.subject {
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.3;
+}
+
+.when {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-bar,
+  .app-title,
+  .app-sub {
+    animation-timing-function: steps(1, end);
+  }
+}
+
+html[data-motion="reduce"] .app-bar,
+html[data-motion="reduce"] .app-title,
+html[data-motion="reduce"] .app-sub {
+  animation-timing-function: steps(1, end);
+}
+
+@supports not (animation-timeline: scroll()) {
+  .app-bar {
+    animation: none;
+    height: 8rem;
+    padding: 1.5rem;
+  }
+
+  .app-title {
+    animation: none;
+    font-size: 2rem;
+  }
+
+  .app-sub {
+    animation: none;
+    max-height: 1.5rem;
+    margin-top: 0.5rem;
+    opacity: 1;
+  }
+
+  .fallback { display: block; }
+}
+</style>
+</head>
+<body data-page="collapsing-header">
+<main>
+  <div class="layout">
+    <header class="intro">
+      <p class="eyebrow"><span class="pill">Scroll timeline</span></p>
+      <h1>Collapsing header</h1>
+      <p class="lead">The scrollbar of this list drives the bar.</p>
+    </header>
+
+    <div class="stage">
+      <p class="fallback">This browser keeps the expanded bar. Scroll timelines are not available here.</p>
+      <div class="frame">
+        <div class="scroller" tabindex="0" role="region" aria-labelledby="inbox-title">
+          <header class="app-bar">
+            <div class="app-row">
+              <h2 class="app-title" id="inbox-title">Inbox</h2>
+              <p class="app-count">8 new</p>
+            </div>
+            <p class="app-sub">Notes from today</p>
+          </header>
+          <ul class="mail">
+            <li class="item is-new">
+              <span class="avatar" aria-hidden="true">AC</span>
+              <span class="who"><span class="name">Avery Cole</span><span class="subject">Draft is ready for a read</span></span>
+              <span class="when">09:14</span>
+            </li>
+            <li class="item is-new">
+              <span class="avatar" aria-hidden="true">MO</span>
+              <span class="who"><span class="name">Mina Ortiz</span><span class="subject">Check the second paragraph</span></span>
+              <span class="when">08:41</span>
+            </li>
+            <li class="item is-new">
+              <span class="avatar" aria-hidden="true">JP</span>
+              <span class="who"><span class="name">Jonah Peck</span><span class="subject">Morning standup notes</span></span>
+              <span class="when">08:05</span>
+            </li>
+            <li class="item is-new">
+              <span class="avatar" aria-hidden="true">PS</span>
+              <span class="who"><span class="name">Priya Shah</span><span class="subject">Schedule moved to Thursday</span></span>
+              <span class="when">07:22</span>
+            </li>
+            <li class="item is-new">
+              <span class="avatar" aria-hidden="true">ET</span>
+              <span class="who"><span class="name">Ellis Tran</span><span class="subject">A question about the cover</span></span>
+              <span class="when">Yesterday</span>
+            </li>
+            <li class="item is-new">
+              <span class="avatar" aria-hidden="true">NH</span>
+              <span class="who"><span class="name">Noor Haddad</span><span class="subject">Comments in the margin</span></span>
+              <span class="when">Yesterday</span>
+            </li>
+            <li class="item is-new">
+              <span class="avatar" aria-hidden="true">SB</span>
+              <span class="who"><span class="name">Samir Blake</span><span class="subject">Third-floor printer is back</span></span>
+              <span class="when">Yesterday</span>
+            </li>
+            <li class="item is-new">
+              <span class="avatar" aria-hidden="true">RK</span>
+              <span class="who"><span class="name">Ruth Keene</span><span class="subject">Lunch at the corner table</span></span>
+              <span class="when">Mon</span>
+            </li>
+            <li class="item">
+              <span class="avatar" aria-hidden="true">OP</span>
+              <span class="who"><span class="name">Owen Park</span><span class="subject">Thanks for the outline</span></span>
+              <span class="when">Mon</span>
+            </li>
+            <li class="item">
+              <span class="avatar" aria-hidden="true">LV</span>
+              <span class="who"><span class="name">Lila Voss</span><span class="subject">Guest list is settled</span></span>
+              <span class="when">Mon</span>
+            </li>
+            <li class="item">
+              <span class="avatar" aria-hidden="true">CA</span>
+              <span class="who"><span class="name">Chris Adeyemi</span><span class="subject">Keys are at the front desk</span></span>
+              <span class="when">Sun</span>
+            </li>
+            <li class="item">
+              <span class="avatar" aria-hidden="true">HC</span>
+              <span class="who"><span class="name">Hannah Cho</span><span class="subject">Photos came out warm</span></span>
+              <span class="when">Sun</span>
+            </li>
+            <li class="item">
+              <span class="avatar" aria-hidden="true">MR</span>
+              <span class="who"><span class="name">Mateo Ruiz</span><span class="subject">Chairs are back in place</span></span>
+              <span class="when">Sat</span>
+            </li>
+            <li class="item">
+              <span class="avatar" aria-hidden="true">IB</span>
+              <span class="who"><span class="name">Imani Brooks</span><span class="subject">The ledger balances</span></span>
+              <span class="when">Sat</span>
+            </li>
+            <li class="item">
+              <span class="avatar" aria-hidden="true">FG</span>
+              <span class="who"><span class="name">Felix Grant</span><span class="subject">See you at the early train</span></span>
+              <span class="when">Fri</span>
+            </li>
+            <li class="item">
+              <span class="avatar" aria-hidden="true">SQ</span>
+              <span class="who"><span class="name">Sasha Quinn</span><span class="subject">Water the window plants</span></span>
+              <span class="when">Fri</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson">
+      <ul class="notes">
+        <li>A scroll listener is the old way. It wakes the main thread on every tick, and the bar janks when that thread is busy.</li>
+        <li>This list names its scrollbar <code>--page</code>. The bar plays <code>collapse</code> on that timeline, with no scroll listener on the main thread.</li>
+        <li>Scroll <code>0</code> is the expanded bar: <code>8rem</code> tall, title at <code>2rem</code>. <code>50%</code> of the first <code>6.25rem</code> (100px at a 16px root) is halfway collapsed. <code>100%</code> of that range, and anything past it, holds <code>4rem</code> and a <code>1.5rem</code> title.</li>
+        <li>The same link, without a name, is <code>animation-timeline: scroll(block nearest)</code>.</li>
+        <li>Reduced motion snaps to the collapsed bar at the end of that range. Scroll still drives the change. Add <code>?reduce=1</code> to try it. <code>?motion=1</code> restores the smooth link.</li>
+        <li>Where <code>animation-timeline: scroll()</code> is unsupported, the bar stays expanded and the list still scrolls.</li>
+      </ul>
+      <pre aria-label="CSS for the collapsing bar"><code>.scroller {
+  scroll-timeline-name: --page;
+  scroll-timeline-axis: block;
+}
+
+.app-bar {
+  animation: collapse linear both;
+  animation-timeline: --page;
+  animation-range: 0 6.25rem;
+}
+
+.app-title {
+  font-size: 2rem;
+  animation: collapse-title linear both;
+  animation-timeline: --page;
+  animation-range: 0 6.25rem;
+}
+
+@keyframes collapse {
+  to {
+    height: 4rem;
+    padding-block: 0.75rem;
+  }
+}
+
+@keyframes collapse-title {
+  to { font-size: 1.5rem; }
+}</code></pre>
+    </div>
+  </div>
+</main>
+<script src="shared/site-header.js?v=37" defer></script>
+</body>
+</html>
