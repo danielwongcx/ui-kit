@@ -25,7 +25,8 @@
     { id: 'nudging-notifications', label: 'Nudging notifications' },
     { id: 'prompting-ui', label: 'Prompting UI' },
     { id: 'design-tokens', label: 'Design tokens' },
-    { id: 'iphone-polish', label: 'iPhone polish' }
+    { id: 'iphone-polish', label: 'iPhone polish' },
+    { id: 'premium-composer', label: 'Composer' }
   ];
 
   var TASTE_SECTION_LINKS = [

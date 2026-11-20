@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>UI Library · Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Brand ≠ Primary · Select · Glow · Folder · Spacing · Hierarchy · Combos · Keywords · Backgrounds · Nudge · Prompting UI · Design tokens · iPhone polish</title>
+  <title>UI Library · Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Brand ≠ Primary · Select · Glow · Folder · Spacing · Hierarchy · Combos · Keywords · Backgrounds · Nudge · Prompting UI · Design tokens · iPhone polish · Composer</title>
   <script>
     /* Apply saved page shell and glow stops before paint */
     (function () {
@@ -30,11 +30,11 @@
     })();
   </script>
   <script>
-    /* ?reduce=1 holds transition-keyword, background-keyword, nudging-notification, prompting-ui bloom, the design-tokens colour change, and the iPhone polish island morph at rest. OS reduced motion is handled in CSS. */
+    /* ?reduce=1 holds transition-keyword, background-keyword, nudging-notification, prompting-ui bloom, the design-tokens colour change, the iPhone polish island morph, and the composer send rotation at rest. OS reduced motion is handled in CSS. */
     (function () {
       try {
         if (new URLSearchParams(location.search).get('reduce') === '1') {
-          document.documentElement.classList.add('tk-still', 'bk-still', 'nn-still', 'pu-still', 'dt-still', 'ip-still');
+          document.documentElement.classList.add('tk-still', 'bk-still', 'nn-still', 'pu-still', 'dt-still', 'ip-still', 'pc-still');
         }
       } catch (e) {}
     })();
@@ -9941,6 +9941,539 @@
     }
 
   </style>
+  <style>
+    /* Premium composer. Scoped to #premium-composer.
+       Product primary #555A96 on icon #F4F1F8 is 5.71:1.
+       Brand #8B93F7 is the mark only (2.47:1 on #F4F1F8).
+       Focus ring #C7CBFF is a light step of that primary, 10.83:1 on #1C1C22. */
+    #premium-composer .pc-stage {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 0.75rem;
+      min-height: 20rem;
+      padding: 1.5rem 1rem;
+      border: 1px solid var(--line);
+      border-radius: 1.5rem;
+      background: #121212;
+      color: #F4F1F8;
+      color-scheme: dark;
+    }
+
+    #premium-composer .pc-mark,
+    #premium-composer .pc-log,
+    #premium-composer .pc-readout,
+    #premium-composer .pc {
+      width: 100%;
+      max-width: 35rem;
+    }
+
+    #premium-composer .pc-mark {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0;
+      font-size: 0.75rem;
+      line-height: 1rem;
+      font-weight: 650;
+    }
+
+    #premium-composer .pc-mark__dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      background: #8B93F7;
+    }
+
+    #premium-composer .pc-log,
+    #premium-composer .pc-readout {
+      margin: 0;
+      font-size: 0.75rem;
+      line-height: 1.5;
+      color: #C4C4D0;
+    }
+
+    #premium-composer .pc {
+      margin: 0;
+    }
+
+    #premium-composer .pc-box {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #6A6A78;
+      border-radius: 1.5rem;
+      background: #1C1C22;
+      padding: 0.75rem;
+      box-shadow: 0 0 0 0 transparent;
+      transition: box-shadow 180ms ease;
+    }
+
+    #premium-composer .pc-box:focus-within {
+      border-width: 1px;
+      box-shadow: 0 0 0 3px #C7CBFF;
+    }
+
+    #premium-composer .pc-files {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 0.5rem;
+      margin: 0 0 0.5rem;
+      padding: 0;
+      list-style: none;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scrollbar-width: thin;
+    }
+
+    #premium-composer .pc-files[hidden] {
+      display: none;
+    }
+
+    #premium-composer .pc-file {
+      position: relative;
+      display: flex;
+      flex: none;
+      align-items: center;
+      gap: 0.5rem;
+      max-width: 100%;
+      min-height: 3rem;
+      margin: 0;
+      padding: 0.5rem 0.5rem 0.75rem 0.75rem;
+      border-radius: 1rem;
+      background: #2A2A32;
+      color: #F4F1F8;
+    }
+
+    #premium-composer .pc-file__icon,
+    #premium-composer .pc-file__icon svg,
+    #premium-composer .pc-file__remove svg,
+    #premium-composer .pc-tool svg,
+    #premium-composer .pc-send svg {
+      width: 1rem;
+      height: 1rem;
+      flex: none;
+    }
+
+    #premium-composer .pc-file__icon {
+      display: inline-flex;
+    }
+
+    #premium-composer .pc-file__copy {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      font-size: 0.75rem;
+      line-height: 1rem;
+    }
+
+    #premium-composer .pc-file__name {
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    #premium-composer .pc-file__meta {
+      color: #C4C4D0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    #premium-composer .pc-file__remove {
+      display: inline-grid;
+      place-items: center;
+      flex: none;
+      width: 2rem;
+      height: 2rem;
+      margin-left: auto;
+      padding: 0;
+      border: 0;
+      border-radius: 1rem;
+      background: transparent;
+      color: #F4F1F8;
+      cursor: pointer;
+    }
+
+    #premium-composer .pc-file__track {
+      position: absolute;
+      left: 0.75rem;
+      right: 0.75rem;
+      bottom: 0.25rem;
+      height: 2px;
+      border-radius: 1px;
+      background: #3E3E4A;
+      overflow: hidden;
+    }
+
+    #premium-composer .pc-file__fill {
+      display: block;
+      height: 2px;
+      width: 0%;
+      background: #C7CBFF;
+      transition: width 80ms linear;
+    }
+
+    #premium-composer .pc-file.is-done .pc-file__track {
+      opacity: 0;
+    }
+
+    #premium-composer .pc-field {
+      field-sizing: content;
+      display: block;
+      width: 100%;
+      min-height: 1.5rem;
+      max-height: 8rem;
+      margin: 0;
+      padding: 0.25rem 0.25rem 0.5rem;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scrollbar-gutter: stable;
+      resize: none;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: #F4F1F8;
+      caret-color: #C7CBFF;
+      font: inherit;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    #premium-composer .pc-field::placeholder {
+      color: #A8A8B8;
+      opacity: 1;
+    }
+
+    #premium-composer .pc-field:focus,
+    #premium-composer .pc-field:focus-visible {
+      outline: none;
+    }
+
+    #premium-composer .pc-field:-webkit-autofill {
+      -webkit-text-fill-color: #F4F1F8;
+      caret-color: #C7CBFF;
+      box-shadow: 0 0 0 8rem #1C1C22 inset;
+    }
+
+    @supports not (field-sizing: content) {
+      #premium-composer .pc-field {
+        height: 1.5rem;
+      }
+    }
+
+    #premium-composer .pc-bar {
+      position: sticky;
+      bottom: 0;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding-top: 0.5rem;
+      background: #1C1C22;
+    }
+
+    #premium-composer .pc-tools {
+      display: flex;
+      flex: 1 1 auto;
+      align-items: center;
+      gap: 0.25rem;
+      min-width: 0;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      flex-wrap: nowrap;
+      scrollbar-width: thin;
+    }
+
+    #premium-composer .pc-tool,
+    #premium-composer .pc-send,
+    #premium-composer .pc-copy {
+      font: inherit;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    #premium-composer .pc-tool {
+      display: inline-flex;
+      flex: none;
+      align-items: center;
+      gap: 0.5rem;
+      min-height: 3rem;
+      padding: 0 0.5rem;
+      border: 1px solid transparent;
+      border-radius: 1rem;
+      background: transparent;
+      color: #F4F1F8;
+      font-size: 0.75rem;
+      line-height: 1rem;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    #premium-composer .pc-tool[aria-pressed="true"] {
+      background: #2A2A32;
+    }
+
+    #premium-composer .pc-send {
+      display: inline-grid;
+      place-items: center;
+      flex: none;
+      width: 3rem;
+      height: 3rem;
+      margin-left: auto;
+      padding: 0;
+      border: 1px solid transparent;
+      border-radius: 1rem;
+      background: #2A2A32;
+      color: #F4F1F8;
+      opacity: 0.4;
+      transform: scale(0.84);
+      transform-origin: center;
+      transition: opacity 180ms ease, transform 180ms ease, background-color 180ms ease;
+    }
+
+    #premium-composer .pc-send:disabled {
+      cursor: default;
+    }
+
+    #premium-composer .pc.is-ready .pc-send,
+    #premium-composer .pc.is-sending .pc-send {
+      opacity: 1;
+      transform: scale(1);
+      background: #555A96;
+      color: #F4F1F8;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      #premium-composer .pc-tool:hover {
+        background: #2A2A32;
+      }
+
+      #premium-composer .pc.is-ready .pc-send:hover,
+      #premium-composer .pc.is-sending .pc-send:hover {
+        background: #4A4F84;
+      }
+    }
+
+    #premium-composer .pc-send__glyph {
+      display: grid;
+      width: 1rem;
+      height: 1rem;
+      transition: transform 180ms ease;
+    }
+
+    #premium-composer .pc-send__glyph > svg {
+      grid-area: 1 / 1;
+    }
+
+    #premium-composer .pc-send__arrow,
+    #premium-composer .pc-send__stop {
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    #premium-composer .pc-send__stop {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+
+    #premium-composer .pc.is-sending .pc-send__glyph {
+      transform: rotate(-90deg);
+    }
+
+    #premium-composer .pc.is-sending .pc-send__arrow {
+      opacity: 0;
+    }
+
+    #premium-composer .pc.is-sending .pc-send__stop {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    #premium-composer .pc-tool:focus-visible,
+    #premium-composer .pc-send:focus-visible,
+    #premium-composer .pc-file__remove:focus-visible,
+    #premium-composer .pc-copy:focus-visible {
+      outline: 2px solid #C7CBFF;
+      outline-offset: 2px;
+    }
+
+    #premium-composer .pc-lessons {
+      display: grid;
+      gap: 0.75rem;
+      margin: 1.5rem 0 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: pc-lesson;
+    }
+
+    #premium-composer .pc-lesson {
+      margin: 0;
+      padding: 0.75rem 1rem 1rem;
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      background: #FBFCFD;
+      counter-increment: pc-lesson;
+    }
+
+    #premium-composer .pc-lesson h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      font-weight: 700;
+    }
+
+    #premium-composer .pc-lesson h3::before {
+      content: counter(pc-lesson) " · ";
+      color: #555A96;
+    }
+
+    #premium-composer .pc-pair {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    #premium-composer .pc-cheap,
+    #premium-composer .pc-prem {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #1C1C22;
+    }
+
+    #premium-composer .pc-tag {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 0.75rem;
+      line-height: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    #premium-composer .pc-cheap .pc-tag { color: #6B6B76; }
+    #premium-composer .pc-prem .pc-tag { color: #555A96; }
+
+    #premium-composer .pc-code {
+      margin-top: 1.5rem;
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      background: #FBFCFD;
+      overflow: hidden;
+    }
+
+    #premium-composer .pc-code__bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-height: 3rem;
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid var(--line);
+      color: #1C1C22;
+      font-size: 0.75rem;
+      line-height: 1rem;
+      font-weight: 650;
+    }
+
+    #premium-composer .pc-copy {
+      margin-left: auto;
+      min-height: 3rem;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      background: #F4F1F8;
+      color: #1C1C22;
+      font-size: 0.75rem;
+      line-height: 1rem;
+      font-weight: 650;
+    }
+
+    #premium-composer .pc-snippet {
+      margin: 0;
+      padding: 1rem;
+      overflow-x: auto;
+      background: #F4F1F8;
+      color: #1C1C22;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      line-height: 1.5;
+      tab-size: 2;
+    }
+
+    #premium-composer .pc-snippet code {
+      font-family: inherit;
+      font-size: inherit;
+    }
+
+    #premium-composer .pc-aside,
+    #premium-composer .pc-credit {
+      margin: 0.75rem 0 0;
+      max-width: 40rem;
+      color: var(--muted);
+      font-size: 0.75rem;
+      line-height: 1.5;
+    }
+
+    #premium-composer code {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+    }
+
+    #premium-composer .sec-head code,
+    #premium-composer .pc-lesson code {
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 767px) {
+      #premium-composer .pc-stage {
+        min-height: 16rem;
+        padding: 1rem;
+      }
+
+      #premium-composer .pc-tool {
+        padding: 0 0.25rem;
+      }
+    }
+
+    @media (min-width: 800px) {
+      #premium-composer .pc-pair {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html:not([data-pc-motion="on"]) #premium-composer .pc-box,
+      html:not([data-pc-motion="on"]) #premium-composer .pc-send,
+      html:not([data-pc-motion="on"]) #premium-composer .pc-send__glyph,
+      html:not([data-pc-motion="on"]) #premium-composer .pc-send__arrow,
+      html:not([data-pc-motion="on"]) #premium-composer .pc-send__stop,
+      html:not([data-pc-motion="on"]) #premium-composer .pc-file__fill {
+        transition: none;
+      }
+
+      html:not([data-pc-motion="on"]) #premium-composer .pc.is-sending .pc-send__glyph {
+        transform: none;
+      }
+    }
+
+    html.pc-still #premium-composer .pc-box,
+    html.pc-still #premium-composer .pc-send,
+    html.pc-still #premium-composer .pc-send__glyph,
+    html.pc-still #premium-composer .pc-send__arrow,
+    html.pc-still #premium-composer .pc-send__stop,
+    html.pc-still #premium-composer .pc-file__fill {
+      transition: none;
+    }
+
+    html.pc-still #premium-composer .pc.is-sending .pc-send__glyph {
+      transform: none;
+    }
+
+    @media (forced-colors: active) {
+      #premium-composer .pc-box,
+      #premium-composer .pc-send,
+      #premium-composer .pc-tool {
+        border-color: ButtonText;
+      }
+    }
+  </style>
 </head>
 <body data-page="gallery">
   <nav class="lib-nav" aria-label="Library sections">
@@ -9965,6 +10498,7 @@
       <a href="#prompting-ui">Prompting UI</a>
       <a href="#design-tokens">Design tokens</a>
       <a href="#iphone-polish">iPhone polish</a>
+      <a href="#premium-composer">Composer</a>
     </div>
   </nav>
 
@@ -9972,7 +10506,7 @@
     <header class="lib-hero">
       <h1>Component gallery</h1>
       <p>
-        Self-contained demos: Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Brand ≠ Primary · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications · Prompting UI · Design tokens · iPhone polish.
+        Self-contained demos: Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Brand ≠ Primary · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications · Prompting UI · Design tokens · iPhone polish · Premium composer.
         Digit scroll with a natural <code>linear()</code> spring (~10%
         overshoot), hard-coded glow CTAs (violet / teal / slate), nested-radius
         photo cards and a progressive dialog, ten page-shell colour palettes you can switch, twenty reference
@@ -17008,12 +17542,578 @@
     })();
     </script>
 
+    <section class="sec" id="premium-composer">
+      <div class="sec-head">
+        <h2>Premium composer</h2>
+        <p>
+          Premium lives in the states, not in one component. One composer has four layers and five states: container, attachments, text field, toolbar, and a send control that becomes stop.
+        </p>
+        <p>
+          Send uses product primary <code>#555A96</code>. The icon <code>#F4F1F8</code> is 5.71:1 on that fill. Brand <code>#8B93F7</code> is the mark only. It is 2.47:1 with the same icon.
+        </p>
+      </div>
+
+      <div class="pc-stage">
+        <p class="pc-mark">
+          <span class="pc-mark__dot" aria-hidden="true"></span>
+          <span>Field notes</span>
+        </p>
+        <p class="pc-log">Tuesday's site visit is in the thread.</p>
+        <form class="pc" id="pc-form" action="#premium-composer">
+          <div class="pc-box">
+            <ul class="pc-files" id="pc-files" hidden></ul>
+            <label class="visually-hidden" for="pc-field">Message</label>
+            <textarea id="pc-field" class="pc-field" rows="1" placeholder="Write a message" autocomplete="off"></textarea>
+            <div class="pc-bar">
+              <div class="pc-tools" role="toolbar" aria-label="Composer tools">
+                <button type="button" class="pc-tool" id="pc-attach">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span>Attach</span>
+                </button>
+                <button type="button" class="pc-tool" id="pc-tools-btn" aria-pressed="false">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M2 14h4M10 8h4M18 16h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                  <span>Tools</span>
+                </button>
+                <button type="button" class="pc-tool" id="pc-search" aria-pressed="false">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                  <span>Search</span>
+                </button>
+              </div>
+              <button type="button" class="pc-send" id="pc-send" disabled aria-label="Send">
+                <span class="pc-send__glyph" aria-hidden="true">
+                  <svg class="pc-send__arrow" viewBox="0 0 24 24" focusable="false"><path d="M12 19V5M6 11l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <svg class="pc-send__stop" viewBox="0 0 24 24" focusable="false"><rect x="4" y="4" width="16" height="16" rx="2" fill="currentColor"/></svg>
+                </span>
+              </button>
+            </div>
+          </div>
+        </form>
+        <p class="pc-readout" id="pc-readout">Empty. Send is inactive.</p>
+      </div>
+      <p class="visually-hidden" id="pc-live" role="status" aria-live="polite"></p>
+
+      <ol class="pc-lessons">
+        <li class="pc-lesson">
+          <h3>Container</h3>
+          <div class="pc-pair">
+            <p class="pc-cheap"><span class="pc-tag">Cheap</span> Focus thickens the border, so the text jumps.</p>
+            <p class="pc-prem"><span class="pc-tag">Premium</span> The border stays 1px. <code>:focus-within</code> adds <code>box-shadow: 0 0 0 3px #C7CBFF</code>.</p>
+          </div>
+        </li>
+        <li class="pc-lesson">
+          <h3>Attachments</h3>
+          <div class="pc-pair">
+            <p class="pc-cheap"><span class="pc-tag">Cheap</span> A centered modal is the path a file takes into the message.</p>
+            <p class="pc-prem"><span class="pc-tag">Premium</span> Attach adds a pill in the composer. The label moves from <code>Uploading 28%</code> to <code>2.4 MB</code>.</p>
+          </div>
+        </li>
+        <li class="pc-lesson">
+          <h3>Text field</h3>
+          <div class="pc-pair">
+            <p class="pc-cheap"><span class="pc-tag">Cheap</span> Every key reads <code>scrollHeight</code> and writes a pixel height.</p>
+            <p class="pc-prem"><span class="pc-tag">Premium</span> <code>field-sizing: content</code> grows the field upward. At 8rem the field scrolls inside itself.</p>
+          </div>
+        </li>
+        <li class="pc-lesson">
+          <h3>Toolbar</h3>
+          <div class="pc-pair">
+            <p class="pc-cheap"><span class="pc-tag">Cheap</span> The bar scrolls away with the text.</p>
+            <p class="pc-prem"><span class="pc-tag">Premium</span> <code>position: sticky; bottom: 0</code> on a flex column. The field grows. The bar stays.</p>
+          </div>
+        </li>
+        <li class="pc-lesson">
+          <h3>Send / Stop</h3>
+          <div class="pc-pair">
+            <p class="pc-cheap"><span class="pc-tag">Cheap</span> Two buttons swap, and the icon unmounts.</p>
+            <p class="pc-prem"><span class="pc-tag">Premium</span> One node. Empty is opacity 0.4 and scale 0.84. One character or a file sets opacity 1, scale 1, and fill <code>#555A96</code>. Sending rotates that same icon into a stop square.</p>
+          </div>
+        </li>
+      </ol>
+
+      <div class="pc-code">
+        <div class="pc-code__bar">
+          <span>Vanilla CSS</span>
+          <button type="button" class="pc-copy" id="pc-copy">Copy CSS</button>
+        </div>
+        <pre class="pc-snippet" id="pc-snippet" tabindex="0" aria-label="Composer CSS"><code>/*
+  Markup, one composer:
+  .composer
+    .composer-file > .composer-file-fill
+    textarea.composer-field
+    .composer-bar
+      button.composer-send
+        span.composer-send-glyph
+          svg.composer-send-arrow
+          svg.composer-send-stop
+  States on .composer: .is-ready, .is-sending.
+  Both icons stay mounted. The pill text swaps
+  "Uploading 28%" for "2.4 MB".
+  Product primary #555A96 on icon #F4F1F8 is 5.71:1.
+  Brand #8B93F7 is the mark only (2.47:1 on #F4F1F8).
+*/
+.composer {
+  --primary: #555A96;
+  --on-primary: #F4F1F8;
+  --ring: #C7CBFF;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 35rem;
+  border: 1px solid #6A6A78;
+  border-radius: 1.5rem;
+  background: #1C1C22;
+  padding: 0.75rem;
+}
+
+.composer:focus-within {
+  border-width: 1px;
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+.composer-file {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  margin: 0 0 0.5rem;
+  padding: 0.5rem 0.75rem 0.75rem;
+  border-radius: 1rem;
+  background: #2A2A32;
+  color: #F4F1F8;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.composer-file-fill {
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: 0.25rem;
+  height: 2px;
+  width: 0%;
+  background: #C7CBFF;
+  transition: width 180ms linear;
+}
+
+.composer-field {
+  field-sizing: content;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-height: 1.5rem;
+  max-height: 8rem;
+  margin: 0;
+  padding: 0.25rem 0.25rem 0.5rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  resize: none;
+  border: 0;
+  background: transparent;
+  color: #F4F1F8;
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+@supports not (field-sizing: content) {
+  .composer-field {
+    height: 1.5rem;
+  }
+}
+
+.composer-bar {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  background: #1C1C22;
+}
+
+.composer-send {
+  display: inline-grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  margin-left: auto;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 1rem;
+  background: #2A2A32;
+  color: var(--on-primary);
+  opacity: 0.4;
+  transform: scale(0.84);
+  transform-origin: center;
+  transition: opacity 180ms ease, transform 180ms ease, background-color 180ms ease;
+}
+
+.composer.is-ready .composer-send,
+.composer.is-sending .composer-send {
+  opacity: 1;
+  transform: scale(1);
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.composer-send-glyph {
+  display: grid;
+  width: 1rem;
+  height: 1rem;
+  transition: transform 180ms ease;
+}
+
+.composer-send-glyph > svg {
+  grid-area: 1 / 1;
+  width: 1rem;
+  height: 1rem;
+}
+
+.composer-send-arrow,
+.composer-send-stop {
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.composer-send-stop {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.composer.is-sending .composer-send-glyph {
+  transform: rotate(-90deg);
+}
+
+.composer.is-sending .composer-send-arrow {
+  opacity: 0;
+}
+
+.composer.is-sending .composer-send-stop {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .composer,
+  .composer-send,
+  .composer-send-glyph,
+  .composer-send-arrow,
+  .composer-send-stop,
+  .composer-file-fill {
+    transition: none;
+  }
+
+  .composer.is-sending .composer-send-glyph {
+    transform: none;
+  }
+}</code></pre>
+      </div>
+      <p class="pc-aside" id="pc-fit">Resize uses <code>field-sizing: content</code>. The script writes a height only when that property is missing, and only up to 8rem.</p>
+      <p class="pc-credit">ChatGPT, Claude, and Perplexity made these states familiar. This study copies none of their chrome.</p>
+    </section>
+    <script>
+    (function () {
+      'use strict';
+
+      var root = document.getElementById('premium-composer');
+      if (!root) return;
+
+      var form = document.getElementById('pc-form');
+      var field = document.getElementById('pc-field');
+      var files = document.getElementById('pc-files');
+      var send = document.getElementById('pc-send');
+      var attach = document.getElementById('pc-attach');
+      var toolsBtn = document.getElementById('pc-tools-btn');
+      var searchBtn = document.getElementById('pc-search');
+      var readout = document.getElementById('pc-readout');
+      var live = document.getElementById('pc-live');
+      var fitNote = document.getElementById('pc-fit');
+      var copyBtn = document.getElementById('pc-copy');
+      var snippet = document.getElementById('pc-snippet');
+      if (!form || !field || !files || !send || !attach) return;
+
+      var params;
+      try { params = new URLSearchParams(location.search); } catch (e) { params = { get: function () { return null; } }; }
+      var reduce = false;
+      try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+      if (params.get('motion') === '1') reduce = false;
+      if (params.get('reduce') === '1') reduce = true;
+      if (reduce) document.documentElement.classList.add('pc-still');
+      else document.documentElement.classList.remove('pc-still');
+      if (!reduce && params.get('motion') === '1') document.documentElement.setAttribute('data-pc-motion', 'on');
+
+      var fieldSizing = false;
+      try { fieldSizing = !!(window.CSS && CSS.supports && CSS.supports('field-sizing', 'content')); } catch (e) {}
+      field.setAttribute('data-fit', fieldSizing ? 'field-sizing' : 'script');
+      if (fitNote) {
+        fitNote.textContent = fieldSizing
+          ? 'Resize: field-sizing: content. The script is not setting the height.'
+          : 'Resize: script fallback. This browser has no field-sizing: content, so the script caps the height at 8rem.';
+      }
+
+      var FILES = [
+        { name: 'field-notes.pdf', size: '2.4 MB' },
+        { name: 'site-plan.png', size: '860 KB' },
+        { name: 'transcript.txt', size: '18 KB' }
+      ];
+      var DOC_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 3v6h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>';
+      var REMOVE_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+      var items = [];
+      var sending = false;
+
+      function say(text) {
+        if (live) live.textContent = text;
+      }
+
+      function isReady() {
+        return field.value.length >= 1 || items.length > 0;
+      }
+
+      function fitFallback() {
+        if (fieldSizing) return;
+        field.style.height = 'auto';
+        var max = parseFloat(window.getComputedStyle(field).maxHeight);
+        var next = field.scrollHeight;
+        if (isFinite(max)) next = Math.min(next, max);
+        field.style.height = next + 'px';
+      }
+
+      function paintReadout() {
+        if (!readout) return;
+        var line;
+        if (sending) line = 'Sending. The same button is stop.';
+        else if (isReady()) line = 'Ready. Send uses the product primary.';
+        else line = 'Empty. Send is inactive.';
+        var pending = null;
+        for (var i = 0; i < items.length; i++) {
+          if (!items[i].done) pending = items[i];
+        }
+        if (pending) line += ' ' + pending.meta.textContent + ' · ' + pending.name;
+        readout.textContent = line;
+      }
+
+      function sync() {
+        var ready = isReady();
+        form.classList.toggle('is-ready', ready && !sending);
+        form.classList.toggle('is-sending', sending);
+        form.setAttribute('data-state', sending ? 'sending' : (ready ? 'ready' : 'empty'));
+        send.disabled = !ready && !sending;
+        send.setAttribute('aria-label', sending ? 'Stop' : 'Send');
+        paintReadout();
+      }
+
+      function removeItem(item) {
+        item.cancelled = true;
+        if (item.raf) window.cancelAnimationFrame(item.raf);
+        if (item.timer) window.clearTimeout(item.timer);
+        var index = items.indexOf(item);
+        if (index >= 0) items.splice(index, 1);
+        if (item.li.parentNode) item.li.parentNode.removeChild(item.li);
+        if (!items.length) files.hidden = true;
+        sync();
+        say('Removed ' + item.name + '.');
+      }
+
+      function finishItem(item) {
+        if (item.cancelled) return;
+        item.done = true;
+        item.meta.textContent = item.size;
+        item.fill.style.width = '100%';
+        item.li.classList.add('is-done');
+        sync();
+        say(item.name + ' attached, ' + item.size + '.');
+      }
+
+      function runProgress(item) {
+        if (reduce) {
+          item.meta.textContent = 'Uploading 28%';
+          item.fill.style.width = '28%';
+          paintReadout();
+          item.timer = window.setTimeout(function () { finishItem(item); }, 700);
+          return;
+        }
+        var started = window.performance && performance.now ? performance.now() : Date.now();
+        var duration = 1800;
+        function frame(now) {
+          if (item.cancelled) return;
+          var t = Math.min(1, (now - started) / duration);
+          var pct = Math.round(t * 100);
+          item.meta.textContent = 'Uploading ' + pct + '%';
+          item.fill.style.width = pct + '%';
+          paintReadout();
+          if (t < 1) item.raf = window.requestAnimationFrame(frame);
+          else finishItem(item);
+        }
+        item.raf = window.requestAnimationFrame(frame);
+      }
+
+      function addFile() {
+        var used = {};
+        items.forEach(function (item) { used[item.name] = true; });
+        if (Object.keys(used).length >= FILES.length) {
+          say('Three files is the demo set. Remove one to attach again.');
+          return;
+        }
+        var spec = null;
+        for (var i = 0; i < FILES.length; i++) {
+          if (!used[FILES[i].name]) { spec = FILES[i]; break; }
+        }
+        var li = document.createElement('li');
+        li.className = 'pc-file';
+        var icon = document.createElement('span');
+        icon.className = 'pc-file__icon';
+        icon.setAttribute('aria-hidden', 'true');
+        icon.innerHTML = DOC_SVG;
+        var copy = document.createElement('span');
+        copy.className = 'pc-file__copy';
+        var name = document.createElement('span');
+        name.className = 'pc-file__name';
+        name.textContent = spec.name;
+        var meta = document.createElement('span');
+        meta.className = 'pc-file__meta';
+        meta.textContent = 'Uploading 0%';
+        copy.appendChild(name);
+        copy.appendChild(meta);
+        var remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'pc-file__remove';
+        remove.setAttribute('aria-label', 'Remove ' + spec.name);
+        remove.innerHTML = REMOVE_SVG;
+        var track = document.createElement('span');
+        track.className = 'pc-file__track';
+        track.setAttribute('aria-hidden', 'true');
+        var fill = document.createElement('span');
+        fill.className = 'pc-file__fill';
+        track.appendChild(fill);
+        li.appendChild(icon);
+        li.appendChild(copy);
+        li.appendChild(remove);
+        li.appendChild(track);
+        files.appendChild(li);
+        files.hidden = false;
+        var item = {
+          name: spec.name,
+          size: spec.size,
+          li: li,
+          meta: meta,
+          fill: fill,
+          cancelled: false,
+          done: false,
+          raf: 0,
+          timer: 0
+        };
+        items.push(item);
+        remove.addEventListener('click', function () { removeItem(item); });
+        sync();
+        say('Uploading ' + spec.name + '.');
+        runProgress(item);
+      }
+
+      function startSend() {
+        if (sending || !isReady()) return;
+        sending = true;
+        sync();
+        say('Sending. Stop is the same button.');
+      }
+
+      function stopSend() {
+        if (!sending) return;
+        sending = false;
+        sync();
+        say('Stopped.');
+      }
+
+      attach.addEventListener('click', addFile);
+      send.addEventListener('click', function () {
+        if (sending) stopSend();
+        else startSend();
+      });
+      field.addEventListener('input', function () {
+        fitFallback();
+        sync();
+      });
+      field.addEventListener('keydown', function (event) {
+        if (event.key !== 'Enter' || event.shiftKey || event.isComposing) return;
+        event.preventDefault();
+        if (sending) stopSend();
+        else if (isReady()) startSend();
+      });
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        if (sending) stopSend();
+        else if (isReady()) startSend();
+      });
+
+      function wireToggle(btn, onText, offText, onPress) {
+        if (!btn) return;
+        btn.addEventListener('click', function () {
+          var on = btn.getAttribute('aria-pressed') !== 'true';
+          btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+          if (onPress) onPress(on);
+          say(on ? onText : offText);
+        });
+      }
+
+      wireToggle(toolsBtn, 'Tools on.', 'Tools off.');
+      wireToggle(searchBtn, 'Search on.', 'Search off.', function (on) {
+        field.placeholder = on ? 'Search your notes' : 'Write a message';
+      });
+
+      function copyLegacy(value) {
+        return new Promise(function (resolve, reject) {
+          var area = document.createElement('textarea');
+          area.value = value;
+          area.setAttribute('readonly', '');
+          area.style.position = 'fixed';
+          area.style.left = '-9999px';
+          document.body.appendChild(area);
+          area.select();
+          var ok = false;
+          try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+          document.body.removeChild(area);
+          if (ok) resolve();
+          else reject(new Error('copy failed'));
+        });
+      }
+
+      function copyText(value) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          return navigator.clipboard.writeText(value).catch(function () { return copyLegacy(value); });
+        }
+        return copyLegacy(value);
+      }
+
+      if (copyBtn && snippet) {
+        var copyLabel = copyBtn.textContent;
+        var copyTimer = 0;
+        copyBtn.addEventListener('click', function () {
+          var text = snippet.textContent.replace(/^\n/, '').replace(/\n$/, '');
+          copyText(text).then(function () {
+            copyBtn.textContent = 'Copied';
+            say('Copied composer CSS.');
+          }).catch(function () {
+            copyBtn.textContent = 'Could not copy';
+            say('Could not copy composer CSS.');
+          });
+          if (copyTimer) window.clearTimeout(copyTimer);
+          copyTimer = window.setTimeout(function () {
+            copyBtn.textContent = copyLabel;
+          }, 1600);
+        });
+      }
+
+      fitFallback();
+      sync();
+    })();
+    </script>
+
     <footer class="lib-foot">
-      Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Brand ≠ Primary · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications · Prompting UI · Design tokens · iPhone polish. Digit-scroll <code>lh</code> + natural
+      Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Brand ≠ Primary · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications · Prompting UI · Design tokens · iPhone polish · Premium composer. Digit-scroll <code>lh</code> + natural
       <code>linear()</code> spring (~10% overshoot) · hard-coded glow buttons
       (violet / teal / slate) · nested radius · page-shell palettes · colour pairings · color combos · native
       <code>appearance: base-select</code> · rotating <code>conic-gradient</code> rim · SVG glass folder. No CDN.
-      Prefers-reduced-motion disables the spring and holds the glow border, transition-keyword demos, background-keyword demos, nudging notifications, the prompting-ui bloom, the design-tokens colour change, and the iPhone polish island morph still. ?reduce=1 holds those demos at rest.
+      Prefers-reduced-motion disables the spring and holds the glow border, transition-keyword demos, background-keyword demos, nudging notifications, the prompting-ui bloom, the design-tokens colour change, the iPhone polish island morph, and the composer send rotation still. ?reduce=1 holds those demos at rest. ?motion=1 brings the composer motion back.
     </footer>
   </div>
 
@@ -17685,6 +18785,6 @@
     })();
   </script>
   <script src="shared/site-header.js?v=37" defer></script>
-  <script src="shared/section-fab.js?v=12" defer></script>
+  <script src="shared/section-fab.js?v=13" defer></script>
 </body>
 </html>
