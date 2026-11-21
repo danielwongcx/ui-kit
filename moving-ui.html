@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moving UI · ui-kit</title>
+<meta name="description" content="Six live interface studies: a day-night capsule, a printing hours receipt, a dithered comet, a mixer, morphing profiles, and a guestbook.">
+<meta name="theme-color" content="#F3EFE8">
+<script>
+(function () {
+  var q = location.search || "";
+  var forceReduce = /(?:^|[?&])reduce=1(?:&|$)/.test(q);
+  var askedMotion = /(?:^|[?&])motion=1(?:&|$)/.test(q);
+  var reduce = false;
+  try {
+    if (forceReduce) sessionStorage.setItem("mu-reduce", "1");
+    else if (askedMotion) sessionStorage.removeItem("mu-reduce");
+    var stored = sessionStorage.getItem("mu-reduce") === "1";
+    var os = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (forceReduce) reduce = true;
+    else if (askedMotion) reduce = false;
+    else reduce = stored || os;
+  } catch (e) {
+    try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e2) {}
+  }
+  document.documentElement.setAttribute("data-motion", reduce ? "reduce" : "on");
+})();
+</script>
+<link rel="stylesheet" href="shared/site-header.css?v=9">
+<link rel="stylesheet" href="moving-ui.css">
+</head>
+<body data-page="moving-ui">
+<main>
+  <header class="intro">
+    <p class="eyebrow"><span class="pill">Motion</span></p>
+    <h1>Moving UI</h1>
+    <p class="lead">Six interfaces, running at once.</p>
+  </header>
+
+  <div class="board">
+    <section class="cell cell-capsule" id="capsule-cell" aria-labelledby="capsule-title">
+      <h2 id="capsule-title" class="vh">Capsule diorama</h2>
+      <p id="capsule-help" class="vh">A lighthouse coast cycles from day to sunset to night. Drag sideways or scroll to scrub the day. The lens follows the pointer.</p>
+      <div class="capsule" id="capsule">
+        <div class="capsule-view" id="capsule-view">
+          <canvas id="capsule-canvas" aria-hidden="true"></canvas>
+        </div>
+      </div>
+      <label class="day-scrub">
+        <span>Day</span>
+        <input id="capsule-scrub" type="range" min="0" max="1000" value="80" aria-describedby="capsule-help" aria-valuetext="Day">
+      </label>
+    </section>
+
+    <section class="cell cell-receipt" aria-labelledby="receipt-title">
+      <div class="receipt-stage">
+        <div class="sky" id="sky">
+          <div class="sun" aria-hidden="true"></div>
+          <div class="moon" aria-hidden="true"></div>
+          <div class="sea" aria-hidden="true"></div>
+          <div class="device">
+            <div class="device-brand">
+              <svg class="mark" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2.4"></circle>
+                <path d="M16 16.5 L20.5 21" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"></path>
+              </svg>
+              <span>Quay</span>
+            </div>
+            <div class="screen" aria-hidden="true">
+              <span class="screen-time" id="screen-time">0:00:00</span>
+              <span class="screen-pay" id="screen-pay">$0.00</span>
+            </div>
+            <div class="device-tabs" role="toolbar" aria-label="Receipt rate">
+              <button type="button" data-plan="solo" aria-pressed="false">Solo</button>
+              <button type="button" data-plan="bench" aria-pressed="true">Bench</button>
+              <button type="button" data-plan="atelier" aria-pressed="false">Atelier</button>
+            </div>
+          </div>
+          <div class="slip-window">
+            <article class="slip" id="slip">
+              <header class="slip-head">
+                <p class="slip-brand">Quay</p>
+                <p class="slip-sub" id="slip-rate">48 / hour</p>
+              </header>
+              <div class="slip-cols" aria-hidden="true"><span>Item</span><span>Hrs</span><span>Amt</span></div>
+              <div class="slip-rows" id="slip-rows"></div>
+              <p class="slip-total"><span>Total</span><span class="stamp" id="slip-total">$0.00</span></p>
+              <p class="slip-script">the rate held</p>
+              <div class="barcode" aria-hidden="true"></div>
+              <p class="slip-fine">Quay ledger · study copy</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="copy">
+          <p class="script">The day rate stays put.</p>
+          <h2 id="receipt-title">Log the hours.<br>Keep the margin.</h2>
+          <p class="dek">A clock on the desk. A receipt that keeps up while the light changes.</p>
+          <div class="plans" role="radiogroup" aria-label="Plan">
+            <label class="plan">
+              <input type="radio" name="quay-plan" value="solo">
+              <span class="dot" aria-hidden="true"></span>
+              <span class="plan-copy"><span class="plan-name">Solo</span><span class="plan-note">One clock, one rate.</span></span>
+              <span class="plan-price"><span id="price-solo">Free</span></span>
+            </label>
+            <label class="plan">
+              <input type="radio" name="quay-plan" value="bench" checked>
+              <span class="dot" aria-hidden="true"></span>
+              <span class="plan-copy"><span class="plan-name">Bench</span><span class="plan-note">A shared rate for the room.</span></span>
+              <span class="plan-price"><span id="price-bench">$18</span></span>
+            </label>
+            <label class="plan">
+              <input type="radio" name="quay-plan" value="atelier">
+              <span class="dot" aria-hidden="true"></span>
+              <span class="plan-copy"><span class="plan-name">Atelier</span><span class="plan-note">Rooms, roles, and payouts.</span></span>
+              <span class="plan-price"><span id="price-atelier">$36</span></span>
+            </label>
+          </div>
+          <div class="bill" role="group" aria-label="Billing">
+            <button type="button" id="bill-month" aria-pressed="true">Monthly</button>
+            <button type="button" id="bill-year" aria-pressed="false">Yearly <span class="save">−20%</span></button>
+          </div>
+          <ul class="feats" id="feats">
+            <li>One rate for the room</li>
+            <li>Hours split by person</li>
+            <li>A nudge when a job runs long</li>
+          </ul>
+          <div class="cta-row">
+            <button type="button" class="btn" id="start-clock">Start a clock</button>
+            <button type="button" class="btn-quiet" id="compare-plans">Compare plans</button>
+          </div>
+          <p class="vh" id="receipt-live" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cell cell-shader" aria-labelledby="shader-title">
+      <h2 id="shader-title" class="vh">Move through it.</h2>
+      <canvas id="shader-canvas" aria-hidden="true"></canvas>
+    </section>
+
+    <section class="cell cell-console" aria-labelledby="console-title">
+      <div class="console">
+        <h2 id="console-title">Console</h2>
+        <p id="console-help" class="vh">Five channels. Drag a fader or use the arrow keys. Grabbing a fader stops its motion. M mutes. S solos.</p>
+        <div class="channels" id="channels" aria-describedby="console-help"></div>
+      </div>
+    </section>
+
+    <section class="cell cell-profile" aria-labelledby="profile-heading">
+      <h2 id="profile-heading" class="vh">Profiles</h2>
+      <article class="profile" id="profile">
+        <header class="profile-top">
+          <span class="avatar" id="profile-avatar" aria-hidden="true"></span>
+          <span>
+            <h3 class="name" id="profile-name">Mira Adel</h3>
+            <p class="role" id="profile-role">Garden editor</p>
+          </span>
+        </header>
+        <button type="button" class="figure" id="profile-next-shape" aria-label="Next profile">
+          <svg viewBox="-1.25 -1.25 2.5 2.5" aria-hidden="true">
+            <defs>
+              <clipPath id="profile-clip" clipPathUnits="userSpaceOnUse">
+                <path id="profile-clip-path"></path>
+              </clipPath>
+            </defs>
+            <path id="profile-fill" fill="#8FE0D0"></path>
+            <g id="profile-arts" clip-path="url(#profile-clip)">
+              <g class="art is-on" data-art="0" transform="translate(-0.46 -0.46) scale(0.0092)">
+                <circle cx="50" cy="56" r="22" fill="#F2A23A"></circle>
+                <ellipse cx="62" cy="44" rx="8" ry="5" fill="#F8C56A"></ellipse>
+                <path d="M50 34 C50 24 60 22 62 14" fill="none" stroke="#2F7A40" stroke-width="4" stroke-linecap="round"></path>
+                <ellipse cx="70" cy="16" rx="10" ry="5" fill="#3EAE5A" transform="rotate(-28 70 16)"></ellipse>
+                <circle cx="74" cy="30" r="4.5" fill="#E25B4A"></circle>
+              </g>
+              <g class="art" data-art="1" transform="translate(-0.46 -0.46) scale(0.0092)">
+                <circle cx="36" cy="40" r="10" fill="#F3D2B5"></circle>
+                <path d="M26 40 Q36 22 46 40 Q40 30 36 30 Q32 30 26 40Z" fill="#3A2A22"></path>
+                <rect x="28" y="50" width="18" height="30" rx="8" fill="#F2C14E"></rect>
+                <circle cx="66" cy="38" r="10" fill="#E8B89A"></circle>
+                <path d="M56 38 Q66 18 76 38 Q70 28 66 28 Q62 28 56 38Z" fill="#1C1C22"></path>
+                <rect x="56" y="48" width="18" height="32" rx="8" fill="#3EAE8C"></rect>
+              </g>
+              <g class="art" data-art="2" transform="translate(-0.46 -0.42) scale(0.0092)">
+                <path d="M18 58 H82 L72 76 H28 Z" fill="#E24B3B"></path>
+                <path d="M28 76 H72 L66 82 H34 Z" fill="#C4382C"></path>
+                <rect x="48" y="36" width="4" height="24" fill="#F7F4EE"></rect>
+                <path d="M52 38 L76 56 H52 Z" fill="#F7F4EE"></path>
+                <rect x="34" y="62" width="16" height="10" rx="1" fill="#F7F4EE"></rect>
+              </g>
+              <g class="art" data-art="3" transform="translate(-0.48 -0.42) scale(0.0096)">
+                <rect x="16" y="48" width="68" height="22" rx="6" fill="#F2C21A"></rect>
+                <path d="M30 48 L40 32 H64 L72 48 Z" fill="#F2C21A"></path>
+                <rect x="42" y="34" width="20" height="12" rx="2" fill="#1C2430"></rect>
+                <circle cx="32" cy="72" r="7" fill="#1C1C22"></circle>
+                <circle cx="70" cy="72" r="7" fill="#1C1C22"></circle>
+                <circle cx="32" cy="72" r="3" fill="#D5D3CE"></circle>
+                <circle cx="70" cy="72" r="3" fill="#D5D3CE"></circle>
+                <rect x="78" y="54" width="6" height="4" rx="1" fill="#F7F4EE"></rect>
+              </g>
+              <g class="art" data-art="4" transform="translate(-0.46 -0.46) scale(0.0092)">
+                <rect x="22" y="26" width="56" height="40" rx="4" fill="#F2C2C8"></rect>
+                <rect x="28" y="32" width="40" height="26" rx="2" fill="#D7E6C8"></rect>
+                <rect x="70" y="34" width="4" height="12" rx="1" fill="#E8A8B4"></rect>
+                <rect x="28" y="70" width="44" height="10" rx="2" fill="#F6D5D8"></rect>
+                <rect x="32" y="73" width="36" height="3" rx="1" fill="#E8B0BA"></rect>
+              </g>
+              <g class="art" data-art="5" transform="translate(-0.46 -0.48) scale(0.0092)">
+                <ellipse cx="50" cy="64" rx="24" ry="16" fill="#F4E6D4"></ellipse>
+                <circle cx="50" cy="44" r="16" fill="#F4E6D4"></circle>
+                <ellipse cx="32" cy="30" rx="8" ry="12" fill="#F2A23A"></ellipse>
+                <ellipse cx="68" cy="30" rx="8" ry="12" fill="#F2A23A"></ellipse>
+                <circle cx="44" cy="44" r="2.2" fill="#1C1C22"></circle>
+                <circle cx="56" cy="44" r="2.2" fill="#1C1C22"></circle>
+                <ellipse cx="50" cy="50" rx="3.2" ry="2.2" fill="#1C1C22"></ellipse>
+                <path d="M47 50 Q50 54 53 50" fill="none" stroke="#1C1C22" stroke-width="1.2"></path>
+              </g>
+            </g>
+          </svg>
+        </button>
+        <footer class="profile-bar">
+          <div class="stats">
+            <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 4.6-7 9-7 9z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path></svg><span id="profile-likes">86</span><span class="vh"> likes</span></span>
+            <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16.5V7.8A2.8 2.8 0 0 1 8.8 5h6.4A2.8 2.8 0 0 1 18 7.8v5.2a2.8 2.8 0 0 1-2.8 2.8H9.2L6 18.6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path></svg><span id="profile-comments">14</span><span class="vh"> comments</span></span>
+          </div>
+          <button type="button" class="next" id="profile-next" aria-label="Next profile">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h12M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </button>
+        </footer>
+        <p class="vh" id="profile-live" aria-live="polite"></p>
+      </article>
+    </section>
+
+    <section class="cell cell-book" aria-labelledby="book-title">
+      <div class="book">
+        <h2 id="book-title" class="book-kicker">Salt house · Guestbook</h2>
+        <div class="book-row" id="book-row" role="tablist" aria-label="Guest notes"></div>
+        <p class="vh" id="book-live" aria-live="polite"></p>
+      </div>
+    </section>
+  </div>
+
+  <p class="colophon">
+    Study after a montage by
+    <a href="https://x.com/okapi_fukugyo/status/2123762371168756023">@okapi_fukugyo</a>.
+    Reference sites, not their chrome:
+    <a href="https://www.snapblocks.site/">Snapblocks</a>,
+    <a href="https://scrollshaders.com/">Scroll Shaders</a>,
+    <a href="https://www.audiocn.dev/">audiocn</a>,
+    <a href="https://animata.design/">Animata</a>,
+    <a href="https://www.scrolltide.co/">Scrolltide</a>.
+    Reduced motion holds each study still.
+  </p>
+</main>
+<script src="shared/site-header.js?v=38" defer></script>
+<script src="moving-ui.js" defer></script>
+</body>
+</html>
