@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>UI Library · Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Brand ≠ Primary · Select · Glow · Folder · Spacing · Hierarchy · Combos · Keywords · Backgrounds · Nudge · Prompting UI · Design tokens · iPhone polish · iOS habits · Composer</title>
+  <title>UI Library · Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Brand ≠ Primary · Select · Glow · Folder · Spacing · Hierarchy · Combos · Keywords · Backgrounds · Nudge · Prompting UI · Design tokens · iPhone polish · iOS habits · Composer · Interface as world</title>
   <script>
     /* Apply saved page shell and glow stops before paint */
     (function () {
@@ -30,11 +30,11 @@
     })();
   </script>
   <script>
-    /* ?reduce=1 holds transition-keyword, background-keyword, nudging-notification, prompting-ui bloom, the design-tokens colour change, the iPhone polish island morph, the composer send rotation, and the iOS habits sheet and shared-element morph at rest. OS reduced motion is handled in CSS. ?motion=1 brings the composer and iOS habits motion back unless ?reduce=1 is also set. */
+    /* ?reduce=1 holds transition-keyword, background-keyword, nudging-notification, prompting-ui bloom, the design-tokens colour change, the iPhone polish island morph, the composer send rotation, the iOS habits sheet and shared-element morph, and the interface-as-world beam and playhead at rest. OS reduced motion is handled in CSS. ?motion=1 brings the composer, iOS habits, and interface-as-world motion back unless ?reduce=1 is also set. */
     (function () {
       try {
         if (new URLSearchParams(location.search).get('reduce') === '1') {
-          document.documentElement.classList.add('tk-still', 'bk-still', 'nn-still', 'pu-still', 'dt-still', 'ip-still', 'pc-still', 'ih-still');
+          document.documentElement.classList.add('tk-still', 'bk-still', 'nn-still', 'pu-still', 'dt-still', 'ip-still', 'pc-still', 'ih-still', 'aw-still');
         }
       } catch (e) {}
     })();
@@ -11668,6 +11668,1174 @@
       }
     }
   </style>
+  <style>
+    /* Interface as world (#app-as-world).
+       Eight fictional app studies. Mechanisms follow huashu-design 3.4;
+       color, type, and shape are grown for each subject.
+       The lamp beam and the desk playhead move.
+       html.aw-still (?reduce=1) and prefers-reduced-motion hold them.
+       ?motion=1 sets data-aw-motion=on unless ?reduce=1 is also set. */
+    #app-as-world .aw-grid {
+      display: grid;
+      gap: 1.5rem;
+      min-width: 0;
+    }
+
+    @media (min-width: 720px) {
+      #app-as-world .aw-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    #app-as-world .aw-study {
+      min-width: 0;
+      background: #f7f4ef;
+    }
+
+    #app-as-world .canvas-chrome {
+      flex-wrap: nowrap;
+      gap: 0.5rem;
+      overflow-x: auto;
+      background: #f3efe8;
+    }
+
+    #app-as-world .canvas-name,
+    #app-as-world .canvas-tag {
+      flex: none;
+    }
+
+    #app-as-world .canvas-body {
+      align-items: stretch;
+      justify-content: flex-start;
+      gap: 0.75rem;
+      min-height: 0;
+      padding: 1rem;
+    }
+
+    #app-as-world .aw-screen {
+      position: relative;
+      width: 100%;
+      min-width: 0;
+      min-height: 24rem;
+      border: 1px solid #e4dccf;
+      border-radius: 8px;
+      overflow: hidden;
+      color: #1c1c22;
+    }
+
+    #app-as-world .aw-rule {
+      margin: 0;
+      max-width: 36rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #1c1c22;
+    }
+
+    #app-as-world button {
+      font-family: var(--sans);
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    #app-as-world button:focus-visible,
+    #app-as-world a:focus-visible {
+      outline: 2px solid #1c1c22;
+      outline-offset: 2px;
+    }
+
+    #app-as-world .aw-screen button:focus-visible {
+      outline-offset: -2px;
+    }
+
+    #app-as-world .aw-btn {
+      appearance: none;
+      margin: 0;
+      min-height: 3rem;
+      padding: 0.5rem 1rem;
+      border: 1px solid #1c1c22;
+      border-radius: 8px;
+      background: #1c1c22;
+      color: #ffffff;
+      font-size: 1rem;
+      font-weight: 650;
+      line-height: 1.5rem;
+    }
+
+    #app-as-world .aw-btn:hover {
+      background: #2a2a32;
+    }
+
+    #app-as-world .aw-btn--quiet {
+      background: transparent;
+      color: #1c1c22;
+    }
+
+    #app-as-world .aw-btn--quiet:hover {
+      background: #efe6d4;
+    }
+
+    #app-as-world .aw-proof .aw-btn {
+      border-color: #3f2a1c;
+      background: #3f2a1c;
+    }
+
+    #app-as-world .aw-proof .aw-btn:hover {
+      background: #2a1c12;
+    }
+
+    #app-as-world [hidden] {
+      display: none !important;
+    }
+
+    /* 01 Lamp room — the screen is the room */
+    #app-as-world .aw-lamp {
+      display: flex;
+      flex-direction: column;
+      background: #e7dcc8;
+    }
+
+    #app-as-world .aw-lens {
+      position: relative;
+      width: 12rem;
+      height: 12rem;
+      margin: 1.5rem auto 0;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #15202b;
+      box-shadow: 0 0 0 8px #cbbba2, 0 0 0 9px #8d7b62;
+    }
+
+    #app-as-world .aw-headland,
+    #app-as-world .aw-buoy,
+    #app-as-world .aw-beam,
+    #app-as-world .aw-shutter {
+      position: absolute;
+    }
+
+    #app-as-world .aw-headland {
+      z-index: 1;
+      left: 0;
+      bottom: 34%;
+      width: 46%;
+      height: 18%;
+      background: #0e171f;
+      clip-path: polygon(0 100%, 0 60%, 28% 18%, 58% 72%, 100% 36%, 100% 100%);
+    }
+
+    #app-as-world .aw-buoy {
+      z-index: 1;
+      left: 62%;
+      bottom: 28%;
+      width: 0.5rem;
+      height: 1rem;
+      border-radius: 2px 2px 0 0;
+      background: #f3ead7;
+    }
+
+    #app-as-world .aw-buoy::before {
+      content: "";
+      position: absolute;
+      left: 0.2rem;
+      top: -0.75rem;
+      width: 1px;
+      height: 0.75rem;
+      background: #f3ead7;
+    }
+
+    #app-as-world .aw-beam {
+      z-index: 2;
+      inset: -45%;
+      background: conic-gradient(from 0deg, transparent 0 80%, rgba(255, 226, 176, 0.78) 86%, transparent 93%);
+      animation: aw-sweep 16s linear infinite;
+      transform-origin: 50% 50%;
+    }
+
+    #app-as-world .aw-shutter {
+      z-index: 3;
+      inset: 7%;
+      border-radius: 50%;
+      background: #2a241c;
+      opacity: 0;
+      transition: opacity 0.35s linear;
+    }
+
+    #app-as-world .aw-lamp[data-open="0"] .aw-shutter {
+      opacity: 1;
+    }
+
+    #app-as-world .aw-lamp[data-open="0"] .aw-beam {
+      opacity: 0;
+    }
+
+    #app-as-world .aw-chalk {
+      margin: 0.75rem 0 0 1rem;
+      font-family: ui-serif, Georgia, "Times New Roman", serif;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #3a342c;
+    }
+
+    #app-as-world .aw-chalk span { display: none; }
+
+    #app-as-world .aw-lamp[data-open="1"] .aw-chalk__open,
+    #app-as-world .aw-lamp[data-open="0"] .aw-chalk__shut {
+      display: inline;
+    }
+
+    #app-as-world .aw-sill {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: auto;
+      min-height: 4.5rem;
+      padding: 0.5rem 1rem;
+      background: #d9cbb6;
+      border-top: 1px solid #cbbba2;
+    }
+
+    #app-as-world .aw-log {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 3rem;
+      height: 2rem;
+      border: 1px solid #8d7b62;
+      border-radius: 2px 4px 4px 2px;
+      background: #f3eadc;
+      box-shadow: inset 2px 0 0 #e7dcc8;
+      color: #3a342c;
+      font-family: ui-serif, Georgia, "Times New Roman", serif;
+      font-size: 0.75rem;
+      line-height: 1rem;
+    }
+
+    #app-as-world .aw-lever {
+      appearance: none;
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5rem;
+      min-height: 3rem;
+      margin: 0;
+      padding: 0.5rem;
+      border: 0;
+      background: transparent;
+      color: #2a241c;
+      font-size: 1rem;
+      font-weight: 650;
+      line-height: 1.5rem;
+    }
+
+    #app-as-world .aw-lever__body {
+      position: relative;
+      width: 3rem;
+      height: 1.5rem;
+      flex: none;
+      border-radius: 2rem;
+      background: #2a241c;
+      transform-origin: 0.75rem 50%;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #app-as-world .aw-lever__pin {
+      position: absolute;
+      top: 0.5rem;
+      left: 0.35rem;
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      background: #6b4a22;
+    }
+
+    #app-as-world .aw-lamp[data-open="0"] .aw-lever__body {
+      transform: rotate(48deg);
+    }
+
+    /* 02 Proof — one bowl */
+    #app-as-world .aw-proof {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: #f3ecdf;
+    }
+
+    #app-as-world .aw-word {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0;
+      font-family: ui-serif, Georgia, "Times New Roman", serif;
+      font-size: 1rem;
+      line-height: 1.5rem;
+      color: #3f2a1c;
+    }
+
+    #app-as-world .aw-word__mark {
+      width: 1.5rem;
+      height: 1.5rem;
+      flex: none;
+    }
+
+    #app-as-world .aw-proof__stage {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    #app-as-world .aw-bowlwrap {
+      position: relative;
+      width: 12rem;
+      height: 8rem;
+    }
+
+    #app-as-world .aw-bowl {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 7rem;
+      overflow: hidden;
+      border: 3px solid #3f2a1c;
+      border-radius: 0 0 6rem 6rem;
+      background: #efe4d2;
+    }
+
+    #app-as-world .aw-bowl__rim {
+      position: absolute;
+      z-index: 2;
+      left: -2%;
+      right: -2%;
+      top: 0.65rem;
+      height: 0.75rem;
+      border: 3px solid #3f2a1c;
+      border-radius: 50%;
+      background: #f3ecdf;
+    }
+
+    #app-as-world .aw-dough {
+      position: absolute;
+      z-index: 1;
+      left: 8%;
+      right: 8%;
+      bottom: 0;
+      height: 42%;
+      border-radius: 50% 50% 0 0;
+      background: #f7f1e4;
+      box-shadow: inset 0 -6px 0 #e4d3b8;
+      transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #app-as-world .aw-proof[data-rise="1"] .aw-dough { height: 68%; }
+    #app-as-world .aw-proof[data-rise="2"] .aw-dough { height: 96%; }
+
+    #app-as-world .aw-proof[data-rise="2"] .aw-dough::after {
+      content: "";
+      position: absolute;
+      top: 16%;
+      left: 46%;
+      width: 1px;
+      height: 28%;
+      background: #c4b49a;
+      transform: rotate(16deg);
+    }
+
+    #app-as-world .aw-mins {
+      position: absolute;
+      z-index: 3;
+      left: 0;
+      right: 0;
+      top: 58%;
+      margin: 0;
+      color: #3f2a1c;
+      font-size: 2rem;
+      font-weight: 650;
+      line-height: 1;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+      transition: top 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #app-as-world .aw-mins small {
+      margin-left: 0.25rem;
+      font-size: 0.75rem;
+      font-weight: 650;
+      line-height: 1rem;
+    }
+
+    #app-as-world .aw-proof[data-rise="1"] .aw-mins { top: 40%; }
+    #app-as-world .aw-proof[data-rise="2"] .aw-mins { top: 28%; }
+
+    #app-as-world .aw-proof__line {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    /* 03 North room — duration is length */
+    #app-as-world .aw-desk {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: #f6f1e8;
+    }
+
+    #app-as-world .aw-title {
+      margin: 0;
+      font-family: ui-serif, Georgia, "Times New Roman", serif;
+      font-size: 1.5rem;
+      line-height: 1.2;
+    }
+
+    #app-as-world .aw-line {
+      margin: 0;
+      min-height: 3rem;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    #app-as-world .aw-score {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    #app-as-world .aw-move,
+    #app-as-world .aw-rest {
+      display: grid;
+      grid-template-columns: 5rem minmax(0, 1fr) 3rem;
+      gap: 0.5rem;
+      align-items: center;
+      width: 100%;
+      min-height: 3rem;
+      margin: 0;
+      padding: 0.25rem 0.5rem;
+      border: 0;
+      border-radius: 4px;
+      background: transparent;
+      color: #1c1c22;
+      font-size: 1rem;
+      line-height: 1.5rem;
+      text-align: left;
+    }
+
+    #app-as-world .aw-move[aria-selected="true"] {
+      background: #efe6d4;
+      font-weight: 650;
+    }
+
+    #app-as-world .aw-mins-col {
+      font-size: 0.75rem;
+      line-height: 1rem;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    #app-as-world .aw-inkwrap {
+      position: relative;
+      height: 1rem;
+      background:
+        linear-gradient(#d9d0c2, #d9d0c2) 0 10% / 100% 1px no-repeat,
+        linear-gradient(#d9d0c2, #d9d0c2) 0 30% / 100% 1px no-repeat,
+        linear-gradient(#d9d0c2, #d9d0c2) 0 50% / 100% 1px no-repeat,
+        linear-gradient(#d9d0c2, #d9d0c2) 0 70% / 100% 1px no-repeat,
+        linear-gradient(#d9d0c2, #d9d0c2) 0 90% / 100% 1px no-repeat;
+    }
+
+    #app-as-world .aw-ink {
+      position: absolute;
+      left: 0;
+      top: 0.15rem;
+      height: 0.7rem;
+      width: calc(var(--len) * 100%);
+      border-radius: 2px;
+      background: #1c1c22;
+    }
+
+    #app-as-world .aw-play {
+      position: absolute;
+      top: -2px;
+      bottom: -2px;
+      left: 0;
+      width: 2px;
+      margin-left: -1px;
+      background: #f6f1e8;
+      display: none;
+    }
+
+    #app-as-world .aw-move[aria-selected="true"] .aw-play {
+      display: block;
+      animation: aw-walk 7s linear infinite;
+    }
+
+    /* 04 Waymark — one question for color */
+    #app-as-world .aw-way {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: #f4f0e6;
+    }
+
+    #app-as-world .aw-mapwrap {
+      position: relative;
+      flex: 1;
+      min-height: 10rem;
+    }
+
+    #app-as-world .aw-map {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    #app-as-world .aw-map .aw-contour {
+      fill: none;
+      stroke: #d9d0c2;
+      stroke-width: 1px;
+    }
+
+    #app-as-world .aw-map .aw-route {
+      fill: none;
+      stroke-width: 4px;
+      stroke-linecap: round;
+    }
+
+    #app-as-world .aw-route[data-cond="dry"] { stroke: #8a5a12; }
+    #app-as-world .aw-route[data-cond="wet"] { stroke: #3d5c73; }
+    #app-as-world .aw-route[data-cond="closed"] { stroke: #8c3a2f; }
+
+    #app-as-world .aw-way[data-filter="dry"] .aw-route:not([data-cond="dry"]),
+    #app-as-world .aw-way[data-filter="wet"] .aw-route:not([data-cond="wet"]),
+    #app-as-world .aw-way[data-filter="closed"] .aw-route:not([data-cond="closed"]) {
+      stroke: #d9d0c2;
+    }
+
+    #app-as-world .aw-gate {
+      fill: #1c1c22;
+    }
+
+    #app-as-world .aw-pin {
+      position: absolute;
+      margin: 0;
+      color: #1c1c22;
+      font-size: 0.75rem;
+      line-height: 1rem;
+    }
+
+    #app-as-world .aw-pin--mill { left: 8%; top: 0; }
+    #app-as-world .aw-pin--ridge { left: 46%; top: 0; }
+    #app-as-world .aw-pin--quarry { right: 0; top: 42%; }
+    #app-as-world .aw-pin--gate { left: 0; bottom: 0; }
+
+    #app-as-world .aw-legend,
+    #app-as-world .aw-chips {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 0.5rem;
+      width: 100%;
+      min-width: 0;
+      margin: 0;
+      padding: 0 0 0.25rem;
+      overflow-x: auto;
+      list-style: none;
+    }
+
+    #app-as-world .aw-legend li,
+    #app-as-world .aw-chip {
+      display: inline-flex;
+      flex: none;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      line-height: 1.5rem;
+    }
+
+    #app-as-world .aw-chip {
+      appearance: none;
+      min-height: 3rem;
+      margin: 0;
+      padding: 0 0.75rem;
+      border: 1px solid #cfc6b8;
+      border-radius: 2rem;
+      background: #f4f0e6;
+      color: #1c1c22;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    #app-as-world .aw-chip[aria-checked="true"] {
+      border-color: #1c1c22;
+      background: #1c1c22;
+      color: #ffffff;
+    }
+
+    #app-as-world .aw-pip {
+      display: inline-flex;
+      flex: none;
+      align-items: center;
+      justify-content: center;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 2px;
+      background: #f4f0e6;
+    }
+
+    #app-as-world .aw-pip span {
+      display: block;
+      width: 1rem;
+      height: 1rem;
+      border-radius: 1px;
+    }
+
+    #app-as-world .aw-pip--dry span { background: #8a5a12; }
+    #app-as-world .aw-pip--wet span { background: #3d5c73; }
+    #app-as-world .aw-pip--closed span { background: #8c3a2f; }
+
+    /* 05 Press — the specimen is the screen */
+    #app-as-world .aw-press {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      background: #efe6d4;
+    }
+
+    #app-as-world .aw-specimens {
+      position: absolute;
+      inset: 0;
+    }
+
+    #app-as-world .aw-specimens svg {
+      display: none;
+      width: 100%;
+      height: 100%;
+    }
+
+    #app-as-world .aw-specimens svg.is-on {
+      display: block;
+    }
+
+    #app-as-world .aw-capbar {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      background: #efe6d4;
+      border-top: 1px solid #d9cbb6;
+    }
+
+    #app-as-world .aw-spec__name {
+      margin: 0;
+      font-family: ui-serif, Georgia, "Times New Roman", serif;
+      font-size: 1.5rem;
+      line-height: 1.2;
+    }
+
+    #app-as-world .aw-spec__place {
+      margin: 0.25rem 0 0;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    #app-as-world .aw-capbar__row {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    #app-as-world .aw-step {
+      appearance: none;
+      display: inline-flex;
+      flex: 1;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      min-height: 3rem;
+      margin: 0;
+      padding: 0 0.75rem;
+      border: 1px solid #1c1c22;
+      border-radius: 8px;
+      background: transparent;
+      color: #1c1c22;
+      font-size: 1rem;
+      font-weight: 650;
+      line-height: 1.5rem;
+    }
+
+    #app-as-world .aw-step:hover {
+      background: #e4d9c4;
+    }
+
+    #app-as-world .aw-step svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      flex: none;
+    }
+
+    /* 06 Mend — the note sits on the tear */
+    #app-as-world .aw-mend {
+      background: #8a6a4a;
+      padding: 0.75rem;
+    }
+
+    #app-as-world .aw-poster {
+      position: relative;
+      height: 22rem;
+      background: #f3ead7;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 70% 100%, 62% 88%, 52% 96%, 44% 80%, 34% 100%, 0 100%);
+      transition: clip-path 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #app-as-world .aw-mend[data-mend="restored"] .aw-poster {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+
+    #app-as-world .aw-poster__when {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      margin: 0;
+      font-size: 0.75rem;
+      line-height: 1rem;
+      color: #3a342c;
+    }
+
+    #app-as-world .aw-poster__title {
+      position: absolute;
+      top: 2.5rem;
+      left: 1rem;
+      margin: 0;
+      max-width: 8rem;
+      color: #2a241c;
+      font-family: ui-serif, Georgia, "Times New Roman", serif;
+      font-size: 2rem;
+      line-height: 1.1;
+    }
+
+    #app-as-world .aw-vase {
+      position: absolute;
+      left: 1.5rem;
+      bottom: 0;
+      width: 11rem;
+      height: 13rem;
+    }
+
+    #app-as-world .aw-tissue {
+      position: absolute;
+      right: 0.5rem;
+      bottom: 0.5rem;
+      z-index: 1;
+      width: 9.5rem;
+      padding: 1.5rem 0.75rem 0.75rem;
+      border: 1px solid #cfc3ae;
+      background: #f7f1e4;
+      box-shadow: 0 8px 16px #2a241c22;
+    }
+
+    #app-as-world .aw-tissue::before {
+      content: "";
+      position: absolute;
+      top: 0.35rem;
+      left: 50%;
+      width: 0.75rem;
+      height: 0.75rem;
+      margin-left: -0.35rem;
+      border-radius: 50%;
+      background: #6b4a22;
+      box-shadow: 0 1px 0 #2a241c;
+    }
+
+    #app-as-world .aw-note {
+      display: none;
+      margin: 0 0 0.75rem;
+      font-family: ui-serif, Georgia, "Times New Roman", serif;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    #app-as-world .aw-mend[data-mend="open"] .aw-note--open,
+    #app-as-world .aw-mend[data-mend="kept"] .aw-note--kept,
+    #app-as-world .aw-mend[data-mend="restored"] .aw-note--restored {
+      display: block;
+    }
+
+    #app-as-world .aw-tissue__row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    #app-as-world .aw-tissue .aw-btn {
+      width: 100%;
+    }
+
+    #app-as-world .aw-mend[data-mend="open"] [data-aw-undo],
+    #app-as-world .aw-mend[data-mend="kept"] [data-aw-keep],
+    #app-as-world .aw-mend[data-mend="kept"] [data-aw-restore],
+    #app-as-world .aw-mend[data-mend="restored"] [data-aw-keep],
+    #app-as-world .aw-mend[data-mend="restored"] [data-aw-restore] {
+      display: none;
+    }
+
+    /* 07 Callboard — pose is the status */
+    #app-as-world .aw-call {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: #e7e1d6;
+    }
+
+    #app-as-world .aw-company {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      flex: 1;
+    }
+
+    #app-as-world .aw-role {
+      appearance: none;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      min-height: 8rem;
+      margin: 0;
+      padding: 0.75rem 0.5rem 0.5rem;
+      border: 1px solid #d3c6b0;
+      border-radius: 8px;
+      background: #f3eadc;
+      color: #1c1c22;
+    }
+
+    #app-as-world .aw-light {
+      position: absolute;
+      left: 15%;
+      right: 15%;
+      bottom: 3rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      background: #e0b04a;
+      opacity: 0;
+      transition: opacity 0.35s linear;
+    }
+
+    #app-as-world .aw-role[data-state="stage"] .aw-light {
+      opacity: 1;
+    }
+
+    #app-as-world .aw-door {
+      position: absolute;
+      left: 0.35rem;
+      bottom: 2.75rem;
+      width: 1.25rem;
+      height: 2.5rem;
+      border: 2px solid #2a241c;
+      border-bottom: 0;
+      border-radius: 0.75rem 0.75rem 0 0;
+      opacity: 0;
+      transition: opacity 0.35s linear;
+    }
+
+    #app-as-world .aw-door::after {
+      content: "";
+      position: absolute;
+      top: 1.25rem;
+      right: 0.2rem;
+      width: 0.25rem;
+      height: 0.25rem;
+      border-radius: 50%;
+      background: #2a241c;
+    }
+
+    #app-as-world .aw-role--door[data-state="released"] .aw-door {
+      opacity: 1;
+    }
+
+    #app-as-world .aw-fig {
+      position: relative;
+      width: 4rem;
+      height: 5rem;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #app-as-world .aw-role[data-state="late"] .aw-fig {
+      transform: rotate(-28deg);
+    }
+
+    #app-as-world .aw-role[data-state="released"] .aw-fig {
+      transform: scaleX(-1);
+    }
+
+    #app-as-world .aw-head,
+    #app-as-world .aw-torso,
+    #app-as-world .aw-arm,
+    #app-as-world .aw-clip {
+      position: absolute;
+      background: #2a241c;
+    }
+
+    #app-as-world .aw-head {
+      top: 0;
+      left: 1.25rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+    }
+
+    #app-as-world .aw-torso {
+      top: 1.75rem;
+      left: 1rem;
+      width: 2rem;
+      height: 2.25rem;
+      border-radius: 1rem 1rem 2px 2px;
+    }
+
+    #app-as-world .aw-role--lead .aw-torso {
+      top: 1.5rem;
+      height: 2.75rem;
+    }
+
+    #app-as-world .aw-role--cover .aw-head,
+    #app-as-world .aw-role--cover .aw-torso {
+      background: transparent;
+      box-shadow: inset 0 0 0 2px #2a241c;
+    }
+
+    #app-as-world .aw-arm {
+      top: 2.25rem;
+      left: 2.5rem;
+      width: 1.25rem;
+      height: 0.35rem;
+      border-radius: 2rem;
+      transform: rotate(18deg);
+      transform-origin: left center;
+    }
+
+    #app-as-world .aw-role[data-state="late"] .aw-arm { transform: rotate(-50deg); }
+    #app-as-world .aw-role[data-state="stage"] .aw-arm { transform: rotate(-8deg); }
+    #app-as-world .aw-role[data-state="released"] .aw-arm { transform: rotate(28deg); }
+
+    #app-as-world .aw-clip {
+      display: none;
+      top: 2.15rem;
+      left: 2.7rem;
+      width: 0.75rem;
+      height: 1rem;
+      border: 1px solid #2a241c;
+      border-radius: 1px;
+      background: #f7f1e4;
+    }
+
+    #app-as-world .aw-role--sm .aw-clip { display: block; }
+
+    #app-as-world .aw-role__name {
+      width: 100%;
+      border-top: 1px solid #d3c6b0;
+      padding-top: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 650;
+      line-height: 1rem;
+      text-align: center;
+    }
+
+    /* 08 Stall — access sets the form */
+    #app-as-world .aw-stall {
+      display: flex;
+      flex-direction: column;
+      background: #f6f1e4;
+      color: #1a1a1a;
+    }
+
+    #app-as-world .aw-stall__body {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 1.5rem 1rem 1rem;
+    }
+
+    #app-as-world .aw-stall__place,
+    #app-as-world .aw-stall__name,
+    #app-as-world .aw-stall__price,
+    #app-as-world .aw-stall__state {
+      margin: 0;
+    }
+
+    #app-as-world .aw-stall__place {
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    #app-as-world .aw-stall__name {
+      font-size: 1.5rem;
+      line-height: 1.2;
+    }
+
+    #app-as-world .aw-stall__price {
+      margin-top: 0.5rem;
+      font-size: 3rem;
+      font-weight: 650;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    #app-as-world .aw-stall__unit {
+      margin: 0.25rem 0 0;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    #app-as-world .aw-stall__state {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      font-size: 1.5rem;
+      font-weight: 650;
+      line-height: 2rem;
+    }
+
+    #app-as-world .aw-mark {
+      width: 2rem;
+      height: 2rem;
+      flex: none;
+    }
+
+    #app-as-world .aw-stall[data-sold="1"] .aw-mark--open,
+    #app-as-world .aw-stall[data-sold="0"] .aw-mark--sold,
+    #app-as-world .aw-stall[data-sold="1"] .aw-state-word--open,
+    #app-as-world .aw-stall[data-sold="0"] .aw-state-word--sold,
+    #app-as-world .aw-stall[data-sold="1"] .aw-stall__go,
+    #app-as-world .aw-stall[data-sold="0"] .aw-stall__back {
+      display: none;
+    }
+
+    #app-as-world .aw-stall__btn {
+      width: 100%;
+      min-height: 4rem;
+      border-width: 1px 0 0;
+      border-radius: 0;
+      background: #1a1a1a;
+      border-color: #1a1a1a;
+    }
+
+    #app-as-world .aw-stall__btn:hover {
+      background: #2a2a2a;
+    }
+
+    #app-as-world .aw-credit {
+      margin: 1.5rem 0 0;
+      max-width: 40rem;
+      color: #3a342c;
+      font-size: 0.75rem;
+      line-height: 1.5;
+    }
+
+    #app-as-world .aw-credit a {
+      color: inherit;
+      font-weight: 650;
+    }
+
+    @keyframes aw-sweep {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes aw-walk {
+      from { left: 0; }
+      to { left: calc(100% - 2px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html:not([data-aw-motion="on"]) #app-as-world .aw-beam,
+      html:not([data-aw-motion="on"]) #app-as-world .aw-move .aw-play {
+        animation: none;
+      }
+
+      html:not([data-aw-motion="on"]) #app-as-world .aw-beam {
+        transform: rotate(28deg);
+      }
+
+      html:not([data-aw-motion="on"]) #app-as-world .aw-move .aw-play {
+        left: 0;
+      }
+
+      html:not([data-aw-motion="on"]) #app-as-world .aw-dough,
+      html:not([data-aw-motion="on"]) #app-as-world .aw-mins,
+      html:not([data-aw-motion="on"]) #app-as-world .aw-poster,
+      html:not([data-aw-motion="on"]) #app-as-world .aw-fig,
+      html:not([data-aw-motion="on"]) #app-as-world .aw-lever__body,
+      html:not([data-aw-motion="on"]) #app-as-world .aw-light,
+      html:not([data-aw-motion="on"]) #app-as-world .aw-shutter,
+      html:not([data-aw-motion="on"]) #app-as-world .aw-door {
+        transition: none;
+      }
+    }
+
+    html.aw-still #app-as-world .aw-beam,
+    html.aw-still #app-as-world .aw-move .aw-play {
+      animation: none;
+    }
+
+    html.aw-still #app-as-world .aw-beam {
+      transform: rotate(28deg);
+    }
+
+    html.aw-still #app-as-world .aw-move .aw-play {
+      left: 0;
+    }
+
+    html.aw-still #app-as-world .aw-dough,
+    html.aw-still #app-as-world .aw-mins,
+    html.aw-still #app-as-world .aw-poster,
+    html.aw-still #app-as-world .aw-fig,
+    html.aw-still #app-as-world .aw-lever__body,
+    html.aw-still #app-as-world .aw-light,
+    html.aw-still #app-as-world .aw-shutter,
+    html.aw-still #app-as-world .aw-door {
+      transition: none;
+    }
+
+    @media (max-width: 719px) {
+      #app-as-world .aw-legend,
+      #app-as-world .aw-chips {
+        flex-wrap: nowrap;
+      }
+    }
+
+    @media (forced-colors: active) {
+      #app-as-world .aw-screen,
+      #app-as-world .aw-btn,
+      #app-as-world .aw-chip,
+      #app-as-world .aw-move,
+      #app-as-world .aw-role,
+      #app-as-world .aw-step {
+        border: 1px solid ButtonText;
+      }
+
+      #app-as-world .aw-btn {
+        background: ButtonText;
+        color: ButtonFace;
+      }
+
+      #app-as-world .aw-btn--quiet,
+      #app-as-world .aw-step {
+        background: ButtonFace;
+        color: ButtonText;
+      }
+    }
+  </style>
 </head>
 <body data-page="gallery">
   <nav class="lib-nav" aria-label="Library sections">
@@ -11694,6 +12862,7 @@
       <a href="#iphone-polish">iPhone polish</a>
       <a href="#ios-habits">iOS habits</a>
       <a href="#premium-composer">Composer</a>
+      <a href="#app-as-world">Interface as world</a>
     </div>
   </nav>
 
@@ -11701,7 +12870,7 @@
     <header class="lib-hero">
       <h1>Component gallery</h1>
       <p>
-        Self-contained demos: Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Brand ≠ Primary · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications · Prompting UI · Design tokens · iPhone polish · iOS habits · Premium composer.
+        Self-contained demos: Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Brand ≠ Primary · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications · Prompting UI · Design tokens · iPhone polish · iOS habits · Premium composer · Interface as world.
         Digit scroll with a natural <code>linear()</code> spring (~10%
         overshoot), hard-coded glow CTAs (violet / teal / slate), nested-radius
         photo cards and a progressive dialog, ten page-shell colour palettes you can switch, twenty reference
@@ -11715,6 +12884,7 @@
         Six ON/OFF polish rules keep the pixel numbers on the canvas.
         Ten ON/OFF habits keep the interaction on the canvas.
         Brand color stays on the mark. Buttons, links, and focus use a product primary that clears 4.5:1 with white.
+        Eight studies grow a screen from the thing it is about.
       </p>
     </header>
 
@@ -20581,12 +21751,546 @@
     })();
     </script>
 
+    <section class="sec" id="app-as-world">
+      <div class="sec-head">
+        <h2>Interface as world</h2>
+        <p>
+          Eight studies. The screen grows from the thing in real life. Each app is fictional, and its color, type, and shape come from that subject.
+        </p>
+      </div>
+
+      <div class="aw-grid">
+        <article class="canvas aw-study">
+          <div class="canvas-chrome">
+            <span class="canvas-name">01 · Interface is the world</span>
+            <span class="canvas-tag">Lamp room</span>
+          </div>
+          <div class="canvas-body">
+            <div class="aw-screen aw-lamp" data-aw="lamp" data-open="1">
+              <div class="aw-lens" aria-hidden="true">
+                <div class="aw-headland"></div>
+                <div class="aw-buoy"></div>
+                <div class="aw-beam"></div>
+                <div class="aw-shutter"></div>
+              </div>
+              <p class="aw-chalk">Tide 1.8 m. <span class="aw-chalk__open">Glass clear.</span><span class="aw-chalk__shut">Shutter shut.</span></p>
+              <div class="aw-sill">
+                <div class="aw-log" aria-hidden="true">Log</div>
+                <button type="button" class="aw-lever" aria-pressed="true">
+                  <span class="aw-lever__body" aria-hidden="true"><span class="aw-lever__pin"></span></span>
+                  Shutter
+                </button>
+              </div>
+            </div>
+            <p class="aw-rule">The home screen is the lamp room. The work sits on the sill.</p>
+          </div>
+        </article>
+
+        <article class="canvas aw-study">
+          <div class="canvas-chrome">
+            <span class="canvas-name">02 · Signature object</span>
+            <span class="canvas-tag">Proof</span>
+          </div>
+          <div class="canvas-body">
+            <div class="aw-screen aw-proof" data-aw="proof" data-rise="1">
+              <p class="aw-word">
+                <svg class="aw-word__mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M12 21V8" fill="none" stroke="#6b4a22" stroke-width="1.6" stroke-linecap="round"/>
+                  <path d="M12 16c-3.2-1-5.2-3.2-6-6.2 3.2.2 5.2 2.2 6 5.2zM12 13c3.2-1 5.2-3.2 6-6.2-3.2.2-5.2 2.2-6 5.2zM12 10c-2.4-.6-4-2.1-4.8-4.2 2.4.2 3.8 1.3 4.8 3.4z" fill="#6b4a22"/>
+                </svg>
+                <span>Proof</span>
+              </p>
+              <div class="aw-proof__stage">
+                <div class="aw-bowlwrap">
+                  <div class="aw-bowl__rim" aria-hidden="true"></div>
+                  <div class="aw-bowl" aria-hidden="true">
+                    <div class="aw-dough"></div>
+                  </div>
+                  <p class="aw-mins"><span data-aw-mins>45</span><small>min</small></p>
+                </div>
+                <p class="aw-proof__line" data-aw-line>At the rim.</p>
+              </div>
+              <button type="button" class="aw-btn" data-aw-rise>Check the rise</button>
+            </div>
+            <p class="aw-rule">One bowl carries the product. The rest of the screen stays quiet.</p>
+          </div>
+        </article>
+
+        <article class="canvas aw-study">
+          <div class="canvas-chrome">
+            <span class="canvas-name">03 · Time has a shape</span>
+            <span class="canvas-tag">North room</span>
+          </div>
+          <div class="canvas-body">
+            <div class="aw-screen aw-desk" data-aw="desk">
+              <p class="aw-title">North room</p>
+              <p class="aw-line" data-aw-desk-line>We are in Letter B.</p>
+              <div class="aw-score" role="listbox" aria-label="Movements" id="aw-score">
+                <button type="button" class="aw-move" role="option" data-move="open" aria-selected="false">
+                  <span>Open</span>
+                  <span class="aw-inkwrap" aria-hidden="true"><span class="aw-ink" style="--len: 0.44"><span class="aw-play"></span></span></span>
+                  <span class="aw-mins-col">4 min</span>
+                </button>
+                <button type="button" class="aw-move" role="option" data-move="letter" aria-selected="true">
+                  <span>Letter B</span>
+                  <span class="aw-inkwrap" aria-hidden="true"><span class="aw-ink" style="--len: 1"><span class="aw-play"></span></span></span>
+                  <span class="aw-mins-col">9 min</span>
+                </button>
+                <div class="aw-rest">
+                  <span>Rest</span>
+                  <span class="aw-inkwrap" aria-hidden="true"></span>
+                  <span class="aw-mins-col">2 min</span>
+                </div>
+                <button type="button" class="aw-move" role="option" data-move="close" aria-selected="false">
+                  <span>Close</span>
+                  <span class="aw-inkwrap" aria-hidden="true"><span class="aw-ink" style="--len: 0.67"><span class="aw-play"></span></span></span>
+                  <span class="aw-mins-col">6 min</span>
+                </button>
+              </div>
+            </div>
+            <p class="aw-rule">Length is the duration. The number sits beside the bar.</p>
+          </div>
+        </article>
+
+        <article class="canvas aw-study">
+          <div class="canvas-chrome">
+            <span class="canvas-name">04 · One semantic palette</span>
+            <span class="canvas-tag">Waymark</span>
+          </div>
+          <div class="canvas-body">
+            <div class="aw-screen aw-way" data-aw="way" data-filter="all">
+              <p class="aw-title">Three paths</p>
+              <div class="aw-mapwrap">
+                <svg class="aw-map" viewBox="0 0 300 200" aria-hidden="true" focusable="false">
+                  <path class="aw-contour" d="M8 150C70 140 150 128 292 138"/>
+                  <path class="aw-contour" d="M8 112C90 100 170 86 292 96"/>
+                  <path class="aw-route" data-cond="dry" d="M48 176C52 120 58 70 78 28"/>
+                  <path class="aw-route" data-cond="wet" d="M48 176C100 150 130 80 168 26"/>
+                  <path class="aw-route" data-cond="closed" d="M48 176C120 186 190 160 250 108"/>
+                  <circle class="aw-gate" cx="48" cy="176" r="4"/>
+                </svg>
+                <p class="aw-pin aw-pin--mill">Mill</p>
+                <p class="aw-pin aw-pin--ridge">Ridge</p>
+                <p class="aw-pin aw-pin--quarry">Quarry</p>
+                <p class="aw-pin aw-pin--gate">Gate</p>
+              </div>
+              <ul class="aw-legend" aria-label="Path colors">
+                <li><span class="aw-pip aw-pip--dry" aria-hidden="true"><span></span></span>Dry</li>
+                <li><span class="aw-pip aw-pip--wet" aria-hidden="true"><span></span></span>Wet</li>
+                <li><span class="aw-pip aw-pip--closed" aria-hidden="true"><span></span></span>Closed</li>
+              </ul>
+              <div class="aw-chips" role="radiogroup" aria-label="Show paths">
+                <button type="button" class="aw-chip" role="radio" data-filter="all" aria-checked="true">All</button>
+                <button type="button" class="aw-chip" role="radio" data-filter="dry" aria-checked="false"><span class="aw-pip aw-pip--dry" aria-hidden="true"><span></span></span>Dry</button>
+                <button type="button" class="aw-chip" role="radio" data-filter="wet" aria-checked="false"><span class="aw-pip aw-pip--wet" aria-hidden="true"><span></span></span>Wet</button>
+                <button type="button" class="aw-chip" role="radio" data-filter="closed" aria-checked="false"><span class="aw-pip aw-pip--closed" aria-hidden="true"><span></span></span>Closed</button>
+              </div>
+              <p class="aw-line" data-aw-way-line>Three paths from the gate.</p>
+            </div>
+            <p class="aw-rule">Ochre, slate, and rust mean the path, and nothing else.</p>
+          </div>
+        </article>
+
+        <article class="canvas aw-study">
+          <div class="canvas-chrome">
+            <span class="canvas-name">05 · Content is the lead</span>
+            <span class="canvas-tag">Press</span>
+          </div>
+          <div class="canvas-body">
+            <div class="aw-screen aw-press" data-aw="press">
+              <div class="aw-specimens">
+                <svg class="is-on" viewBox="0 0 200 280" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+                  <rect width="200" height="280" fill="#efe6d4"/>
+                  <path d="M100 250C98 190 104 120 96 48" fill="none" stroke="#5c6b45" stroke-width="2" stroke-linecap="round"/>
+                  <g fill="#6d7d52">
+                    <ellipse cx="48" cy="196" rx="38" ry="12" transform="rotate(-34 48 196)"/>
+                    <ellipse cx="154" cy="184" rx="38" ry="12" transform="rotate(32 154 184)"/>
+                    <ellipse cx="42" cy="150" rx="36" ry="11" transform="rotate(-26 42 150)"/>
+                    <ellipse cx="158" cy="138" rx="36" ry="11" transform="rotate(28 158 138)"/>
+                    <ellipse cx="56" cy="108" rx="32" ry="10" transform="rotate(-20 56 108)"/>
+                    <ellipse cx="146" cy="98" rx="32" ry="10" transform="rotate(22 146 98)"/>
+                  </g>
+                  <g fill="#6e4a62">
+                    <ellipse cx="84" cy="72" rx="7" ry="12"/>
+                    <ellipse cx="100" cy="52" rx="7" ry="13"/>
+                    <ellipse cx="116" cy="68" rx="6" ry="11"/>
+                    <ellipse cx="94" cy="34" rx="6" ry="11"/>
+                    <ellipse cx="108" cy="28" rx="5" ry="9"/>
+                  </g>
+                </svg>
+                <svg viewBox="0 0 200 280" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+                  <rect width="200" height="280" fill="#efe6d4"/>
+                  <path d="M40 230C90 170 120 120 156 64" fill="none" stroke="#5c4a28" stroke-width="3" stroke-linecap="round"/>
+                  <ellipse cx="86" cy="176" rx="48" ry="16" transform="rotate(-48 86 176)" fill="#6e5a32"/>
+                  <ellipse cx="118" cy="128" rx="40" ry="14" transform="rotate(-18 118 128)" fill="#7a6840"/>
+                  <ellipse cx="148" cy="92" rx="28" ry="11" transform="rotate(16 148 92)" fill="#6e5a32"/>
+                  <ellipse cx="162" cy="70" rx="9" ry="13" fill="#8a6232"/>
+                  <rect x="158" y="50" width="4" height="14" rx="1" fill="#5c4a28"/>
+                </svg>
+                <svg viewBox="0 0 200 280" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+                  <rect width="200" height="280" fill="#efe6d4"/>
+                  <g fill="none" stroke="#6a5a3a" stroke-width="2" stroke-linecap="round">
+                    <path d="M46 250C44 170 52 110 40 64"/>
+                    <path d="M100 258C102 160 94 100 108 36"/>
+                    <path d="M156 252C150 180 162 120 148 78"/>
+                  </g>
+                  <g fill="#8a7044">
+                    <ellipse cx="40" cy="56" rx="12" ry="22"/>
+                    <ellipse cx="40" cy="34" rx="8" ry="16"/>
+                    <ellipse cx="108" cy="32" rx="14" ry="26"/>
+                    <ellipse cx="108" cy="12" rx="9" ry="16"/>
+                    <ellipse cx="148" cy="70" rx="11" ry="20"/>
+                    <ellipse cx="148" cy="50" rx="8" ry="14"/>
+                  </g>
+                </svg>
+              </div>
+              <div class="aw-capbar">
+                <div>
+                  <p class="aw-spec__name" data-aw-name>Meadow vetch</p>
+                  <p class="aw-spec__place" data-aw-place>Lane above the mill</p>
+                </div>
+                <div class="aw-capbar__row">
+                  <button type="button" class="aw-step" data-aw-prev>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 6L8 12l6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span>Previous</span>
+                  </button>
+                  <button type="button" class="aw-step" data-aw-next>
+                    <span>Next</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <p class="aw-rule">The specimen is the screen. Controls stay on the caption.</p>
+          </div>
+        </article>
+
+        <article class="canvas aw-study">
+          <div class="canvas-chrome">
+            <span class="canvas-name">06 · AI lands on the object</span>
+            <span class="canvas-tag">Mend</span>
+          </div>
+          <div class="canvas-body">
+            <div class="aw-screen aw-mend" data-aw="mend" data-mend="open">
+              <div class="aw-poster">
+                <p class="aw-poster__when">Saturday</p>
+                <p class="aw-poster__title">Kiln opening</p>
+                <svg class="aw-vase" viewBox="0 0 100 140" aria-hidden="true" focusable="false">
+                  <path fill="#6b3a2a" d="M32 4h36v10H32z"/>
+                  <path fill="#6b3a2a" d="M40 14h20v16H40z"/>
+                  <path fill="#6b3a2a" d="M40 30c-20 8-28 30-24 62 3 22 16 40 34 44 18-4 31-22 34-44 4-32-4-54-24-62z"/>
+                  <path fill="#f3ead7" d="M44 7h12v4H44z"/>
+                </svg>
+              </div>
+              <div class="aw-tissue">
+                <p class="aw-note aw-note--open">The foot is chipped.</p>
+                <p class="aw-note aw-note--kept">Crop kept.</p>
+                <p class="aw-note aw-note--restored">Foot restored.</p>
+                <div class="aw-tissue__row">
+                  <button type="button" class="aw-btn aw-btn--quiet" data-aw-keep>Keep</button>
+                  <button type="button" class="aw-btn" data-aw-restore>Restore</button>
+                  <button type="button" class="aw-btn" data-aw-undo>Undo</button>
+                </div>
+              </div>
+            </div>
+            <p class="aw-rule">The repair note is pinned to the tear. There is no chat.</p>
+          </div>
+        </article>
+
+        <article class="canvas aw-study">
+          <div class="canvas-chrome">
+            <span class="canvas-name">07 · Roles carry state</span>
+            <span class="canvas-tag">Callboard</span>
+          </div>
+          <div class="canvas-body">
+            <div class="aw-screen aw-call" data-aw="call">
+              <p class="aw-title">Tonight</p>
+              <div class="aw-company">
+                <button type="button" class="aw-role aw-role--sm" data-name="Stage manager" data-state="house" aria-label="Stage manager, in the house">
+                  <span class="aw-light" aria-hidden="true"></span>
+                  <span class="aw-fig" aria-hidden="true"><span class="aw-head"></span><span class="aw-torso"></span><span class="aw-arm"></span><span class="aw-clip"></span></span>
+                  <span class="aw-role__name">Stage manager</span>
+                </button>
+                <button type="button" class="aw-role aw-role--lead" data-name="Lead" data-state="stage" aria-label="Lead, on stage">
+                  <span class="aw-light" aria-hidden="true"></span>
+                  <span class="aw-fig" aria-hidden="true"><span class="aw-head"></span><span class="aw-torso"></span><span class="aw-arm"></span></span>
+                  <span class="aw-role__name">Lead</span>
+                </button>
+                <button type="button" class="aw-role aw-role--cover" data-name="Understudy" data-state="late" aria-label="Understudy, late">
+                  <span class="aw-light" aria-hidden="true"></span>
+                  <span class="aw-fig" aria-hidden="true"><span class="aw-head"></span><span class="aw-torso"></span><span class="aw-arm"></span></span>
+                  <span class="aw-role__name">Understudy</span>
+                </button>
+                <button type="button" class="aw-role aw-role--door" data-name="Doorkeeper" data-state="released" aria-label="Doorkeeper, released">
+                  <span class="aw-light" aria-hidden="true"></span>
+                  <span class="aw-door" aria-hidden="true"></span>
+                  <span class="aw-fig" aria-hidden="true"><span class="aw-head"></span><span class="aw-torso"></span><span class="aw-arm"></span></span>
+                  <span class="aw-role__name">Doorkeeper</span>
+                </button>
+              </div>
+              <p class="aw-line" data-aw-call-line>Lead is on stage. Keep the house dark.</p>
+            </div>
+            <p class="aw-rule">The company shows the call. Status is a pose, not a badge.</p>
+          </div>
+        </article>
+
+        <article class="canvas aw-study">
+          <div class="canvas-chrome">
+            <span class="canvas-name">08 · Accessibility sets the form</span>
+            <span class="canvas-tag">Stall</span>
+          </div>
+          <div class="canvas-body">
+            <div class="aw-screen aw-stall" data-aw="stall" data-sold="0">
+              <div class="aw-stall__body">
+                <p class="aw-stall__place">Stall 4</p>
+                <p class="aw-stall__name">Late pears</p>
+                <p class="aw-stall__price">$28</p>
+                <p class="aw-stall__unit">a bag</p>
+                <p class="aw-stall__state">
+                  <svg class="aw-mark aw-mark--open" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8" fill="currentColor"/></svg>
+                  <svg class="aw-mark aw-mark--sold" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="4" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 17L17 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                  <span class="aw-state-word aw-state-word--open">Open</span>
+                  <span class="aw-state-word aw-state-word--sold">Sold out</span>
+                </p>
+              </div>
+              <button type="button" class="aw-btn aw-stall__btn" data-aw-sold>
+                <span class="aw-stall__go">Mark sold out</span>
+                <span class="aw-stall__back">Mark open</span>
+              </button>
+            </div>
+            <p class="aw-rule">One glance, one hand, full sun. The price and one action set the screen.</p>
+          </div>
+        </article>
+      </div>
+
+      <p class="aw-credit">
+        Borrow a layer, not a body. <span lang="zh-Hant">「借一層，不借一身」</span>
+        Color, type, and shape grow from the subject.
+        Study of <a href="https://x.com/AlchainHust/status/2124037818423140845" target="_blank" rel="noopener noreferrer">@AlchainHust</a>
+        / <a href="https://github.com/alchaincyf/huashu-design" target="_blank" rel="noopener noreferrer">huashu-design</a> 3.4.
+      </p>
+      <p class="visually-hidden" id="aw-live" role="status" aria-live="polite"></p>
+    </section>
+    <script>
+    (function () {
+      'use strict';
+
+      var root = document.getElementById('app-as-world');
+      if (!root) return;
+
+      var live = document.getElementById('aw-live');
+      function say(msg) {
+        if (live) live.textContent = msg;
+      }
+
+      var params;
+      try { params = new URLSearchParams(location.search); }
+      catch (err) { params = { get: function () { return null; } }; }
+
+      var still = false;
+      try { still = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (err) {}
+      if (params.get('motion') === '1') still = false;
+      if (params.get('reduce') === '1') still = true;
+      if (still) document.documentElement.classList.add('aw-still');
+      else document.documentElement.classList.remove('aw-still');
+      if (!still && params.get('motion') === '1') document.documentElement.setAttribute('data-aw-motion', 'on');
+      else document.documentElement.removeAttribute('data-aw-motion');
+
+      function rove(group, itemSel) {
+        if (!group) return;
+        group.addEventListener('keydown', function (event) {
+          var items = Array.prototype.slice.call(group.querySelectorAll(itemSel));
+          if (!items.length) return;
+          var i = items.indexOf(document.activeElement);
+          if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+            i = i < 0 ? 0 : (i + 1) % items.length;
+          } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+            i = i < 0 ? 0 : (i - 1 + items.length) % items.length;
+          } else if (event.key === 'Home') {
+            i = 0;
+          } else if (event.key === 'End') {
+            i = items.length - 1;
+          } else {
+            return;
+          }
+          event.preventDefault();
+          items[i].focus();
+          items[i].click();
+        });
+      }
+
+      var lamp = root.querySelector('[data-aw="lamp"]');
+      var lever = lamp && lamp.querySelector('.aw-lever');
+      if (lamp && lever) {
+        lever.addEventListener('click', function () {
+          var open = lamp.getAttribute('data-open') !== '1';
+          lamp.setAttribute('data-open', open ? '1' : '0');
+          lever.setAttribute('aria-pressed', open ? 'true' : 'false');
+          say(open ? 'Shutter open. The beam is on the water.' : 'Shutter shut.');
+        });
+      }
+
+      var proof = root.querySelector('[data-aw="proof"]');
+      if (proof) {
+        var rises = [
+          { n: '12', line: 'Still dense.' },
+          { n: '45', line: 'At the rim.' },
+          { n: '70', line: 'Ready to shape.' }
+        ];
+        var rise = 1;
+        var riseBtn = proof.querySelector('[data-aw-rise]');
+        var minsEl = proof.querySelector('[data-aw-mins]');
+        var proofLine = proof.querySelector('[data-aw-line]');
+        if (riseBtn) {
+          riseBtn.addEventListener('click', function () {
+            rise = (rise + 1) % rises.length;
+            proof.setAttribute('data-rise', String(rise));
+            if (minsEl) minsEl.textContent = rises[rise].n;
+            if (proofLine) proofLine.textContent = rises[rise].line;
+            say(rises[rise].n + ' minutes. ' + rises[rise].line);
+          });
+        }
+      }
+
+      var desk = root.querySelector('[data-aw="desk"]');
+      if (desk) {
+        var deskLines = {
+          open: 'We are in Open.',
+          letter: 'We are in Letter B.',
+          close: 'We are in Close.'
+        };
+        var deskLine = desk.querySelector('[data-aw-desk-line]');
+        var score = desk.querySelector('.aw-score');
+        var moves = Array.prototype.slice.call(desk.querySelectorAll('.aw-move'));
+        moves.forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            moves.forEach(function (other) {
+              other.setAttribute('aria-selected', other === btn ? 'true' : 'false');
+            });
+            var id = btn.getAttribute('data-move');
+            if (deskLine && deskLines[id]) deskLine.textContent = deskLines[id];
+            if (deskLines[id]) say(deskLines[id]);
+          });
+        });
+        rove(score, '.aw-move');
+      }
+
+      var way = root.querySelector('[data-aw="way"]');
+      if (way) {
+        var wayLines = {
+          all: 'Three paths from the gate.',
+          dry: 'Mill path is dry.',
+          wet: 'Ridge path holds water.',
+          closed: 'Quarry path is closed.'
+        };
+        var wayLine = way.querySelector('[data-aw-way-line]');
+        var chips = way.querySelector('.aw-chips');
+        var filters = Array.prototype.slice.call(way.querySelectorAll('.aw-chip'));
+        filters.forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            filters.forEach(function (other) {
+              other.setAttribute('aria-checked', other === btn ? 'true' : 'false');
+            });
+            var id = btn.getAttribute('data-filter');
+            way.setAttribute('data-filter', id);
+            if (wayLine && wayLines[id]) wayLine.textContent = wayLines[id];
+            if (wayLines[id]) say(wayLines[id]);
+          });
+        });
+        rove(chips, '.aw-chip');
+      }
+
+      var press = root.querySelector('[data-aw="press"]');
+      if (press) {
+        var specs = [
+          { name: 'Meadow vetch', place: 'Lane above the mill' },
+          { name: 'Oak sprig', place: 'Fence past the orchard' },
+          { name: 'Reed', place: 'Ditch after rain' }
+        ];
+        var specIndex = 0;
+        var specSvgs = Array.prototype.slice.call(press.querySelectorAll('.aw-specimens svg'));
+        var specName = press.querySelector('[data-aw-name]');
+        var specPlace = press.querySelector('[data-aw-place]');
+        function showSpec(next) {
+          specIndex = (next + specs.length) % specs.length;
+          specSvgs.forEach(function (svg, n) {
+            svg.classList.toggle('is-on', n === specIndex);
+          });
+          if (specName) specName.textContent = specs[specIndex].name;
+          if (specPlace) specPlace.textContent = specs[specIndex].place;
+          say(specs[specIndex].name + '. ' + specs[specIndex].place);
+        }
+        var prevBtn = press.querySelector('[data-aw-prev]');
+        var nextBtn = press.querySelector('[data-aw-next]');
+        if (prevBtn) prevBtn.addEventListener('click', function () { showSpec(specIndex - 1); });
+        if (nextBtn) nextBtn.addEventListener('click', function () { showSpec(specIndex + 1); });
+      }
+
+      var mend = root.querySelector('[data-aw="mend"]');
+      if (mend) {
+        function setMend(state) {
+          mend.setAttribute('data-mend', state);
+          if (state === 'kept') say('Crop kept. The tear stays.');
+          else if (state === 'restored') say('Foot restored on the poster.');
+          else say('The foot is chipped.');
+        }
+        var keepBtn = mend.querySelector('[data-aw-keep]');
+        var restoreBtn = mend.querySelector('[data-aw-restore]');
+        var undoBtn = mend.querySelector('[data-aw-undo]');
+        if (keepBtn) keepBtn.addEventListener('click', function () { setMend('kept'); });
+        if (restoreBtn) restoreBtn.addEventListener('click', function () { setMend('restored'); });
+        if (undoBtn) undoBtn.addEventListener('click', function () { setMend('open'); });
+      }
+
+      var call = root.querySelector('[data-aw="call"]');
+      if (call) {
+        var callOrder = ['house', 'late', 'stage', 'released'];
+        var callWords = {
+          house: 'in the house',
+          late: 'late',
+          stage: 'on stage',
+          released: 'released'
+        };
+        var callCues = {
+          house: 'Call places at seven.',
+          late: 'Hold the curtain.',
+          stage: 'Keep the house dark.',
+          released: 'Lock the side door.'
+        };
+        var callLine = call.querySelector('[data-aw-call-line]');
+        Array.prototype.forEach.call(call.querySelectorAll('.aw-role'), function (role) {
+          role.addEventListener('click', function () {
+            var state = role.getAttribute('data-state');
+            var i = callOrder.indexOf(state);
+            var next = callOrder[(i + 1) % callOrder.length];
+            var name = role.getAttribute('data-name') || 'Role';
+            role.setAttribute('data-state', next);
+            role.setAttribute('aria-label', name + ', ' + callWords[next]);
+            var sentence = name + ' is ' + callWords[next] + '. ' + callCues[next];
+            if (callLine) callLine.textContent = sentence;
+            say(sentence);
+          });
+        });
+      }
+
+      var stall = root.querySelector('[data-aw="stall"]');
+      var stallBtn = stall && stall.querySelector('[data-aw-sold]');
+      if (stall && stallBtn) {
+        stallBtn.addEventListener('click', function () {
+          var sold = stall.getAttribute('data-sold') === '1';
+          stall.setAttribute('data-sold', sold ? '0' : '1');
+          say(sold ? 'Stall open. Late pears, $28 a bag.' : 'Sold out.');
+        });
+      }
+    })();
+    </script>
+
     <footer class="lib-foot">
-      Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Brand ≠ Primary · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications · Prompting UI · Design tokens · iPhone polish · iOS habits · Premium composer. Digit-scroll <code>lh</code> + natural
+      Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Brand ≠ Primary · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications · Prompting UI · Design tokens · iPhone polish · iOS habits · Premium composer · Interface as world. Digit-scroll <code>lh</code> + natural
       <code>linear()</code> spring (~10% overshoot) · hard-coded glow buttons
       (violet / teal / slate) · nested radius · page-shell palettes · colour pairings · color combos · native
       <code>appearance: base-select</code> · rotating <code>conic-gradient</code> rim · SVG glass folder. No CDN.
-      Prefers-reduced-motion disables the spring and holds the glow border, transition-keyword demos, background-keyword demos, nudging notifications, the prompting-ui bloom, the design-tokens colour change, the iPhone polish island morph, the composer send rotation, and the iOS habits sheet and shared-element morph still. ?reduce=1 holds those demos at rest. ?motion=1 brings the composer and iOS habits motion back unless ?reduce=1 is also set.
+      Prefers-reduced-motion disables the spring and holds the glow border, transition-keyword demos, background-keyword demos, nudging notifications, the prompting-ui bloom, the design-tokens colour change, the iPhone polish island morph, the composer send rotation, the iOS habits sheet and shared-element morph, and the interface-as-world beam and playhead still. ?reduce=1 holds those demos at rest. ?motion=1 brings the composer, iOS habits, and interface-as-world motion back unless ?reduce=1 is also set.
     </footer>
   </div>
 
@@ -21258,6 +22962,6 @@
     })();
   </script>
   <script src="shared/site-header.js?v=38" defer></script>
-  <script src="shared/section-fab.js?v=14" defer></script>
+  <script src="shared/section-fab.js?v=15" defer></script>
 </body>
 </html>
