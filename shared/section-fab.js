@@ -26,6 +26,7 @@
     { id: 'prompting-ui', label: 'Prompting UI' },
     { id: 'design-tokens', label: 'Design tokens' },
     { id: 'iphone-polish', label: 'iPhone polish' },
+    { id: 'ios-habits', label: 'iOS habits' },
     { id: 'premium-composer', label: 'Composer' }
   ];
 
