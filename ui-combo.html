@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>UI Library · Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Brand ≠ Primary · Select · Glow · Folder · Spacing · Hierarchy · Combos · Keywords · Backgrounds · Nudge · Prompting UI · Design tokens · iPhone polish · Composer</title>
+  <title>UI Library · Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Brand ≠ Primary · Select · Glow · Folder · Spacing · Hierarchy · Combos · Keywords · Backgrounds · Nudge · Prompting UI · Design tokens · iPhone polish · iOS habits · Composer</title>
   <script>
     /* Apply saved page shell and glow stops before paint */
     (function () {
@@ -30,11 +30,11 @@
     })();
   </script>
   <script>
-    /* ?reduce=1 holds transition-keyword, background-keyword, nudging-notification, prompting-ui bloom, the design-tokens colour change, the iPhone polish island morph, and the composer send rotation at rest. OS reduced motion is handled in CSS. */
+    /* ?reduce=1 holds transition-keyword, background-keyword, nudging-notification, prompting-ui bloom, the design-tokens colour change, the iPhone polish island morph, the composer send rotation, and the iOS habits sheet and shared-element morph at rest. OS reduced motion is handled in CSS. ?motion=1 brings the composer and iOS habits motion back unless ?reduce=1 is also set. */
     (function () {
       try {
         if (new URLSearchParams(location.search).get('reduce') === '1') {
-          document.documentElement.classList.add('tk-still', 'bk-still', 'nn-still', 'pu-still', 'dt-still', 'ip-still', 'pc-still');
+          document.documentElement.classList.add('tk-still', 'bk-still', 'nn-still', 'pu-still', 'dt-still', 'ip-still', 'pc-still', 'ih-still');
         }
       } catch (e) {}
     })();
@@ -10473,6 +10473,1200 @@
         border-color: ButtonText;
       }
     }
+    /* —— iOS habits. Scoped to #ios-habits.
+       Interaction habits beside iPhone polish. Off is the failure. On is the rule. —— */
+    #ios-habits {
+      --ih-ink: #1c1c22;
+      --ih-muted: #4a4a54;
+      --ih-line: #e4e4ea;
+      --ih-stage: #f5f1ee;
+      --ih-card: #ffffff;
+      --ih-primary: #555a96;
+      --ih-primary-ink: #ffffff;
+      --ih-green: #0d6a3a;
+      --ih-danger: #8f1d1d;
+      --ih-bone: #ddd9d3;
+      --ih-ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #ios-habits [hidden] {
+      display: none !important;
+    }
+
+    #ios-habits .ih-study {
+      margin-top: 2rem;
+    }
+
+    #ios-habits .canvas-chrome {
+      flex-wrap: nowrap;
+      gap: 0.5rem;
+      overflow-x: auto;
+    }
+
+    #ios-habits .canvas-name,
+    #ios-habits .canvas-tag,
+    #ios-habits .ih-actions,
+    #ios-habits .ih-toggle {
+      flex: none;
+    }
+
+    #ios-habits .canvas-tag {
+      margin-left: 0;
+    }
+
+    #ios-habits .ih-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-left: auto;
+    }
+
+    #ios-habits .ih-toggle {
+      display: flex;
+      gap: 0.25rem;
+      padding: 0.25rem;
+      border: 1px solid var(--ih-line);
+      border-radius: 12px;
+      background: var(--ih-card);
+    }
+
+    #ios-habits .ih-toggle button,
+    #ios-habits .ih-btn,
+    #ios-habits .ih-icon-btn,
+    #ios-habits .ih-text-btn {
+      appearance: none;
+      margin: 0;
+      font-family: var(--sans);
+      cursor: pointer;
+    }
+
+    #ios-habits .ih-toggle button {
+      min-height: 2.75rem;
+      padding: 0 1rem;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--ih-ink);
+      font-size: 0.75rem;
+      font-weight: 650;
+      line-height: 1;
+    }
+
+    #ios-habits .ih-toggle button[aria-pressed="true"] {
+      background: var(--ih-ink);
+      color: #ffffff;
+    }
+
+    #ios-habits .ih-stage {
+      align-items: stretch;
+      background: var(--ih-stage);
+      gap: 1rem;
+      padding: 1.5rem 1rem;
+    }
+
+    #ios-habits .ih-demo {
+      width: 100%;
+      max-width: 22rem;
+      margin-inline: auto;
+    }
+
+    #ios-habits .ih-spec,
+    #ios-habits .ih-rule,
+    #ios-habits .ih-note,
+    #ios-habits .ih-credit {
+      margin: 0;
+    }
+
+    #ios-habits code {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+    }
+
+    #ios-habits .ih-spec {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      line-height: 1.5;
+      color: #3a3a44;
+    }
+
+    #ios-habits .ih-rule {
+      max-width: 36rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--ih-ink);
+    }
+
+    #ios-habits .ih-note,
+    #ios-habits .ih-credit {
+      max-width: 36rem;
+      font-size: 0.75rem;
+      line-height: 1.5;
+      color: var(--ih-muted);
+    }
+
+    #ios-habits .ih-credit {
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    #ios-habits .ih-credit a {
+      color: inherit;
+    }
+
+    #ios-habits .ih-row-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    #ios-habits .ih-btn,
+    #ios-habits .ih-icon-btn {
+      min-height: 2.75rem;
+      border: 1px solid var(--ih-line);
+      border-radius: 8px;
+      background: var(--ih-card);
+      color: var(--ih-ink);
+      font-size: 1rem;
+      font-weight: 650;
+      line-height: 1.25rem;
+    }
+
+    #ios-habits .ih-btn {
+      padding: 0.5rem 1rem;
+    }
+
+    #ios-habits .ih-btn--primary {
+      border-color: var(--ih-primary);
+      background: var(--ih-primary);
+      color: var(--ih-primary-ink);
+    }
+
+    #ios-habits .ih-btn--danger {
+      border-color: var(--ih-danger);
+      background: var(--ih-card);
+      color: var(--ih-danger);
+    }
+
+    #ios-habits .ih-icon-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.75rem;
+      padding: 0;
+    }
+
+    #ios-habits .ih-icon-btn svg,
+    #ios-habits .ih-like svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      display: block;
+    }
+
+    #ios-habits .ih-text-btn {
+      min-height: 2.75rem;
+      padding: 0.5rem;
+      border: 0;
+      background: transparent;
+      color: var(--ih-primary);
+      font-size: 1rem;
+      font-weight: 650;
+      line-height: 1.25rem;
+      text-decoration: underline;
+      text-underline-offset: 0.25rem;
+    }
+
+    #ios-habits .ih-toggle button:focus-visible,
+    #ios-habits .ih-btn:focus-visible,
+    #ios-habits .ih-icon-btn:focus-visible,
+    #ios-habits .ih-text-btn:focus-visible,
+    #ios-habits .ih-credit a:focus-visible,
+    #ios-habits input:focus-visible,
+    #ios-habits .ih-share-open:focus-visible,
+    #ios-habits .ih-like:focus-visible,
+    #ios-habits .ih-sort button:focus-visible,
+    #ios-habits .ih-copy:focus-visible {
+      outline: 2px solid var(--ih-primary);
+      outline-offset: 2px;
+    }
+
+    @media (hover: hover) {
+      #ios-habits .ih-toggle button:hover {
+        background: #f3f1ee;
+      }
+
+      #ios-habits .ih-toggle button[aria-pressed="true"]:hover {
+        background: #111114;
+      }
+
+      #ios-habits .ih-btn:hover,
+      #ios-habits .ih-icon-btn:hover {
+        background: #f7f5f2;
+      }
+
+      #ios-habits .ih-btn--primary:hover {
+        background: #474e86;
+        border-color: #474e86;
+      }
+    }
+
+    /* 01 skeleton */
+    #ios-habits .ih-feed {
+      background: var(--ih-card);
+      border: 1px solid var(--ih-line);
+      border-radius: 1rem;
+      overflow: hidden;
+    }
+
+    #ios-habits .ih-feed-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--ih-line);
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.25rem;
+    }
+
+    #ios-habits .ih-feed-count {
+      font-size: 0.75rem;
+      font-weight: 650;
+      line-height: 1rem;
+      color: var(--ih-muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    #ios-habits .ih-feed-body {
+      position: relative;
+      min-height: 12rem;
+    }
+
+    #ios-habits .ih-spinwrap {
+      display: none;
+      min-height: 12rem;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #ios-habits .ih-study[data-ih="skeleton"][data-on="0"][data-state="loading"] .ih-spinwrap {
+      display: flex;
+    }
+
+    #ios-habits .ih-study[data-ih="skeleton"][data-on="1"][data-state="loading"] .ih-bones,
+    #ios-habits .ih-study[data-ih="skeleton"][data-state="ready"] .ih-ready {
+      display: block;
+    }
+
+    #ios-habits .ih-bones,
+    #ios-habits .ih-ready {
+      display: none;
+    }
+
+    #ios-habits .ih-spin {
+      width: 1.5rem;
+      height: 1.5rem;
+      border: 2px solid #d5d5dc;
+      border-top-color: #5c5c66;
+      border-radius: 50%;
+      animation: ih-spin 0.7s linear infinite;
+    }
+
+    @keyframes ih-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    #ios-habits .ih-slot {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+    }
+
+    #ios-habits .ih-slot + .ih-slot {
+      border-top: 1px solid var(--ih-line);
+    }
+
+    #ios-habits .ih-avatar,
+    #ios-habits .ih-bone-avatar {
+      flex: none;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background: #e7e2db;
+    }
+
+    #ios-habits .ih-slot-copy {
+      flex: 1;
+      min-width: 0;
+    }
+
+    #ios-habits .ih-slot-copy p {
+      margin: 0;
+    }
+
+    #ios-habits .ih-slot-title {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.25rem;
+    }
+
+    #ios-habits .ih-slot-sub {
+      margin-top: 0.25rem;
+      font-size: 0.75rem;
+      line-height: 1.25rem;
+      color: var(--ih-muted);
+    }
+
+    #ios-habits .ih-bone-copy {
+      flex: 1;
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    #ios-habits .ih-bone {
+      display: block;
+      height: 0.75rem;
+      border-radius: 0.25rem;
+      background: var(--ih-bone);
+      animation: ih-pulse 1.4s ease-in-out infinite;
+    }
+
+    #ios-habits .ih-bone--short {
+      width: 60%;
+    }
+
+    #ios-habits .ih-bone-avatar {
+      background: var(--ih-bone);
+      animation: ih-pulse 1.4s ease-in-out infinite;
+    }
+
+    @keyframes ih-pulse {
+      50% { opacity: 0.45; }
+    }
+
+    /* 02 optimistic */
+    #ios-habits .ih-post {
+      background: var(--ih-card);
+      border: 1px solid var(--ih-line);
+      border-radius: 1rem;
+      overflow: hidden;
+    }
+
+    #ios-habits .ih-art {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 10;
+      background: #d7e0e4;
+    }
+
+    #ios-habits .ih-share-detail .ih-art {
+      aspect-ratio: 4 / 3;
+    }
+
+    #ios-habits .ih-photo .ih-art {
+      width: 100%;
+      height: 100%;
+      aspect-ratio: auto;
+    }
+
+    #ios-habits .ih-post-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+    }
+
+    #ios-habits .ih-like {
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-height: 2.75rem;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--ih-line);
+      border-radius: 999rem;
+      background: var(--ih-card);
+      color: var(--ih-ink);
+      font: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.25rem;
+      font-variant-numeric: tabular-nums;
+      cursor: pointer;
+    }
+
+    #ios-habits .ih-like[aria-pressed="true"] {
+      color: var(--ih-danger);
+    }
+
+    #ios-habits .ih-like[aria-pressed="true"] svg path {
+      fill: currentColor;
+    }
+
+    #ios-habits .ih-status {
+      margin: 0;
+      font-size: 0.75rem;
+      line-height: 1.25rem;
+      color: var(--ih-muted);
+      text-align: right;
+    }
+
+    #ios-habits .ih-post-caption {
+      margin: 0;
+      padding: 0 1rem 1rem;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    #ios-habits .ih-post-caption strong {
+      font-weight: 700;
+    }
+
+    /* 03 tabular */
+    #ios-habits .ih-portfolio {
+      background: var(--ih-card);
+      border: 1px solid var(--ih-line);
+      border-radius: 1rem;
+      padding: 1rem;
+    }
+
+    #ios-habits .ih-kicker {
+      margin: 0;
+      font-size: 0.75rem;
+      line-height: 1.25rem;
+      color: var(--ih-muted);
+    }
+
+    #ios-habits .ih-fig {
+      position: relative;
+      display: inline-block;
+      margin-top: 0.5rem;
+      max-width: 100%;
+    }
+
+    #ios-habits .ih-money {
+      margin: 0;
+      font-family: Inter, "Noto Sans", Cantarell, ui-sans-serif, system-ui, sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      line-height: 1;
+      font-variant-numeric: proportional-nums;
+    }
+
+    #ios-habits .ih-study[data-ih="tabular"][data-on="1"] .ih-money {
+      font-variant-numeric: tabular-nums;
+    }
+
+    #ios-habits .ih-guide {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 0;
+      border-left: 1px dashed #8a8a96;
+      pointer-events: none;
+    }
+
+    #ios-habits .ih-delta {
+      margin: 0.5rem 0 0;
+      color: var(--ih-green);
+      font-size: 1rem;
+      font-weight: 650;
+      line-height: 1.25rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    #ios-habits .ih-spark {
+      display: block;
+      width: 100%;
+      height: 4rem;
+      margin-top: 0.75rem;
+    }
+
+    /* 04 squircle */
+    #ios-habits .ih-study[data-ih="squircle"] {
+      --ih-r: 1.25rem;
+      --ih-zoom: 3;
+    }
+
+    #ios-habits .ih-study[data-ih="squircle"][data-on="1"] {
+      --ih-r: 2rem;
+    }
+
+    #ios-habits .ih-sq {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    #ios-habits .ih-sq-tile {
+      position: relative;
+      width: 8rem;
+      height: 8rem;
+      border-radius: var(--ih-r);
+      background: linear-gradient(160deg, #5b93e6 0%, #2f6fce 100%);
+      corner-shape: round;
+    }
+
+    #ios-habits .ih-study[data-ih="squircle"][data-on="1"] .ih-sq-tile {
+      corner-shape: superellipse(1.78);
+    }
+
+    #ios-habits .ih-study[data-ih="squircle"].is-fallback[data-on="1"] .ih-sq-tile {
+      border-radius: 0;
+      clip-path: url(#ih-squircle-clip);
+    }
+
+    #ios-habits .ih-sq-core {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 34%;
+      height: 34%;
+      border-radius: 50%;
+      background: #f0c24a;
+      transform: translate(-50%, -50%);
+    }
+
+    #ios-habits .ih-loupe {
+      position: relative;
+      width: 8rem;
+      height: 8rem;
+      overflow: hidden;
+      border: 1px solid var(--ih-line);
+      border-radius: 0.75rem;
+      background: #ffffff;
+      box-shadow: 0 8px 24px rgb(28 28 34 / 10%);
+    }
+
+    #ios-habits .ih-loupe-scale {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 8rem;
+      height: 8rem;
+      transform: scale(var(--ih-zoom));
+      transform-origin: top right;
+    }
+
+    #ios-habits .ih-loupe .ih-sq-core {
+      display: none;
+    }
+
+    #ios-habits .ih-dot {
+      position: absolute;
+      width: 0.5rem;
+      height: 0.5rem;
+      border: 2px solid #b42318;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: 0 0 0 1px #ffffff;
+    }
+
+    #ios-habits .ih-dot--top {
+      top: 0.25rem;
+      right: calc(var(--ih-r) * var(--ih-zoom) - 0.25rem);
+    }
+
+    #ios-habits .ih-dot--side {
+      right: 0.25rem;
+      top: calc(var(--ih-r) * var(--ih-zoom) - 0.25rem);
+    }
+
+    #ios-habits .ih-clip-svg {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+    }
+
+    @media (max-width: 720px) {
+      #ios-habits .canvas-tag {
+        display: none;
+      }
+
+      #ios-habits .ih-toggle button {
+        padding: 0 0.75rem;
+      }
+    }
+
+    /* 05 sheet */
+    #ios-habits .ih-phone {
+      position: relative;
+      height: 26rem;
+      overflow: hidden;
+      border: 1px solid var(--ih-line);
+      border-radius: 1.5rem;
+      background: #efeae4;
+    }
+
+    #ios-habits .ih-behind {
+      padding: 1rem;
+    }
+
+    #ios-habits .ih-behind h3,
+    #ios-habits .ih-behind p {
+      margin: 0;
+    }
+
+    #ios-habits .ih-behind h3 {
+      margin-top: 0.25rem;
+      font-size: 1.25rem;
+      line-height: 1.25;
+    }
+
+    #ios-habits .ih-behind-body {
+      margin-top: 0.5rem;
+      color: var(--ih-muted);
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    #ios-habits .ih-sheet {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 0.5rem 1rem 1rem;
+      border-radius: 1rem 1rem 0 0;
+      background: var(--ih-card);
+      box-shadow: 0 -8px 24px rgb(28 28 34 / 12%);
+      transform: translateY(0);
+      transition: transform 0.35s var(--ih-ease);
+    }
+
+    #ios-habits .ih-study[data-ih="sheet"][data-on="1"] [data-ih-drag] {
+      touch-action: none;
+      cursor: grab;
+    }
+
+    #ios-habits .ih-grab {
+      display: none;
+      width: 2.5rem;
+      height: 0.25rem;
+      margin: 0.25rem auto 0.5rem;
+      border-radius: 999rem;
+      background: #c8c8d0;
+    }
+
+    #ios-habits .ih-study[data-ih="sheet"][data-on="1"] .ih-grab {
+      display: block;
+    }
+
+    #ios-habits .ih-sheet-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      min-height: 2.75rem;
+    }
+
+    #ios-habits .ih-sheet-bar h3 {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.25rem;
+    }
+
+    #ios-habits .ih-sort {
+      display: grid;
+      margin-top: 0.5rem;
+      border-top: 1px solid var(--ih-line);
+    }
+
+    #ios-habits .ih-sort button {
+      appearance: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      min-height: 2.75rem;
+      padding: 0.5rem 0;
+      border: 0;
+      border-bottom: 1px solid var(--ih-line);
+      background: transparent;
+      color: var(--ih-ink);
+      font: inherit;
+      font-size: 1rem;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    #ios-habits .ih-sort button[aria-pressed="true"]::after {
+      content: "";
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      background: var(--ih-primary);
+    }
+
+    #ios-habits .ih-reopen {
+      position: absolute;
+      left: 50%;
+      bottom: 1rem;
+      transform: translateX(-50%);
+    }
+
+    /* 06 shared element */
+    #ios-habits .ih-share-card {
+      width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--ih-line);
+      border-radius: 1rem;
+      background: var(--ih-card);
+      color: var(--ih-ink);
+      text-align: left;
+    }
+
+    #ios-habits .ih-share-open {
+      display: block;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    #ios-habits .ih-study[data-ih="share"][data-on="1"] .ih-share-card:not([hidden]) {
+      view-transition-name: ih-share-card;
+    }
+
+    #ios-habits .ih-share-copy {
+      display: grid;
+      gap: 0.25rem;
+      padding: 0.75rem 1rem 1rem;
+    }
+
+    #ios-habits .ih-share-copy h3,
+    #ios-habits .ih-share-copy p,
+    #ios-habits .ih-share-title,
+    #ios-habits .ih-share-meta,
+    #ios-habits .ih-share-price {
+      margin: 0;
+    }
+
+    #ios-habits .ih-share-title,
+    #ios-habits .ih-share-copy h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    #ios-habits .ih-share-meta,
+    #ios-habits .ih-share-copy p {
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--ih-muted);
+    }
+
+    #ios-habits .ih-share-price,
+    #ios-habits .ih-share-copy .ih-price,
+    #ios-habits .ih-photo-card .ih-price {
+      color: var(--ih-ink);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    #ios-habits .ih-detail-top {
+      display: flex;
+      align-items: center;
+      min-height: 2.75rem;
+      padding: 0.25rem 0.5rem;
+    }
+
+    /* 07 code */
+    #ios-habits .ih-otp {
+      display: grid;
+      gap: 0.75rem;
+      justify-items: center;
+    }
+
+    #ios-habits .ih-otp-multi,
+    #ios-habits .ih-otp-one {
+      width: 100%;
+    }
+
+    #ios-habits .ih-study[data-ih="code"][data-on="1"] .ih-otp-multi,
+    #ios-habits .ih-study[data-ih="code"][data-on="0"] .ih-otp-one {
+      display: none;
+    }
+
+    #ios-habits .ih-digits {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      gap: 0.5rem;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    #ios-habits .ih-digits input,
+    #ios-habits .ih-code {
+      box-sizing: border-box;
+      margin: 0;
+      border: 1px solid #c8c8d0;
+      border-radius: 8px;
+      background: var(--ih-card);
+      color: var(--ih-ink);
+      font: inherit;
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.25rem;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
+    }
+
+    #ios-habits .ih-digits input {
+      width: 2.75rem;
+      height: 2.75rem;
+      padding: 0;
+    }
+
+    #ios-habits .ih-code {
+      display: block;
+      width: 100%;
+      max-width: 16rem;
+      height: 2.75rem;
+      margin-inline: auto;
+      padding: 0 0.75rem;
+      letter-spacing: 0.25rem;
+    }
+
+    /* 08 undo */
+    #ios-habits .ih-inbox {
+      position: relative;
+      background: var(--ih-card);
+      border: 1px solid var(--ih-line);
+      border-radius: 1rem;
+      padding: 0.5rem 1rem 0.75rem;
+    }
+
+    #ios-habits .ih-inbox h3 {
+      margin: 0.5rem 0;
+      font-size: 1.25rem;
+      line-height: 1.25;
+    }
+
+    #ios-habits .ih-mails {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ios-habits .ih-mail {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      padding: 0.75rem 0;
+      border-top: 1px solid var(--ih-line);
+    }
+
+    #ios-habits .ih-mail-copy {
+      flex: 1;
+      min-width: 0;
+    }
+
+    #ios-habits .ih-mail-name {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.25rem;
+    }
+
+    #ios-habits .ih-mail-name time {
+      font-size: 0.75rem;
+      font-weight: 500;
+      line-height: 1.25rem;
+      color: var(--ih-muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    #ios-habits .ih-mail-subject,
+    #ios-habits .ih-mail-preview {
+      margin: 0.25rem 0 0;
+      font-size: 0.75rem;
+      line-height: 1.25rem;
+    }
+
+    #ios-habits .ih-mail-preview {
+      color: var(--ih-muted);
+    }
+
+    #ios-habits .ih-undo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.75rem;
+      background: #1c1c22;
+      color: #ffffff;
+    }
+
+    #ios-habits .ih-undo p {
+      margin: 0;
+      font-size: 0.75rem;
+      line-height: 1.25rem;
+    }
+
+    #ios-habits .ih-undo .ih-btn--primary {
+      flex: none;
+    }
+
+    #ios-habits .ih-confirm {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      border-radius: 1rem;
+      background: rgb(28 28 34 / 32%);
+    }
+
+    #ios-habits .ih-confirm-card {
+      width: 100%;
+      max-width: 16rem;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      background: var(--ih-card);
+      box-shadow: 0 12px 32px rgb(28 28 34 / 18%);
+    }
+
+    #ios-habits .ih-confirm-card h3 {
+      margin: 0;
+      font-size: 1.25rem;
+      line-height: 1.25;
+    }
+
+    #ios-habits .ih-confirm-card p {
+      margin: 0.5rem 0 0;
+      color: var(--ih-muted);
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    #ios-habits .ih-confirm-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    /* 09 line breaks */
+    #ios-habits .ih-plan {
+      display: grid;
+      justify-items: center;
+      gap: 0.75rem;
+      padding: 1.5rem 1rem;
+      border: 1px solid var(--ih-line);
+      border-radius: 1rem;
+      background: var(--ih-card);
+      text-align: center;
+    }
+
+    #ios-habits .ih-plan-kicker {
+      margin: 0;
+      color: var(--ih-primary);
+      font-size: 0.75rem;
+      font-weight: 700;
+      line-height: 1.25rem;
+    }
+
+    #ios-habits .ih-balance,
+    #ios-habits .ih-pretty {
+      margin: 0 auto;
+      max-width: 16rem;
+      text-wrap: wrap;
+    }
+
+    #ios-habits .ih-study.is-fitting .ih-balance,
+    #ios-habits .ih-study.is-fitting .ih-pretty {
+      text-wrap: wrap !important;
+    }
+
+    #ios-habits .ih-study.is-fitting .ih-keep {
+      white-space: normal !important;
+    }
+
+    #ios-habits .ih-balance {
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.15;
+    }
+
+    #ios-habits .ih-pretty {
+      color: var(--ih-muted);
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    #ios-habits .ih-study[data-ih="lines"][data-on="1"] .ih-balance {
+      text-wrap: balance;
+    }
+
+    #ios-habits .ih-study[data-ih="lines"][data-on="1"] .ih-pretty {
+      text-wrap: pretty;
+    }
+
+    #ios-habits .ih-study[data-ih="lines"][data-on="0"] .ih-last {
+      background: #f6d2cb;
+    }
+
+    #ios-habits .ih-study[data-ih="lines"].is-wrap-fallback[data-on="1"] .ih-keep {
+      white-space: nowrap;
+    }
+
+    #ios-habits .ih-plan .ih-btn--primary {
+      width: 100%;
+      max-width: 16rem;
+    }
+
+    /* 10 blur */
+    #ios-habits .ih-photo-card {
+      overflow: hidden;
+      border: 1px solid var(--ih-line);
+      border-radius: 1rem;
+      background: var(--ih-card);
+    }
+
+    #ios-habits .ih-photo {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      background: #e6e6ea;
+      overflow: hidden;
+    }
+
+    #ios-habits .ih-gray,
+    #ios-habits .ih-blur,
+    #ios-habits .ih-sharp {
+      position: absolute;
+      inset: 0;
+    }
+
+    #ios-habits .ih-study[data-ih="blur"][data-on="1"] .ih-gray,
+    #ios-habits .ih-study[data-ih="blur"][data-on="0"] .ih-blur {
+      display: none;
+    }
+
+    #ios-habits .ih-gray {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #5c5c66;
+    }
+
+    #ios-habits .ih-gray svg {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    #ios-habits .ih-blur {
+      transform: scale(1.12);
+      filter: blur(0.75rem);
+    }
+
+    #ios-habits .ih-sharp {
+      opacity: 0;
+      transition: opacity 0.45s linear;
+    }
+
+    #ios-habits .ih-study[data-ih="blur"][data-state="ready"] .ih-sharp {
+      opacity: 1;
+    }
+
+    #ios-habits .ih-study[data-ih="blur"][data-on="0"] .ih-sharp {
+      transition: none;
+    }
+
+    #ios-habits .ih-photo-card .ih-share-copy {
+      padding: 0.75rem 1rem 1rem;
+    }
+
+    /* snippet */
+    #ios-habits .ih-pre {
+      margin: 0;
+      padding: 1rem;
+      overflow: auto;
+      background: #f5f1ee;
+      color: var(--ih-ink);
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      line-height: 1.5;
+      white-space: pre;
+    }
+
+    #ios-habits .ih-copy.is-copied {
+      color: var(--ih-green);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #ios-habits .ih-spin,
+      #ios-habits .ih-bone,
+      #ios-habits .ih-bone-avatar,
+      #ios-habits .ih-sheet,
+      #ios-habits .ih-sharp {
+        animation: none;
+        transition: none;
+      }
+    }
+
+    html.ih-still #ios-habits .ih-spin,
+    html.ih-still #ios-habits .ih-bone,
+    html.ih-still #ios-habits .ih-bone-avatar,
+    html.ih-still #ios-habits .ih-sheet,
+    html.ih-still #ios-habits .ih-sharp {
+      animation: none;
+      transition: none;
+    }
+
+    html.ih-vt::view-transition-old(root),
+    html.ih-vt::view-transition-new(root) {
+      animation: none;
+    }
+
+    html.ih-vt::view-transition-group(ih-share-card) {
+      animation-duration: 0.45s;
+      animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @media (forced-colors: active) {
+      #ios-habits .ih-feed,
+      #ios-habits .ih-post,
+      #ios-habits .ih-portfolio,
+      #ios-habits .ih-sq-tile,
+      #ios-habits .ih-phone,
+      #ios-habits .ih-sheet,
+      #ios-habits .ih-share-card,
+      #ios-habits .ih-inbox,
+      #ios-habits .ih-plan,
+      #ios-habits .ih-photo-card,
+      #ios-habits .ih-btn,
+      #ios-habits .ih-icon-btn,
+      #ios-habits .ih-like,
+      #ios-habits .ih-code,
+      #ios-habits .ih-digits input {
+        border: 1px solid ButtonText;
+      }
+
+      #ios-habits .ih-btn--primary {
+        background: ButtonText;
+        color: ButtonFace;
+      }
+    }
   </style>
 </head>
 <body data-page="gallery">
@@ -10498,6 +11692,7 @@
       <a href="#prompting-ui">Prompting UI</a>
       <a href="#design-tokens">Design tokens</a>
       <a href="#iphone-polish">iPhone polish</a>
+      <a href="#ios-habits">iOS habits</a>
       <a href="#premium-composer">Composer</a>
     </div>
   </nav>
@@ -10506,7 +11701,7 @@
     <header class="lib-hero">
       <h1>Component gallery</h1>
       <p>
-        Self-contained demos: Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Brand ≠ Primary · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications · Prompting UI · Design tokens · iPhone polish · Premium composer.
+        Self-contained demos: Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Brand ≠ Primary · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications · Prompting UI · Design tokens · iPhone polish · iOS habits · Premium composer.
         Digit scroll with a natural <code>linear()</code> spring (~10%
         overshoot), hard-coded glow CTAs (violet / teal / slate), nested-radius
         photo cards and a progressive dialog, ten page-shell colour palettes you can switch, twenty reference
@@ -10518,6 +11713,7 @@
         Match the icon to the line-height and leave an 8px gap. Demote Log in so the primary button can lift.
         Semantic tokens paint the card; remap them and the theme follows.
         Six ON/OFF polish rules keep the pixel numbers on the canvas.
+        Ten ON/OFF habits keep the interaction on the canvas.
         Brand color stays on the mark. Buttons, links, and focus use a product primary that clears 4.5:1 with white.
       </p>
     </header>
@@ -17542,6 +18738,1283 @@
     })();
     </script>
 
+    <!-- ===================== IOS HABITS ===================== -->
+    <section class="sec" id="ios-habits">
+      <div class="sec-head">
+        <h2>iOS habits</h2>
+        <p>
+          Ten ON/OFF habits. Off is the failure. On is the rule. iPhone polish keeps the pixel rules. These ten are how the screen behaves.
+        </p>
+      </div>
+
+      <article class="canvas ih-study" data-ih="skeleton" data-on="1" data-state="loading" aria-busy="true">
+        <div class="canvas-chrome">
+          <span class="canvas-name">01 · Skeleton loaders</span>
+          <span class="canvas-tag">Page shape</span>
+          <div class="ih-actions">
+            <div class="ih-toggle" role="group" aria-label="Skeleton loaders">
+              <button type="button" data-ih-on="0" aria-pressed="false">Off</button>
+              <button type="button" data-ih-on="1" aria-pressed="true">On</button>
+            </div>
+          </div>
+        </div>
+        <div class="canvas-body ih-stage">
+          <p class="ih-spec" data-ih-spec>3 skeleton rows</p>
+          <div class="ih-demo">
+            <div class="ih-feed">
+              <div class="ih-feed-head">
+                <span>Notes</span>
+                <span class="ih-feed-count">3</span>
+              </div>
+              <div class="ih-feed-body">
+                <div class="ih-spinwrap">
+                  <div class="ih-spin" role="img" aria-label="Loading"></div>
+                </div>
+                <div class="ih-bones" aria-hidden="true">
+                  <div class="ih-slot">
+                    <span class="ih-bone-avatar"></span>
+                    <span class="ih-bone-copy"><span class="ih-bone"></span><span class="ih-bone ih-bone--short"></span></span>
+                  </div>
+                  <div class="ih-slot">
+                    <span class="ih-bone-avatar"></span>
+                    <span class="ih-bone-copy"><span class="ih-bone"></span><span class="ih-bone ih-bone--short"></span></span>
+                  </div>
+                  <div class="ih-slot">
+                    <span class="ih-bone-avatar"></span>
+                    <span class="ih-bone-copy"><span class="ih-bone"></span><span class="ih-bone ih-bone--short"></span></span>
+                  </div>
+                </div>
+                <div class="ih-ready">
+                  <div class="ih-slot">
+                    <span class="ih-avatar" aria-hidden="true"></span>
+                    <span class="ih-slot-copy">
+                      <p class="ih-slot-title">Harbour note</p>
+                      <p class="ih-slot-sub">The 8 am ferry is quiet.</p>
+                    </span>
+                  </div>
+                  <div class="ih-slot">
+                    <span class="ih-avatar" aria-hidden="true"></span>
+                    <span class="ih-slot-copy">
+                      <p class="ih-slot-title">Market list</p>
+                      <p class="ih-slot-sub">Figs, bread, and coffee.</p>
+                    </span>
+                  </div>
+                  <div class="ih-slot">
+                    <span class="ih-avatar" aria-hidden="true"></span>
+                    <span class="ih-slot-copy">
+                      <p class="ih-slot-title">Desk key</p>
+                      <p class="ih-slot-sub">Envelope at the front desk.</p>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ih-row-actions">
+              <button type="button" class="ih-btn" data-ih-skel-go>Show content</button>
+            </div>
+          </div>
+          <p class="ih-rule">Show the page shape while content loads.</p>
+        </div>
+      </article>
+
+      <article class="canvas ih-study" data-ih="optimistic" data-on="1">
+        <div class="canvas-chrome">
+          <span class="canvas-name">02 · Optimistic UI</span>
+          <span class="canvas-tag">Update on tap</span>
+          <div class="ih-actions">
+            <div class="ih-toggle" role="group" aria-label="Optimistic UI">
+              <button type="button" data-ih-on="0" aria-pressed="false">Off</button>
+              <button type="button" data-ih-on="1" aria-pressed="true">On</button>
+            </div>
+          </div>
+        </div>
+        <div class="canvas-body ih-stage">
+          <p class="ih-spec" data-ih-spec>0 ms on screen</p>
+          <div class="ih-demo">
+            <article class="ih-post">
+              <svg class="ih-art" viewBox="0 0 320 200" aria-hidden="true" focusable="false">
+                <rect width="320" height="200" fill="#f6d3c0"/>
+                <path d="M0 126 L70 72 L130 110 L200 52 L270 104 L320 84 L320 136 L0 136Z" fill="#8ea4b8"/>
+                <path d="M0 136 L90 98 L160 132 L230 86 L320 124 L320 150 L0 150Z" fill="#6d849c"/>
+                <rect y="146" width="320" height="54" fill="#d5e0e6"/>
+                <path d="M0 158 L70 150 L130 164 L200 148 L270 162 L320 154 L320 200 L0 200Z" fill="#c5d4dc"/>
+              </svg>
+              <div class="ih-post-bar">
+                <button type="button" class="ih-like" data-ih-like aria-pressed="false" aria-label="Save, 128 likes">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 19.2s-6.4-3.9-6.4-8.1C5.6 8.6 7.4 7 9.6 7c1.2 0 2.2.6 2.4 1.6.2-1 1.2-1.6 2.4-1.6 2.2 0 4 1.6 4 4.1 0 4.2-6.4 8.1-6.4 8.1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                  <span data-ih-count>128</span>
+                </button>
+                <p class="ih-status" data-ih-status aria-live="polite">Tap to save</p>
+              </div>
+              <p class="ih-post-caption"><strong>Lake road</strong> First light on the ridge.</p>
+            </article>
+          </div>
+          <p class="ih-rule">Update the screen on tap. Save in the background.</p>
+        </div>
+      </article>
+
+      <article class="canvas ih-study" data-ih="tabular" data-on="1">
+        <div class="canvas-chrome">
+          <span class="canvas-name">03 · Tabular numbers</span>
+          <span class="canvas-tag">Fixed digits</span>
+          <div class="ih-actions">
+            <div class="ih-toggle" role="group" aria-label="Tabular numbers">
+              <button type="button" data-ih-on="0" aria-pressed="false">Off</button>
+              <button type="button" data-ih-on="1" aria-pressed="true">On</button>
+            </div>
+          </div>
+        </div>
+        <div class="canvas-body ih-stage">
+          <p class="ih-spec" data-ih-spec>tabular-nums</p>
+          <div class="ih-demo">
+            <div class="ih-portfolio">
+              <p class="ih-kicker">Your portfolio</p>
+              <div class="ih-fig">
+                <p class="ih-money" data-ih-money>$1,111.11</p>
+                <span class="ih-guide" data-ih-guide aria-hidden="true"></span>
+              </div>
+              <p class="ih-delta">↑ $124.80 (2.4%) today</p>
+              <svg class="ih-spark" viewBox="0 0 280 64" aria-hidden="true" focusable="false">
+                <path d="M0 52 L28 48 L56 50 L84 40 L112 42 L140 34 L168 36 L196 26 L224 22 L252 16 L280 10" fill="none" stroke="#0d6a3a" stroke-width="2"/>
+                <path d="M0 52 L28 48 L56 50 L84 40 L112 42 L140 34 L168 36 L196 26 L224 22 L252 16 L280 10 V64 H0Z" fill="#0d6a3a" opacity="0.12"/>
+              </svg>
+            </div>
+            <div class="ih-row-actions">
+              <button type="button" class="ih-btn" data-ih-next>Next figure</button>
+            </div>
+          </div>
+          <p class="ih-rule">Fixed-width digits stop numbers from jumping. The dashed line is the tabular width.</p>
+        </div>
+      </article>
+
+      <article class="canvas ih-study" data-ih="squircle" data-on="1">
+        <div class="canvas-chrome">
+          <span class="canvas-name">04 · Squircle corners</span>
+          <span class="canvas-tag">60% smoothing</span>
+          <div class="ih-actions">
+            <div class="ih-toggle" role="group" aria-label="Squircle corners">
+              <button type="button" data-ih-on="0" aria-pressed="false">Off</button>
+              <button type="button" data-ih-on="1" aria-pressed="true">On</button>
+            </div>
+          </div>
+        </div>
+        <div class="canvas-body ih-stage">
+          <p class="ih-spec" data-ih-spec>superellipse(1.78) · 60%</p>
+          <div class="ih-demo">
+            <div class="ih-sq">
+              <div class="ih-sq-tile" role="img" aria-label="Rounded tile">
+                <span class="ih-sq-core"></span>
+              </div>
+              <div class="ih-loupe" aria-hidden="true">
+                <div class="ih-loupe-scale">
+                  <div class="ih-sq-tile"><span class="ih-sq-core"></span></div>
+                </div>
+                <span class="ih-dot ih-dot--top"></span>
+                <span class="ih-dot ih-dot--side"></span>
+              </div>
+            </div>
+            <svg class="ih-clip-svg" aria-hidden="true" focusable="false">
+              <defs>
+                <clipPath id="ih-squircle-clip" clipPathUnits="objectBoundingBox">
+                  <path id="ih-squircle-path" d=""></path>
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <p class="ih-rule">Set corner smoothing to 60% so the curve eases into the straight edge.</p>
+          <p class="ih-note" data-ih-corner-note></p>
+        </div>
+      </article>
+
+      <article class="canvas ih-study" data-ih="sheet" data-on="1">
+        <div class="canvas-chrome">
+          <span class="canvas-name">05 · Swipe to dismiss</span>
+          <span class="canvas-tag">Drag down</span>
+          <div class="ih-actions">
+            <div class="ih-toggle" role="group" aria-label="Swipe to dismiss">
+              <button type="button" data-ih-on="0" aria-pressed="false">Off</button>
+              <button type="button" data-ih-on="1" aria-pressed="true">On</button>
+            </div>
+          </div>
+        </div>
+        <div class="canvas-body ih-stage">
+          <p class="ih-spec" data-ih-spec>drag 4.5rem</p>
+          <div class="ih-demo">
+            <div class="ih-phone">
+              <div class="ih-behind">
+                <p class="ih-kicker" data-ih-sorted>Sorted by Recent</p>
+                <h3>A quiet cove before 8.</h3>
+                <p class="ih-behind-body">The path is empty, and the water is flat.</p>
+              </div>
+              <div class="ih-sheet" data-ih-sheet role="dialog" aria-labelledby="ih-sort-title">
+                <div data-ih-drag>
+                  <div class="ih-grab" aria-hidden="true"></div>
+                  <div class="ih-sheet-bar">
+                    <h3 id="ih-sort-title">Sort</h3>
+                    <button type="button" class="ih-icon-btn" data-ih-sheet-close aria-label="Close sort">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 7l10 10M17 7L7 17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="ih-sort" role="group" aria-label="Sort notes">
+                  <button type="button" data-ih-sort aria-pressed="true">Recent</button>
+                  <button type="button" data-ih-sort aria-pressed="false">Nearby</button>
+                  <button type="button" data-ih-sort aria-pressed="false">Saved</button>
+                </div>
+              </div>
+              <button type="button" class="ih-btn ih-reopen" data-ih-sheet-open hidden>Open sort</button>
+            </div>
+          </div>
+          <p class="ih-rule">Let people drag a sheet down to close it. Past 4.5rem, it dismisses.</p>
+        </div>
+      </article>
+
+      <article class="canvas ih-study" data-ih="share" data-on="1">
+        <div class="canvas-chrome">
+          <span class="canvas-name">06 · Shared element transitions</span>
+          <span class="canvas-tag">Card grows</span>
+          <div class="ih-actions">
+            <div class="ih-toggle" role="group" aria-label="Shared element transitions">
+              <button type="button" data-ih-on="0" aria-pressed="false">Off</button>
+              <button type="button" data-ih-on="1" aria-pressed="true">On</button>
+            </div>
+          </div>
+        </div>
+        <div class="canvas-body ih-stage">
+          <p class="ih-spec" data-ih-spec>0.45s morph</p>
+          <div class="ih-demo">
+            <button type="button" class="ih-share-card ih-share-open" data-ih-open>
+              <svg class="ih-art" viewBox="0 0 320 200" aria-hidden="true" focusable="false">
+                <rect width="320" height="200" fill="#f4e4cf"/>
+                <path d="M0 118 L48 86 L96 112 L150 70 L210 108 L268 78 L320 104 L320 132 L0 132Z" fill="#9aafb8"/>
+                <rect y="124" width="320" height="76" fill="#7eafc2"/>
+                <path d="M36 128 L36 96 L72 74 L108 96 L108 128Z" fill="#f0dcc4"/>
+                <rect x="62" y="104" width="16" height="24" fill="#c56b4a"/>
+                <path d="M168 128 L168 100 L204 78 L240 100 L240 128Z" fill="#e7cbb0"/>
+                <rect x="196" y="108" width="14" height="20" fill="#6d8f78"/>
+                <path d="M0 168 C40 160 80 176 120 168 C160 160 200 176 240 166 C270 160 300 170 320 164 L320 200 L0 200Z" fill="#6a9eb0"/>
+              </svg>
+              <span class="ih-share-copy">
+                <span class="ih-share-title">North cove</span>
+                <span class="ih-share-meta">Cliff path · 2 rooms</span>
+                <span class="ih-share-price">$128 night</span>
+              </span>
+            </button>
+            <div class="ih-share-card ih-share-detail" data-ih-detail hidden>
+              <div class="ih-detail-top">
+                <button type="button" class="ih-text-btn" data-ih-back>Back</button>
+              </div>
+              <svg class="ih-art" viewBox="0 0 320 200" aria-hidden="true" focusable="false">
+                <rect width="320" height="200" fill="#f4e4cf"/>
+                <path d="M0 118 L48 86 L96 112 L150 70 L210 108 L268 78 L320 104 L320 132 L0 132Z" fill="#9aafb8"/>
+                <rect y="124" width="320" height="76" fill="#7eafc2"/>
+                <path d="M36 128 L36 96 L72 74 L108 96 L108 128Z" fill="#f0dcc4"/>
+                <rect x="62" y="104" width="16" height="24" fill="#c56b4a"/>
+                <path d="M168 128 L168 100 L204 78 L240 100 L240 128Z" fill="#e7cbb0"/>
+                <rect x="196" y="108" width="14" height="20" fill="#6d8f78"/>
+                <path d="M0 168 C40 160 80 176 120 168 C160 160 200 176 240 166 C270 160 300 170 320 164 L320 200 L0 200Z" fill="#6a9eb0"/>
+              </svg>
+              <div class="ih-share-copy">
+                <h3>North cove</h3>
+                <p>Two rooms above the path. The water sits in the frame from the table.</p>
+                <p class="ih-price">$128 night</p>
+              </div>
+            </div>
+          </div>
+          <p class="ih-rule">The tapped card grows into the next screen.</p>
+        </div>
+      </article>
+
+      <article class="canvas ih-study" data-ih="code" data-on="1">
+        <div class="canvas-chrome">
+          <span class="canvas-name">07 · SMS code autofill</span>
+          <span class="canvas-tag">one-time-code</span>
+          <div class="ih-actions">
+            <div class="ih-toggle" role="group" aria-label="SMS code autofill">
+              <button type="button" data-ih-on="0" aria-pressed="false">Off</button>
+              <button type="button" data-ih-on="1" aria-pressed="true">On</button>
+            </div>
+          </div>
+        </div>
+        <div class="canvas-body ih-stage">
+          <p class="ih-spec" data-ih-spec>one-time-code</p>
+          <div class="ih-demo">
+            <div class="ih-otp">
+              <div class="ih-otp-multi">
+                <div class="ih-digits">
+                  <input type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 1 of 6" data-ih-digit="0" />
+                  <input type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 2 of 6" data-ih-digit="1" />
+                  <input type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 3 of 6" data-ih-digit="2" />
+                  <input type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 4 of 6" data-ih-digit="3" />
+                  <input type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 5 of 6" data-ih-digit="4" />
+                  <input type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 6 of 6" data-ih-digit="5" />
+                </div>
+              </div>
+              <div class="ih-otp-one">
+                <label>
+                  <span class="visually-hidden">6-digit code</span>
+                  <input class="ih-code" data-ih-code type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]*" />
+                </label>
+              </div>
+              <button type="button" class="ih-btn" data-ih-fill>Use 482193</button>
+            </div>
+          </div>
+          <p class="ih-rule">Let the keyboard fill the code in one tap. The field is <code>autocomplete="one-time-code"</code> and <code>inputmode="numeric"</code>.</p>
+          <p class="ih-note">This page cannot read an SMS. The button stands in for the keyboard chip. Off types one digit. On fills the field.</p>
+        </div>
+      </article>
+
+      <article class="canvas ih-study" data-ih="undo" data-on="1">
+        <div class="canvas-chrome">
+          <span class="canvas-name">08 · Undo instead of confirm</span>
+          <span class="canvas-tag">Undo</span>
+          <div class="ih-actions">
+            <div class="ih-toggle" role="group" aria-label="Undo instead of confirm">
+              <button type="button" data-ih-on="0" aria-pressed="false">Off</button>
+              <button type="button" data-ih-on="1" aria-pressed="true">On</button>
+            </div>
+          </div>
+        </div>
+        <div class="canvas-body ih-stage">
+          <p class="ih-spec" data-ih-spec>Undo</p>
+          <div class="ih-demo">
+            <div class="ih-inbox">
+              <h3>Inbox</h3>
+              <ul class="ih-mails" data-ih-mails>
+                <li class="ih-mail" data-name="Nora Hale">
+                  <div class="ih-mail-copy">
+                    <p class="ih-mail-name">Nora Hale <time>9:41 AM</time></p>
+                    <p class="ih-mail-subject">The desk key is in an envelope</p>
+                    <p class="ih-mail-preview">Front desk, after 3.</p>
+                  </div>
+                  <button type="button" class="ih-icon-btn" data-ih-delete aria-label="Delete message from Nora Hale">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 7h14M9 7V5h6v2M8 7l1 12h6l1-12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </li>
+                <li class="ih-mail" data-name="Jonah Adeyemi">
+                  <div class="ih-mail-copy">
+                    <p class="ih-mail-name">Jonah Adeyemi <time>8:12 AM</time></p>
+                    <p class="ih-mail-subject">Still on for the ridge walk?</p>
+                    <p class="ih-mail-preview">Saturday, if the path is dry.</p>
+                  </div>
+                  <button type="button" class="ih-icon-btn" data-ih-delete aria-label="Delete message from Jonah Adeyemi">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 7h14M9 7V5h6v2M8 7l1 12h6l1-12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </li>
+                <li class="ih-mail" data-name="Priya Shah">
+                  <div class="ih-mail-copy">
+                    <p class="ih-mail-name">Priya Shah <time>Yesterday</time></p>
+                    <p class="ih-mail-subject">Notes on the draft</p>
+                    <p class="ih-mail-preview">Three comments on page 2.</p>
+                  </div>
+                  <button type="button" class="ih-icon-btn" data-ih-delete aria-label="Delete message from Priya Shah">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 7h14M9 7V5h6v2M8 7l1 12h6l1-12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </li>
+                <li class="ih-mail" data-name="Lane Ortiz">
+                  <div class="ih-mail-copy">
+                    <p class="ih-mail-name">Lane Ortiz <time>Yesterday</time></p>
+                    <p class="ih-mail-subject">Keep the 18-day practice</p>
+                    <p class="ih-mail-preview">Five minutes keeps the streak.</p>
+                  </div>
+                  <button type="button" class="ih-icon-btn" data-ih-delete aria-label="Delete message from Lane Ortiz">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 7h14M9 7V5h6v2M8 7l1 12h6l1-12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </li>
+              </ul>
+              <div class="ih-undo" data-ih-undo hidden>
+                <p data-ih-undo-text>Deleted the message.</p>
+                <button type="button" class="ih-btn ih-btn--primary" data-ih-undo-btn>Undo</button>
+              </div>
+              <div class="ih-confirm" data-ih-confirm hidden role="alertdialog" aria-modal="true" aria-labelledby="ih-confirm-title" aria-describedby="ih-confirm-copy">
+                <div class="ih-confirm-card">
+                  <h3 id="ih-confirm-title">Delete this message?</h3>
+                  <p id="ih-confirm-copy">The message leaves the inbox after you confirm.</p>
+                  <div class="ih-confirm-actions">
+                    <button type="button" class="ih-btn" data-ih-cancel>Cancel</button>
+                    <button type="button" class="ih-btn ih-btn--danger" data-ih-confirm-btn>Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ih-row-actions">
+              <button type="button" class="ih-text-btn" data-ih-reset>Reset inbox</button>
+            </div>
+          </div>
+          <p class="ih-rule">Delete right away and show an Undo button.</p>
+          <p class="ih-note">This is an inbox message, which can come back. Do not use Undo to close an account.</p>
+        </div>
+      </article>
+
+      <article class="canvas ih-study" data-ih="lines" data-on="1">
+        <div class="canvas-chrome">
+          <span class="canvas-name">09 · Balanced line breaks</span>
+          <span class="canvas-tag">text-wrap</span>
+          <div class="ih-actions">
+            <div class="ih-toggle" role="group" aria-label="Balanced line breaks">
+              <button type="button" data-ih-on="0" aria-pressed="false">Off</button>
+              <button type="button" data-ih-on="1" aria-pressed="true">On</button>
+            </div>
+          </div>
+        </div>
+        <div class="canvas-body ih-stage">
+          <p class="ih-spec" data-ih-spec>balance · pretty</p>
+          <div class="ih-demo">
+            <div class="ih-plan">
+              <p class="ih-plan-kicker">New · Field notes</p>
+              <h3 class="ih-balance" data-ih-fit>
+                <span class="ih-lead">Your route is ready</span>
+                <span class="ih-keep"> <span class="ih-prev">before</span> <span class="ih-last">sunrise</span></span>
+              </h3>
+              <p class="ih-pretty" data-ih-fit>
+                <span class="ih-lead">Tell us the stops and we will lay out the day before</span>
+                <span class="ih-keep"> <span class="ih-prev">you</span> <span class="ih-last">leave.</span></span>
+              </p>
+              <button type="button" class="ih-btn ih-btn--primary">Continue</button>
+            </div>
+          </div>
+          <p class="ih-rule">Do not leave one word alone on the last line. The title uses <code>text-wrap: balance</code>. The sentence uses <code>text-wrap: pretty</code>.</p>
+          <p class="ih-note" data-ih-wrap-note>Off marks the last word. On evens the lines.</p>
+        </div>
+      </article>
+
+      <article class="canvas ih-study" data-ih="blur" data-on="1" data-state="loading">
+        <div class="canvas-chrome">
+          <span class="canvas-name">10 · Blur placeholders</span>
+          <span class="canvas-tag">Soft preview</span>
+          <div class="ih-actions">
+            <div class="ih-toggle" role="group" aria-label="Blur placeholders">
+              <button type="button" data-ih-on="0" aria-pressed="false">Off</button>
+              <button type="button" data-ih-on="1" aria-pressed="true">On</button>
+            </div>
+          </div>
+        </div>
+        <div class="canvas-body ih-stage">
+          <p class="ih-spec" data-ih-spec>blur 0.75rem</p>
+          <div class="ih-demo">
+            <article class="ih-photo-card">
+              <div class="ih-photo">
+                <div class="ih-gray">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <rect x="4" y="5" width="16" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                    <circle cx="9" cy="10" r="1.3" fill="currentColor"/>
+                    <path d="M5 16l4.2-3.2 2.6 2.2 2.4-2 4.8 3.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="ih-blur" aria-hidden="true">
+                  <svg class="ih-art" viewBox="0 0 320 200" focusable="false">
+                    <rect width="320" height="118" fill="#d5e2ea"/>
+                    <rect y="118" width="320" height="82" fill="#b7c9c2"/>
+                    <path d="M28 124 L52 40 L76 124Z" fill="#3d5c49"/>
+                    <path d="M64 124 L94 28 L124 124Z" fill="#2c4a3a"/>
+                    <path d="M112 124 L132 56 L152 124Z" fill="#4d6d56"/>
+                    <rect x="168" y="112" width="120" height="8" fill="#c4a574"/>
+                    <rect x="214" y="120" width="8" height="48" fill="#a8885c"/>
+                    <rect x="250" y="120" width="8" height="36" fill="#a8885c"/>
+                  </svg>
+                </div>
+                <div class="ih-sharp">
+                  <svg class="ih-art" viewBox="0 0 320 200" aria-hidden="true" focusable="false">
+                    <rect width="320" height="118" fill="#d5e2ea"/>
+                    <rect y="118" width="320" height="82" fill="#b7c9c2"/>
+                    <path d="M28 124 L52 40 L76 124Z" fill="#3d5c49"/>
+                    <path d="M64 124 L94 28 L124 124Z" fill="#2c4a3a"/>
+                    <path d="M112 124 L132 56 L152 124Z" fill="#4d6d56"/>
+                    <rect x="168" y="112" width="120" height="8" fill="#c4a574"/>
+                    <rect x="214" y="120" width="8" height="48" fill="#a8885c"/>
+                    <rect x="250" y="120" width="8" height="36" fill="#a8885c"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="ih-share-copy">
+                <h3>Cedar dock</h3>
+                <p>Still water · 1 room · Jun 3–6</p>
+                <p class="ih-price">$96 night</p>
+              </div>
+            </article>
+            <div class="ih-row-actions">
+              <button type="button" class="ih-btn" data-ih-blur-go>Show photo</button>
+            </div>
+          </div>
+          <p class="ih-rule">Show a soft preview until the photo loads.</p>
+        </div>
+      </article>
+
+      <article class="canvas">
+        <div class="canvas-chrome">
+          <span class="canvas-name">Copy</span>
+          <span class="canvas-tag">vanilla CSS and HTML</span>
+          <div class="ih-actions">
+            <button type="button" class="ih-btn" data-ih-copy>Copy</button>
+          </div>
+        </div>
+        <pre class="ih-pre" data-ih-pre></pre>
+      </article>
+
+      <p class="ih-credit">Study of <a href="https://x.com/jaimintf/status/2123786458721116225" target="_blank" rel="noopener noreferrer">@jaimintf</a>’s 10 rules.</p>
+      <p class="visually-hidden" id="ih-live" role="status" aria-live="polite"></p>
+    </section>
+    <script>
+    (function () {
+      'use strict';
+
+      var root = document.getElementById('ios-habits');
+      if (!root) return;
+
+      var live = document.getElementById('ih-live');
+      var params;
+      try { params = new URLSearchParams(location.search); }
+      catch (err) { params = { get: function () { return null; } }; }
+
+      var still = false;
+      try { still = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (err) {}
+      if (params.get('motion') === '1') still = false;
+      if (params.get('reduce') === '1') still = true;
+      if (still) document.documentElement.classList.add('ih-still');
+      else document.documentElement.classList.remove('ih-still');
+
+      var SPECS = {
+        skeleton: { '0': 'spinner', '1': '3 skeleton rows' },
+        optimistic: { '0': '900 ms wait', '1': '0 ms on screen' },
+        tabular: { '0': 'proportional-nums', '1': 'tabular-nums' },
+        squircle: { '0': 'round · 1.25rem', '1': 'superellipse(1.78) · 60%' },
+        sheet: { '0': 'X only', '1': 'drag 4.5rem' },
+        share: { '0': '0 ms cut', '1': '0.45s morph' },
+        code: { '0': '6 fields', '1': 'one-time-code' },
+        undo: { '0': 'confirm', '1': 'Undo' },
+        lines: { '0': 'wrap', '1': 'balance · pretty' },
+        blur: { '0': 'gray box', '1': 'blur 0.75rem' }
+      };
+
+      var NAMES = {
+        skeleton: 'Skeleton loaders',
+        optimistic: 'Optimistic UI',
+        tabular: 'Tabular numbers',
+        squircle: 'Squircle corners',
+        sheet: 'Swipe to dismiss',
+        share: 'Shared element transitions',
+        code: 'SMS code autofill',
+        undo: 'Undo instead of confirm',
+        lines: 'Balanced line breaks',
+        blur: 'Blur placeholders'
+      };
+
+      var SNIPPET = [
+        '/* Fixed digits */',
+        '.figure {',
+        '  font-variant-numeric: tabular-nums;',
+        '}',
+        '',
+        '/* Short title, then a sentence */',
+        '.title { text-wrap: balance; }',
+        '.copy { text-wrap: pretty; }',
+        '',
+        '/* 60% corner smoothing. The round radius is 1.25rem. */',
+        '.tile {',
+        '  border-radius: 2rem;',
+        '  corner-shape: superellipse(1.78);',
+        '}',
+        '',
+        '@supports not (corner-shape: superellipse(1.78)) {',
+        '  .tile { border-radius: 1.25rem; }',
+        '}',
+        '',
+        '<!-- One tap from the keyboard. Not six fields. -->',
+        '<input',
+        '  autocomplete="one-time-code"',
+        '  inputmode="numeric"',
+        '  maxlength="6"',
+        '  pattern="[0-9]*"',
+        '/>',
+        ''
+      ].join('\n');
+
+      var pre = root.querySelector('[data-ih-pre]');
+      if (pre) pre.textContent = SNIPPET;
+
+      var announceToken = 0;
+      function announce(msg) {
+        if (!live) return;
+        var mine = ++announceToken;
+        live.textContent = '';
+        window.setTimeout(function () {
+          if (mine !== announceToken) return;
+          live.textContent = msg;
+        }, 30);
+      }
+
+      function studyOf(key) {
+        return root.querySelector('.ih-study[data-ih="' + key + '"]');
+      }
+
+      function specOf(study) {
+        return study ? study.querySelector('[data-ih-spec]') : null;
+      }
+
+      function setPressed(study, value) {
+        Array.prototype.forEach.call(study.querySelectorAll('[data-ih-on]'), function (btn) {
+          btn.setAttribute('aria-pressed', btn.getAttribute('data-ih-on') === value ? 'true' : 'false');
+        });
+      }
+
+      function paintSpec(study) {
+        var key = study.getAttribute('data-ih');
+        var value = study.getAttribute('data-on') === '0' ? '0' : '1';
+        var spec = specOf(study);
+        if (spec && SPECS[key] && key !== 'tabular') spec.textContent = SPECS[key][value];
+      }
+
+      /* —— squircle clip fallback —— */
+      var cornerOK = false;
+      try {
+        cornerOK = !!(window.CSS && CSS.supports && CSS.supports('corner-shape', 'superellipse(1.78)'));
+      } catch (err) { cornerOK = false; }
+
+      function squirclePath(k, radius) {
+        var exp = 1 / k;
+        var r = radius;
+        var steps = 12;
+        function series(fn) {
+          var out = [];
+          var i;
+          for (i = 1; i <= steps; i++) out.push(fn((i / steps) * Math.PI / 2));
+          return out;
+        }
+        function fmt(x, y) {
+          return x.toFixed(4) + ',' + y.toFixed(4);
+        }
+        var p = ['M ' + fmt(r, 0), 'L ' + fmt(1 - r, 0)];
+        series(function (t) {
+          return fmt((1 - r) + r * Math.pow(Math.sin(t), exp), r - r * Math.pow(Math.cos(t), exp));
+        }).forEach(function (s) { p.push('L ' + s); });
+        p.push('L ' + fmt(1, 1 - r));
+        series(function (t) {
+          return fmt((1 - r) + r * Math.pow(Math.cos(t), exp), (1 - r) + r * Math.pow(Math.sin(t), exp));
+        }).forEach(function (s) { p.push('L ' + s); });
+        p.push('L ' + fmt(r, 1));
+        series(function (t) {
+          return fmt(r - r * Math.pow(Math.sin(t), exp), (1 - r) + r * Math.pow(Math.cos(t), exp));
+        }).forEach(function (s) { p.push('L ' + s); });
+        p.push('L ' + fmt(0, r));
+        series(function (t) {
+          return fmt(r - r * Math.pow(Math.cos(t), exp), r - r * Math.pow(Math.sin(t), exp));
+        }).forEach(function (s) { p.push('L ' + s); });
+        p.push('Z');
+        return p.join(' ');
+      }
+
+      var squircle = studyOf('squircle');
+      var cornerNote = root.querySelector('[data-ih-corner-note]');
+      var squirclePathEl = document.getElementById('ih-squircle-path');
+      if (squirclePathEl) squirclePathEl.setAttribute('d', squirclePath(1.78, 0.25));
+      if (!cornerOK && squircle) squircle.classList.add('is-fallback');
+      if (cornerNote) {
+        cornerNote.textContent = cornerOK
+          ? 'On uses corner-shape: superellipse(1.78) with a 2rem radius, 1.6 times the 1.25rem round corner.'
+          : 'This browser has no corner-shape. On uses an SVG clip of the same superellipse(1.78) curve. The round 1.25rem radius is the fallback.';
+      }
+
+      /* —— skeleton —— */
+      var skeleton = studyOf('skeleton');
+      var skelBtn = root.querySelector('[data-ih-skel-go]');
+      function setSkeleton(state) {
+        if (!skeleton) return;
+        skeleton.setAttribute('data-state', state);
+        skeleton.setAttribute('aria-busy', state === 'loading' ? 'true' : 'false');
+        if (skelBtn) skelBtn.textContent = state === 'loading' ? 'Show content' : 'Replay';
+      }
+
+      /* —— optimistic —— */
+      var optimistic = studyOf('optimistic');
+      var likeBtn = root.querySelector('[data-ih-like]');
+      var likeCount = root.querySelector('[data-ih-count]');
+      var likeStatus = root.querySelector('[data-ih-status]');
+      var liked = false;
+      var likes = 128;
+      var likeTimer = 0;
+      function paintLike() {
+        if (!likeBtn || !likeCount) return;
+        likeBtn.setAttribute('aria-pressed', liked ? 'true' : 'false');
+        likeCount.textContent = String(likes);
+        likeBtn.setAttribute('aria-label', (liked ? 'Saved' : 'Save') + ', ' + likes + ' likes');
+      }
+      function cancelLike() {
+        if (likeTimer) window.clearTimeout(likeTimer);
+        likeTimer = 0;
+        if (likeBtn) likeBtn.removeAttribute('aria-busy');
+        if (likeStatus) likeStatus.textContent = 'Tap to save';
+      }
+      function tapLike() {
+        if (!likeBtn || likeTimer) return;
+        var on = optimistic && optimistic.getAttribute('data-on') === '1';
+        var nextLiked = !liked;
+        var nextCount = likes + (nextLiked ? 1 : -1);
+        if (on) {
+          liked = nextLiked;
+          likes = nextCount;
+          paintLike();
+          if (likeStatus) likeStatus.textContent = 'Saved';
+          likeTimer = window.setTimeout(function () {
+            likeTimer = 0;
+            if (likeStatus && likeStatus.textContent === 'Saved') likeStatus.textContent = 'Synced';
+          }, 900);
+          return;
+        }
+        if (likeStatus) likeStatus.textContent = 'Waiting for the server';
+        likeBtn.setAttribute('aria-busy', 'true');
+        likeTimer = window.setTimeout(function () {
+          likeTimer = 0;
+          liked = nextLiked;
+          likes = nextCount;
+          paintLike();
+          likeBtn.removeAttribute('aria-busy');
+          if (likeStatus) likeStatus.textContent = 'Saved';
+        }, 900);
+      }
+
+      /* —— tabular —— */
+      var tabular = studyOf('tabular');
+      var money = root.querySelector('[data-ih-money]');
+      var guide = root.querySelector('[data-ih-guide]');
+      var figures = ['$1,111.11', '$8,888.88', '$1,208.40'];
+      var figIndex = 0;
+      var figTimer = 0;
+      var probe = document.createElement('span');
+      probe.setAttribute('aria-hidden', 'true');
+      probe.style.cssText = 'position:absolute;left:-9999px;top:0;white-space:nowrap;visibility:hidden';
+      document.body.appendChild(probe);
+      function measureMoney() {
+        if (!money || !tabular) return;
+        var cs = window.getComputedStyle(money);
+        var on = tabular.getAttribute('data-on') !== '0';
+        probe.style.fontFamily = cs.fontFamily;
+        probe.style.fontSize = cs.fontSize;
+        probe.style.fontWeight = cs.fontWeight;
+        probe.style.letterSpacing = cs.letterSpacing;
+        probe.style.fontVariantNumeric = on ? 'tabular-nums' : 'proportional-nums';
+        probe.textContent = money.textContent;
+        var width = Math.round(probe.getBoundingClientRect().width);
+        var spec = specOf(tabular);
+        if (spec) spec.textContent = (on ? 'tabular-nums' : 'proportional-nums') + ' · ' + width + 'px';
+        probe.style.fontVariantNumeric = 'tabular-nums';
+        probe.textContent = '$8,888.88';
+        if (guide) guide.style.left = (Math.round(probe.getBoundingClientRect().width) + 4) + 'px';
+      }
+      function showFigure(index) {
+        figIndex = (index + figures.length) % figures.length;
+        if (money) money.textContent = figures[figIndex];
+        measureMoney();
+      }
+      function queueFigures() {
+        if (figTimer) window.clearInterval(figTimer);
+        figTimer = 0;
+        if (still) return;
+        figTimer = window.setInterval(function () { showFigure(figIndex + 1); }, 1800);
+      }
+
+      /* —— sheet —— */
+      var sheetStudy = studyOf('sheet');
+      var sheet = root.querySelector('[data-ih-sheet]');
+      var sheetOpen = root.querySelector('[data-ih-sheet-open]');
+      var sorted = root.querySelector('[data-ih-sorted]');
+      var drag = null;
+      function dismissPx() {
+        var probeWidth = document.createElement('div');
+        probeWidth.style.cssText = 'position:absolute;width:4.5rem;height:0';
+        document.body.appendChild(probeWidth);
+        var px = probeWidth.getBoundingClientRect().width || 72;
+        document.body.removeChild(probeWidth);
+        return px;
+      }
+      var dragLimit = dismissPx();
+      function sheetClosed() {
+        return !sheet || sheet.hidden;
+      }
+      function closeSheet() {
+        if (!sheet || sheet.hidden) return;
+        var finish = function () {
+          sheet.hidden = true;
+          sheet.style.transform = '';
+          if (sheetOpen) {
+            sheetOpen.hidden = false;
+            sheetOpen.focus();
+          }
+        };
+        if (still) {
+          finish();
+          return;
+        }
+        sheet.style.transition = '';
+        sheet.style.transform = 'translateY(110%)';
+        var done = false;
+        var end = function () {
+          if (done) return;
+          done = true;
+          sheet.removeEventListener('transitionend', end);
+          finish();
+        };
+        sheet.addEventListener('transitionend', end);
+        window.setTimeout(end, 500);
+      }
+      function openSheet() {
+        if (!sheet) return;
+        if (sheetOpen) sheetOpen.hidden = true;
+        sheet.hidden = false;
+        if (still) {
+          sheet.style.transform = '';
+        } else {
+          sheet.style.transition = 'none';
+          sheet.style.transform = 'translateY(110%)';
+          void sheet.offsetWidth;
+          sheet.style.transition = '';
+          sheet.style.transform = '';
+        }
+        var closeBtn = sheet.querySelector('[data-ih-sheet-close]');
+        if (closeBtn) closeBtn.focus();
+      }
+      function onDragDown(event) {
+        if (!sheetStudy || sheetStudy.getAttribute('data-on') !== '1') return;
+        if (event.button !== undefined && event.button !== 0) return;
+        if (event.target.closest && event.target.closest('button')) return;
+        var surface = event.target.closest ? event.target.closest('[data-ih-drag]') : null;
+        if (!surface || !sheet || sheet.hidden) return;
+        drag = { y: event.clientY, id: event.pointerId };
+        sheet.style.transition = 'none';
+        if (surface.setPointerCapture) {
+          try { surface.setPointerCapture(event.pointerId); } catch (err) {}
+        }
+        event.preventDefault();
+      }
+      function onDragMove(event) {
+        if (!drag || event.pointerId !== drag.id || !sheet) return;
+        var dy = Math.max(0, event.clientY - drag.y);
+        sheet.style.transform = 'translateY(' + dy + 'px)';
+      }
+      function onDragUp(event) {
+        if (!drag || event.pointerId !== drag.id || !sheet) return;
+        var dy = Math.max(0, event.clientY - drag.y);
+        drag = null;
+        sheet.style.transition = '';
+        if (dy >= dragLimit) closeSheet();
+        else sheet.style.transform = '';
+      }
+      if (sheet) {
+        sheet.addEventListener('pointerdown', onDragDown);
+        sheet.addEventListener('pointermove', onDragMove);
+        sheet.addEventListener('pointerup', onDragUp);
+        sheet.addEventListener('pointercancel', onDragUp);
+      }
+
+      /* —— shared element —— */
+      var share = studyOf('share');
+      var shareList = root.querySelector('[data-ih-open]');
+      var shareDetail = root.querySelector('[data-ih-detail]');
+      function goShare(open) {
+        if (!shareList || !shareDetail) return;
+        var fromEl = open ? shareList : shareDetail;
+        var toEl = open ? shareDetail : shareList;
+        var first = fromEl.getBoundingClientRect();
+        function apply() {
+          shareList.hidden = open;
+          shareDetail.hidden = !open;
+        }
+        function focusEnd() {
+          if (open) {
+            var back = shareDetail.querySelector('[data-ih-back]');
+            if (back) back.focus();
+          } else if (!shareList.hidden) {
+            shareList.focus();
+          }
+        }
+        var motion = !still && share && share.getAttribute('data-on') === '1';
+        if (!motion) {
+          apply();
+          focusEnd();
+          return;
+        }
+        if (document.startViewTransition) {
+          document.documentElement.classList.add('ih-vt');
+          try {
+            var vt = document.startViewTransition(apply);
+            var clear = function () { document.documentElement.classList.remove('ih-vt'); };
+            if (vt.finished && vt.finished.then) vt.finished.then(clear, clear);
+            else clear();
+            focusEnd();
+            return;
+          } catch (err) {
+            document.documentElement.classList.remove('ih-vt');
+          }
+        }
+        apply();
+        var last = toEl.getBoundingClientRect();
+        var sx = last.width ? first.width / last.width : 1;
+        var sy = last.height ? first.height / last.height : 1;
+        toEl.style.transformOrigin = '0 0';
+        toEl.style.transition = 'none';
+        toEl.style.transform = 'translate(' + (first.left - last.left) + 'px,' + (first.top - last.top) + 'px) scale(' + sx + ',' + sy + ')';
+        void toEl.offsetWidth;
+        toEl.style.transition = 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
+        toEl.style.transform = 'none';
+        toEl.addEventListener('transitionend', function clearFlip() {
+          toEl.style.transition = '';
+          toEl.style.transform = '';
+          toEl.style.transformOrigin = '';
+        }, { once: true });
+        focusEnd();
+      }
+
+      /* —— code —— */
+      var codeStudy = studyOf('code');
+      var codeField = root.querySelector('[data-ih-code]');
+      var digits = root.querySelectorAll('[data-ih-digit]');
+      var CODE = '482193';
+      function digitsOnly(value) {
+        return String(value || '').replace(/\D/g, '');
+      }
+      function fillCode() {
+        var on = codeStudy && codeStudy.getAttribute('data-on') === '1';
+        if (on && codeField) {
+          codeField.value = CODE;
+          codeField.focus();
+          announce('Filled 482193');
+          return;
+        }
+        var i;
+        for (i = 0; i < digits.length; i++) {
+          if (!digits[i].value) {
+            digits[i].value = CODE.charAt(i);
+            digits[i].focus();
+            announce('Digit ' + (i + 1) + ' of 6');
+            return;
+          }
+        }
+        announce('All 6 digits are filled');
+      }
+      Array.prototype.forEach.call(digits, function (input, index) {
+        input.addEventListener('input', function () {
+          input.value = digitsOnly(input.value).slice(0, 1);
+          if (input.value && digits[index + 1]) digits[index + 1].focus();
+        });
+        input.addEventListener('keydown', function (event) {
+          if (event.key === 'Backspace' && !input.value && digits[index - 1]) {
+            digits[index - 1].focus();
+          }
+        });
+      });
+      if (codeField) {
+        codeField.addEventListener('input', function () {
+          codeField.value = digitsOnly(codeField.value).slice(0, 6);
+        });
+      }
+
+      /* —— undo —— */
+      var undoStudy = studyOf('undo');
+      var mailList = root.querySelector('[data-ih-mails]');
+      var mailInitial = mailList ? mailList.innerHTML : '';
+      var undoBar = root.querySelector('[data-ih-undo]');
+      var undoText = root.querySelector('[data-ih-undo-text]');
+      var confirmBox = root.querySelector('[data-ih-confirm]');
+      var pendingRow = null;
+      var pendingTrigger = null;
+      var undoState = null;
+      function hideUndo() {
+        undoState = null;
+        if (undoBar) undoBar.hidden = true;
+      }
+      function hideConfirm() {
+        pendingRow = null;
+        if (confirmBox) confirmBox.hidden = true;
+        if (pendingTrigger && pendingTrigger.focus) pendingTrigger.focus();
+        pendingTrigger = null;
+      }
+      function removeNow(row) {
+        if (!row || !row.parentNode) return;
+        var name = row.getAttribute('data-name') || 'this sender';
+        undoState = {
+          row: row,
+          parent: row.parentNode,
+          next: row.nextElementSibling,
+          name: name
+        };
+        row.parentNode.removeChild(row);
+        if (undoText) undoText.textContent = 'Deleted the message from ' + name + '.';
+        if (undoBar) undoBar.hidden = false;
+        var undoBtn = root.querySelector('[data-ih-undo-btn]');
+        if (undoBtn) undoBtn.focus();
+        announce('Deleted the message from ' + name + '. Undo is available.');
+      }
+      function askDelete(row, trigger) {
+        pendingRow = row;
+        pendingTrigger = trigger;
+        if (confirmBox) confirmBox.hidden = false;
+        var cancel = root.querySelector('[data-ih-cancel]');
+        if (cancel) cancel.focus();
+      }
+      function resetInbox() {
+        hideUndo();
+        hideConfirm();
+        if (mailList) mailList.innerHTML = mailInitial;
+        announce('Inbox reset');
+      }
+
+      /* —— line breaks —— */
+      var lines = studyOf('lines');
+      var wrapNote = root.querySelector('[data-ih-wrap-note]');
+      var balanceOK = false;
+      var prettyOK = false;
+      try {
+        balanceOK = !!(window.CSS && CSS.supports && CSS.supports('text-wrap', 'balance'));
+        prettyOK = !!(window.CSS && CSS.supports && CSS.supports('text-wrap', 'pretty'));
+      } catch (err) {}
+      if (lines && (!balanceOK || !prettyOK)) lines.classList.add('is-wrap-fallback');
+      if (wrapNote && (!balanceOK || !prettyOK)) {
+        wrapNote.textContent = 'This browser skips text-wrap: balance or pretty. On keeps the last two words together.';
+      }
+      function lastAlone(block) {
+        var prev = block.querySelector('.ih-prev');
+        var last = block.querySelector('.ih-last');
+        if (!prev || !last) return false;
+        return last.offsetTop > prev.offsetTop + 1;
+      }
+      function fitLines() {
+        if (!lines) return;
+        if (!lines.getClientRects().length) return;
+        lines.classList.add('is-fitting');
+        Array.prototype.forEach.call(lines.querySelectorAll('[data-ih-fit]'), function (block) {
+          var rem = 18;
+          block.style.maxWidth = rem + 'rem';
+          var guard = 0;
+          while (!lastAlone(block) && rem > 8 && guard < 48) {
+            rem = Math.round((rem - 0.25) * 4) / 4;
+            block.style.maxWidth = rem + 'rem';
+            guard += 1;
+          }
+        });
+        lines.classList.remove('is-fitting');
+      }
+
+      /* —— blur —— */
+      var blur = studyOf('blur');
+      var blurBtn = root.querySelector('[data-ih-blur-go]');
+      function setBlur(state) {
+        if (!blur) return;
+        blur.setAttribute('data-state', state);
+        if (blurBtn) blurBtn.textContent = state === 'loading' ? 'Show photo' : 'Replay';
+      }
+
+      function setOn(study, on) {
+        if (!study) return;
+        var value = on ? '1' : '0';
+        study.setAttribute('data-on', value);
+        setPressed(study, value);
+        paintSpec(study);
+        var key = study.getAttribute('data-ih');
+        if (key === 'optimistic') cancelLike();
+        if (key === 'tabular') measureMoney();
+        if (key === 'lines') fitLines();
+        announce(NAMES[key] + ' ' + (on ? 'on' : 'off') + '. ' + (SPECS[key] ? SPECS[key][value] : ''));
+      }
+
+      Array.prototype.forEach.call(root.querySelectorAll('.ih-study'), function (study) {
+        setPressed(study, study.getAttribute('data-on') === '0' ? '0' : '1');
+        paintSpec(study);
+      });
+      paintLike();
+      showFigure(0);
+      queueFigures();
+      fitLines();
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function () {
+          measureMoney();
+          fitLines();
+        });
+      }
+      window.addEventListener('resize', function () {
+        measureMoney();
+        fitLines();
+      });
+
+      function trap(dialog, event) {
+        if (!dialog || dialog.hidden || event.key !== 'Tab') return;
+        var items = dialog.querySelectorAll('button, input, a');
+        if (!items.length) return;
+        var first = items[0];
+        var last = items[items.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+
+      root.addEventListener('click', function (event) {
+        var toggle = event.target.closest ? event.target.closest('[data-ih-on]') : null;
+        if (toggle && root.contains(toggle)) {
+          var study = toggle.closest('.ih-study');
+          setOn(study, toggle.getAttribute('data-ih-on') === '1');
+          return;
+        }
+        if (event.target.closest && event.target.closest('[data-ih-skel-go]')) {
+          setSkeleton(skeleton && skeleton.getAttribute('data-state') === 'ready' ? 'loading' : 'ready');
+          return;
+        }
+        if (event.target.closest && event.target.closest('[data-ih-like]')) {
+          tapLike();
+          return;
+        }
+        if (event.target.closest && event.target.closest('[data-ih-next]')) {
+          showFigure(figIndex + 1);
+          queueFigures();
+          return;
+        }
+        if (event.target.closest && event.target.closest('[data-ih-sheet-close]')) {
+          closeSheet();
+          return;
+        }
+        if (event.target.closest && event.target.closest('[data-ih-sheet-open]')) {
+          openSheet();
+          return;
+        }
+        var sortBtn = event.target.closest ? event.target.closest('[data-ih-sort]') : null;
+        if (sortBtn && root.contains(sortBtn)) {
+          Array.prototype.forEach.call(root.querySelectorAll('[data-ih-sort]'), function (btn) {
+            btn.setAttribute('aria-pressed', btn === sortBtn ? 'true' : 'false');
+          });
+          if (sorted) sorted.textContent = 'Sorted by ' + sortBtn.textContent;
+          return;
+        }
+        if (event.target.closest && event.target.closest('[data-ih-open]')) {
+          goShare(true);
+          return;
+        }
+        if (event.target.closest && event.target.closest('[data-ih-back]')) {
+          goShare(false);
+          return;
+        }
+        if (event.target.closest && event.target.closest('[data-ih-fill]')) {
+          fillCode();
+          return;
+        }
+        var del = event.target.closest ? event.target.closest('[data-ih-delete]') : null;
+        if (del && root.contains(del)) {
+          var row = del.closest('.ih-mail');
+          if (!row) return;
+          if (undoStudy && undoStudy.getAttribute('data-on') === '1') {
+            if (undoState && undoState.row && undoState.row !== row) hideUndo();
+            removeNow(row);
+          } else {
+            askDelete(row, del);
+          }
+          return;
+        }
+        if (event.target.closest && event.target.closest('[data-ih-undo-btn]')) {
+          if (undoState && undoState.parent) {
+            undoState.parent.insertBefore(undoState.row, undoState.next);
+            announce('Restored the message from ' + undoState.name);
+          }
+          hideUndo();
+          return;
+        }
+        if (event.target.closest && event.target.closest('[data-ih-cancel]')) {
+          hideConfirm();
+          return;
+        }
+        if (event.target.closest && event.target.closest('[data-ih-confirm-btn]')) {
+          if (pendingRow && pendingRow.parentNode) pendingRow.parentNode.removeChild(pendingRow);
+          announce('Deleted the message');
+          pendingRow = null;
+          if (confirmBox) confirmBox.hidden = true;
+          pendingTrigger = null;
+          var resetBtn = root.querySelector('[data-ih-reset]');
+          if (resetBtn) resetBtn.focus();
+          return;
+        }
+        if (event.target.closest && event.target.closest('[data-ih-reset]')) {
+          resetInbox();
+          return;
+        }
+        if (event.target.closest && event.target.closest('[data-ih-blur-go]')) {
+          setBlur(blur && blur.getAttribute('data-state') === 'ready' ? 'loading' : 'ready');
+          return;
+        }
+        if (event.target.closest && event.target.closest('[data-ih-copy]')) {
+          copySnippet(event.target.closest('[data-ih-copy]'));
+        }
+      });
+
+      root.addEventListener('keydown', function (event) {
+        var group = event.target.closest ? event.target.closest('.ih-toggle') : null;
+        if (group && (event.key === 'ArrowRight' || event.key === 'ArrowLeft' || event.key === 'ArrowDown' || event.key === 'ArrowUp')) {
+          var buttons = group.querySelectorAll('button');
+          var forward = event.key === 'ArrowRight' || event.key === 'ArrowDown';
+          var next = forward ? buttons[1] : buttons[0];
+          if (!next) return;
+          event.preventDefault();
+          next.click();
+          next.focus();
+          return;
+        }
+        if (event.key === 'Escape') {
+          if (confirmBox && !confirmBox.hidden) {
+            event.preventDefault();
+            hideConfirm();
+            return;
+          }
+          if (sheet && !sheet.hidden) {
+            event.preventDefault();
+            closeSheet();
+          }
+          return;
+        }
+        if (confirmBox && !confirmBox.hidden) trap(confirmBox, event);
+        else if (sheet && !sheet.hidden) trap(sheet, event);
+      });
+
+      function legacyCopy(value) {
+        return new Promise(function (resolve, reject) {
+          var prev = document.activeElement;
+          var ta = document.createElement('textarea');
+          ta.value = value;
+          ta.setAttribute('readonly', '');
+          ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          var ok = false;
+          try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+          document.body.removeChild(ta);
+          if (prev && prev.focus) prev.focus();
+          if (ok) resolve();
+          else reject(new Error('copy'));
+        });
+      }
+      function copyText(value) {
+        if (navigator.clipboard && window.isSecureContext && navigator.clipboard.writeText) {
+          return navigator.clipboard.writeText(value).catch(function () { return legacyCopy(value); });
+        }
+        return legacyCopy(value);
+      }
+      function copySnippet(btn) {
+        if (!btn) return;
+        var label = btn.textContent;
+        copyText(SNIPPET).then(function () {
+          btn.textContent = 'Copied';
+          btn.classList.add('is-copied');
+          announce('Copied iOS habits snippet');
+        }).catch(function () {
+          btn.textContent = 'Could not copy';
+          announce('Could not copy the snippet');
+        });
+        window.setTimeout(function () {
+          btn.textContent = label;
+          btn.classList.remove('is-copied');
+        }, 1600);
+      }
+    })();
+    </script>
+
     <section class="sec" id="premium-composer">
       <div class="sec-head">
         <h2>Premium composer</h2>
@@ -18109,11 +20582,11 @@
     </script>
 
     <footer class="lib-foot">
-      Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Brand ≠ Primary · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications · Prompting UI · Design tokens · iPhone polish · Premium composer. Digit-scroll <code>lh</code> + natural
+      Digits · Buttons · Cards · Nested radius · Palettes · Off-white · Brand ≠ Primary · Select · Glow border · Folder · Spacing · Hierarchy · Color combos · Transition keywords · Background keywords · Nudging notifications · Prompting UI · Design tokens · iPhone polish · iOS habits · Premium composer. Digit-scroll <code>lh</code> + natural
       <code>linear()</code> spring (~10% overshoot) · hard-coded glow buttons
       (violet / teal / slate) · nested radius · page-shell palettes · colour pairings · color combos · native
       <code>appearance: base-select</code> · rotating <code>conic-gradient</code> rim · SVG glass folder. No CDN.
-      Prefers-reduced-motion disables the spring and holds the glow border, transition-keyword demos, background-keyword demos, nudging notifications, the prompting-ui bloom, the design-tokens colour change, the iPhone polish island morph, and the composer send rotation still. ?reduce=1 holds those demos at rest. ?motion=1 brings the composer motion back.
+      Prefers-reduced-motion disables the spring and holds the glow border, transition-keyword demos, background-keyword demos, nudging notifications, the prompting-ui bloom, the design-tokens colour change, the iPhone polish island morph, the composer send rotation, and the iOS habits sheet and shared-element morph still. ?reduce=1 holds those demos at rest. ?motion=1 brings the composer and iOS habits motion back unless ?reduce=1 is also set.
     </footer>
   </div>
 
@@ -18785,6 +21258,6 @@
     })();
   </script>
   <script src="shared/site-header.js?v=37" defer></script>
-  <script src="shared/section-fab.js?v=13" defer></script>
+  <script src="shared/section-fab.js?v=14" defer></script>
 </body>
 </html>
