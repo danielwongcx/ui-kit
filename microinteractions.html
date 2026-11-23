@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Microinteractions · ui-kit</title>
+<meta name="description" content="Thirteen original microinteraction studies: text swap, hold to confirm, chevron morph, plucked underline, gooey radio, edge tooltip, drag select, resize handle, tabs, worm dots, reorder, FAQ panel, and a tick rail.">
+<meta name="theme-color" content="#f3efe8">
+<script>
+(function () {
+  var q = location.search || "";
+  var forceReduce = /(?:^|[?&])reduce=1(?:&|$)/.test(q);
+  var askedMotion = /(?:^|[?&])motion=1(?:&|$)/.test(q);
+  var reduce = false;
+  try {
+    if (forceReduce) sessionStorage.setItem("mi-reduce", "1");
+    else if (askedMotion) sessionStorage.removeItem("mi-reduce");
+    var stored = sessionStorage.getItem("mi-reduce") === "1";
+    var os = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (forceReduce) reduce = true;
+    else if (askedMotion) reduce = false;
+    else reduce = stored || os;
+  } catch (e) {
+    try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e2) {}
+  }
+  document.documentElement.setAttribute("data-motion", reduce ? "reduce" : "on");
+})();
+</script>
+<link rel="stylesheet" href="shared/site-header.css?v=9">
+<link rel="stylesheet" href="microinteractions.css">
+</head>
+<body data-page="microinteractions">
+<main>
+  <header class="intro">
+    <p class="eyebrow">Motion playground</p>
+    <h1>Microinteractions</h1>
+    <p class="lede">Thirteen studies. Each one shows its timing, and you can drive it with a pointer or the keyboard.</p>
+  </header>
+
+  <nav class="jump" aria-label="Studies">
+    <a href="#text-swap">Swap</a>
+    <a href="#hold-confirm">Hold</a>
+    <a href="#chevron-morph">Chevron</a>
+    <a href="#plucked-underline">Pluck</a>
+    <a href="#gooey-radio">Gooey</a>
+    <a href="#edge-tooltip">Tooltip</a>
+    <a href="#drag-select">Select</a>
+    <a href="#resize-handle">Resize</a>
+    <a href="#tab-indicator">Tabs</a>
+    <a href="#worm-dots">Worm</a>
+    <a href="#drag-reorder">Reorder</a>
+    <a href="#faq-panel">FAQ</a>
+    <a href="#tick-rail">Ticks</a>
+  </nav>
+
+  <div class="studies">
+    <section class="study" id="text-swap" aria-labelledby="text-swap-title">
+      <header class="study-head">
+        <p class="index">01</p>
+        <h2 id="text-swap-title">Text swap</h2>
+        <p class="what">Swap the label without changing the button width.</p>
+        <p class="meta"><span>220ms</span><span>ease-out</span><span>cubic-bezier(0.23, 1, 0.32, 1)</span></p>
+      </header>
+      <div class="stage">
+        <button type="button" class="swap" id="swap-btn" aria-label="Save draft">
+          <span class="swap-face" aria-hidden="true">
+            <span class="swap-now">Save draft</span>
+            <span class="swap-next">Keep this copy</span>
+          </span>
+        </button>
+        <p class="hint">Hover or focus. On a touch screen, tap. Leaving halfway reverses from there.</p>
+        <p class="vh" id="swap-live" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="study" id="hold-confirm" aria-labelledby="hold-title">
+      <header class="study-head">
+        <p class="index">02</p>
+        <h2 id="hold-title">Hold to confirm</h2>
+        <p class="what">Hold for 1,200ms to archive. Let go early and it cancels.</p>
+        <p class="meta"><span>1,200ms fill · linear</span><span>160ms settle</span><span>180ms release</span></p>
+      </header>
+      <div class="stage">
+        <button type="button" class="hold" id="hold-btn" aria-label="Archive ledger. Hold to confirm.">
+          <span class="hold-grid">
+            <span class="hold-idle">Archive ledger</span>
+            <span class="hold-done">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.2 8.2 L6.5 11.3 L12.8 4.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              Archived
+            </span>
+          </span>
+          <span class="hold-ink" aria-hidden="true">
+            <span class="hold-grid">
+              <span class="hold-idle">Archive ledger</span>
+              <span class="hold-done">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.2 8.2 L6.5 11.3 L12.8 4.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                Archived
+              </span>
+            </span>
+          </span>
+        </button>
+        <button type="button" class="quiet" id="hold-reset" hidden>Reset</button>
+        <p class="hint">Press and hold, or hold Space. Escape cancels. The fill is the clock, so it stays linear.</p>
+        <p class="vh" id="hold-live" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="study" id="chevron-morph" aria-labelledby="chevron-title">
+      <header class="study-head">
+        <p class="index">03</p>
+        <h2 id="chevron-title">Chevron morph</h2>
+        <p class="what">The stem grows from its tail and the chevron becomes an arrow.</p>
+        <p class="meta"><span>190ms</span><span>ease-out</span><span>cubic-bezier(0.19, 1, 0.22, 1)</span></p>
+      </header>
+      <div class="stage morph-stage">
+        <div class="morph-pair" role="group" aria-label="Quay slides">
+          <button type="button" class="morph morph-prev" id="morph-prev" aria-label="Previous slide" aria-controls="morph-slide">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path class="chev" d="M14.25 7.25 L9.25 12 L14.25 16.75"></path>
+              <path class="stem" d="M16.75 12 H10"></path>
+            </svg>
+          </button>
+          <button type="button" class="morph morph-next" id="morph-next" aria-label="Next slide" aria-controls="morph-slide">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path class="chev" d="M9.75 7.25 L14.75 12 L9.75 16.75"></path>
+              <path class="stem" d="M7.25 12 H14"></path>
+            </svg>
+          </button>
+        </div>
+        <div id="morph-slide" aria-live="polite">
+          <p class="morph-title" id="morph-title">North quay</p>
+          <p class="morph-note" id="morph-note">A lamp at the end of the pier.</p>
+        </div>
+        <p class="hint">Hover or focus. A tap moves the slide at once. The chevron already points the way.</p>
+      </div>
+    </section>
+
+    <section class="study" id="plucked-underline" aria-labelledby="pluck-title">
+      <header class="study-head">
+        <p class="index">04</p>
+        <h2 id="pluck-title">Plucked underline</h2>
+        <p class="what">The line rings like a string. A longer link rings slower.</p>
+        <p class="meta"><span>400–1,200ms</span><span>13ms per px</span><span>damped · 2.4 cycles</span></p>
+      </header>
+      <div class="stage">
+        <p class="pluck" id="pluck">
+          <a class="pluck-link" href="#pluck-bio">Bio</a>
+          <a class="pluck-link" href="#pluck-letter">Write to the harbour desk</a>
+        </p>
+        <div class="pluck-notes">
+          <p id="pluck-bio">Mira keeps the night book.</p>
+          <p id="pluck-letter">The desk reads every note before dawn.</p>
+        </div>
+        <p class="hint">Hover the short link, then the long one. Focus shows a flat line. A tap still follows the link.</p>
+      </div>
+    </section>
+
+    <section class="study" id="gooey-radio" aria-labelledby="goo-title">
+      <header class="study-head">
+        <p class="index">05</p>
+        <h2 id="goo-title">Gooey radio</h2>
+        <p class="what">The selection pours from one option to the next.</p>
+        <p class="meta"><span>340ms</span><span>head 300ms · tail +40ms</span><span>ease-in-out</span></p>
+      </header>
+      <div class="stage">
+        <div class="goo" id="goo" role="radiogroup" aria-label="Where the crate goes">
+          <svg class="goo-svg" aria-hidden="true">
+            <defs>
+              <filter id="goo-filter" x="-50%" y="-80%" width="200%" height="260%" color-interpolation-filters="sRGB">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="3.2" result="blur"></feGaussianBlur>
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo"></feColorMatrix>
+                <feComposite in="SourceGraphic" in2="goo" operator="atop"></feComposite>
+              </filter>
+            </defs>
+            <g id="goo-dots" filter="url(#goo-filter)"></g>
+          </svg>
+          <label class="goo-option">
+            <input type="radio" name="crate" value="desk" checked>
+            <span class="goo-ring" aria-hidden="true"></span>
+            <span>Desk</span>
+          </label>
+          <label class="goo-option">
+            <input type="radio" name="crate" value="courier">
+            <span class="goo-ring" aria-hidden="true"></span>
+            <span>Courier</span>
+          </label>
+          <label class="goo-option">
+            <input type="radio" name="crate" value="locker">
+            <span class="goo-ring" aria-hidden="true"></span>
+            <span>Locker</span>
+          </label>
+        </div>
+        <p class="goo-note" id="goo-note">The desk holds it until evening.</p>
+        <p class="hint">Click or tap to pour. Arrow keys move the dot without the pour.</p>
+        <p class="vh" id="goo-live" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="study" id="edge-tooltip" aria-labelledby="edge-title">
+      <header class="study-head">
+        <p class="index">06</p>
+        <h2 id="edge-title">Edge-aware tooltip</h2>
+        <p class="what">The value stays inside the card. The arrow stays on the thumb.</p>
+        <p class="meta"><span>0ms</span><span>1:1 with the thumb</span><span>no easing</span></p>
+      </header>
+      <div class="stage">
+        <div class="edge" id="edge">
+          <div class="edge-label" id="edge-label" aria-hidden="true">Lamp <span id="edge-num">50</span>%</div>
+          <span class="edge-arrow" aria-hidden="true"></span>
+          <div class="edge-rail" aria-hidden="true"><span class="edge-fill"></span></div>
+          <input id="edge-input" type="range" min="0" max="100" step="1" value="50" aria-label="Lamp" aria-valuetext="50 percent">
+        </div>
+        <p class="hint">Drag to either end. Arrow keys, Home, and End work. Nothing eases, because the label would lag.</p>
+      </div>
+    </section>
+
+    <section class="study" id="drag-select" aria-labelledby="pick-title">
+      <header class="study-head">
+        <p class="index">07</p>
+        <h2 id="pick-title">Drag to select</h2>
+        <p class="what">Drag down the boxes. The first box sets check or clear for the whole run.</p>
+        <p class="meta"><span>90ms band</span><span>160ms check</span><span>ease-out</span></p>
+      </header>
+      <div class="stage">
+        <div class="pick" id="pick">
+          <div class="pick-scroll" id="pick-scroll">
+            <div class="pick-band" id="pick-band" aria-hidden="true"></div>
+            <table aria-describedby="pick-help">
+              <caption class="vh">Harbour board</caption>
+              <thead>
+                <tr>
+                  <th class="pick-cell" scope="col">
+                    <label class="tickbox">
+                      <input type="checkbox" id="pick-all" aria-label="Select all rows">
+                      <span class="mark" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3.5 8.2 L6.4 11.1 L12.5 4.8"></path></svg></span>
+                    </label>
+                  </th>
+                  <th scope="col">Board</th>
+                </tr>
+              </thead>
+              <tbody id="pick-body">
+                <tr>
+                  <td class="pick-cell"><label class="tickbox"><input type="checkbox" aria-label="Paint the lamp"><span class="mark" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3.5 8.2 L6.4 11.1 L12.5 4.8"></path></svg></span></label></td>
+                  <th scope="row">Paint the lamp</th>
+                </tr>
+                <tr>
+                  <td class="pick-cell"><label class="tickbox"><input type="checkbox" aria-label="Mend the rope"><span class="mark" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3.5 8.2 L6.4 11.1 L12.5 4.8"></path></svg></span></label></td>
+                  <th scope="row">Mend the rope</th>
+                </tr>
+                <tr>
+                  <td class="pick-cell"><label class="tickbox"><input type="checkbox" aria-label="Count the crates"><span class="mark" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3.5 8.2 L6.4 11.1 L12.5 4.8"></path></svg></span></label></td>
+                  <th scope="row">Count the crates</th>
+                </tr>
+                <tr>
+                  <td class="pick-cell"><label class="tickbox"><input type="checkbox" aria-label="Oil the winch"><span class="mark" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3.5 8.2 L6.4 11.1 L12.5 4.8"></path></svg></span></label></td>
+                  <th scope="row">Oil the winch</th>
+                </tr>
+                <tr>
+                  <td class="pick-cell"><label class="tickbox"><input type="checkbox" aria-label="Sweep the deck"><span class="mark" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3.5 8.2 L6.4 11.1 L12.5 4.8"></path></svg></span></label></td>
+                  <th scope="row">Sweep the deck</th>
+                </tr>
+                <tr>
+                  <td class="pick-cell"><label class="tickbox"><input type="checkbox" aria-label="Stamp the forms"><span class="mark" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3.5 8.2 L6.4 11.1 L12.5 4.8"></path></svg></span></label></td>
+                  <th scope="row">Stamp the forms</th>
+                </tr>
+                <tr>
+                  <td class="pick-cell"><label class="tickbox"><input type="checkbox" aria-label="Coil the line"><span class="mark" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3.5 8.2 L6.4 11.1 L12.5 4.8"></path></svg></span></label></td>
+                  <th scope="row">Coil the line</th>
+                </tr>
+                <tr>
+                  <td class="pick-cell"><label class="tickbox"><input type="checkbox" aria-label="Lock the shed"><span class="mark" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3.5 8.2 L6.4 11.1 L12.5 4.8"></path></svg></span></label></td>
+                  <th scope="row">Lock the shed</th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="pick-count" id="pick-count">None of 8</p>
+          <p class="hint" id="pick-keys">Drag the boxes. <kbd>Shift</kbd> click or <kbd>Shift</kbd> arrows extend the run. <kbd>Esc</kbd> undoes a drag.</p>
+          <p class="vh" id="pick-help">Drag down the boxes to set a run. Shift-click or Shift with the arrow keys does the same. Escape cancels a drag.</p>
+          <p class="vh" id="pick-live" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="study" id="resize-handle" aria-labelledby="split-title">
+      <header class="study-head">
+        <p class="index">08</p>
+        <h2 id="split-title">Resize handle</h2>
+        <p class="what">The grip appears where the pointer meets the divider, and it does not lag.</p>
+        <p class="meta"><span>grip 120ms after 60ms</span><span>press 100ms</span><span>collapse 240ms</span></p>
+      </header>
+      <div class="stage">
+        <div class="split" id="split">
+          <div class="split-side" id="split-side">
+            <p class="split-kicker">Board</p>
+            <ul>
+              <li>Lamp</li>
+              <li>Rope</li>
+              <li>Ledger</li>
+              <li>Ramp</li>
+            </ul>
+          </div>
+          <div class="split-main">
+            <p>The night clerk keeps this side for the boat.</p>
+          </div>
+          <div class="split-handle" id="split-handle" role="separator" tabindex="0" aria-orientation="vertical" aria-label="Board width" aria-controls="split-side" aria-valuemin="0" aria-valuemax="320" aria-valuenow="160" aria-valuetext="160 pixels">
+            <span class="grip" aria-hidden="true"></span>
+          </div>
+        </div>
+        <p class="readout" id="split-readout">160 px</p>
+        <p class="hint">Drag the line. Past the narrow end it collapses. Arrows move 12px, Shift moves 48px, Enter collapses. Escape puts a drag back.</p>
+      </div>
+    </section>
+
+    <section class="study" id="tab-indicator" aria-labelledby="tabs-title">
+      <header class="study-head">
+        <p class="index">09</p>
+        <h2 id="tabs-title">Tab indicator</h2>
+        <p class="what">One line slides to the tab. The labels stay where they are.</p>
+        <p class="meta"><span>250ms</span><span>ease-out</span><span>cubic-bezier(0.23, 1, 0.32, 1)</span></p>
+      </header>
+      <div class="stage">
+        <div class="tabs" id="tabs">
+          <div class="tablist" role="tablist" aria-label="Ledger sections">
+            <button type="button" role="tab" id="tab-ledger" aria-controls="panel-ledger" aria-selected="true" tabindex="0">
+              <span class="tab-pair"><span>Ledger</span><span class="tab-bold" aria-hidden="true">Ledger</span></span>
+              <span class="tab-count">12</span>
+            </button>
+            <button type="button" role="tab" id="tab-shifts" aria-controls="panel-shifts" aria-selected="false" tabindex="-1">
+              <span class="tab-pair"><span>Shifts</span><span class="tab-bold" aria-hidden="true">Shifts</span></span>
+              <span class="tab-count">4</span>
+            </button>
+            <button type="button" role="tab" id="tab-notes" aria-controls="panel-notes" aria-selected="false" tabindex="-1">
+              <span class="tab-pair"><span>Notes</span><span class="tab-bold" aria-hidden="true">Notes</span></span>
+              <span class="tab-count">9</span>
+            </button>
+            <button type="button" role="tab" id="tab-archive" aria-controls="panel-archive" aria-selected="false" tabindex="-1">
+              <span class="tab-pair"><span>Archive</span><span class="tab-bold" aria-hidden="true">Archive</span></span>
+              <span class="tab-count">2</span>
+            </button>
+            <span class="tab-line" id="tab-line" aria-hidden="true"></span>
+          </div>
+          <div class="tabpanel" id="panel-ledger" role="tabpanel" aria-labelledby="tab-ledger">
+            <p>Twelve lines from last night, still in pencil.</p>
+          </div>
+          <div class="tabpanel" id="panel-shifts" role="tabpanel" aria-labelledby="tab-shifts" hidden>
+            <p>Four names on the board for the evening crossing.</p>
+          </div>
+          <div class="tabpanel" id="panel-notes" role="tabpanel" aria-labelledby="tab-notes" hidden>
+            <p>Nine notes about ropes, lamps, and a wet step.</p>
+          </div>
+          <div class="tabpanel" id="panel-archive" role="tabpanel" aria-labelledby="tab-archive" hidden>
+            <p>Two ledgers already bound and put on the shelf.</p>
+          </div>
+        </div>
+        <p class="hint">Click another tab before the line arrives and it turns from where it is. Arrow keys jump.</p>
+      </div>
+    </section>
+
+    <section class="study" id="worm-dots" aria-labelledby="worm-title">
+      <header class="study-head">
+        <p class="index">10</p>
+        <h2 id="worm-title">Worm dots</h2>
+        <p class="what">Drag the dots to scrub. The worm follows the scroll, then snaps.</p>
+        <p class="meta"><span>follows the drag</span><span>snap 180ms</span><span>tap 280ms + 40ms a dot</span></p>
+      </header>
+      <div class="stage">
+        <div class="worm" id="worm">
+          <div class="worm-view" id="worm-view">
+            <div class="worm-track" id="worm-track">
+              <section class="worm-slide" id="worm-slide-0">
+                <h3>Dawn</h3>
+                <p>The lamp is still warm from the night watch.</p>
+              </section>
+              <section class="worm-slide" id="worm-slide-1">
+                <h3>Noon</h3>
+                <p>Crates sit in a white square of sun.</p>
+              </section>
+              <section class="worm-slide" id="worm-slide-2">
+                <h3>Dusk</h3>
+                <p>The clerk lights the desk before the boat.</p>
+              </section>
+              <section class="worm-slide" id="worm-slide-3">
+                <h3>Night</h3>
+                <p>The ramp goes dark between crossings.</p>
+              </section>
+            </div>
+          </div>
+          <div class="worm-strip" id="worm-strip" role="tablist" aria-label="Slides">
+            <span class="worm-ring" aria-hidden="true"></span>
+            <span class="worm-body" aria-hidden="true"></span>
+            <button type="button" role="tab" id="worm-tab-0" aria-controls="worm-slide-0" aria-selected="true" tabindex="0"><span class="vh">Dawn</span></button>
+            <button type="button" role="tab" id="worm-tab-1" aria-controls="worm-slide-1" aria-selected="false" tabindex="-1"><span class="vh">Noon</span></button>
+            <button type="button" role="tab" id="worm-tab-2" aria-controls="worm-slide-2" aria-selected="false" tabindex="-1"><span class="vh">Dusk</span></button>
+            <button type="button" role="tab" id="worm-tab-3" aria-controls="worm-slide-3" aria-selected="false" tabindex="-1"><span class="vh">Night</span></button>
+          </div>
+          <p class="worm-count" id="worm-count">1 of 4</p>
+          <p class="vh" id="worm-live" aria-live="polite"></p>
+        </div>
+        <p class="hint">Drag along the dots and let go between two. A tap crawls. Arrow keys jump. The ring shows where a release lands.</p>
+      </div>
+    </section>
+
+    <section class="study" id="drag-reorder" aria-labelledby="order-title">
+      <header class="study-head">
+        <p class="index">11</p>
+        <h2 id="order-title">Drag to reorder</h2>
+        <p class="what">Lift a row. A small gap follows it, and the nearer rows move first.</p>
+        <p class="meta"><span>250ms</span><span>stagger 24ms</span><span>ease-out · no rebound</span></p>
+      </header>
+      <div class="stage">
+        <div class="order-wrap" id="order-wrap">
+          <span class="order-line" id="order-line" aria-hidden="true"></span>
+          <ul class="order" id="order">
+            <li><button type="button">Coil the rope</button></li>
+            <li><button type="button">Stamp the forms</button></li>
+            <li><button type="button">Update the board</button></li>
+            <li><button type="button">Oil the lamp</button></li>
+            <li><button type="button">Lock the shed</button></li>
+          </ul>
+        </div>
+        <p class="hint">Drag a row. <kbd>Space</kbd> picks it up, arrows move it, <kbd>Space</kbd> drops it, <kbd>Esc</kbd> puts it back.</p>
+        <p class="vh" id="order-live" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="study" id="faq-panel" aria-labelledby="faq-title">
+      <header class="study-head">
+        <p class="index">12</p>
+        <h2 id="faq-title">FAQ panel</h2>
+        <p class="what">One panel slides to the question and fits the answer.</p>
+        <p class="meta"><span>300ms panel</span><span>140ms out · 210ms in</span><span>ease-in-out</span></p>
+      </header>
+      <div class="stage">
+        <div class="faq" id="faq">
+          <div class="faq-panel" aria-hidden="true"></div>
+          <div class="faq-item">
+            <h3><button type="button" id="faq-q1" aria-expanded="false" aria-controls="faq-a1"><span>When does the night boat leave?</span><svg class="faq-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 6 L8 10.5 L12.5 6"></path></svg></button></h3>
+            <div class="faq-a" id="faq-a1" role="region" aria-labelledby="faq-q1"><div class="faq-body"><p>It leaves the north quay at 21:40, unless the harbour master holds it for weather.</p></div></div>
+          </div>
+          <div class="faq-item">
+            <h3><button type="button" id="faq-q2" aria-expanded="false" aria-controls="faq-a2"><span>Can I move a locker?</span><svg class="faq-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 6 L8 10.5 L12.5 6"></path></svg></button></h3>
+            <div class="faq-a" id="faq-a2" role="region" aria-labelledby="faq-q2"><div class="faq-body"><p>Yes. Bring the brass tag to the desk before noon and they will shift the crate.</p></div></div>
+          </div>
+          <div class="faq-item">
+            <h3><button type="button" id="faq-q3" aria-expanded="false" aria-controls="faq-a3"><span>What if the tide is out?</span><svg class="faq-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 6 L8 10.5 L12.5 6"></path></svg></button></h3>
+            <div class="faq-a" id="faq-a3" role="region" aria-labelledby="faq-q3"><div class="faq-body"><p>The ramp stays open. The lower steps are wet, so the night crew puts a rope along the rail.</p></div></div>
+          </div>
+          <div class="faq-item">
+            <h3><button type="button" id="faq-q4" aria-expanded="false" aria-controls="faq-a4"><span>Who signs the ledger?</span><svg class="faq-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 6 L8 10.5 L12.5 6"></path></svg></button></h3>
+            <div class="faq-a" id="faq-a4" role="region" aria-labelledby="faq-q4"><div class="faq-body"><p>The clerk on duty. Your name goes in the right-hand column, beside the lamp number.</p></div></div>
+          </div>
+        </div>
+        <p class="hint">Open the last question, then the first, before the panel arrives. Arrows move between questions.</p>
+      </div>
+    </section>
+
+    <section class="study" id="tick-rail" aria-labelledby="rail-title">
+      <header class="study-head">
+        <p class="index">13</p>
+        <h2 id="rail-title">Tick rail</h2>
+        <p class="what">Ticks grow around the pointer. One card previews the section under it.</p>
+        <p class="meta"><span>ticks 160ms</span><span>card 200ms</span><span>ease-out</span></p>
+      </header>
+      <div class="stage">
+        <div class="rail-demo" id="rail-demo">
+          <nav class="rail" id="rail" aria-label="On this card">
+            <a href="#sec-quay" aria-describedby="rail-d-quay"><span class="tick" aria-hidden="true"></span><span class="vh">The quay</span></a>
+            <a href="#sec-lamp" aria-describedby="rail-d-lamp"><span class="tick" aria-hidden="true"></span><span class="vh">The lamp</span></a>
+            <a href="#sec-ledger" aria-describedby="rail-d-ledger"><span class="tick" aria-hidden="true"></span><span class="vh">The ledger</span></a>
+            <a href="#sec-ramp" aria-describedby="rail-d-ramp"><span class="tick" aria-hidden="true"></span><span class="vh">The ramp</span></a>
+            <a href="#sec-locker" aria-describedby="rail-d-locker"><span class="tick" aria-hidden="true"></span><span class="vh">The locker</span></a>
+            <a href="#sec-boat" aria-describedby="rail-d-boat"><span class="tick" aria-hidden="true"></span><span class="vh">The night boat</span></a>
+          </nav>
+          <div class="rail-card" id="rail-card" aria-hidden="true"></div>
+          <div class="rail-scroll" id="rail-scroll">
+            <section id="sec-quay" tabindex="-1">
+              <h3>The quay</h3>
+              <p>The night boat ties up at the north end, beside the green lamp. Crates wait in a line the clerk can count without a lantern.</p>
+            </section>
+            <section id="sec-lamp" tabindex="-1">
+              <h3>The lamp</h3>
+              <p>It stays lit from dusk until the last ramp comes up. If it flickers, the desk has a spare chimney in the left drawer.</p>
+            </section>
+            <section id="sec-ledger" tabindex="-1">
+              <h3>The ledger</h3>
+              <p>Names go in the right-hand column. The left column is the lamp number, written once and never crossed out.</p>
+            </section>
+            <section id="sec-ramp" tabindex="-1">
+              <h3>The ramp</h3>
+              <p>It is down for ten minutes at each crossing. The lower steps are wet when the tide is out, so a rope runs along the rail.</p>
+            </section>
+            <section id="sec-locker" tabindex="-1">
+              <h3>The locker</h3>
+              <p>Brass tags hang on the east wall. Bring the tag to the desk before noon if a crate has to move.</p>
+            </section>
+            <section id="sec-boat" tabindex="-1">
+              <h3>The night boat</h3>
+              <p>It leaves at 21:40 unless the harbour master holds it. The clerk calls the names once, then the ramp comes up.</p>
+            </section>
+          </div>
+        </div>
+        <div class="vh" id="rail-descriptions">
+          <p id="rail-d-quay">Where the night boat ties up.</p>
+          <p id="rail-d-lamp">The green lamp at the north end.</p>
+          <p id="rail-d-ledger">Names in the right-hand column.</p>
+          <p id="rail-d-ramp">Down for ten minutes at each crossing.</p>
+          <p id="rail-d-locker">Brass tags on the east wall.</p>
+          <p id="rail-d-boat">Leaves the quay at 21:40.</p>
+        </div>
+        <p class="hint">Move inside one tick and the neighbours keep changing. Escape hides the card. On a touch screen, the first tap previews and the second follows.</p>
+      </div>
+    </section>
+  </div>
+
+  <p class="colophon">
+    Original studies for this page. Timing and behavior follow
+    <a href="https://microinteractions.dev/">microinteractions.dev</a>
+    by Juan Di Nella
+    (<a href="https://github.com/juandinella/microinteractions.dev">MIT</a>).
+    Added from
+    <a href="https://x.com/tranmautritam/status/2124434510393827809">@tranmautritam</a>.
+    <code>?reduce=1</code> holds the travel still.
+    <code>?motion=1</code> brings it back unless reduce is also set.
+  </p>
+</main>
+<script src="microinteractions.js" defer></script>
+<script src="shared/site-header.js?v=39" defer></script>
+</body>
+</html>
