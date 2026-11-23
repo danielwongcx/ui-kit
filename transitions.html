@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transitions · ui-kit</title>
+<meta name="description" content="Thirty-three interactive studies of free interface motion. Each card shows its timing and easing.">
+<meta name="theme-color" content="#F3EFE8">
+<script>
+(function () {
+  var q = location.search || "";
+  var forceReduce = /(?:^|[?&])reduce=1(?:&|$)/.test(q);
+  var askedMotion = /(?:^|[?&])motion=1(?:&|$)/.test(q);
+  var reduce = false;
+  try {
+    if (forceReduce) sessionStorage.setItem("transitions-reduce", "1");
+    else if (askedMotion) sessionStorage.removeItem("transitions-reduce");
+    var stored = sessionStorage.getItem("transitions-reduce") === "1";
+    var os = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (forceReduce) reduce = true;
+    else if (askedMotion) reduce = false;
+    else reduce = stored || os;
+  } catch (e) {
+    try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e2) {}
+  }
+  document.documentElement.setAttribute("data-motion", reduce ? "reduce" : "on");
+})();
+</script>
+<link rel="stylesheet" href="shared/site-header.css?v=9">
+<link rel="stylesheet" href="transitions.css">
+</head>
+<body data-page="transitions">
+<main>
+  <header class="intro">
+    <p class="eyebrow"><span class="pill">Motion</span></p>
+    <h1>Transitions</h1>
+    <p class="lead">Thirty-three studies you can replay. The time and the easing sit on each one.</p>
+  </header>
+
+  <div class="filters" role="tablist" aria-label="Study groups">
+    <button type="button" role="tab" data-filter="all" aria-selected="true">All</button>
+    <button type="button" role="tab" data-filter="essential" aria-selected="false" tabindex="-1">Essential</button>
+    <button type="button" role="tab" data-filter="texts" aria-selected="false" tabindex="-1">Text</button>
+    <button type="button" role="tab" data-filter="effects" aria-selected="false" tabindex="-1">Effects</button>
+    <button type="button" role="tab" data-filter="ai" aria-selected="false" tabindex="-1">AI</button>
+  </div>
+  <p class="vh" id="filter-live" aria-live="polite"></p>
+
+  <div class="board">
+    <article class="study" id="resize" data-group="essential">
+      <div class="stage">
+        <div class="note" id="note">
+          <span class="wire short"></span>
+          <span class="wire"></span>
+          <span class="wire mid"></span>
+          <span class="wire"></span>
+        </div>
+        <button type="button" class="act" id="note-btn">Grow</button>
+      </div>
+      <div class="meta">
+        <h2>Card resize</h2>
+        <p class="time">300ms · ease out · cubic-bezier(0.22, 1, 0.36, 1)</p>
+      </div>
+    </article>
+
+    <article class="study" id="number" data-group="texts">
+      <div class="stage">
+        <p class="digits" id="num-digits" aria-live="polite">24.80</p>
+        <button type="button" class="act" id="num-next">Next figure</button>
+      </div>
+      <div class="meta">
+        <h2>Number pop-in</h2>
+        <p class="time">Enter 600ms · exit 155ms · delay 50ms · stagger 40ms · peaks at 1.03</p>
+      </div>
+    </article>
+
+    <article class="study" id="badge-study" data-group="essential">
+      <div class="stage">
+        <button type="button" class="bell" id="bell" aria-pressed="false" aria-label="Notifications">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 9a6 6 0 1 1 12 0c0 3.2.8 5 1.5 5.8.3.3 0 .7-.4.7H4.9c-.4 0-.7-.4-.4-.7C5.2 14 6 12.2 6 9z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M10 18a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span class="badge" id="badge" data-open="false"><span class="dot">3</span></span>
+        </button>
+      </div>
+      <div class="meta">
+        <h2>Notification badge</h2>
+        <p class="time">Slide 260ms ease out · pop 500ms cubic-bezier(0.34, 1.36, 0.64, 1) · close 180ms</p>
+      </div>
+    </article>
+
+    <article class="study" id="swap-study" data-group="essential">
+      <div class="stage">
+        <p class="swap" id="swap" aria-live="polite"><span class="swap-line">Saving the note</span></p>
+        <button type="button" class="act" id="swap-btn">Swap</button>
+      </div>
+      <div class="meta">
+        <h2>Text states swap</h2>
+        <p class="time">150ms · ease-in-out · 0.25rem · blur 2px</p>
+      </div>
+    </article>
+
+    <article class="study" id="menu-study" data-group="essential">
+      <div class="stage">
+        <div class="menu" id="menu">
+          <button type="button" class="act" id="menu-btn" aria-expanded="false" aria-haspopup="menu" aria-controls="menu-panel">Desk</button>
+          <div class="menu-panel" id="menu-panel" role="menu" inert>
+            <button type="button" role="menuitem">Rename</button>
+            <button type="button" role="menuitem">Duplicate</button>
+            <button type="button" role="menuitem">Archive</button>
+          </div>
+        </div>
+      </div>
+      <div class="meta">
+        <h2>Menu dropdown</h2>
+        <p class="time">Open 250ms · close 150ms · ease out · scale 0.97 to 1 · origin top center</p>
+      </div>
+    </article>
+
+    <article class="study" id="modal" data-group="essential">
+      <div class="stage">
+        <button type="button" class="act" id="modal-open">Share</button>
+        <div class="scrim" id="scrim">
+          <div class="dialog" id="dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title" inert>
+            <h3 id="modal-title">Share this note?</h3>
+            <button type="button" class="act" id="modal-close">Close</button>
+          </div>
+        </div>
+      </div>
+      <div class="meta">
+        <h2>Modal open/close</h2>
+        <p class="time">Open 250ms · close 150ms · ease out · scale 0.96</p>
+      </div>
+    </article>
+
+    <article class="study" id="panel-study" data-group="essential">
+      <div class="stage">
+        <div class="frame" id="panel">
+          <div class="frame-bar">
+            <span>Northroom</span>
+            <button type="button" class="act" id="panel-btn" aria-expanded="false">Details</button>
+          </div>
+          <div class="sheet-panel">
+            <p>Filed under the April desk. The margin stays put.</p>
+          </div>
+        </div>
+      </div>
+      <div class="meta">
+        <h2>Panel reveal</h2>
+        <p class="time">Open 400ms · close 350ms · ease out · travels half its height · blur 2px</p>
+      </div>
+    </article>
+
+    <article class="study" id="pages" data-group="essential">
+      <div class="stage">
+        <div class="pager" id="pager">
+          <div class="pager-view">
+            <article class="sheet-page is-current" data-page="0">
+              <h3>Morning</h3>
+              <ul>
+                <li>Pier walk</li>
+                <li>Market list</li>
+                <li>Open the desk</li>
+              </ul>
+            </article>
+            <article class="sheet-page" data-page="1" aria-hidden="true" inert>
+              <h3>Evening</h3>
+              <ul>
+                <li>Four notes left</li>
+                <li>Lamp on</li>
+                <li>File the day</li>
+              </ul>
+            </article>
+          </div>
+          <div class="pager-nav">
+            <button type="button" class="act" id="page-back" disabled>Back</button>
+            <button type="button" class="act" id="page-forward">Forward</button>
+          </div>
+        </div>
+      </div>
+      <div class="meta">
+        <h2>Page side-by-side</h2>
+        <p class="time">250ms · ease out · 0.5rem · blur 3px</p>
+      </div>
+    </article>
+
+    <article class="study" id="icon" data-group="essential">
+      <div class="stage">
+        <button type="button" class="icon-swap" id="icon-swap" aria-pressed="false" aria-label="Open menu">
+          <svg class="ic-a" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <svg class="ic-b" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="meta">
+        <h2>Icon swap</h2>
+        <p class="time">250ms · ease-in-out · scale 0.25 · blur 2px</p>
+      </div>
+    </article>
+
+    <article class="study" id="success-study" data-group="essential">
+      <div class="stage">
+        <button type="button" class="check-btn" id="success" aria-pressed="false">
+          <svg class="check" id="success-mark" viewBox="0 0 48 48" aria-hidden="true">
+            <g class="spin">
+              <g class="bob">
+                <circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="2.5"/>
+                <path class="tick" pathLength="1" d="M15 25.5 L21.5 32 L34 17" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </g>
+            </g>
+          </svg>
+          <span>Mark done</span>
+        </button>
+      </div>
+      <div class="meta">
+        <h2>Success check</h2>
+        <p class="time">500ms · path delay 80ms · blur 10px · rise 2.5rem · bob cubic-bezier(0.34, 1.35, 0.64, 1)</p>
+      </div>
+    </article>
+
+    <article class="study" id="avatars-study" data-group="effects">
+      <div class="stage">
+        <div class="avatars" id="avatars">
+          <button type="button" class="avatar" style="background:#243028" aria-label="Nia Rowe">NR</button>
+          <button type="button" class="avatar" style="background:#3a2a28" aria-label="Ade Kline">AK</button>
+          <button type="button" class="avatar" style="background:#2a3144" aria-label="Jules Lin">JL</button>
+          <button type="button" class="avatar" style="background:#3a3228" aria-label="Moss Adey">MS</button>
+          <button type="button" class="avatar" style="background:#1c1c22" aria-label="Otto Park">OT</button>
+        </div>
+      </div>
+      <div class="meta">
+        <h2>Avatar group hover</h2>
+        <p class="time">320ms · lift 4px · scale 1.05 · falloff 0.45 · return cubic-bezier(0.34, 3.85, 0.64, 1)</p>
+      </div>
+    </article>
+
+    <article class="study" id="shake" data-group="essential">
+      <div class="stage">
+        <div class="shake-box">
+          <div class="field" id="shake-field">
+            <input id="shake-input" type="text" value="ada" aria-label="Desk address" aria-describedby="shake-err" autocomplete="off">
+            <button type="button" class="act" id="shake-btn">Check</button>
+          </div>
+          <p class="err" id="shake-err" aria-live="polite"></p>
+        </div>
+      </div>
+      <div class="meta">
+        <h2>Error state shake</h2>
+        <p class="time">280ms · 6px then 4px · ease out · hold 3s · revert 280ms</p>
+      </div>
+    </article>
+
+    <article class="study" id="clear" data-group="effects">
+      <div class="stage">
+        <div class="clear-field" id="clear-wrap">
+          <div class="field">
+            <span class="ph" id="clear-ph">A short prompt</span>
+            <input id="clear-input" type="text" value="How should the note open?" aria-label="Note prompt" autocomplete="off">
+            <button type="button" class="icon-btn" id="clear-btn" aria-label="Clear">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+        <button type="button" class="act" id="clear-reset">Reset</button>
+      </div>
+      <div class="meta">
+        <h2>Input clear with dissolve</h2>
+        <p class="time">Out 400ms · in 400ms · 0.75rem · blur 2px · glow peaks at 15%</p>
+      </div>
+    </article>
+
+    <article class="study" id="skeleton" data-group="essential">
+      <div class="stage">
+        <div class="person skel" id="skel" aria-hidden="true">
+          <span class="bone"></span>
+          <span class="lines"><span class="bar w1"></span><span class="bar w2"></span></span>
+        </div>
+        <div class="person-real" id="person" hidden>
+          <span class="who">MC</span>
+          <span><p>Mara Chen</p><p class="role">Desk editor</p></span>
+        </div>
+        <button type="button" class="act" id="skel-btn">Reveal</button>
+      </div>
+      <div class="meta">
+        <h2>Skeleton loader and reveal</h2>
+        <p class="time">Pulse 1000ms to 0.5 · reveal 400ms · ease-in-out · blur 2px</p>
+      </div>
+    </article>
+
+    <article class="study" id="reveal" data-group="texts">
+      <div class="stage">
+        <div class="rise" id="rise">
+          <p>The desk is quiet.</p>
+          <p>The next note is ready.</p>
+        </div>
+        <button type="button" class="act" id="rise-btn">Replay</button>
+      </div>
+      <div class="meta">
+        <h2>Texts reveal</h2>
+        <p class="time">500ms · stagger 40ms · 0.75rem · blur 3px · ease out</p>
+      </div>
+    </article>
+
+    <article class="study" id="tabs-study" data-group="essential">
+      <div class="stage">
+        <div class="tablist" id="tabs" role="tablist" aria-label="Range">
+          <span class="tab-pill" id="tab-pill" aria-hidden="true"></span>
+          <button type="button" role="tab" data-tab="day" aria-selected="true">Day</button>
+          <button type="button" role="tab" data-tab="week" aria-selected="false" tabindex="-1">Week</button>
+          <button type="button" role="tab" data-tab="month" aria-selected="false" tabindex="-1">Month</button>
+        </div>
+        <p class="tab-copy" id="tab-copy">Tuesday desk</p>
+      </div>
+      <div class="meta">
+        <h2>Tabs sliding</h2>
+        <p class="time">250ms · ease out · cubic-bezier(0.22, 1, 0.36, 1)</p>
+      </div>
+    </article>
+
+    <article class="study" id="shimmer-study" data-group="texts ai">
+      <div class="stage">
+        <p class="shimmer" id="shimmer">Drafting the summary</p>
+        <button type="button" class="act" id="shimmer-btn">Replay</button>
+      </div>
+      <div class="meta">
+        <h2>Shimmer text</h2>
+        <p class="time">2000ms · linear · band 400%</p>
+      </div>
+    </article>
+
+    <article class="study" id="tooltip" data-group="essential">
+      <div class="stage">
+        <div class="tips" id="tips">
+          <button type="button" data-tip="Cut the line">Cut</button>
+          <button type="button" data-tip="Copy the line">Copy</button>
+          <button type="button" data-tip="Paste the line">Paste</button>
+          <div class="tip" id="tip" role="tooltip" hidden aria-hidden="true"></div>
+        </div>
+      </div>
+      <div class="meta">
+        <h2>Tooltip open/close</h2>
+        <p class="time">In 150ms · out 50ms · delay 80ms · move 160ms · scale 0.98</p>
+      </div>
+    </article>
+
+    <article class="study" id="tilt-study" data-group="effects">
+      <div class="stage">
+        <div class="tilt" id="tilt">
+          <div class="tilt-card" id="tilt-card">
+            <span class="glare" aria-hidden="true"></span>
+            <p class="tilt-kicker">Member</p>
+            <p class="tilt-name">Northroom</p>
+            <p class="tilt-no">No. 184</p>
+          </div>
+        </div>
+      </div>
+      <div class="meta">
+        <h2>3D tilt</h2>
+        <p class="time">Follow 400ms · return 1000ms · glare 300ms at 0.32 · ±20deg</p>
+      </div>
+    </article>
+
+    <article class="study" id="morph-study" data-group="essential">
+      <div class="stage">
+        <div class="morph" id="morph" data-open="false">
+          <div class="morph-menu" id="morph-menu" inert>
+            <button type="button">Note</button>
+            <button type="button">Link</button>
+            <button type="button">Picture</button>
+          </div>
+          <button type="button" class="morph-hit" id="morph-hit" aria-expanded="false" aria-label="Add">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="meta">
+        <h2>Dropdown menu morph</h2>
+        <p class="time">Open 350ms cubic-bezier(0.34, 1.25, 0.64, 1) · close 250ms · radius 2.5rem to 1.25rem</p>
+      </div>
+    </article>
+
+    <article class="study" id="accordion" data-group="essential">
+      <div class="stage">
+        <div class="acc" id="acc">
+          <div class="acc-item">
+            <button type="button" aria-expanded="false" aria-controls="acc-a">
+              Margins
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="acc-panel" id="acc-a">
+              <div class="acc-inner"><p>They stay on the ladder so notes line up.</p></div>
+            </div>
+          </div>
+          <div class="acc-item">
+            <button type="button" aria-expanded="false" aria-controls="acc-b">
+              Type
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="acc-panel" id="acc-b">
+              <div class="acc-inner"><p>The title sits one step above the line you read.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="meta">
+        <h2>Accordion</h2>
+        <p class="time">250ms · ease out · cubic-bezier(0.22, 1, 0.36, 1)</p>
+      </div>
+    </article>
+
+    <article class="study" id="toast-study" data-group="essential">
+      <div class="stage">
+        <button type="button" class="act" id="toast-btn">File note</button>
+        <div class="toast" id="toast" role="status" aria-live="polite">Note filed</div>
+      </div>
+      <div class="meta">
+        <h2>Toast open/close</h2>
+        <p class="time">Open 350ms · close 250ms · 1rem · blur 2px · scale 0.97 · ease out</p>
+      </div>
+    </article>
+
+    <article class="study" id="like-study" data-group="effects">
+      <div class="stage">
+        <button type="button" class="like" id="like" aria-pressed="false" aria-label="Like">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path class="line" d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 4.6-7 9-7 9z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            <path class="fill" fill="currentColor" d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 4.6-7 9-7 9z"/>
+          </svg>
+          <span id="like-count">24</span>
+        </button>
+      </div>
+      <div class="meta">
+        <h2>Like button</h2>
+        <p class="time">Fill 150ms · pop 350ms cubic-bezier(0.34, 1.96, 0.64, 1) · sparks 600ms · 20px</p>
+      </div>
+    </article>
+
+    <article class="study" id="learn-study" data-group="essential">
+      <div class="stage">
+        <button type="button" class="learn" id="learn" aria-pressed="false">
+          <span>Read the note</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <g class="chev">
+              <path class="arm arm-a" d="M6 14 L12 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <path class="arm arm-b" d="M12 8 L18 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </button>
+      </div>
+      <div class="meta">
+        <h2>Learn more hover</h2>
+        <p class="time">350ms · shift 2px · arms spread 8deg · ease out</p>
+      </div>
+    </article>
+
+    <article class="study" id="checkbox" data-group="essential">
+      <div class="stage">
+        <button type="button" class="check-row" id="check" role="checkbox" aria-checked="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect class="box" x="3" y="3" width="18" height="18" rx="4" stroke-width="1.8"/>
+            <path class="mark" pathLength="1" d="M7 12.5 L10.5 16 L17 8.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Send a copy to the desk</span>
+        </button>
+      </div>
+      <div class="meta">
+        <h2>Checkbox check</h2>
+        <p class="time">Box 150ms · draw 350ms · uncheck 150ms · ease out</p>
+      </div>
+    </article>
+
+    <article class="study" id="reel-study" data-group="texts">
+      <div class="stage">
+        <p class="reel" id="reel" aria-live="polite">100</p>
+        <button type="button" class="act" id="reel-btn">Roll</button>
+      </div>
+      <div class="meta">
+        <h2>Spinning counter</h2>
+        <p class="time">130ms a step · stagger 90ms · land 740ms · cubic-bezier(0.35, -0.02, 0.43, 1)</p>
+      </div>
+    </article>
+
+    <article class="study" id="subtle-study" data-group="texts">
+      <div class="stage">
+        <p class="subtle" id="subtle" aria-live="polite">1,284</p>
+        <button type="button" class="act" id="subtle-btn">Change</button>
+      </div>
+      <div class="meta">
+        <h2>Number subtle change</h2>
+        <p class="time">455ms · ease out · cubic-bezier(0.22, 1, 0.36, 1) · 0.28rem · blur 1px</p>
+      </div>
+    </article>
+
+    <article class="study" id="toggle" data-group="essential">
+      <div class="stage">
+        <button type="button" class="switch" id="switch" role="switch" aria-checked="false">
+          <span class="track" aria-hidden="true"><span class="thumb"></span></span>
+          <span>Quiet hours</span>
+        </button>
+      </div>
+      <div class="meta">
+        <h2>Toggle</h2>
+        <p class="time">350ms · cubic-bezier(0.34, 1.35, 0.64, 1) · overshoot 1px</p>
+      </div>
+    </article>
+
+    <article class="study" id="thinking" data-group="ai">
+      <div class="stage">
+        <p class="think" id="think" aria-live="polite"><span class="think-line shimmer">Reading the brief</span></p>
+        <button type="button" class="act" id="think-btn">Next state</button>
+      </div>
+      <div class="meta">
+        <h2>Thinking states</h2>
+        <p class="time">Hold 2000ms · swap 150ms · gap 50ms · shimmer 2000ms</p>
+      </div>
+    </article>
+
+    <article class="study" id="reason-study" data-group="ai">
+      <div class="stage">
+        <div class="reason" id="reason" tabindex="0" aria-label="Reasoning lines">
+          <div class="reason-track" id="reason-track"></div>
+        </div>
+        <button type="button" class="act" id="reason-btn">Step</button>
+      </div>
+      <div class="meta">
+        <h2>Reasoning stream</h2>
+        <p class="time">Hold 840ms · step 500ms · two lines · ease out · fade 28px</p>
+      </div>
+    </article>
+
+    <article class="study" id="stream-study" data-group="ai">
+      <div class="stage">
+        <p class="stream" id="stream" aria-live="polite"></p>
+        <button type="button" class="act" id="stream-btn">Replay</button>
+      </div>
+      <div class="meta">
+        <h2>Streaming text</h2>
+        <p class="time">350ms a word · gap 60ms · blur 1px · ease out</p>
+      </div>
+    </article>
+
+    <article class="study" id="matrix-study" data-group="ai">
+      <div class="stage">
+        <div class="matrix" id="matrix" aria-hidden="true"></div>
+        <div class="pats" id="pats" role="radiogroup" aria-label="Dot pattern">
+          <button type="button" role="radio" data-pattern="scan" aria-checked="true">Scan</button>
+          <button type="button" role="radio" data-pattern="twinkle" aria-checked="false">Twinkle</button>
+          <button type="button" role="radio" data-pattern="orbit" aria-checked="false">Orbit</button>
+          <button type="button" role="radio" data-pattern="pulse" aria-checked="false">Pulse</button>
+        </div>
+      </div>
+      <div class="meta">
+        <h2>Matrix dot loader</h2>
+        <p class="time">1200ms · ease-in-out · four patterns</p>
+      </div>
+    </article>
+
+    <article class="study study-banners" id="banners" data-group="essential">
+      <div class="stage">
+        <button type="button" class="act" id="banner-btn">Add notice</button>
+        <div class="stack" id="stack" tabindex="0" aria-label="Notice stack"></div>
+      </div>
+      <div class="meta">
+        <h2>Banner stacking</h2>
+        <p class="time">Open 350ms · close 250ms · peek 12px · fan gap 8px · ease out</p>
+      </div>
+    </article>
+  </div>
+
+  <p class="colophon">
+    Studies of the free motions published by
+    <a href="https://transitions.dev/library">Jakub Antalik</a>.
+    Original markup for this kit.
+    <code>?reduce=1</code> holds every study, including when <code>?motion=1</code> is also set.
+    <code>?motion=1</code> alone brings the motion back for the visit.
+  </p>
+</main>
+<script src="shared/site-header.js?v=40" defer></script>
+<script src="transitions.js" defer></script>
+</body>
+</html>
