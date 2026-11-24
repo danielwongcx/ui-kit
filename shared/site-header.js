@@ -53,6 +53,7 @@
         { id: 'collapsing-header', label: 'Collapsing header', href: 'collapsing-header.html', group: 'Playgrounds' },
         { id: 'microinteractions', label: 'Microinteractions', href: 'microinteractions.html', group: 'Playgrounds' },
         { id: 'moving-ui', label: 'Moving UI', href: 'moving-ui.html', group: 'Playgrounds' },
+        { id: 'transitions', label: 'Transitions', href: 'transitions.html', group: 'Playgrounds' },
         { id: 'onboarding', label: 'Onboarding', href: 'onboarding.html', group: 'Films' },
         { id: 'grok-bot-showreel', label: 'Grok Bot reel', href: 'grok-bot-showreel.html', group: 'Films' },
         { id: 'dub-promo-showreel', label: 'Dub promo', href: 'dub-promo-showreel.html', group: 'Films' },
