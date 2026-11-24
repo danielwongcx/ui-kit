@@ -27,7 +27,8 @@
     { id: 'design-tokens', label: 'Design tokens' },
     { id: 'iphone-polish', label: 'iPhone polish' },
     { id: 'ios-habits', label: 'iOS habits' },
-    { id: 'premium-composer', label: 'Composer' }
+    { id: 'premium-composer', label: 'Composer' },
+    { id: 'app-as-world', label: 'Interface as world' }
   ];
 
   var TASTE_SECTION_LINKS = [
