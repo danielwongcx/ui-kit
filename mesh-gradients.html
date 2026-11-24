@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mesh gradients · ui-kit</title>
+<meta name="description" content="Four mesh-gradient studies: a soft field morph, three drifting posters, an iridescent glass form, and a tile row.">
+<meta name="theme-color" content="#F3EFE8">
+<script>
+(function () {
+  var q = location.search || "";
+  var forceReduce = /(?:^|[?&])reduce=1(?:&|$)/.test(q);
+  var askedMotion = /(?:^|[?&])motion=1(?:&|$)/.test(q);
+  var reduce = false;
+  try {
+    if (forceReduce) sessionStorage.setItem("mesh-reduce", "1");
+    else if (askedMotion) sessionStorage.removeItem("mesh-reduce");
+    var stored = sessionStorage.getItem("mesh-reduce") === "1";
+    var os = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (forceReduce) reduce = true;
+    else if (askedMotion) reduce = false;
+    else reduce = stored || os;
+  } catch (e) {
+    try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e2) {}
+  }
+  document.documentElement.setAttribute("data-motion", reduce ? "reduce" : "on");
+})();
+</script>
+<link rel="stylesheet" href="shared/site-header.css?v=9">
+<link rel="stylesheet" href="mesh-gradients.css">
+</head>
+<body data-page="mesh-gradients">
+<main>
+  <header class="intro">
+    <p class="eyebrow"><span class="pill">Motion</span></p>
+    <h1>Mesh gradients</h1>
+    <p class="lead">Four studies. The field changes shape. The posters keep their type and let the color move. Glass passes through a few forms. Tiles take the center one at a time.</p>
+  </header>
+
+  <nav class="jump" aria-label="Studies">
+    <a href="#field">Field</a>
+    <a href="#posters">Posters</a>
+    <a href="#glass">Glass</a>
+    <a href="#tiles">Tiles</a>
+  </nav>
+
+  <div class="studies">
+    <article class="study" id="field">
+      <header class="study-head">
+        <h2>Soft field</h2>
+        <p class="time">5s · rounded square, triangle, hollow squircle</p>
+      </header>
+      <div class="field-stage">
+        <p class="mark">{acream motion}</p>
+        <canvas id="field-canvas" role="img" aria-label="Lavender form. It morphs from a soft rounded square, through a rounded triangle with an inner rim, to a hollow squircle."></canvas>
+        <p class="mark mark-end">{acream motion}</p>
+      </div>
+      <div class="controls">
+        <button type="button" class="btn" data-study="field" data-act="replay">Replay</button>
+        <button type="button" class="btn" data-study="field" data-act="play" aria-pressed="false">Pause</button>
+      </div>
+    </article>
+
+    <article class="study" id="posters">
+      <header class="study-head">
+        <h2>Three posters</h2>
+        <p class="time">14s · type stays, color drifts</p>
+      </header>
+      <div class="poster-stage">
+        <div class="posters">
+          <article class="poster" id="poster-wind">
+            <canvas data-poster="wind" aria-hidden="true"></canvas>
+            <div class="poster-copy">
+              <h3 class="poster-title">Cosmic wind drop *<br>Outer +——+ layers</h3>
+            </div>
+          </article>
+
+          <article class="poster poster-land" id="poster-land">
+            <canvas data-poster="land" aria-hidden="true"></canvas>
+            <div class="poster-copy land-copy">
+              <div class="notes">
+                <p><strong>INTENT SEISMIC ACTIVITY—</strong><br>IN DEPTHS + UNKNOWN<br>PULL FORCE + DELIVERING +</p>
+                <p><strong>GRAVITY IS SUBJECTIVE—</strong><br>SUBJECT LOOKS COSMIC<br>IN ORIGINAL FORMS</p>
+              </div>
+              <h3 class="poster-title title-right">From the land +++<br>+ Down under ———</h3>
+              <p class="fine">+++ Do not read this. Private and confidential. A new species has been discovered. With a superior intelligence and a cosmic hint. Beautiful but deadly.<br>+++</p>
+            </div>
+          </article>
+
+          <article class="poster poster-night" id="poster-night">
+            <canvas data-poster="night" aria-hidden="true"></canvas>
+            <div class="poster-copy night-copy">
+              <h3 class="poster-title">Night emission +++<br>Energy ingestion ———</h3>
+              <div class="night-notes">
+                <div class="notes">
+                  <p><strong>DARKNESS IS ALIVE—</strong><br>ILLUMINATED PATHWAYS<br>PUSHING UPWARD +</p>
+                  <p><strong>GRAVITY IS OBJECTIVE—</strong><br>SURFACE LEVEL BREAKING</p>
+                </div>
+                <p class="fine fine-light">+++ The intelligence submerged in shadows. Vibrant color bursts are the only detection mechanism, originating from +++ key areas.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="controls">
+        <button type="button" class="btn" data-study="posters" data-act="replay">Replay</button>
+        <button type="button" class="btn" data-study="posters" data-act="play" aria-pressed="false">Pause</button>
+      </div>
+    </article>
+
+    <article class="study" id="glass">
+      <header class="study-head">
+        <h2>Glass</h2>
+        <p class="time">27s · I-shape, diamond, cross</p>
+      </header>
+      <div class="glass-stage">
+        <canvas id="glass-canvas" role="img" aria-label="Blue field. An iridescent glass form moves from an I-shape, through a diamond on its point, to a four-armed cross."></canvas>
+      </div>
+      <div class="controls">
+        <button type="button" class="btn" data-study="glass" data-act="replay">Replay</button>
+        <button type="button" class="btn" data-study="glass" data-act="play" aria-pressed="false">Pause</button>
+      </div>
+    </article>
+
+    <article class="study" id="tiles">
+      <header class="study-head">
+        <h2>Tile row</h2>
+        <p class="time">15s · six tiles, one takes the center</p>
+      </header>
+      <div class="row-stage" id="row-stage" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Mesh tiles. Previous and Next move the row. Arrow keys work when this region is focused.">
+        <div class="row-track" id="row-track"></div>
+      </div>
+      <p class="vh" id="row-live" aria-live="polite"></p>
+      <div class="controls">
+        <button type="button" class="btn" data-study="tiles" data-act="prev">Previous</button>
+        <button type="button" class="btn" data-study="tiles" data-act="next">Next</button>
+        <button type="button" class="btn" data-study="tiles" data-act="replay">Replay</button>
+        <button type="button" class="btn" data-study="tiles" data-act="play" aria-pressed="false">Pause</button>
+      </div>
+    </article>
+  </div>
+
+  <p class="colophon">Studies after @x6sense. <code>?reduce=1</code> holds the last pose. <code>?motion=1</code> plays unless reduce is also set.</p>
+</main>
+<script src="mesh-gradients.js" defer></script>
+<script src="shared/site-header.js?v=41" defer></script>
+</body>
+</html>
