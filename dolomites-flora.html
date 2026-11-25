@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dolomites Flora · ui-kit</title>
+<meta name="description" content="An illustrated field essay on alpine wildflowers of the Dolomites, from montane meadows to nival scree.">
+<meta name="theme-color" content="#f4f6f4">
+<script>
+(function () {
+  var q = location.search || "";
+  var forceReduce = /(?:^|[?&])reduce=1(?:&|$)/.test(q);
+  var askedMotion = /(?:^|[?&])motion=1(?:&|$)/.test(q);
+  var reduce = false;
+  try {
+    if (forceReduce) sessionStorage.setItem("dolomites-flora-reduce", "1");
+    else if (askedMotion) sessionStorage.removeItem("dolomites-flora-reduce");
+    var stored = sessionStorage.getItem("dolomites-flora-reduce") === "1";
+    var os = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (forceReduce) reduce = true;
+    else if (askedMotion) reduce = false;
+    else reduce = stored || os;
+  } catch (e) {
+    try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e2) {}
+  }
+  document.documentElement.setAttribute("data-motion", reduce ? "reduce" : "on");
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Source+Sans+3:ital,wght@0,400..700;1,400..600&display=swap">
+<link rel="stylesheet" href="shared/site-header.css?v=9">
+<link rel="stylesheet" href="dolomites-flora.css">
+</head>
+<body data-page="dolomites-flora">
+<main>
+  <p class="study-credit">Study after Philipp Schmid's Dolomites field essay.</p>
+
+  <article class="essay">
+    <header class="essay-nav" id="essay-nav">
+      <div class="essay-nav-scroll">
+        <a class="essay-word" href="#summit">Dolomites Flora</a>
+        <nav class="essay-links" aria-label="Essay">
+          <a href="#pale" data-link="transect">Transect</a>
+          <a href="#montane" data-link="montane">Montane</a>
+          <a href="#subalpine" data-link="subalpine">Subalpine</a>
+          <a href="#alpine" data-link="alpine">Alpine</a>
+          <a href="#nival" data-link="nival">Nival</a>
+          <a href="#index" data-link="index">Field index</a>
+        </nav>
+        <p class="essay-status" id="elev-status">1,400 m, Montane</p>
+      </div>
+    </header>
+
+    <section class="hero" id="summit" aria-label="Summit overview">
+      <div class="hero-frame">
+        <svg class="hero-art" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Pale limestone towers above a meadow of blue gentians, white edelweiss, and yellow arnica.">
+          <defs>
+            <linearGradient id="h-sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#d3e4f3"/>
+              <stop offset="0.42" stop-color="#e7f1f7"/>
+              <stop offset="0.7" stop-color="#f4f7f4"/>
+              <stop offset="1" stop-color="#e4f0df"/>
+            </linearGradient>
+            <linearGradient id="h-grass" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#c5de9a"/>
+              <stop offset="0.45" stop-color="#7eae62"/>
+              <stop offset="1" stop-color="#4f8a48"/>
+            </linearGradient>
+            <linearGradient id="h-rock" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#f7f4ee"/>
+              <stop offset="0.5" stop-color="#e4dfd4"/>
+              <stop offset="1" stop-color="#c9c2b4"/>
+            </linearGradient>
+            <filter id="h-haze" x="-5%" y="-5%" width="110%" height="110%">
+              <feGaussianBlur stdDeviation="1.4"/>
+            </filter>
+            <symbol id="h-bell" viewBox="0 0 100 140" overflow="visible">
+              <g fill="#2f6a3a">
+                <ellipse cx="32" cy="118" rx="22" ry="7" transform="rotate(-40 32 118)"/>
+                <ellipse cx="68" cy="120" rx="20" ry="6.5" transform="rotate(36 68 120)"/>
+                <ellipse cx="26" cy="106" rx="14" ry="5" transform="rotate(-16 26 106)"/>
+                <ellipse cx="76" cy="108" rx="14" ry="5" transform="rotate(18 76 108)"/>
+              </g>
+              <path d="M50 122 C48 104 49 90 50 78" fill="none" stroke="#2c6436" stroke-width="2.2"/>
+              <g transform="translate(50 64)">
+                <path d="M-16 6 C-22 22 -10 40 0 44 C10 40 22 22 16 6 Z" fill="#153ea6"/>
+                <path d="M-6 4 C-16 -2 -18 -16 -6 -18 C-2 -8 -2 2 -6 4 Z" fill="#1e4ed8"/>
+                <path d="M6 2 C16 -4 20 -16 10 -20 C4 -10 4 0 6 2 Z" fill="#2458dc"/>
+                <path d="M14 10 C22 6 26 -4 16 -8 C12 0 12 8 14 10 Z" fill="#1a46c4"/>
+                <path d="M-14 10 C-22 6 -26 -2 -18 -8 C-12 0 -12 8 -14 10 Z" fill="#2a62e8"/>
+                <path d="M0 -2 C-6 -10 0 -20 8 -16 C6 -8 2 -4 0 -2 Z" fill="#163eae"/>
+                <ellipse cx="0" cy="6" rx="13" ry="9" fill="#1d4ad0"/>
+                <ellipse cx="0" cy="8" rx="7.5" ry="5.5" fill="#d7e7b2"/>
+                <g fill="#2c5a32">
+                  <circle cx="-4" cy="6" r="1.05"/>
+                  <circle cx="0" cy="5" r="1.05"/>
+                  <circle cx="4" cy="6.5" r="1.05"/>
+                  <circle cx="-2" cy="10" r="0.9"/>
+                  <circle cx="3" cy="10" r="0.9"/>
+                </g>
+              </g>
+            </symbol>
+            <symbol id="h-star" viewBox="0 0 90 100" overflow="visible">
+              <g transform="translate(45 52)" fill="#f6f3ea" stroke="#e4dccb" stroke-width="0.6">
+                <ellipse cx="0" cy="-24" rx="5.5" ry="18"/>
+                <ellipse cx="0" cy="-24" rx="5.5" ry="18" transform="rotate(30)"/>
+                <ellipse cx="0" cy="-24" rx="5.5" ry="18" transform="rotate(60)"/>
+                <ellipse cx="0" cy="-24" rx="5.5" ry="18" transform="rotate(90)"/>
+                <ellipse cx="0" cy="-24" rx="5.5" ry="18" transform="rotate(120)"/>
+                <ellipse cx="0" cy="-24" rx="5.5" ry="18" transform="rotate(150)"/>
+                <ellipse cx="0" cy="-22" rx="4" ry="14" transform="rotate(15)" fill="#fbf9f3"/>
+                <ellipse cx="0" cy="-22" rx="4" ry="14" transform="rotate(45)" fill="#fbf9f3"/>
+                <ellipse cx="0" cy="-22" rx="4" ry="14" transform="rotate(75)" fill="#fbf9f3"/>
+                <ellipse cx="0" cy="-22" rx="4" ry="14" transform="rotate(105)" fill="#fbf9f3"/>
+                <ellipse cx="0" cy="-22" rx="4" ry="14" transform="rotate(135)" fill="#fbf9f3"/>
+                <ellipse cx="0" cy="-22" rx="4" ry="14" transform="rotate(165)" fill="#fbf9f3"/>
+              </g>
+              <circle cx="45" cy="52" r="6" fill="#e6c84a"/>
+              <circle cx="42" cy="50" r="1.4" fill="#f4df86"/>
+              <circle cx="48" cy="53" r="1.3" fill="#f4df86"/>
+              <circle cx="45" cy="56" r="1.2" fill="#f4df86"/>
+            </symbol>
+            <symbol id="h-arn" viewBox="0 0 80 120" overflow="visible">
+              <path d="M40 112 C 38 86 42 64 38 46" fill="none" stroke="#3c7340" stroke-width="2"/>
+              <ellipse cx="26" cy="90" rx="14" ry="5" fill="#4c8a46" transform="rotate(-40 26 90)"/>
+              <ellipse cx="54" cy="78" rx="14" ry="5" fill="#3b7840" transform="rotate(36 54 78)"/>
+              <g transform="translate(38 40)" fill="#f0c22e">
+                <ellipse cx="0" cy="-18" rx="4.5" ry="12"/>
+                <ellipse cx="0" cy="-18" rx="4.5" ry="12" transform="rotate(24)"/>
+                <ellipse cx="0" cy="-18" rx="4.5" ry="12" transform="rotate(48)"/>
+                <ellipse cx="0" cy="-18" rx="4.5" ry="12" transform="rotate(72)"/>
+                <ellipse cx="0" cy="-18" rx="4.5" ry="12" transform="rotate(96)"/>
+                <ellipse cx="0" cy="-18" rx="4.5" ry="12" transform="rotate(120)"/>
+                <ellipse cx="0" cy="-18" rx="4.5" ry="12" transform="rotate(144)"/>
+                <ellipse cx="0" cy="-18" rx="4.5" ry="12" transform="rotate(168)"/>
+                <ellipse cx="0" cy="-18" rx="4.5" ry="12" transform="rotate(192)"/>
+                <ellipse cx="0" cy="-18" rx="4.5" ry="12" transform="rotate(216)"/>
+                <ellipse cx="0" cy="-18" rx="4.5" ry="12" transform="rotate(240)"/>
+                <ellipse cx="0" cy="-18" rx="4.5" ry="12" transform="rotate(264)"/>
+                <ellipse cx="0" cy="-18" rx="4.5" ry="12" transform="rotate(288)"/>
+                <ellipse cx="0" cy="-18" rx="4.5" ry="12" transform="rotate(312)"/>
+                <ellipse cx="0" cy="-18" rx="4.5" ry="12" transform="rotate(336)"/>
+              </g>
+              <circle cx="38" cy="40" r="7" fill="#d4891c"/>
+              <circle cx="38" cy="40" r="4" fill="#b86c10"/>
+            </symbol>
+            <symbol id="h-dai" viewBox="0 0 40 40" overflow="visible">
+              <g transform="translate(20 20)" fill="#f7f8f5">
+                <ellipse cx="0" cy="-10" rx="3" ry="7"/>
+                <ellipse cx="0" cy="-10" rx="3" ry="7" transform="rotate(45)"/>
+                <ellipse cx="0" cy="-10" rx="3" ry="7" transform="rotate(90)"/>
+                <ellipse cx="0" cy="-10" rx="3" ry="7" transform="rotate(135)"/>
+                <ellipse cx="0" cy="-10" rx="3" ry="7" transform="rotate(180)"/>
+                <ellipse cx="0" cy="-10" rx="3" ry="7" transform="rotate(225)"/>
+                <ellipse cx="0" cy="-10" rx="3" ry="7" transform="rotate(270)"/>
+                <ellipse cx="0" cy="-10" rx="3" ry="7" transform="rotate(315)"/>
+              </g>
+              <circle cx="20" cy="20" r="3.2" fill="#f0c531"/>
+            </symbol>
+          </defs>
+          <rect width="1600" height="900" fill="url(#h-sky)"/>
+          <g fill="#ffffff" opacity="0.55">
+            <ellipse cx="1180" cy="120" rx="90" ry="22"/>
+            <ellipse cx="1280" cy="132" rx="70" ry="16"/>
+            <ellipse cx="980" cy="90" rx="60" ry="14"/>
+            <ellipse cx="240" cy="70" rx="80" ry="16"/>
+          </g>
+          <g filter="url(#h-haze)" fill="#d5e3ea">
+            <path d="M0 560 L70 500 L150 530 L240 470 L330 510 L420 450 L510 490 L600 455 L690 500 L760 470 L820 510 L700 580 L0 620 Z"/>
+          </g>
+          <g filter="url(#h-haze)">
+            <path fill="#c5d4de" d="M0 600 L100 540 L190 575 L280 500 L370 545 L460 480 L540 520 L640 470 L730 530 L800 560 L680 640 L0 690 Z"/>
+            <path fill="#b7c9d4" d="M40 640 L160 570 L250 610 L360 540 L450 590 L540 530 L640 575 L720 620 L560 680 L80 710 Z"/>
+          </g>
+          <path fill="#ddd6c8" d="M980 600 L1040 430 L1090 470 L1155 340 L1200 390 L1270 280 L1320 340 L1400 300 L1470 410 L1560 360 L1600 470 L1600 640 L1200 690 L980 650 Z"/>
+          <path fill="url(#h-rock)" d="M1100 640 L1155 450 L1200 490 L1268 230 L1310 310 L1378 168 L1425 250 L1505 220 L1575 390 L1600 470 L1600 660 L1460 710 L1240 730 L1100 680 Z"/>
+          <path fill="#d2cbc0" d="M1100 640 L1155 450 L1200 490 L1268 230 L1248 250 L1190 500 L1165 480 L1110 655 Z"/>
+          <path fill="#f8f5ef" d="M1378 168 L1425 250 L1505 220 L1555 340 L1490 300 L1440 250 L1405 270 L1378 190 Z"/>
+          <path fill="#fbfcfa" d="M1268 230 L1310 310 L1336 290 L1304 248 Z"/>
+          <path fill="#f7f8f6" d="M1378 168 L1404 230 L1425 250 L1402 188 Z"/>
+          <g fill="none" stroke="#b7b0a2" stroke-width="1.4">
+            <path d="M1208 470 L1236 360"/>
+            <path d="M1288 420 L1320 300"/>
+            <path d="M1460 400 L1495 280"/>
+            <path d="M1180 560 L1210 480"/>
+          </g>
+          <path fill="#8fb56e" d="M860 650 C 1040 590 1220 640 1400 590 C 1500 560 1560 590 1600 560 L 1600 760 L 820 820 Z"/>
+          <path fill="#d9d3c4" d="M1288 640 L1360 560 L1435 610 L1510 545 L1590 640 L1540 730 L1400 770 L1300 700 Z"/>
+          <path fill="#c9c3b4" d="M1360 560 L1405 600 L1435 610 L1410 575 Z"/>
+          <path fill="#7eae62" d="M0 690 C 220 640 420 710 680 660 C 860 630 980 680 1040 650 L 980 900 L 0 900 Z"/>
+          <path fill="url(#h-grass)" d="M0 760 C 260 700 520 780 820 730 C 1080 690 1320 750 1600 690 L 1600 900 L 0 900 Z"/>
+          <path fill="#5f984c" d="M0 820 C 300 780 560 850 900 800 C 1180 760 1400 820 1600 780 L 1600 900 L 0 900 Z"/>
+          <path fill="#c6b094" d="M150 900 C 240 830 330 790 430 760 C 530 730 590 755 670 735 C 760 712 820 755 910 800 L 970 845 C 860 800 790 770 690 805 C 600 838 530 810 440 845 C 340 885 250 900 190 900 Z"/>
+          <path fill="#b39a78" d="M210 892 C 300 840 390 810 490 790 C 560 778 610 800 680 788 C 750 776 800 800 860 830 L 820 848 C 760 820 700 808 640 822 C 560 842 490 820 400 852 C 320 880 250 900 210 900 Z"/>
+          <path fill="#d5cfc2" d="M120 790 L 175 755 L 230 778 L 210 820 L 140 828 Z"/>
+          <path fill="#c9c3b4" d="M470 830 L 520 800 L 575 822 L 548 858 L 470 850 Z"/>
+          <path fill="#e4dfd4" d="M980 800 L 1040 760 L 1105 788 L 1070 830 L 990 828 Z"/>
+          <path fill="#cfc8ba" d="M1320 790 L 1385 750 L 1450 780 L 1410 825 L 1325 820 Z"/>
+          <g fill="none" stroke-linecap="round">
+            <path d="M671 778 C 674 764 677 756 677 750" stroke="#3f7a3c" stroke-width="1.1"/>
+            <path d="M1105 764 C 1107 751 1109 743 1109 737" stroke="#3f7a3c" stroke-width="1.7"/>
+            <path d="M447 749 C 446 740 446 737 446 731" stroke="#6eae58" stroke-width="1.1"/>
+            <path d="M500 763 C 499 747 499 736 499 730" stroke="#3f7a3c" stroke-width="1.7"/>
+            <path d="M261 797 C 264 779 267 767 267 761" stroke="#3f7a3c" stroke-width="1.7"/>
+            <path d="M1207 841 C 1203 833 1200 830 1200 824" stroke="#3f7a3c" stroke-width="1.7"/>
+            <path d="M280 814 C 275 800 270 791 270 785" stroke="#3f7a3c" stroke-width="1.7"/>
+            <path d="M639 883 C 642 862 646 847 646 841" stroke="#2f6834" stroke-width="1.1"/>
+            <path d="M1199 886 C 1195 868 1191 856 1191 850" stroke="#5a9448" stroke-width="1.1"/>
+            <path d="M1129 756 C 1122 739 1116 728 1116 722" stroke="#2f6834" stroke-width="1.4"/>
+            <path d="M1401 876 C 1406 862 1411 853 1411 847" stroke="#5a9448" stroke-width="1.4"/>
+            <path d="M1207 856 C 1204 843 1202 835 1202 829" stroke="#2f6834" stroke-width="1.1"/>
+            <path d="M1439 802 C 1441 793 1443 790 1443 784" stroke="#5a9448" stroke-width="1.7"/>
+            <path d="M1021 827 C 1021 808 1021 794 1021 788" stroke="#5a9448" stroke-width="1.7"/>
+            <path d="M157 770 C 156 754 156 744 156 738" stroke="#2f6834" stroke-width="1.4"/>
+            <path d="M319 865 C 312 851 306 842 306 836" stroke="#3f7a3c" stroke-width="1.7"/>
+            <path d="M1181 820 C 1185 807 1189 800 1189 794" stroke="#5a9448" stroke-width="1.7"/>
+            <path d="M1025 888 C 1025 868 1025 853 1025 847" stroke="#3f7a3c" stroke-width="1.1"/>
+            <path d="M560 861 C 563 842 567 829 567 823" stroke="#3f7a3c" stroke-width="1.1"/>
+            <path d="M1505 819 C 1507 801 1509 789 1509 783" stroke="#6eae58" stroke-width="1.4"/>
+            <path d="M1475 838 C 1473 820 1472 807 1472 801" stroke="#3f7a3c" stroke-width="1.4"/>
+            <path d="M735 783 C 729 766 724 754 724 748" stroke="#6eae58" stroke-width="1.1"/>
+            <path d="M454 813 C 458 803 463 799 463 793" stroke="#2f6834" stroke-width="1.4"/>
+            <path d="M808 867 C 803 858 799 855 799 849" stroke="#6eae58" stroke-width="1.4"/>
+            <path d="M1133 811 C 1139 801 1145 797 1145 791" stroke="#6eae58" stroke-width="1.7"/>
+            <path d="M578 846 C 581 833 585 825 585 819" stroke="#6eae58" stroke-width="1.1"/>
+            <path d="M317 761 C 312 751 307 746 307 740" stroke="#2f6834" stroke-width="1.7"/>
+            <path d="M485 743 C 491 728 497 718 497 712" stroke="#2f6834" stroke-width="1.4"/>
+            <path d="M585 741 C 584 731 584 727 584 721" stroke="#5a9448" stroke-width="1.7"/>
+            <path d="M1167 821 C 1171 811 1175 807 1175 801" stroke="#3f7a3c" stroke-width="1.4"/>
+            <path d="M1401 883 C 1400 869 1399 861 1399 855" stroke="#6eae58" stroke-width="1.4"/>
+            <path d="M220 863 C 219 845 218 833 218 827" stroke="#3f7a3c" stroke-width="1.1"/>
+            <path d="M145 793 C 140 778 136 769 136 763" stroke="#3f7a3c" stroke-width="1.4"/>
+            <path d="M1238 753 C 1231 744 1224 740 1224 734" stroke="#2f6834" stroke-width="1.7"/>
+            <path d="M215 833 C 208 816 201 804 201 798" stroke="#3f7a3c" stroke-width="1.1"/>
+            <path d="M1265 836 C 1268 826 1271 822 1271 816" stroke="#5a9448" stroke-width="1.4"/>
+            <path d="M1241 833 C 1235 818 1230 808 1230 802" stroke="#3f7a3c" stroke-width="1.4"/>
+            <path d="M962 862 C 959 847 957 837 957 831" stroke="#3f7a3c" stroke-width="1.1"/>
+            <path d="M217 827 C 214 808 211 794 211 788" stroke="#6eae58" stroke-width="1.7"/>
+            <path d="M338 872 C 334 864 330 862 330 856" stroke="#5a9448" stroke-width="1.1"/>
+            <path d="M1421 879 C 1426 871 1431 869 1431 863" stroke="#5a9448" stroke-width="1.7"/>
+            <path d="M194 806 C 192 790 191 780 191 774" stroke="#2f6834" stroke-width="1.4"/>
+            <path d="M1588 797 C 1589 781 1591 770 1591 764" stroke="#5a9448" stroke-width="1.7"/>
+            <path d="M464 789 C 460 769 457 754 457 748" stroke="#6eae58" stroke-width="1.7"/>
+            <path d="M472 791 C 472 775 473 765 473 759" stroke="#5a9448" stroke-width="1.7"/>
+            <path d="M67 747 C 64 727 61 712 61 706" stroke="#6eae58" stroke-width="1.4"/>
+            <path d="M404 828 C 409 813 415 804 415 798" stroke="#5a9448" stroke-width="1.4"/>
+            <path d="M172 796 C 168 787 165 783 165 777" stroke="#6eae58" stroke-width="1.1"/>
+            <path d="M699 792 C 701 777 704 767 704 761" stroke="#3f7a3c" stroke-width="1.4"/>
+            <path d="M1345 828 C 1348 808 1351 793 1351 787" stroke="#3f7a3c" stroke-width="1.7"/>
+            <path d="M253 839 C 257 819 261 804 261 798" stroke="#2f6834" stroke-width="1.4"/>
+            <path d="M373 851 C 376 831 379 816 379 810" stroke="#5a9448" stroke-width="1.1"/>
+            <path d="M1486 841 C 1485 826 1484 817 1484 811" stroke="#3f7a3c" stroke-width="1.7"/>
+            <path d="M333 783 C 326 773 319 769 319 763" stroke="#2f6834" stroke-width="1.7"/>
+            <path d="M961 777 C 967 760 973 748 973 742" stroke="#6eae58" stroke-width="1.7"/>
+            <path d="M725 779 C 726 763 728 752 728 746" stroke="#2f6834" stroke-width="1.1"/>
+            <path d="M37 766 C 41 750 46 740 46 734" stroke="#2f6834" stroke-width="1.4"/>
+            <path d="M406 794 C 403 786 400 784 400 778" stroke="#2f6834" stroke-width="1.4"/>
+            <path d="M1034 801 C 1036 781 1038 767 1038 761" stroke="#5a9448" stroke-width="1.4"/>
+            <path d="M1122 847 C 1117 826 1112 811 1112 805" stroke="#3f7a3c" stroke-width="1.7"/>
+            <path d="M732 857 C 734 839 736 826 736 820" stroke="#6eae58" stroke-width="1.7"/>
+            <path d="M275 876 C 276 866 277 862 277 856" stroke="#3f7a3c" stroke-width="1.4"/>
+            <path d="M383 741 C 388 721 394 707 394 701" stroke="#2f6834" stroke-width="1.1"/>
+            <path d="M297 861 C 301 844 306 832 306 826" stroke="#3f7a3c" stroke-width="1.7"/>
+            <path d="M134 823 C 135 805 136 792 136 786" stroke="#6eae58" stroke-width="1.1"/>
+            <path d="M1155 754 C 1151 743 1147 737 1147 731" stroke="#5a9448" stroke-width="1.1"/>
+            <path d="M208 869 C 209 854 211 845 211 839" stroke="#3f7a3c" stroke-width="1.1"/>
+            <path d="M915 823 C 916 806 917 794 917 788" stroke="#2f6834" stroke-width="1.7"/>
+            <path d="M575 855 C 576 839 578 829 578 823" stroke="#6eae58" stroke-width="1.7"/>
+            <path d="M515 873 C 516 861 518 855 518 849" stroke="#2f6834" stroke-width="1.4"/>
+            <path d="M288 846 C 287 837 286 833 286 827" stroke="#6eae58" stroke-width="1.4"/>
+            <path d="M156 801 C 150 787 144 778 144 772" stroke="#2f6834" stroke-width="1.7"/>
+            <path d="M628 771 C 623 751 618 737 618 731" stroke="#5a9448" stroke-width="1.1"/>
+            <path d="M526 775 C 522 760 519 751 519 745" stroke="#3f7a3c" stroke-width="1.4"/>
+            <path d="M1005 781 C 1011 763 1017 750 1017 744" stroke="#2f6834" stroke-width="1.1"/>
+            <path d="M1454 850 C 1453 834 1452 824 1452 818" stroke="#5a9448" stroke-width="1.4"/>
+            <path d="M408 831 C 402 818 396 811 396 805" stroke="#5a9448" stroke-width="1.1"/>
+            <path d="M700 881 C 700 866 700 857 700 851" stroke="#3f7a3c" stroke-width="1.4"/>
+            <path d="M686 872 C 683 855 681 843 681 837" stroke="#3f7a3c" stroke-width="1.1"/>
+            <path d="M476 766 C 473 757 470 754 470 748" stroke="#5a9448" stroke-width="1.1"/>
+            <path d="M379 809 C 374 789 369 775 369 769" stroke="#6eae58" stroke-width="1.7"/>
+            <path d="M537 843 C 538 833 540 829 540 823" stroke="#6eae58" stroke-width="1.7"/>
+            <path d="M677 762 C 670 750 664 744 664 738" stroke="#2f6834" stroke-width="1.4"/>
+            <path d="M156 808 C 159 800 162 798 162 792" stroke="#3f7a3c" stroke-width="1.4"/>
+            <path d="M179 796 C 176 787 173 784 173 778" stroke="#3f7a3c" stroke-width="1.4"/>
+            <path d="M31 826 C 30 810 30 799 30 793" stroke="#5a9448" stroke-width="1.7"/>
+            <path d="M272 751 C 276 735 280 725 280 719" stroke="#2f6834" stroke-width="1.1"/>
+            <path d="M338 807 C 333 799 329 796 329 790" stroke="#2f6834" stroke-width="1.4"/>
+            <path d="M1295 818 C 1300 802 1305 792 1305 786" stroke="#2f6834" stroke-width="1.4"/>
+            <path d="M920 868 C 915 850 911 837 911 831" stroke="#5a9448" stroke-width="1.4"/>
+            <path d="M45 804 C 38 796 31 793 31 787" stroke="#3f7a3c" stroke-width="1.7"/>
+            <path d="M1043 881 C 1044 870 1045 865 1045 859" stroke="#6eae58" stroke-width="1.1"/>
+            <path d="M923 767 C 929 749 935 736 935 730" stroke="#6eae58" stroke-width="1.7"/>
+            <path d="M1021 879 C 1028 858 1035 843 1035 837" stroke="#6eae58" stroke-width="1.7"/>
+            <path d="M638 795 C 636 784 634 778 634 772" stroke="#2f6834" stroke-width="1.7"/>
+            <path d="M1500 775 C 1498 761 1497 753 1497 747" stroke="#3f7a3c" stroke-width="1.1"/>
+            <path d="M37 758 C 41 740 46 728 46 722" stroke="#5a9448" stroke-width="1.4"/>
+            <path d="M342 754 C 345 745 349 742 349 736" stroke="#6eae58" stroke-width="1.7"/>
+            <path d="M1381 812 C 1377 795 1374 783 1374 777" stroke="#5a9448" stroke-width="1.1"/>
+            <path d="M948 787 C 945 777 942 772 942 766" stroke="#6eae58" stroke-width="1.1"/>
+            <path d="M547 833 C 548 820 550 813 550 807" stroke="#5a9448" stroke-width="1.1"/>
+            <path d="M78 819 C 76 808 75 803 75 797" stroke="#2f6834" stroke-width="1.1"/>
+            <path d="M694 837 C 694 828 695 825 695 819" stroke="#5a9448" stroke-width="1.7"/>
+            <path d="M1351 791 C 1352 780 1353 774 1353 768" stroke="#3f7a3c" stroke-width="1.1"/>
+            <path d="M549 762 C 548 752 547 748 547 742" stroke="#3f7a3c" stroke-width="1.4"/>
+            <path d="M54 816 C 57 804 60 797 60 791" stroke="#2f6834" stroke-width="1.1"/>
+            <path d="M1207 875 C 1202 855 1197 841 1197 835" stroke="#6eae58" stroke-width="1.4"/>
+            <path d="M1483 866 C 1480 856 1478 852 1478 846" stroke="#2f6834" stroke-width="1.1"/>
+            <path d="M1472 871 C 1471 853 1471 841 1471 835" stroke="#2f6834" stroke-width="1.7"/>
+            <path d="M1549 869 C 1555 852 1561 841 1561 835" stroke="#3f7a3c" stroke-width="1.7"/>
+            <path d="M1204 798 C 1197 789 1190 786 1190 780" stroke="#3f7a3c" stroke-width="1.1"/>
+            <path d="M1312 832 C 1311 823 1310 819 1310 813" stroke="#6eae58" stroke-width="1.7"/>
+            <path d="M111 744 C 112 726 114 714 114 708" stroke="#2f6834" stroke-width="1.4"/>
+            <path d="M548 740 C 553 725 559 716 559 710" stroke="#3f7a3c" stroke-width="1.7"/>
+            <path d="M1038 877 C 1041 868 1045 865 1045 859" stroke="#3f7a3c" stroke-width="1.7"/>
+            <path d="M1516 861 C 1521 849 1527 843 1527 837" stroke="#3f7a3c" stroke-width="1.4"/>
+            <path d="M488 792 C 492 781 497 775 497 769" stroke="#6eae58" stroke-width="1.4"/>
+            <path d="M791 759 C 794 744 798 734 798 728" stroke="#5a9448" stroke-width="1.1"/>
+            <path d="M1271 790 C 1273 781 1276 778 1276 772" stroke="#2f6834" stroke-width="1.4"/>
+            <path d="M528 817 C 530 800 532 788 532 782" stroke="#2f6834" stroke-width="1.1"/>
+            <path d="M995 755 C 992 740 989 730 989 724" stroke="#3f7a3c" stroke-width="1.7"/>
+            <path d="M453 865 C 457 853 461 846 461 840" stroke="#5a9448" stroke-width="1.4"/>
+            <path d="M962 859 C 956 839 951 825 951 819" stroke="#2f6834" stroke-width="1.4"/>
+            <path d="M183 861 C 180 853 178 851 178 845" stroke="#6eae58" stroke-width="1.1"/>
+            <path d="M1045 855 C 1044 843 1043 837 1043 831" stroke="#2f6834" stroke-width="1.1"/>
+            <path d="M160 888 C 155 879 150 876 150 870" stroke="#5a9448" stroke-width="1.4"/>
+            <path d="M279 870 C 286 858 293 852 293 846" stroke="#3f7a3c" stroke-width="1.7"/>
+            <path d="M755 799 C 762 784 769 774 769 768" stroke="#6eae58" stroke-width="1.4"/>
+            <path d="M58 780 C 58 772 59 770 59 764" stroke="#6eae58" stroke-width="1.4"/>
+            <path d="M626 776 C 624 762 623 753 623 747" stroke="#6eae58" stroke-width="1.4"/>
+            <path d="M255 824 C 253 816 251 814 251 808" stroke="#5a9448" stroke-width="1.4"/>
+            <path d="M253 790 C 246 771 239 758 239 752" stroke="#5a9448" stroke-width="1.4"/>
+            <path d="M770 756 C 769 742 768 734 768 728" stroke="#3f7a3c" stroke-width="1.4"/>
+            <path d="M884 810 C 881 802 878 799 878 793" stroke="#3f7a3c" stroke-width="1.1"/>
+            <path d="M1363 813 C 1358 795 1353 783 1353 777" stroke="#2f6834" stroke-width="1.4"/>
+            <path d="M901 870 C 897 857 893 850 893 844" stroke="#5a9448" stroke-width="1.4"/>
+            <path d="M67 842 C 68 826 70 815 70 809" stroke="#2f6834" stroke-width="1.7"/>
+            <path d="M173 752 C 172 733 172 719 172 713" stroke="#6eae58" stroke-width="1.7"/>
+            <path d="M1549 775 C 1555 757 1562 745 1562 739" stroke="#5a9448" stroke-width="1.4"/>
+            <path d="M108 880 C 103 870 99 866 99 860" stroke="#6eae58" stroke-width="1.4"/>
+            <path d="M711 812 C 708 800 705 793 705 787" stroke="#5a9448" stroke-width="1.4"/>
+            <path d="M1351 801 C 1351 789 1352 782 1352 776" stroke="#6eae58" stroke-width="1.1"/>
+            <path d="M350 781 C 346 772 342 769 342 763" stroke="#6eae58" stroke-width="1.7"/>
+            <path d="M458 855 C 463 842 468 835 468 829" stroke="#6eae58" stroke-width="1.4"/>
+            <path d="M293 880 C 289 869 286 864 286 858" stroke="#3f7a3c" stroke-width="1.1"/>
+            <path d="M708 882 C 706 873 704 870 704 864" stroke="#2f6834" stroke-width="1.4"/>
+            <path d="M537 885 C 544 874 551 869 551 863" stroke="#3f7a3c" stroke-width="1.7"/>
+            <path d="M853 838 C 857 824 862 815 862 809" stroke="#2f6834" stroke-width="1.4"/>
+            <path d="M561 826 C 554 806 548 792 548 786" stroke="#6eae58" stroke-width="1.4"/>
+            <path d="M1184 832 C 1187 822 1191 818 1191 812" stroke="#2f6834" stroke-width="1.1"/>
+            <path d="M563 803 C 562 789 561 781 561 775" stroke="#6eae58" stroke-width="1.4"/>
+            <path d="M647 745 C 640 735 634 731 634 725" stroke="#6eae58" stroke-width="1.7"/>
+            <path d="M1572 861 C 1572 844 1573 833 1573 827" stroke="#3f7a3c" stroke-width="1.1"/>
+            <path d="M809 875 C 809 860 809 851 809 845" stroke="#2f6834" stroke-width="1.1"/>
+            <path d="M466 779 C 467 769 468 765 468 759" stroke="#3f7a3c" stroke-width="1.7"/>
+            <path d="M1443 857 C 1444 848 1446 845 1446 839" stroke="#3f7a3c" stroke-width="1.1"/>
+            <path d="M265 799 C 258 782 252 771 252 765" stroke="#5a9448" stroke-width="1.1"/>
+            <path d="M1291 804 C 1294 788 1297 778 1297 772" stroke="#6eae58" stroke-width="1.7"/>
+            <path d="M1572 768 C 1566 759 1560 755 1560 749" stroke="#5a9448" stroke-width="1.7"/>
+            <path d="M1201 789 C 1198 775 1195 767 1195 761" stroke="#2f6834" stroke-width="1.7"/>
+            </g>
+          <g>
+            <use href="#h-bell" x="36" y="742" width="92" height="126"/>
+            <use href="#h-bell" x="118" y="768" width="100" height="138"/>
+            <use href="#h-bell" x="210" y="730" width="78" height="108"/>
+            <use href="#h-bell" x="300" y="790" width="108" height="148"/>
+            <use href="#h-bell" x="430" y="755" width="86" height="118"/>
+            <use href="#h-bell" x="530" y="800" width="96" height="132"/>
+            <use href="#h-bell" x="640" y="748" width="74" height="102"/>
+            <use href="#h-bell" x="730" y="785" width="90" height="124"/>
+            <use href="#h-bell" x="860" y="735" width="70" height="96"/>
+            <use href="#h-bell" x="960" y="770" width="84" height="116"/>
+            <use href="#h-bell" x="1080" y="748" width="72" height="100"/>
+            <use href="#h-bell" x="1200" y="785" width="88" height="122"/>
+            <use href="#h-bell" x="1340" y="740" width="70" height="96"/>
+            <use href="#h-bell" x="1460" y="768" width="80" height="110"/>
+            <use href="#h-bell" x="70" y="690" width="54" height="74"/>
+            <use href="#h-bell" x="250" y="675" width="48" height="66"/>
+            <use href="#h-bell" x="390" y="700" width="50" height="70"/>
+            <use href="#h-bell" x="600" y="680" width="46" height="64"/>
+            <use href="#h-bell" x="820" y="665" width="44" height="60"/>
+            <use href="#h-bell" x="1020" y="690" width="48" height="66"/>
+            <use href="#h-bell" x="1280" y="670" width="44" height="60"/>
+            <use href="#h-bell" x="1500" y="690" width="46" height="64"/>
+            <use href="#h-star" x="48" y="800" width="58" height="64"/>
+            <use href="#h-star" x="188" y="820" width="52" height="58"/>
+            <use href="#h-star" x="360" y="760" width="48" height="54"/>
+            <use href="#h-star" x="500" y="830" width="56" height="62"/>
+            <use href="#h-star" x="680" y="800" width="46" height="52"/>
+            <use href="#h-star" x="900" y="755" width="50" height="56"/>
+            <use href="#h-star" x="1120" y="790" width="48" height="54"/>
+            <use href="#h-star" x="1400" y="760" width="52" height="58"/>
+            <use href="#h-arn" x="280" y="640" width="70" height="105"/>
+            <use href="#h-arn" x="560" y="700" width="64" height="96"/>
+            <use href="#h-arn" x="780" y="655" width="72" height="108"/>
+            <use href="#h-arn" x="1000" y="640" width="66" height="100"/>
+            <use href="#h-arn" x="1240" y="660" width="68" height="102"/>
+            <use href="#h-arn" x="1488" y="650" width="60" height="90"/>
+            <use href="#h-dai" x="20" y="860" width="34" height="34"/>
+            <use href="#h-dai" x="90" y="840" width="28" height="28"/>
+            <use href="#h-dai" x="160" y="870" width="36" height="36"/>
+            <use href="#h-dai" x="250" y="850" width="30" height="30"/>
+            <use href="#h-dai" x="340" y="870" width="34" height="34"/>
+            <use href="#h-dai" x="410" y="820" width="26" height="26"/>
+            <use href="#h-dai" x="490" y="860" width="32" height="32"/>
+            <use href="#h-dai" x="570" y="840" width="28" height="28"/>
+            <use href="#h-dai" x="660" y="870" width="34" height="34"/>
+            <use href="#h-dai" x="750" y="850" width="30" height="30"/>
+            <use href="#h-dai" x="840" y="830" width="26" height="26"/>
+            <use href="#h-dai" x="930" y="860" width="32" height="32"/>
+            <use href="#h-dai" x="1040" y="845" width="28" height="28"/>
+            <use href="#h-dai" x="1140" y="870" width="34" height="34"/>
+            <use href="#h-dai" x="1260" y="840" width="28" height="28"/>
+            <use href="#h-dai" x="1360" y="865" width="32" height="32"/>
+            <use href="#h-dai" x="1480" y="850" width="30" height="30"/>
+            <use href="#h-dai" x="1550" y="820" width="26" height="26"/>
+          </g>
+        </svg>
+      </div>
+      <div class="hero-copy">
+        <h1><span>Wildflowers of</span><span>the Dolomites</span></h1>
+        <p class="hero-lead">A botanical field transect across pale limestone, from larch-shaded hay meadows to wind-scoured nival scree above 2,600 meters.</p>
+        <a class="ascend" href="#pale">Begin the ascent</a>
+      </div>
+    </section>
+
+    <section class="band band-paper" id="pale">
+      <div class="band-inner split">
+        <div class="prose">
+          <h2>Pale rock and vertical seasons</h2>
+          <p>Walk uphill for three hours anywhere between the Alpe di Siusi and the Pale di San Martino and you cross the climatic equivalent of two thousand kilometers northward. Every hundred meters of elevation drops the mean air temperature by roughly 0.6 degrees Celsius, compresses the snow-free growing season by a week, and sharpens ultraviolet radiation against white rock walls.</p>
+          <p>What separates the Dolomites from the neighboring granite massifs of the Central Alps is chemistry. Formed from ancient Triassic coral reefs rich in calcium-magnesium carbonate, dolomitic limestone drains water almost immediately and yields alkaline soils between pH 7.0 and 8.2. Yet volcanic intrusions of dark porphyry and basalt cut straight across these pale reefs, creating sharp botanical borders where lime-loving edelweiss and acid-loving arnica grow within a stone's throw of one another.</p>
+        </div>
+        <div class="params">
+          <h3>Transect parameters</h3>
+          <dl>
+            <div class="param">
+              <dt>Vertical span</dt>
+              <dd>1,400 to 3,100 m</dd>
+            </div>
+            <div class="param">
+              <dt>Dominant bedrock</dt>
+              <dd>Dolomia Principale (CaMg(CO<sub>3</sub>)<sub>2</sub>)</dd>
+            </div>
+            <div class="param">
+              <dt>Field window</dt>
+              <dd>Late May through early September</dd>
+            </div>
+            <div class="param">
+              <dt>Reference valleys</dt>
+              <dd>Val di Funes, Alpe di Siusi, Puez–Odle, Passo Giau</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band-mist" id="transect">
+      <div class="band-inner">
+        <div class="section-head">
+          <h2>Limestone elevation transect</h2>
+          <div class="seg" id="band-seg" role="radiogroup" aria-label="Elevation band">
+            <button type="button" role="radio" data-band="montane" aria-checked="true" tabindex="0">Montane</button>
+            <button type="button" role="radio" data-band="subalpine" aria-checked="false" tabindex="-1">Subalpine</button>
+            <button type="button" role="radio" data-band="alpine" aria-checked="false" tabindex="-1">Alpine</button>
+            <button type="button" role="radio" data-band="nival" aria-checked="false" tabindex="-1">Nival</button>
+          </div>
+        </div>
+        <div class="split">
+          <div class="chart-card">
+            <svg class="chart" id="elev-chart" data-band="montane" viewBox="0 0 680 360" role="img" aria-labelledby="chart-title">
+              <title id="chart-title">Elevation profile from 1,400 to 3,100 meters. Montane band selected.</title>
+              <rect width="680" height="360" fill="#e4eef5"/>
+              <text x="8" y="28">3,100 m</text>
+              <text x="8" y="118">2,600 m</text>
+              <text x="8" y="190">2,200 m</text>
+              <text x="8" y="262">1,800 m</text>
+              <line class="tick" x1="132" y1="22" x2="656" y2="22"/>
+              <line class="tick" x1="132" y1="112" x2="656" y2="112"/>
+              <line class="tick" x1="132" y1="184" x2="656" y2="184"/>
+              <line class="tick" x1="132" y1="256" x2="656" y2="256"/>
+              <line class="treeline" x1="132" y1="193" x2="656" y2="193"/>
+              <text x="148" y="174">Treeline near 2,150 m</text>
+              <defs>
+                <clipPath id="c-land">
+                  <path d="M132 286 C190 280 240 268 290 248 C350 224 400 198 450 162 C500 126 545 86 590 52 C615 36 640 30 656 46 L656 328 L132 328 Z"/>
+                </clipPath>
+              </defs>
+              <path class="land" d="M132 286 C190 280 240 268 290 248 C350 224 400 198 450 162 C500 126 545 86 590 52 C615 36 640 30 656 46 L656 328 L132 328 Z"/>
+              <g clip-path="url(#c-land)">
+                <rect class="fill fill-nival" x="132" y="22" width="524" height="90" fill="#9eb4cc"/>
+                <rect class="fill fill-alpine" x="132" y="112" width="524" height="72" fill="#7ea4d0"/>
+                <rect class="fill fill-subalpine" x="132" y="184" width="524" height="72" fill="#6e97c8"/>
+                <rect class="fill fill-montane" x="132" y="256" width="524" height="72" fill="#5d8fd4"/>
+              </g>
+              <path class="ridge" d="M132 286 C190 280 240 268 290 248 C350 224 400 198 450 162 C500 126 545 86 590 52 C615 36 640 30 656 46"/>
+              <circle class="dot dot-montane" cx="188" cy="272" r="5.5"/>
+              <circle class="dot dot-subalpine" cx="330" cy="232" r="5.5"/>
+              <circle class="dot dot-alpine" cx="468" cy="150" r="5.5"/>
+              <circle class="dot dot-nival" cx="600" cy="48" r="5.5"/>
+              <text class="tag tag-montane" x="200" y="244">Montane (1,400–1,800 m)</text>
+              <text class="tag tag-subalpine" x="342" y="226">Subalpine (1,800–2,200 m)</text>
+              <text class="tag tag-alpine" x="480" y="146">Alpine (2,200–2,600 m)</text>
+              <text class="tag tag-nival" x="470" y="36">Nival (2,600–3,100 m)</text>
+            </svg>
+          </div>
+          <div class="band-panels" id="band-panels">
+            <div class="panel" data-for="montane">
+              <h3 class="panel-title">Montane meadows and larch clearings</h3>
+              <p class="panel-copy">Rich calcareous hay meadows mowed once each late summer, bordered by European larch and Norway spruce. Soil retains moisture longest here, supporting tall stems and dense midsummer color.</p>
+              <dl class="specs">
+                <div class="row"><dt>Elevation band</dt><dd>1,400 to 1,800 m</dd></div>
+                <div class="row"><dt>Peak bloom</dt><dd>Late May to mid-July</dd></div>
+                <div class="row"><dt>Substrate</dt><dd>Deep calcareous loam and porphyry pockets</dd></div>
+                <div class="row"><dt>Signature species</dt><dd><em>Lilium martagon</em>, <em>Arnica montana</em>, <em>Trollius europaeus</em></dd></div>
+              </dl>
+              <a class="panel-link" href="#montane">Read the montane field note</a>
+            </div>
+            <div class="panel" data-for="subalpine" hidden>
+              <h3 class="panel-title">Subalpine dwarf pine and alpenrose slopes</h3>
+              <p class="panel-copy">Above 1,850 meters, upright spruces yield to Swiss stone pine and dwarf mountain pine that bend flat under winter snow. Hairy alpenrose and stemless trumpet gentians hold the limestone pockets beside melting snowbanks.</p>
+              <dl class="specs">
+                <div class="row"><dt>Elevation band</dt><dd>1,800 to 2,200 m</dd></div>
+                <div class="row"><dt>Peak bloom</dt><dd>Mid June through July</dd></div>
+                <div class="row"><dt>Substrate</dt><dd>Alkaline dolomite boulders and cropped pasture</dd></div>
+                <div class="row"><dt>Signature species</dt><dd><em>Pinus mugo</em>, <em>Rhododendron hirsutum</em>, <em>Gentiana acaulis</em></dd></div>
+              </dl>
+              <a class="panel-link" href="#subalpine">Read the subalpine field note</a>
+            </div>
+            <div class="panel" data-for="alpine" hidden>
+              <h3 class="panel-title">Alpine turf and vertical limestone ledges</h3>
+              <p class="panel-copy">Cross the timberline near 2,150 meters and blue sedge turf, bleached pavement, and vertical cliffs replace the forest. Edelweiss and Moretti's bellflower keep to ledges and hair-thin fissures that stayed ice-free above the Pleistocene glaciers.</p>
+              <dl class="specs">
+                <div class="row"><dt>Elevation band</dt><dd>2,200 to 2,600 m</dd></div>
+                <div class="row"><dt>Peak bloom</dt><dd>July through mid August</dd></div>
+                <div class="row"><dt>Substrate</dt><dd>Exposed calcareous ledges and cliff fissures</dd></div>
+                <div class="row"><dt>Signature species</dt><dd><em>Leontopodium nivale</em>, <em>Campanula morettiana</em>, <em>Soldanella alpina</em></dd></div>
+              </dl>
+              <a class="panel-link" href="#alpine">Read the alpine field note</a>
+            </div>
+            <div class="panel" data-for="nival" hidden>
+              <h3 class="panel-title">Nival scree and high dolomite ridges</h3>
+              <p class="panel-copy">Above 2,600 meters, continuous turf breaks apart into pale angular gravel and the growing window narrows to six fleeting weeks. Glacier buttercup and purple saxifrage keep the frost-shattered ledges.</p>
+              <dl class="specs">
+                <div class="row"><dt>Elevation band</dt><dd>2,600 to 3,100 m</dd></div>
+                <div class="row"><dt>Peak bloom</dt><dd>Late July through August</dd></div>
+                <div class="row"><dt>Substrate</dt><dd>Mobile dolomitic scree and frost-shattered ledges</dd></div>
+                <div class="row"><dt>Signature species</dt><dd><em>Ranunculus glacialis</em>, <em>Saxifraga oppositifolia</em>, <em>Papaver alpinum</em></dd></div>
+              </dl>
+              <a class="panel-link" href="#nival">Read the nival field note</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band-paper" id="montane">
+      <div class="band-inner split-plate">
+        <h2>Montane meadows and larch clearings</h2>
+        <dl class="meta meta-2">
+          <div>
+            <dt>Elevation band</dt>
+            <dd>1,400 to 1,800 m</dd>
+          </div>
+          <div>
+            <dt>Snow-free season</dt>
+            <dd>140 to 170 days</dd>
+          </div>
+          <div>
+            <dt>Peak flowering</dt>
+            <dd>June through mid-July</dd>
+          </div>
+          <div>
+            <dt>Soil chemistry</dt>
+            <dd>Calcareous loam with local acidic pockets</dd>
+          </div>
+        </dl>
+        <div class="prose">
+          <p id="elev-montane-mid">The botanical richness of the Dolomites begins in human-tended pasture. Across the rolling tableland of the Alpe di Siusi and the lower slopes of Val di Funes, centuries of single-cut scything have prevented spruce forest from closing over the meadows. Without synthetic fertilizer, these unimproved grasslands hold up to seventy vascular plant species within a single square meter.</p>
+          <p>At the shaded margins where European larch (<em>Larix decidua</em>) drops fine golden needles over limestone rubble, the Turk's cap lily (<em>Lilium martagon</em>) lifts tiered whorls of lance-shaped leaves up to a meter high. Its dusky rose petals curl tightly backward like scrolled porcelain, dusted with plum-colored nectar guides that steer hawkmoths toward the pendant orange anthers at dusk.</p>
+          <p>Walk fifty paces onto a dark volcanic outcrop of Bolzano quartz porphyry and the palette shifts abruptly. Here, where rainwater leaches calcium away and soil pH drops below 6.0, mountain arnica (<em>Arnica montana</em>) unfurls its unmistakable golden-orange flowerheads. Crush a single leaf between your fingers and the resinous scent of sesquiterpene lactones rises immediately, the same aromatic defense that keeps grazing cattle at bay while local herbalists prized it for mountain bruises.</p>
+          <aside class="field-note" id="elev-montane-note">
+            <h3>Field note on mowing phenology</h3>
+            <p>Watch for the arrival of yellow rattle (<em>Rhinanthus alectorolophus</em>) in late June. This hemiparasitic wildflower taps into the roots of vigorous meadow grasses, weakening their canopy just enough so delicate terrestrial orchids such as <em>Nigritella rhellicani</em> and <em>Gymnadenia conopsea</em> can catch direct sunlight before the late-July hay harvest.</p>
+          </aside>
+        </div>
+        <figure class="plate">
+          <svg viewBox="0 0 540 680" aria-hidden="true">
+            <defs>
+              <linearGradient id="m-leaf" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#9dcc72"/>
+                <stop offset="1" stop-color="#2c6434"/>
+              </linearGradient>
+              <linearGradient id="m-petal" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0" stop-color="#8d4a62"/>
+                <stop offset="0.55" stop-color="#d192a6"/>
+                <stop offset="1" stop-color="#f0d0da"/>
+              </linearGradient>
+              <symbol id="m-lily" viewBox="-60 -70 120 130" overflow="visible">
+                <g fill="url(#m-petal)">
+                  <path d="M0 4 C-14-6-26-36-12-62 C-4-40 2-12 0 4 Z" transform="rotate(-72)"/>
+                  <path d="M0 4 C-14-6-26-36-12-62 C-4-40 2-12 0 4 Z" transform="rotate(-36)"/>
+                  <path d="M0 4 C-14-6-26-36-12-62 C-4-40 2-12 0 4 Z" transform="rotate(0)"/>
+                  <path d="M0 4 C-14-6-26-36-12-62 C-4-40 2-12 0 4 Z" transform="rotate(36)"/>
+                  <path d="M0 4 C-14-6-26-36-12-62 C-4-40 2-12 0 4 Z" transform="rotate(72)"/>
+                  <path d="M0 4 C-14-6-26-36-12-62 C-4-40 2-12 0 4 Z" transform="rotate(108)"/>
+                </g>
+                <g fill="#6b3048">
+                  <ellipse cx="-8" cy="-18" rx="1.5" ry="2.6" transform="rotate(-30)"/>
+                  <ellipse cx="6" cy="-16" rx="1.4" ry="2.4" transform="rotate(24)"/>
+                  <ellipse cx="-2" cy="-26" rx="1.3" ry="2.2"/>
+                  <ellipse cx="10" cy="-8" rx="1.2" ry="2"/>
+                  <ellipse cx="-12" cy="-8" rx="1.2" ry="2" transform="rotate(-50)"/>
+                </g>
+                <g stroke="#d4892e" stroke-width="1.3" fill="#e39a28">
+                  <line x1="0" y1="6" x2="-7" y2="36"/><ellipse cx="-7" cy="39" rx="2.6" ry="4.4"/>
+                  <line x1="0" y1="6" x2="0" y2="40"/><ellipse cx="0" cy="43" rx="2.5" ry="4.2"/>
+                  <line x1="0" y1="6" x2="8" y2="34"/><ellipse cx="8" cy="37" rx="2.4" ry="4"/>
+                  <line x1="0" y1="6" x2="-3" y2="38"/><ellipse cx="-3" cy="41" rx="2.2" ry="3.8"/>
+                  <line x1="0" y1="6" x2="5" y2="32"/><ellipse cx="5" cy="35" rx="2.2" ry="3.6"/>
+                </g>
+                <path d="M0 8 C 1 20 0 32 1 42" fill="none" stroke="#6a8f46" stroke-width="1.3"/>
+              </symbol>
+            </defs>
+            <path d="M168 640 C160 520 174 380 156 150" fill="none" stroke="#2f6434" stroke-width="3.4" stroke-linecap="round"/>
+            <g fill="url(#m-leaf)">
+              <path d="M164 500 C140 470 60 450 18 390 C70 430 130 470 164 500 Z"/>
+              <path d="M168 498 C196 468 280 446 330 392 C270 432 200 470 168 498 Z"/>
+              <path d="M162 470 C140 448 78 438 46 396 C90 422 130 452 162 470 Z"/>
+              <path d="M170 468 C194 446 250 434 286 396 C240 424 196 452 170 468 Z"/>
+              <path d="M158 300 C136 270 62 258 28 206 C74 236 124 272 158 300 Z"/>
+              <path d="M162 298 C188 268 258 254 300 208 C248 242 190 272 162 298 Z"/>
+              <path d="M156 274 C138 252 96 246 70 210 C104 230 136 256 156 274 Z"/>
+              <path d="M164 272 C184 250 226 242 256 208 C220 232 184 256 164 272 Z"/>
+            </g>
+            <g fill="none" stroke="#2f6434" stroke-width="1.1" opacity="0.65">
+              <path d="M90 440 C120 450 145 470 162 492"/>
+              <path d="M250 438 C220 448 190 468 170 492"/>
+              <path d="M86 246 C116 258 140 278 156 296"/>
+              <path d="M236 244 C210 256 184 274 164 294"/>
+            </g>
+            <path d="M156 168 C130 150 112 140 100 150" fill="none" stroke="#2f6434" stroke-width="1.7"/>
+            <path d="M158 190 C188 168 206 160 214 172" fill="none" stroke="#2f6434" stroke-width="1.7"/>
+            <path d="M154 150 C150 120 146 100 150 88" fill="none" stroke="#2f6434" stroke-width="1.6"/>
+            <use href="#m-lily" transform="translate(104 132) scale(0.92)"/>
+            <use href="#m-lily" transform="translate(214 154) scale(0.84)"/>
+            <use href="#m-lily" transform="translate(150 86) scale(0.7)"/>
+            <path d="M430 620 C390 560 350 490 372 430 C400 470 430 540 446 600 C470 540 520 490 516 430 C548 510 520 590 460 628 Z" fill="#3d7a40"/>
+            <path d="M400 560 C372 520 368 470 400 448" fill="none" stroke="#2a5c30" stroke-width="1.3"/>
+            <path d="M470 545 C502 500 500 458 468 436" fill="none" stroke="#2a5c30" stroke-width="1.3"/>
+            <path d="M438 600 C436 500 430 400 446 250" fill="none" stroke="#2f6434" stroke-width="2.6" stroke-linecap="round"/>
+            <ellipse cx="400" cy="340" rx="26" ry="10" fill="#4c8a46" transform="rotate(-34 400 340)"/>
+            <ellipse cx="492" cy="390" rx="24" ry="9" fill="#3e7c42" transform="rotate(30 492 390)"/>
+            <g transform="translate(448 168)">
+              <g fill="#f0c431">
+                <ellipse cx="0" cy="-30" rx="8" ry="18"/>
+                <ellipse cx="0" cy="-30" rx="8" ry="18" transform="rotate(22)"/>
+                <ellipse cx="0" cy="-30" rx="8" ry="18" transform="rotate(44)"/>
+                <ellipse cx="0" cy="-30" rx="8" ry="18" transform="rotate(66)"/>
+                <ellipse cx="0" cy="-30" rx="8" ry="18" transform="rotate(88)"/>
+                <ellipse cx="0" cy="-30" rx="8" ry="18" transform="rotate(110)"/>
+                <ellipse cx="0" cy="-30" rx="8" ry="18" transform="rotate(132)"/>
+                <ellipse cx="0" cy="-30" rx="8" ry="18" transform="rotate(154)"/>
+                <ellipse cx="0" cy="-30" rx="8" ry="18" transform="rotate(176)"/>
+                <ellipse cx="0" cy="-30" rx="8" ry="18" transform="rotate(198)"/>
+                <ellipse cx="0" cy="-30" rx="8" ry="18" transform="rotate(220)"/>
+                <ellipse cx="0" cy="-30" rx="8" ry="18" transform="rotate(242)"/>
+                <ellipse cx="0" cy="-30" rx="8" ry="18" transform="rotate(264)"/>
+                <ellipse cx="0" cy="-30" rx="8" ry="18" transform="rotate(286)"/>
+                <ellipse cx="0" cy="-30" rx="8" ry="18" transform="rotate(308)"/>
+                <ellipse cx="0" cy="-30" rx="8" ry="18" transform="rotate(330)"/>
+              </g>
+              <circle r="14" fill="#d07c14"/>
+              <circle r="8" fill="#a8640e"/>
+            </g>
+            <path d="M446 250 C410 230 392 210 386 230" fill="none" stroke="#2f6434" stroke-width="1.8"/>
+            <g transform="translate(386 236) scale(0.72)">
+              <g fill="#e8b82a">
+                <ellipse cx="0" cy="-26" rx="7" ry="15"/>
+                <ellipse cx="0" cy="-26" rx="7" ry="15" transform="rotate(30)"/>
+                <ellipse cx="0" cy="-26" rx="7" ry="15" transform="rotate(60)"/>
+                <ellipse cx="0" cy="-26" rx="7" ry="15" transform="rotate(90)"/>
+                <ellipse cx="0" cy="-26" rx="7" ry="15" transform="rotate(120)"/>
+                <ellipse cx="0" cy="-26" rx="7" ry="15" transform="rotate(150)"/>
+                <ellipse cx="0" cy="-26" rx="7" ry="15" transform="rotate(180)"/>
+                <ellipse cx="0" cy="-26" rx="7" ry="15" transform="rotate(210)"/>
+                <ellipse cx="0" cy="-26" rx="7" ry="15" transform="rotate(240)"/>
+                <ellipse cx="0" cy="-26" rx="7" ry="15" transform="rotate(270)"/>
+                <ellipse cx="0" cy="-26" rx="7" ry="15" transform="rotate(300)"/>
+                <ellipse cx="0" cy="-26" rx="7" ry="15" transform="rotate(330)"/>
+              </g>
+              <circle r="11" fill="#c47412"/>
+            </g>
+          </svg>
+          <figcaption><strong>Montane specimen study.</strong> Left: <em>Lilium martagon</em> (Turk's cap lily), preferring filtered larch shade on calcareous humus. Right: <em>Arnica montana</em> (mountain arnica), indicator of siliceous or leached acidic turf between 1,450 and 1,900 m.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="band band-paper" id="subalpine">
+      <div class="band-inner">
+        <h2>Subalpine dwarf pine and alpenrose slopes</h2>
+        <dl class="meta meta-4">
+          <div>
+            <dt>Elevation band</dt>
+            <dd>1,800 to 2,200 m</dd>
+          </div>
+          <div>
+            <dt>Snow-free season</dt>
+            <dd>105 to 135 days</dd>
+          </div>
+          <div>
+            <dt>Peak flowering</dt>
+            <dd>Mid June through July</dd>
+          </div>
+          <div>
+            <dt>Microclimate</dt>
+            <dd>Heavy winter snowpack, rapid spring melt</dd>
+          </div>
+        </dl>
+        <figure class="plate">
+          <svg viewBox="0 0 960 500" aria-hidden="true">
+            <g stroke="#6b4632" fill="none" stroke-linecap="round">
+              <path d="M168 360 C166 400 160 440 150 490" stroke-width="1.6"/>
+              <path d="M150 430 C128 444 108 456 86 470" stroke-width="1.2"/>
+              <path d="M154 410 C176 424 196 436 214 452" stroke-width="1.2"/>
+              <path d="M148 458 C132 472 118 484 100 496" stroke-width="1"/>
+            </g>
+            <g fill="#3f7c44" transform="translate(168 340)">
+              <ellipse cx="0" cy="-28" rx="54" ry="13" transform="rotate(0)"/>
+              <ellipse cx="0" cy="-28" rx="50" ry="12" transform="rotate(45)"/>
+              <ellipse cx="0" cy="-28" rx="52" ry="12" transform="rotate(90)"/>
+              <ellipse cx="0" cy="-28" rx="48" ry="11" transform="rotate(135)"/>
+              <ellipse cx="0" cy="-22" rx="36" ry="10" transform="rotate(22)" fill="#2f6836"/>
+              <ellipse cx="0" cy="-22" rx="36" ry="10" transform="rotate(112)" fill="#2f6836"/>
+            </g>
+            <g transform="translate(168 188)">
+              <path d="M-28 20 C-36 48 -16 78 0 84 C16 78 36 48 28 20 Z" fill="#153ea6"/>
+              <path d="M-10 16 C-28 8 -34 -18 -12 -22 C-4 -4 -4 10 -10 16 Z" fill="#1e4ed8"/>
+              <path d="M12 14 C28 6 36 -16 16 -22 C8 -6 8 8 12 14 Z" fill="#2458dc"/>
+              <path d="M24 28 C36 22 40 4 24 -2 C18 10 18 22 24 28 Z" fill="#1a46c4"/>
+              <path d="M-24 28 C-36 22 -40 6 -24 0 C-18 12 -18 22 -24 28 Z" fill="#2a62e8"/>
+              <ellipse cx="0" cy="24" rx="22" ry="14" fill="#1d4ad0"/>
+              <ellipse cx="0" cy="28" rx="13" ry="9" fill="#d7e7b2"/>
+              <g fill="#2c5a32">
+                <circle cx="-6" cy="24" r="1.8"/><circle cx="0" cy="22" r="1.8"/><circle cx="7" cy="26" r="1.8"/>
+                <circle cx="-3" cy="32" r="1.5"/><circle cx="5" cy="32" r="1.5"/>
+              </g>
+            </g>
+            <g transform="translate(96 230) scale(0.72)">
+              <path d="M-28 20 C-36 48 -16 78 0 84 C16 78 36 48 28 20 Z" fill="#173eae"/>
+              <ellipse cx="0" cy="28" rx="20" ry="13" fill="#1e4ed8"/>
+              <ellipse cx="0" cy="32" rx="11" ry="8" fill="#e1eec0"/>
+            </g>
+            <g transform="translate(248 214) scale(0.64)">
+              <path d="M-28 20 C-36 48 -16 78 0 84 C16 78 36 48 28 20 Z" fill="#2456d4"/>
+              <ellipse cx="0" cy="28" rx="20" ry="13" fill="#2a62e8"/>
+              <ellipse cx="0" cy="32" rx="11" ry="8" fill="#d7e6b0"/>
+            </g>
+            <path fill="#e7e2d6" d="M430 250 L478 200 L530 236 L575 186 L630 230 L668 198 L710 248 L688 330 L620 368 L520 360 L458 330 Z"/>
+            <path fill="#d5cfc2" d="M478 200 L520 236 L508 270 L466 240 Z"/>
+            <path fill="#f6f3ec" d="M575 186 L630 230 L608 262 L556 214 Z"/>
+            <g fill="#b7b1a4">
+              <circle cx="530" cy="300" r="5"/><circle cx="590" cy="278" r="3.5"/><circle cx="640" cy="310" r="4"/>
+            </g>
+            <path d="M730 310 C790 250 900 220 960 248" fill="none" stroke="#5c4032" stroke-width="5" stroke-linecap="round"/>
+            <path d="M840 246 C820 200 880 168 924 196" fill="none" stroke="#5c4032" stroke-width="2.6"/>
+            <g fill="#2f6a36" stroke="#24562c" stroke-width="0.7">
+              <ellipse cx="780" cy="268" rx="30" ry="13" transform="rotate(-24 780 268)"/>
+              <ellipse cx="826" cy="236" rx="28" ry="12" transform="rotate(12 826 236)"/>
+              <ellipse cx="878" cy="220" rx="26" ry="11" transform="rotate(-8 878 220)"/>
+              <ellipse cx="930" cy="244" rx="27" ry="12" transform="rotate(20 930 244)"/>
+              <ellipse cx="748" cy="300" rx="22" ry="10" transform="rotate(-36 748 300)"/>
+            </g>
+            <g stroke="#2a5a30" stroke-width="0.8" fill="none">
+              <path d="M760 262 C780 270 800 274 810 268"/>
+              <path d="M860 214 C878 222 896 226 906 220"/>
+            </g>
+            <g fill="#e48aaf">
+              <path d="M800 150 C782 160 778 190 792 206 C806 218 826 208 830 186 C834 164 818 146 800 150 Z"/>
+              <path d="M858 112 C840 124 838 156 854 172 C870 184 890 172 892 150 C894 128 876 108 858 112 Z"/>
+              <path d="M918 140 C902 150 902 180 918 194 C934 206 952 194 952 172 C952 150 934 136 918 140 Z"/>
+              <path d="M968 186 C954 196 952 220 966 232 C980 242 996 230 996 210 C996 190 982 182 968 186 Z"/>
+              <path d="M770 196 C756 206 756 228 770 238 C784 246 798 236 798 218 C798 200 784 192 770 196 Z"/>
+            </g>
+            <g fill="#f7c6d8">
+              <path d="M806 176 L798 168 L806 166 L810 174 Z"/>
+              <path d="M866 142 L858 134 L866 132 L870 140 Z"/>
+              <path d="M926 164 L918 156 L926 154 L930 162 Z"/>
+            </g>
+          </svg>
+          <figcaption><strong>Subalpine limestone ecotone.</strong> <em>Gentiana acaulis</em> (stemless trumpet gentian) beside <em>Rhododendron hirsutum</em> (hairy alpenrose), whose ciliated leaf margins distinguish it from its acid-loving twin <em>Rhododendron ferrugineum</em>.</figcaption>
+        </figure>
+        <div class="cols-2" id="elev-sub-prose">
+          <div class="prose">
+            <p>Above 1,850 meters, upright spruces yield to gnarled Swiss stone pines (<em>Pinus cembra</em>) and sprawling mats of dwarf mountain pine (<em>Pinus mugo</em>). Their elastic branches bend flat under three meters of winter snow without snapping, then spring back in May to trap pockets of warm, windless air across boulder fields.</p>
+            <p>Those sheltered limestone pockets belong to the hairy alpenrose (<em>Rhododendron hirsutum</em>). Turn a leaf toward the light and you will see fine pale hairs fringing the green margin, a diagnostic trait that separates it from the rusty-leaved alpenrose of granite ranges. Where dolomite talus tumbles into heather hollows, the two shrubs occasionally hybridize into <em>Rhododendron</em> × <em>intermedium</em>, tracing the exact geological fault line in bands of rose-crimson.</p>
+          </div>
+          <div class="prose">
+            <p>Pressing close to the cropped turf beside every melting snowbank is the color most travelers remember long after descending: the saturated cobalt of the stemless trumpet gentian (<em>Gentiana acaulis</em>) and its calcareous cousin <em>Gentiana clusii</em>. Both invest almost their entire seasonal energy budget into a single five-lobed corolla nearly as wide as the basal rosette beneath it.</p>
+            <p>Botanists studying alpine pollination at Passo Giau found that gentian trumpets act as miniature solar collectors. On crisp June mornings, the air inside the upturned blue bell measures up to 4 degrees Celsius warmer than the surrounding breeze, offering bumblebees both nectar and a thermal refuge during passing cloud cover.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band-paper" id="alpine">
+      <div class="band-inner split-plate split-plate-flip">
+        <h2>Alpine turf and vertical limestone ledges</h2>
+        <dl class="meta meta-2">
+          <div>
+            <dt>Elevation band</dt>
+            <dd>2,200 to 2,600 m</dd>
+          </div>
+          <div>
+            <dt>Snow-free season</dt>
+            <dd>70 to 100 days</dd>
+          </div>
+          <div>
+            <dt>Peak flowering</dt>
+            <dd>July through mid August</dd>
+          </div>
+          <div>
+            <dt>Dominant stress</dt>
+            <dd>Intense UV, wind shear, surface drought</dd>
+          </div>
+        </dl>
+        <div class="prose">
+          <p>Cross the timberline near 2,150 meters and the landscape strips itself down to essentials: blue sedge turf (<em>Sesleria caerulea</em>), bleached limestone pavement, and vertical cliffs rising straight into summer cumulus. Trees cannot mature here because soil temperatures rarely stay above 6 degrees Celsius long enough to build woody tissue.</p>
+          <p>In these exposed pastures, survival depends on light engineering. The Alpine edelweiss (<em>Leontopodium nivale</em>) is not actually crowned with white petals at all; its star is a ring of modified leaves coated in hollow, air-filled hairs called trichomes. Under an electron microscope, those filaments form a photonic shield that absorbs harmful ultraviolet wavelengths before they reach chlorophyll while reflecting visible light as matte silver.</p>
+          <p>Look away from the grassy ledges and inspect the vertical pale overhangs around the Pale di San Martino, Civetta, and Catinaccio. Tucked into hair-thin limestone cracks grows Moretti's bellflower (<em>Campanula morettiana</em>), an endemic relict found nowhere else on Earth. Its velvety violet bells emerge from roots wedged deep inside rock crevices that stayed ice-free above the Pleistocene glaciers, turning sheer dolomite cliffs into living botanical sanctuaries.</p>
+          <aside class="field-note" id="elev-alpine-note">
+            <h3>Field note on microtopography</h3>
+            <p>At 2,400 meters, a rock overhang five centimeters tall creates its own climate. South-facing crevices thaw three weeks earlier and host early-flowering <em>Primula auricula</em> (bear's-ear primrose), while north-facing hollows ten paces away still shelter late-blooming snowbells (<em>Soldanella alpina</em>) pushing straight through translucent firn ice.</p>
+          </aside>
+        </div>
+        <figure class="plate">
+          <svg viewBox="0 0 500 640" aria-hidden="true">
+            <path fill="#e6e1d4" d="M160 30 L220 12 L268 70 L330 28 L390 86 L450 48 L478 140 L460 260 L486 400 L450 560 L400 620 L250 632 L140 600 L90 520 L70 390 L96 250 L78 150 L120 80 Z"/>
+            <path fill="#f7f4ee" d="M220 12 L268 70 L246 130 L300 96 L330 28 L286 8 Z"/>
+            <path fill="#d4cec2" d="M78 150 L120 80 L156 150 L112 210 Z"/>
+            <path fill="#cfc8ba" d="M390 86 L450 48 L468 150 L400 168 Z"/>
+            <g fill="none" stroke="#b7b0a2" stroke-width="1.4">
+              <path d="M130 120 L156 280 L140 430"/>
+              <path d="M250 70 L274 210 L258 380 L292 540"/>
+              <path d="M380 150 L356 300 L384 470"/>
+              <path d="M170 300 L250 318"/>
+              <path d="M200 470 L330 452"/>
+              <path d="M140 200 L200 214"/>
+            </g>
+            <g fill="#8aaa74">
+              <path d="M120 500 C160 478 210 492 230 524 C190 510 150 522 120 500 Z"/>
+              <path d="M300 530 C350 508 400 528 412 560 C360 548 320 560 300 530 Z"/>
+            </g>
+            <g transform="translate(168 280)">
+              <g fill="#f3f0e6" stroke="#ddd6c6" stroke-width="0.6">
+                <ellipse cx="0" cy="-36" rx="6" ry="28"/>
+                <ellipse cx="0" cy="-36" rx="6" ry="28" transform="rotate(25)"/>
+                <ellipse cx="0" cy="-36" rx="6" ry="28" transform="rotate(50)"/>
+                <ellipse cx="0" cy="-36" rx="6" ry="28" transform="rotate(75)"/>
+                <ellipse cx="0" cy="-36" rx="6" ry="28" transform="rotate(100)"/>
+                <ellipse cx="0" cy="-36" rx="6" ry="28" transform="rotate(125)"/>
+                <ellipse cx="0" cy="-36" rx="6" ry="28" transform="rotate(150)"/>
+                <ellipse cx="0" cy="-34" rx="4.5" ry="20" transform="rotate(12)" fill="#fbf9f4"/>
+                <ellipse cx="0" cy="-34" rx="4.5" ry="20" transform="rotate(37)" fill="#fbf9f4"/>
+                <ellipse cx="0" cy="-34" rx="4.5" ry="20" transform="rotate(62)" fill="#fbf9f4"/>
+                <ellipse cx="0" cy="-34" rx="4.5" ry="20" transform="rotate(87)" fill="#fbf9f4"/>
+                <ellipse cx="0" cy="-34" rx="4.5" ry="20" transform="rotate(112)" fill="#fbf9f4"/>
+                <ellipse cx="0" cy="-34" rx="4.5" ry="20" transform="rotate(137)" fill="#fbf9f4"/>
+                <ellipse cx="0" cy="-34" rx="4.5" ry="20" transform="rotate(162)" fill="#fbf9f4"/>
+              </g>
+              <circle r="9" fill="#e6c64a"/>
+              <g fill="#f4e08a">
+                <circle cx="-3" cy="-2" r="1.5"/><circle cx="3" cy="1" r="1.4"/><circle cx="0" cy="4" r="1.3"/><circle cx="2" cy="-3" r="1.2"/>
+              </g>
+              <path d="M0 18 C 2 40 4 64 0 88" fill="none" stroke="#6d8a56" stroke-width="1.6"/>
+              <ellipse cx="-18" cy="74" rx="16" ry="5" fill="#8aaa70" transform="rotate(-28 -18 74)"/>
+              <ellipse cx="18" cy="82" rx="14" ry="4.5" fill="#7b9c66" transform="rotate(26 18 82)"/>
+            </g>
+            <g fill="#6a58d0" stroke="#4e3ea8" stroke-width="0.6">
+              <path d="M300 200 C298 230 302 250 300 262" fill="none" stroke="#5a8a50" stroke-width="1.3"/>
+              <path d="M300 262 C286 270 280 296 290 312 C300 322 316 314 318 296 C320 278 312 266 300 262 Z"/>
+              <path d="M290 304 L284 316 L296 310 Z"/>
+              <path d="M300 314 L298 326 L308 314 Z"/>
+              <path d="M314 302 L322 314 L308 308 Z"/>
+            </g>
+            <g fill="#7464d8">
+              <path d="M336 250 C338 272 334 292 336 304" fill="none" stroke="#5a8a50" stroke-width="1.2"/>
+              <path d="M336 304 C326 310 322 330 330 342 C338 350 350 344 352 330 C354 316 346 306 336 304 Z"/>
+            </g>
+            <g fill="#5e50c4">
+              <path d="M274 300 C274 318 276 336 274 348" fill="none" stroke="#5a8a50" stroke-width="1.2"/>
+              <path d="M274 348 C266 354 264 372 272 382 C280 390 290 384 292 372 C294 360 284 350 274 348 Z"/>
+            </g>
+            <path d="M300 230 C286 260 278 290 274 320" fill="none" stroke="#4f7a46" stroke-width="1.2"/>
+          </svg>
+          <figcaption><strong>Alpine cliff and turf specialists.</strong> <em>Leontopodium nivale</em> (Alpine edelweiss) paired with <em>Campanula morettiana</em> (Moretti's bellflower), a strict Dolomites endemic rooted exclusively inside vertical dolomitic rock fissures.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="band band-nival" id="nival">
+      <div class="band-inner">
+        <h2>Nival scree and high dolomite ridges</h2>
+        <dl class="meta meta-4">
+          <div>
+            <dt>Elevation band</dt>
+            <dd>2,600 to 3,100 m</dd>
+          </div>
+          <div>
+            <dt>Snow-free season</dt>
+            <dd>40 to 65 days</dd>
+          </div>
+          <div>
+            <dt>Peak flowering</dt>
+            <dd>Late July through August</dd>
+          </div>
+          <div>
+            <dt>Substrate</dt>
+            <dd>Mobile dolomitic scree and frost-shattered ledges</dd>
+          </div>
+        </dl>
+        <figure class="plate">
+          <svg viewBox="0 0 960 480" aria-hidden="true">
+            <g>
+              <path fill="#d9d3c6" d="M40 340 L100 290 L160 320 L130 390 L50 400 Z"/>
+              <path fill="#f4f1ea" d="M120 360 L200 280 L280 320 L250 410 L140 420 Z"/>
+              <path fill="#e7e2d6" d="M240 300 L330 230 L420 290 L380 400 L250 410 Z"/>
+              <path fill="#f7f4ee" d="M390 340 L490 260 L580 310 L540 420 L400 430 Z"/>
+              <path fill="#d4cec2" d="M560 300 L660 230 L760 300 L710 410 L560 400 Z"/>
+              <path fill="#efeae2" d="M720 320 L820 250 L920 310 L870 410 L730 420 Z"/>
+              <path fill="#cfc8ba" d="M300 380 L360 340 L420 380 L390 440 L310 430 Z"/>
+            </g>
+            <g fill="#5f9450">
+              <path d="M150 300 C120 270 90 240 70 200 C110 230 140 270 160 300 Z"/>
+              <path d="M190 290 C220 250 230 200 200 160 C230 210 220 260 190 300 Z"/>
+              <path d="M130 270 C140 230 120 190 100 160 C130 190 150 230 140 270 Z"/>
+            </g>
+            <g transform="translate(150 150)" fill="#fff">
+              <ellipse cx="0" cy="-34" rx="18" ry="26" transform="rotate(-6)"/>
+              <ellipse cx="26" cy="-8" rx="18" ry="26" transform="rotate(66)"/>
+              <ellipse cx="16" cy="28" rx="18" ry="26" transform="rotate(138)"/>
+              <ellipse cx="-16" cy="28" rx="18" ry="26" transform="rotate(210)"/>
+              <ellipse cx="-26" cy="-8" rx="18" ry="26" transform="rotate(282)"/>
+            </g>
+            <g fill="#e7b423">
+              <circle cx="150" cy="150" r="7"/>
+              <circle cx="144" cy="148" r="1.6" fill="#f3d56a"/>
+              <circle cx="156" cy="152" r="1.5" fill="#f3d56a"/>
+              <circle cx="150" cy="156" r="1.4" fill="#f3d56a"/>
+            </g>
+            <g transform="translate(250 118)">
+              <g fill="#f6d5dc">
+                <ellipse cx="0" cy="-26" rx="14" ry="20" transform="rotate(8)"/>
+                <ellipse cx="20" cy="-6" rx="14" ry="20" transform="rotate(80)"/>
+                <ellipse cx="12" cy="20" rx="14" ry="20" transform="rotate(152)"/>
+                <ellipse cx="-12" cy="18" rx="14" ry="20" transform="rotate(224)"/>
+                <ellipse cx="-20" cy="-8" rx="14" ry="20" transform="rotate(296)"/>
+              </g>
+              <circle r="6" fill="#e0ae30"/>
+            </g>
+            <path d="M170 230 C160 190 155 170 150 158" fill="none" stroke="#4e7a44" stroke-width="1.7"/>
+            <path d="M210 230 C230 190 242 150 250 130" fill="none" stroke="#4e7a44" stroke-width="1.5"/>
+            <g transform="translate(640 250)">
+              <ellipse cx="0" cy="28" rx="130" ry="52" fill="#2f6a3c"/>
+              <ellipse cx="-16" cy="12" rx="100" ry="40" fill="#3e7c46"/>
+              <ellipse cx="8" cy="2" rx="72" ry="30" fill="#4e8c52"/>
+              <g fill="#24562e">
+                <ellipse cx="-80" cy="20" rx="11" ry="4" transform="rotate(-18)"/>
+                <ellipse cx="-48" cy="6" rx="10" ry="3.6" transform="rotate(16)"/>
+                <ellipse cx="-16" cy="-4" rx="9" ry="3.2" transform="rotate(-12)"/>
+                <ellipse cx="18" cy="2" rx="10" ry="3.5" transform="rotate(22)"/>
+                <ellipse cx="52" cy="14" rx="11" ry="4" transform="rotate(-14)"/>
+                <ellipse cx="84" cy="28" rx="9" ry="3.2" transform="rotate(10)"/>
+                <ellipse cx="-60" cy="32" rx="9" ry="3.2"/>
+                <ellipse cx="36" cy="30" rx="9" ry="3.2" transform="rotate(-20)"/>
+                <ellipse cx="-28" cy="22" rx="8" ry="3"/>
+                <ellipse cx="4" cy="18" rx="8" ry="3" transform="rotate(14)"/>
+                <ellipse cx="68" cy="8" rx="8" ry="3" transform="rotate(-24)"/>
+                <ellipse cx="-90" cy="8" rx="8" ry="3" transform="rotate(20)"/>
+              </g>
+              <g fill="#c23882">
+                <g transform="translate(-62 8)"><circle r="6"/><circle cy="-3" r="2" fill="#f0b4d2"/></g>
+                <g transform="translate(-24 -6)"><circle r="5.5"/><circle cy="-2.5" r="1.8" fill="#f0b4d2"/></g>
+                <g transform="translate(12 -12)"><circle r="6.5"/><circle cy="-3" r="2" fill="#f0b4d2"/></g>
+                <g transform="translate(48 2)"><circle r="5.5"/><circle cy="-2" r="1.7" fill="#f0b4d2"/></g>
+                <g transform="translate(78 16)"><circle r="5"/><circle cy="-2" r="1.6" fill="#f0b4d2"/></g>
+                <g transform="translate(-8 20)"><circle r="4.5"/></g>
+                <g transform="translate(28 24)"><circle r="4.6"/></g>
+                <g transform="translate(-46 28)"><circle r="4.4"/></g>
+                <g transform="translate(60 30)"><circle r="4"/></g>
+              </g>
+            </g>
+          </svg>
+          <figcaption><strong>Nival frontier specimens.</strong> <em>Ranunculus glacialis</em> (glacier buttercup), whose petals shift from pure white to deep rose after pollination, beside a wind-sculpted cushion of <em>Saxifraga oppositifolia</em> (purple saxifrage).</figcaption>
+        </figure>
+        <div class="cols-2" id="elev-nival-prose">
+          <div class="prose">
+            <p>Above 2,600 meters, continuous turf breaks apart into pale angular gravel. Freeze-thaw cycles split fresh flakes off the Dolomite towers every spring, sending loose scree sliding downhill at angles that uproot ordinary plants. Nights drop below freezing even in August, and the growing window narrows to six fleeting weeks.</p>
+            <p>Here lives the glacier buttercup (<em>Ranunculus glacialis</em>), holder of the European altitude record for flowering plants. Its succulent, deeply lobed leaves store water against dry ridge winds, while its flower buds form two summers in advance beneath the gravel so they can open within days of snowmelt. Once pollinated by high-altitude flies, the luminous white petals flush deep rose-crimson with protective anthocyanin pigments, turning downward to shelter the ripening seeds from hail.</p>
+          </div>
+          <div class="prose">
+            <p>Beside it clings purple saxifrage (<em>Saxifraga oppositifolia</em>), anchored by a taproot that can descend more than a meter through shifting stones. Its tiny lime-encrusted leaves pack into a hemispherical cushion no thicker than a palm, decoupling its interior from the gale; on a bright August afternoon, the center of a saxifrage cushion can sit 15 degrees Celsius warmer than the air ten centimeters above it.</p>
+            <p>Long-term GLORIA monitoring plots on high Dolomites summits now record a quiet upheaval across this nival zone. As summer isotherms climb higher each decade, alpine grasses and sedges are advancing upward into the scree, slowly crowding out slow-growing cushion pioneers that have nowhere left to retreat.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band-paper" id="index">
+      <div class="band-inner">
+        <h2 id="index-title">Dolomites field specimen index</h2>
+        <p class="index-lead">Twelve characteristic wildflowers along the limestone transect, showing elevation ranges and active bloom windows from May through September.</p>
+        <div class="filter-row">
+          <div class="seg" id="spec-seg" role="radiogroup" aria-label="Filter by elevation band">
+            <button type="button" role="radio" data-band="all" aria-checked="true" tabindex="0">All bands</button>
+            <button type="button" role="radio" data-band="montane" aria-checked="false" tabindex="-1">Montane</button>
+            <button type="button" role="radio" data-band="subalpine" aria-checked="false" tabindex="-1">Subalpine</button>
+            <button type="button" role="radio" data-band="alpine" aria-checked="false" tabindex="-1">Alpine</button>
+            <button type="button" role="radio" data-band="nival" aria-checked="false" tabindex="-1">Nival</button>
+          </div>
+        </div>
+        <p class="spec-count" id="spec-count">Showing 12 specimens across 1,400 to 3,100 m</p>
+        <div class="table-wrap">
+          <table class="spec-table" id="specimens" aria-labelledby="index-title">
+            <thead>
+              <tr>
+                <th scope="col">Species</th>
+                <th scope="col">Elevation band</th>
+                <th scope="col">Range (m)</th>
+                <th scope="col">Bloom window (May to Sep)</th>
+                <th scope="col">Substrate and field note</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-band="montane" data-lo="1400" data-hi="1850">
+                <th scope="row"><span class="common">Turk's cap lily</span><span class="latin">Lilium martagon</span></th>
+                <td>Montane</td>
+                <td>1,400–1,850</td>
+                <td><span class="months" role="img" aria-label="June and July"><span aria-hidden="true">M</span><span class="on" aria-hidden="true">J</span><span class="on" aria-hidden="true">J</span><span aria-hidden="true">A</span><span aria-hidden="true">S</span></span></td>
+                <td>Calcareous larch clearings; reflexed dusky-rose petals</td>
+              </tr>
+              <tr data-band="montane" data-lo="1450" data-hi="1950">
+                <th scope="row"><span class="common">Mountain arnica</span><span class="latin">Arnica montana</span></th>
+                <td>Montane</td>
+                <td>1,450–1,950</td>
+                <td><span class="months" role="img" aria-label="June and July"><span aria-hidden="true">M</span><span class="on" aria-hidden="true">J</span><span class="on" aria-hidden="true">J</span><span aria-hidden="true">A</span><span aria-hidden="true">S</span></span></td>
+                <td>Acidic porphyry pockets; aromatic basal leaf rosette</td>
+              </tr>
+              <tr data-band="montane" data-lo="1400" data-hi="1900">
+                <th scope="row"><span class="common">Globeflower</span><span class="latin">Trollius europaeus</span></th>
+                <td>Montane</td>
+                <td>1,400–1,900</td>
+                <td><span class="months" role="img" aria-label="May, June, and July"><span class="on" aria-hidden="true">M</span><span class="on" aria-hidden="true">J</span><span class="on" aria-hidden="true">J</span><span aria-hidden="true">A</span><span aria-hidden="true">S</span></span></td>
+                <td>Moist hay meadows; closed lemon-yellow spheres</td>
+              </tr>
+              <tr data-band="subalpine" data-lo="1750" data-hi="2250">
+                <th scope="row"><span class="common">Hairy alpenrose</span><span class="latin">Rhododendron hirsutum</span></th>
+                <td>Subalpine</td>
+                <td>1,750–2,250</td>
+                <td><span class="months" role="img" aria-label="June and July"><span aria-hidden="true">M</span><span class="on" aria-hidden="true">J</span><span class="on" aria-hidden="true">J</span><span aria-hidden="true">A</span><span aria-hidden="true">S</span></span></td>
+                <td>Alkaline dolomite boulders; ciliated leaf margins</td>
+              </tr>
+              <tr data-band="subalpine" data-lo="1800" data-hi="2350">
+                <th scope="row"><span class="common">Stemless trumpet gentian</span><span class="latin">Gentiana acaulis</span></th>
+                <td>Subalpine</td>
+                <td>1,800–2,350</td>
+                <td><span class="months" role="img" aria-label="May, June, and July"><span class="on" aria-hidden="true">M</span><span class="on" aria-hidden="true">J</span><span class="on" aria-hidden="true">J</span><span aria-hidden="true">A</span><span aria-hidden="true">S</span></span></td>
+                <td>Cropped subalpine pasture; emerald-spotted cobalt throat</td>
+              </tr>
+              <tr data-band="subalpine" data-lo="1800" data-hi="2300">
+                <th scope="row"><span class="common">Black vanilla orchid</span><span class="latin">Nigritella rhellicani</span></th>
+                <td>Subalpine</td>
+                <td>1,800–2,300</td>
+                <td><span class="months" role="img" aria-label="June, July, and August"><span aria-hidden="true">M</span><span class="on" aria-hidden="true">J</span><span class="on" aria-hidden="true">J</span><span class="on" aria-hidden="true">A</span><span aria-hidden="true">S</span></span></td>
+                <td>Unfertilized limestone turf; deep maroon vanilla-scented cone</td>
+              </tr>
+              <tr data-band="alpine" data-lo="2100" data-hi="2650">
+                <th scope="row"><span class="common">Alpine edelweiss</span><span class="latin">Leontopodium nivale</span></th>
+                <td>Alpine</td>
+                <td>2,100–2,650</td>
+                <td><span class="months" role="img" aria-label="July and August"><span aria-hidden="true">M</span><span aria-hidden="true">J</span><span class="on" aria-hidden="true">J</span><span class="on" aria-hidden="true">A</span><span aria-hidden="true">S</span></span></td>
+                <td>Exposed calcareous ledges; UV-filtering woolly bracts</td>
+              </tr>
+              <tr data-band="alpine" data-lo="2050" data-hi="2500">
+                <th scope="row"><span class="common">Moretti's bellflower</span><span class="latin">Campanula morettiana</span></th>
+                <td>Alpine</td>
+                <td>2,050–2,500</td>
+                <td><span class="months" role="img" aria-label="July and August"><span aria-hidden="true">M</span><span aria-hidden="true">J</span><span class="on" aria-hidden="true">J</span><span class="on" aria-hidden="true">A</span><span aria-hidden="true">S</span></span></td>
+                <td>Strict Dolomites endemic; vertical dolomite cliff fissures</td>
+              </tr>
+              <tr data-band="alpine" data-lo="2100" data-hi="2600">
+                <th scope="row"><span class="common">Alpine snowbell</span><span class="latin">Soldanella alpina</span></th>
+                <td>Alpine</td>
+                <td>2,100–2,600</td>
+                <td><span class="months" role="img" aria-label="May, June, and July"><span class="on" aria-hidden="true">M</span><span class="on" aria-hidden="true">J</span><span class="on" aria-hidden="true">J</span><span aria-hidden="true">A</span><span aria-hidden="true">S</span></span></td>
+                <td>Snowmelt hollows; fringed violet bells piercing spring firn</td>
+              </tr>
+              <tr data-band="nival" data-lo="2550" data-hi="3100">
+                <th scope="row"><span class="common">Glacier buttercup</span><span class="latin">Ranunculus glacialis</span></th>
+                <td>Nival</td>
+                <td>2,550–3,100</td>
+                <td><span class="months" role="img" aria-label="July and August"><span aria-hidden="true">M</span><span aria-hidden="true">J</span><span class="on" aria-hidden="true">J</span><span class="on" aria-hidden="true">A</span><span aria-hidden="true">S</span></span></td>
+                <td>High scree and ridge ledges; petals blush rose after pollination</td>
+              </tr>
+              <tr data-band="nival" data-lo="2550" data-hi="3100">
+                <th scope="row"><span class="common">Purple saxifrage</span><span class="latin">Saxifraga oppositifolia</span></th>
+                <td>Nival</td>
+                <td>2,550–3,100</td>
+                <td><span class="months" role="img" aria-label="June, July, and August"><span aria-hidden="true">M</span><span class="on" aria-hidden="true">J</span><span class="on" aria-hidden="true">J</span><span class="on" aria-hidden="true">A</span><span aria-hidden="true">S</span></span></td>
+                <td>Frost-shattered limestone; lime-crusted thermal cushions</td>
+              </tr>
+              <tr data-band="nival" data-lo="2450" data-hi="2950">
+                <th scope="row"><span class="common">Alpine poppy</span><span class="latin">Papaver alpinum</span></th>
+                <td>Nival</td>
+                <td>2,450–2,950</td>
+                <td><span class="months" role="img" aria-label="July, August, and September"><span aria-hidden="true">M</span><span aria-hidden="true">J</span><span class="on" aria-hidden="true">J</span><span class="on" aria-hidden="true">A</span><span class="on" aria-hidden="true">S</span></span></td>
+                <td>Mobile white dolomite talus; papery white or sulfur blooms</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <footer class="conserve">
+      <div class="band-inner conserve-grid">
+        <div>
+          <h2>Field conservation note</h2>
+          <p>Nearly all wild alpine flora in the Italian Dolomites, including edelweiss, trumpet gentians, terrestrial orchids, and Moretti's bellflower, are strictly protected across Parco Naturale Puez-Odle, Paneveggio, and Dolomiti Bellunesi. Stay on marked CAI trails, sketch or photograph without stepping onto cushion plants, and leave every bloom rooted in the stone.</p>
+        </div>
+        <div class="conserve-side">
+          <a href="#summit">Return to summit overview</a>
+          <p>Dolomites Flora Field Monograph. Botanical elevations referenced to South Tyrol and Belluno calcareous massifs.</p>
+        </div>
+      </div>
+    </footer>
+  </article>
+</main>
+<script src="dolomites-flora.js"></script>
+<script src="shared/site-header.js?v=43" defer></script>
+</body>
+</html>
