@@ -326,7 +326,7 @@ html.is-ready[data-motion="on"] .sub {
 }
 
 html.is-ready[data-motion="on"] .sub.in {
-  animation: hero-sub 0.4s var(--ease) 0.35s forwards;
+  animation: hero-sub 0.4s var(--ease) var(--sub-delay, 0s) forwards;
 }
 
 @keyframes hero-sub {
@@ -354,7 +354,7 @@ html.is-ready[data-motion="on"] .os {
 }
 
 html.is-ready[data-motion="on"] .os.in {
-  animation: hero-os 0.6s var(--ease) 0.55s forwards;
+  animation: hero-os 0.6s var(--ease) var(--panel-delay, 0s) forwards;
 }
 
 @keyframes hero-os {

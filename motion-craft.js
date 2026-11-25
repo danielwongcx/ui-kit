@@ -58,6 +58,20 @@
     setPressed(heroPlayBtn, playingNow);
   }
 
+  /* Last character begins at (slots - 1) * 0.05 and runs 0.4s.
+     Subtitle starts 0.1s before that character finishes.
+     Panel keeps the old 0.2s gap after the subtitle (0.55 - 0.35). */
+  var CHAR_DUR = 0.4;
+  var PANEL_DUR = 0.6;
+  var OVERLAP = 0.1;
+  var PANEL_GAP = 0.2;
+  var subDelay = 0;
+  var panelDelay = 0;
+
+  function sec(n) {
+    return (Math.round(n * 1000) / 1000).toFixed(2).replace(/0$/, "").replace(/(\.\d)0$/, "$1") + "s";
+  }
+
   function splitTitle() {
     if (!heroTitle || heroTitle.getAttribute("data-split") === "true") return;
     var text = heroTitle.textContent.replace(/\s+/g, " ").trim();
@@ -85,10 +99,21 @@
     heroTitle.setAttribute("data-split", "true");
     var chars = heroTitle.querySelectorAll(".char");
     lastChar = chars[chars.length - 1] || null;
+    var lastStart = Math.max(0, index - 1) * STEP;
+    subDelay = lastStart + CHAR_DUR - OVERLAP;
+    panelDelay = subDelay + PANEL_GAP;
+    if (heroCard) {
+      heroCard.style.setProperty("--sub-delay", subDelay + "s");
+      heroCard.style.setProperty("--panel-delay", panelDelay + "s");
+    }
+    var time = document.getElementById("hero-time");
+    if (time) {
+      time.textContent = "0.4s ease · 0.05s per character · subtitle " + sec(subDelay) + " · panel " + sec(panelDelay) + " / " + sec(PANEL_DUR);
+    }
   }
 
   function onHeroEnd(e) {
-    if (!lastChar || e.target !== lastChar || e.animationName !== "hero-char") return;
+    if (e.target !== heroPanel || e.animationName !== "hero-os") return;
     var id = Number(heroTitle.getAttribute("data-run") || "0");
     if (id !== heroRun) return;
     if (heroCard.classList.contains("is-paused")) return;
@@ -121,7 +146,7 @@
   }
 
   splitTitle();
-  if (heroTitle) heroTitle.addEventListener("animationend", onHeroEnd);
+  if (heroCard) heroCard.addEventListener("animationend", onHeroEnd);
   holdHeroButtons();
 
   if (!reduce && heroStage && "IntersectionObserver" in window) {
