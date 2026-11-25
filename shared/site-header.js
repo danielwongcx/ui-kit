@@ -55,6 +55,7 @@
         { id: 'moving-ui', label: 'Moving UI', href: 'moving-ui.html', group: 'Playgrounds' },
         { id: 'transitions', label: 'Transitions', href: 'transitions.html', group: 'Playgrounds' },
         { id: 'mesh-gradients', label: 'Mesh gradients', href: 'mesh-gradients.html', group: 'Playgrounds' },
+        { id: 'motion-craft', label: 'Motion craft', href: 'motion-craft.html', group: 'Playgrounds' },
         { id: 'onboarding', label: 'Onboarding', href: 'onboarding.html', group: 'Films' },
         { id: 'grok-bot-showreel', label: 'Grok Bot reel', href: 'grok-bot-showreel.html', group: 'Films' },
         { id: 'dub-promo-showreel', label: 'Dub promo', href: 'dub-promo-showreel.html', group: 'Films' },
