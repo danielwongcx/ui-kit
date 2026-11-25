@@ -26,7 +26,7 @@
     { id: "subalpine", link: "subalpine" },
     { id: "alpine", link: "alpine" },
     { id: "nival", link: "nival" },
-    { id: "index", link: "nival" }
+    { id: "index", link: "index" }
   ];
 
   var bandNames = {
