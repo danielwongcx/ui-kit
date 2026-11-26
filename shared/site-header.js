@@ -58,6 +58,7 @@
         { id: 'motion-craft', label: 'Motion craft', href: 'motion-craft.html', group: 'Playgrounds' },
         { id: 'dolomites-flora', label: 'Dolomites Flora', href: 'dolomites-flora.html', group: 'Playgrounds' },
         { id: 'magazine-layout', label: 'Magazine layout', href: 'magazine-layout.html', group: 'Playgrounds' },
+        { id: 'style-rules', label: 'Style rules', href: 'style-rules.html', group: 'Playgrounds' },
         { id: 'onboarding', label: 'Onboarding', href: 'onboarding.html', group: 'Films' },
         { id: 'grok-bot-showreel', label: 'Grok Bot reel', href: 'grok-bot-showreel.html', group: 'Films' },
         { id: 'dub-promo-showreel', label: 'Dub promo', href: 'dub-promo-showreel.html', group: 'Films' },

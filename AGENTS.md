@@ -32,6 +32,7 @@ Multi-page **static** UI kit published on GitHub Pages from the `main` branch ro
 - Motion craft: https://danielwongcx.github.io/ui-kit/motion-craft.html (`motion-craft.html`) — Motion playground. Three craft studies: a rule-of-three hero whose title blurs in per character, then the subtitle, then a product panel; a scroll-snap font-pairing reel; and a glassy pill navbar with a sliding indicator. `prefers-reduced-motion` and `?reduce=1` hold the stagger and the navbar demo; `?motion=1` plays unless `?reduce=1` is also set. No build step.
 - Dolomites Flora: https://danielwongcx.github.io/ui-kit/dolomites-flora.html (`dolomites-flora.html`) — Motion playground. Long-form field essay on alpine wildflowers of the Dolomites: sticky elevation nav, montane through nival bands, original botanical plates, and a filterable specimen index. `prefers-reduced-motion` and `?reduce=1` hold motion; `?motion=1` plays unless `?reduce=1` is also set. No build step.
 - Magazine layout: https://danielwongcx.github.io/ui-kit/magazine-layout.html (`magazine-layout.html`) — Motion playground. A resizable editorial wireframe with device presets, a width slider, a drag handle, and a live `magazine.css` panel for the active `grid-template-areas`. Study after David Mráz. `prefers-reduced-motion` and `?reduce=1` skip the region glide; `?motion=1` brings it back unless `?reduce=1` is also set. No build step.
+- Style rules: https://danielwongcx.github.io/ui-kit/style-rules.html (`style-rules.html`) — Motion playground. Before/after study of a fictional API monitor, Relay: same product and prompt, agent-default indigo against locked type, palette, spacing, and components. Study after Orange AI’s StyleSeed comparison. `prefers-reduced-motion` and `?reduce=1` skip the view crossfade; `?motion=1` plays unless `?reduce=1` is also set. No build step.
 - One prompt: https://danielwongcx.github.io/ui-kit/one-prompt.html (`one-prompt.html`) — Guides. Plain-language page on seeco’s (@seeconvm) X article about viral “one-prompt” Opus motion videos. Spring-timed hero, a prompt-vs-setup chart, an eight-piece studio diagram, and the piece / without it / fix table. Numbers are the article’s. No build step.
 - Motion studio: https://danielwongcx.github.io/ui-kit/motion-studio.html (`motion-studio.html`) — Guides. Plain-language page on Movez’s (@0xMovez) X article, a 12-step course for turning a one-line motion prompt into a studio. Light seek(t) hero, a prompt-vs-harness chart, a four-part step diagram, and a without-it / fix table. Numbers are the article’s. No build step.
 - UI aesthetic: https://danielwongcx.github.io/ui-kit/ui-aesthetic.html (`ui-aesthetic.html`) — Guides. Plain-language page on Xian’s (@Xian0063) X article, eight working principles and five AI design skills, with the article’s 15 images. Numbers and install commands are the article’s. No build step.
@@ -115,6 +116,7 @@ Playgrounds:
 - Motion craft → `motion-craft.html`
 - Dolomites Flora → `dolomites-flora.html`
 - Magazine layout → `magazine-layout.html`
+- Style rules → `style-rules.html`
 
 Films:
 
