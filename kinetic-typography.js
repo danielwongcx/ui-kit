@@ -11,8 +11,13 @@
     photo: "Photo",
     motion2: "Motion 2",
     lp2: "LP 2",
-    camera2: "Camera 2"
+    camera2: "Camera 2",
+    artstyle: "Art style",
+    diagram: "Diagram",
+    lp3: "LP 3"
   };
+  var EXPECTED_PACKS = 11;
+  var EXPECTED_CARDS = 264;
 
   var packChips = document.getElementById("pack-chips");
   var catChips = document.getElementById("cat-chips");
@@ -30,6 +35,7 @@
   var packById = Object.create(null);
   var cards = [];
   var active = [];
+  var codeById = Object.create(null);
   var ready = false;
   var reduce = false;
   var rafId = 0;
@@ -38,8 +44,8 @@
   var io = null;
 
   function computeReduce() {
-    if (forceMotion) return false;
     if (forceReduce) return true;
+    if (forceMotion) return false;
     return !!(mq && mq.matches);
   }
 
@@ -382,6 +388,75 @@
     ensureLoop();
   }
 
+  function copyText(text) {
+    function legacy() {
+      var prev = document.activeElement;
+      return new Promise(function (resolve, reject) {
+        var area = document.createElement("textarea");
+        area.value = text;
+        area.setAttribute("readonly", "");
+        area.setAttribute("aria-hidden", "true");
+        area.style.cssText = "position:fixed;top:0;left:0;width:1px;height:1px;padding:0;border:0;outline:none;box-shadow:none;background:transparent;opacity:0;";
+        document.body.appendChild(area);
+        area.focus();
+        area.select();
+        try { area.setSelectionRange(0, area.value.length); } catch (err) {}
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (err) { ok = false; }
+        document.body.removeChild(area);
+        if (prev && prev.focus) {
+          try { prev.focus(); } catch (err) {}
+        }
+        if (ok) resolve();
+        else reject(new Error("copy failed"));
+      });
+    }
+    if (navigator.clipboard && window.isSecureContext && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).catch(legacy);
+    }
+    return legacy();
+  }
+
+  function sayCopy(message) {
+    var live = document.getElementById("copy-live");
+    if (!live) return;
+    live.textContent = "";
+    live.textContent = message;
+  }
+
+  function effectLabel(item) {
+    return "#" + item.id + " " + item.name;
+  }
+
+  function flashCopy(button, ok) {
+    var name = button.dataset.name || "effect";
+    var label = ok ? "Copied" : "Could not copy";
+    window.clearTimeout(button._timer);
+    button.textContent = label;
+    button.classList.toggle("is-done", ok);
+    button.classList.toggle("is-fail", !ok);
+    button.setAttribute("aria-label", label + " " + name);
+    sayCopy(label + " " + name);
+    button._timer = window.setTimeout(function () {
+      button.textContent = "Copy";
+      button.classList.remove("is-done", "is-fail");
+      button.setAttribute("aria-label", "Copy " + name);
+    }, 1600);
+  }
+
+  function onCopy(button) {
+    var text = codeById[button.dataset.id];
+    if (!text) {
+      flashCopy(button, false);
+      return;
+    }
+    copyText(text).then(function () {
+      flashCopy(button, true);
+    }).catch(function () {
+      flashCopy(button, false);
+    });
+  }
+
   function buildCard(item) {
     var n = parseInt(item.id, 10);
     var index = (n - 1) % 24;
@@ -425,6 +500,8 @@
 
     var body = document.createElement("div");
     body.className = "card__body";
+    var top = document.createElement("div");
+    top.className = "card__top";
     var h2 = document.createElement("h2");
     h2.className = "card__name";
     h2.id = "name-" + item.id;
@@ -436,11 +513,23 @@
     link.appendChild(idSpan);
     link.appendChild(document.createTextNode(" " + item.name));
     h2.appendChild(link);
+    var copy = document.createElement("button");
+    copy.type = "button";
+    copy.className = "copy";
+    copy.dataset.id = item.id;
+    copy.dataset.name = effectLabel(item);
+    copy.textContent = "Copy";
+    copy.setAttribute("aria-label", "Copy " + copy.dataset.name);
+    copy.addEventListener("click", function () {
+      onCopy(copy);
+    });
+    top.appendChild(h2);
+    top.appendChild(copy);
     var meaning = document.createElement("p");
     meaning.className = "card__meaning";
     meaning.id = "meaning-" + item.id;
     meaning.textContent = item.meaning;
-    body.appendChild(h2);
+    body.appendChild(top);
     body.appendChild(meaning);
     article.setAttribute("aria-labelledby", h2.id);
     article.setAttribute("aria-describedby", meaning.id);
@@ -475,7 +564,16 @@
     }
   }
 
-  function boot(catalog) {
+  function redrawPack(id) {
+    var now = performance.now();
+    cards.forEach(function (card) {
+      if (card.pack !== id || !card.visible || card.failed || card.el.hidden) return;
+      draw(card, phase(card, now));
+    });
+  }
+
+  function boot(catalog, codes) {
+    codeById = codes && typeof codes === "object" ? codes : Object.create(null);
     var packs = (catalog.packs || []).slice().sort(function (a, b) {
       return a.order - b.order;
     });
@@ -505,12 +603,24 @@
     });
     grid.appendChild(frag);
 
-    if (Object.keys(window.MotionPrompt.packs).length < 8 || cards.length !== 192) {
+    var packCount = Object.keys(window.MotionPrompt.packs).length;
+    var codeCount = Object.keys(codeById).length;
+    if (packCount < EXPECTED_PACKS || cards.length !== EXPECTED_CARDS || codeCount !== EXPECTED_CARDS) {
       showStatus(
-        "Loaded " + cards.length + " effects from " +
-        Object.keys(window.MotionPrompt.packs).length + " packs."
+        "Loaded " + cards.length + " effects from " + packCount +
+        " packs, with code for " + codeCount + "."
       );
     }
+
+    Object.keys(window.MotionPrompt.packs).forEach(function (id) {
+      var pack = window.MotionPrompt.packs[id];
+      if (!pack || !pack.ready || typeof pack.ready.then !== "function") return;
+      pack.ready.then(function () {
+        redrawPack(id);
+      }).catch(function (err) {
+        console.warn("Motion prompt images failed for " + id, err);
+      });
+    });
 
     grid.addEventListener("click", function (event) {
       var link = event.target.closest ? event.target.closest("a") : null;
@@ -584,9 +694,20 @@
       if (!res.ok) throw new Error("Catalog failed to load.");
       return res.json();
     });
+    var codesPromise = fetch("vendor/motion-prompt/codes.json").then(function (res) {
+      if (!res.ok) throw new Error("Effect code failed to load.");
+      return res.json();
+    });
     try {
       await prepareFonts();
-      boot(await catalogPromise);
+      var catalog = await catalogPromise;
+      var codes = {};
+      try {
+        codes = await codesPromise;
+      } catch (err) {
+        codes = {};
+      }
+      boot(catalog, codes);
     } catch (err) {
       showStatus(err && err.message ? err.message : "Effects failed to load.");
     }
