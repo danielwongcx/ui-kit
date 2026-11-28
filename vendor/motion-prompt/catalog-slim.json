@@ -1,6 +1,6 @@
 {
-  "version": "1.6950972783",
-  "count": 192,
+  "version": "1.e0c91c6ecb",
+  "count": 264,
   "packs": [
     {
       "pack": "motion",
@@ -151,6 +151,63 @@
         {
           "slug": "transitions-editing",
           "en": "Transitions & Editing"
+        }
+      ]
+    },
+    {
+      "pack": "artstyle",
+      "title": "Art styles for image generation",
+      "order": 9,
+      "categories": [
+        {
+          "slug": "painting-printmaking",
+          "en": "Painting & printmaking"
+        },
+        {
+          "slug": "graphic",
+          "en": "Graphic styles"
+        },
+        {
+          "slug": "digital-3d-materials",
+          "en": "Digital, 3D & materials"
+        }
+      ]
+    },
+    {
+      "pack": "diagram",
+      "title": "Diagrams and charts for slides",
+      "order": 10,
+      "categories": [
+        {
+          "slug": "organize",
+          "en": "Diagrams that organize ideas"
+        },
+        {
+          "slug": "numbers",
+          "en": "Charts that show numbers"
+        },
+        {
+          "slug": "flow-overview",
+          "en": "Diagrams of flow and the whole picture"
+        }
+      ]
+    },
+    {
+      "pack": "lp3",
+      "title": "Landing page & web effects, part 3",
+      "order": 11,
+      "categories": [
+        {
+          "slug": "scroll-drag",
+          "en": "Scroll & drag effects"
+        },
+        {
+          "slug": "touch",
+          "en": "Pointer interactions"
+        },
+        {
+          "slug": "texture",
+          "en": "Backgrounds & textures"
         }
       ]
     }
@@ -2267,6 +2324,798 @@
       "cycle": 9.4,
       "name": "Montage",
       "meaning": "A run of short shots condensing time"
+    },
+    {
+      "id": "193",
+      "pack": "artstyle",
+      "slug": "watercolor",
+      "category": "painting-printmaking",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Watercolor",
+      "meaning": "A pale painting with soft bleeds and white paper showing"
+    },
+    {
+      "id": "194",
+      "pack": "artstyle",
+      "slug": "impasto-oil-painting",
+      "category": "painting-printmaking",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Impasto oil painting",
+      "meaning": "Thick paint with visible brush and knife marks"
+    },
+    {
+      "id": "195",
+      "pack": "artstyle",
+      "slug": "ink-wash-painting",
+      "category": "painting-printmaking",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Ink wash painting (sumi-e)",
+      "meaning": "Painted only with shades and washes of black ink"
+    },
+    {
+      "id": "196",
+      "pack": "artstyle",
+      "slug": "ukiyo-e",
+      "category": "painting-printmaking",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Ukiyo-e woodblock print",
+      "meaning": "A woodblock print with outlines and flat colors"
+    },
+    {
+      "id": "197",
+      "pack": "artstyle",
+      "slug": "pointillism",
+      "category": "painting-printmaking",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Pointillism",
+      "meaning": "Painted with small dots of color placed side by side"
+    },
+    {
+      "id": "198",
+      "pack": "artstyle",
+      "slug": "colored-pencil-drawing",
+      "category": "painting-printmaking",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Colored pencil drawing",
+      "meaning": "Fine pencil strokes layered over textured paper"
+    },
+    {
+      "id": "199",
+      "pack": "artstyle",
+      "slug": "linocut",
+      "category": "painting-printmaking",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Linocut print",
+      "meaning": "Bold black-and-white lines cut into a block"
+    },
+    {
+      "id": "200",
+      "pack": "artstyle",
+      "slug": "stained-glass",
+      "category": "painting-printmaking",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Stained glass",
+      "meaning": "Glowing colored glass divided by black lead lines"
+    },
+    {
+      "id": "201",
+      "pack": "artstyle",
+      "slug": "pop-art",
+      "category": "graphic",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Pop art",
+      "meaning": "Primary-color areas, bold black outlines and a few halftone dots"
+    },
+    {
+      "id": "202",
+      "pack": "artstyle",
+      "slug": "neon-sign",
+      "category": "graphic",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Neon sign",
+      "meaning": "Shapes drawn with glowing tubes on a dark wall"
+    },
+    {
+      "id": "203",
+      "pack": "artstyle",
+      "slug": "art-deco",
+      "category": "graphic",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Art Deco",
+      "meaning": "Gold and black, radiating straight lines and symmetry"
+    },
+    {
+      "id": "204",
+      "pack": "artstyle",
+      "slug": "art-nouveau",
+      "category": "graphic",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Art Nouveau",
+      "meaning": "Ornament framed by flowing curves of plants and flowers"
+    },
+    {
+      "id": "205",
+      "pack": "artstyle",
+      "slug": "risograph",
+      "category": "graphic",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Risograph print",
+      "meaning": "Two or three inks overlapping slightly out of register"
+    },
+    {
+      "id": "206",
+      "pack": "artstyle",
+      "slug": "layered-paper-art",
+      "category": "graphic",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Layered paper art",
+      "meaning": "Cut colored paper stacked in layers, with shadows giving depth"
+    },
+    {
+      "id": "207",
+      "pack": "artstyle",
+      "slug": "flat-illustration",
+      "category": "graphic",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Flat illustration",
+      "meaning": "Flat fills only, with no outlines or shading"
+    },
+    {
+      "id": "208",
+      "pack": "artstyle",
+      "slug": "line-art",
+      "category": "graphic",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Line art",
+      "meaning": "Drawn only with lines in one color, no fill"
+    },
+    {
+      "id": "209",
+      "pack": "artstyle",
+      "slug": "pixel-art",
+      "category": "digital-3d-materials",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Pixel art",
+      "meaning": "Game-style pictures drawn in visible square pixels"
+    },
+    {
+      "id": "210",
+      "pack": "artstyle",
+      "slug": "voxel-art",
+      "category": "digital-3d-materials",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Voxel art",
+      "meaning": "3D built from small stacked cubes"
+    },
+    {
+      "id": "211",
+      "pack": "artstyle",
+      "slug": "low-poly",
+      "category": "digital-3d-materials",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Low poly",
+      "meaning": "3D built from flat triangular faces"
+    },
+    {
+      "id": "212",
+      "pack": "artstyle",
+      "slug": "papercraft",
+      "category": "digital-3d-materials",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Papercraft",
+      "meaning": "Paper folded and glued into 3D models"
+    },
+    {
+      "id": "213",
+      "pack": "artstyle",
+      "slug": "clay-animation-style",
+      "category": "digital-3d-materials",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Clay animation style",
+      "meaning": "Clay models with fingerprints still visible"
+    },
+    {
+      "id": "214",
+      "pack": "artstyle",
+      "slug": "embroidery",
+      "category": "digital-3d-materials",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Embroidery",
+      "meaning": "A picture stitched into fabric with colored thread"
+    },
+    {
+      "id": "215",
+      "pack": "artstyle",
+      "slug": "synthwave",
+      "category": "digital-3d-materials",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Synthwave",
+      "meaning": "1980s-style neon grid and striped sunset"
+    },
+    {
+      "id": "216",
+      "pack": "artstyle",
+      "slug": "blueprint",
+      "category": "digital-3d-materials",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Blueprint",
+      "meaning": "A technical drawing in white lines on blue"
+    },
+    {
+      "id": "217",
+      "pack": "diagram",
+      "slug": "venn-diagram",
+      "category": "organize",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Venn diagram",
+      "meaning": "Overlapping circles that show what is shared"
+    },
+    {
+      "id": "218",
+      "pack": "diagram",
+      "slug": "2x2-matrix",
+      "category": "organize",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "2x2 matrix",
+      "meaning": "Two axes that split items into four quadrants"
+    },
+    {
+      "id": "219",
+      "pack": "diagram",
+      "slug": "logic-tree",
+      "category": "organize",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Logic tree (issue tree)",
+      "meaning": "One question broken down into branches"
+    },
+    {
+      "id": "220",
+      "pack": "diagram",
+      "slug": "pyramid-diagram",
+      "category": "organize",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Pyramid diagram",
+      "meaning": "Layers stacked from the base to the top"
+    },
+    {
+      "id": "221",
+      "pack": "diagram",
+      "slug": "mind-map",
+      "category": "organize",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Mind map",
+      "meaning": "Ideas branching out from a central topic"
+    },
+    {
+      "id": "222",
+      "pack": "diagram",
+      "slug": "flowchart",
+      "category": "organize",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Flowchart",
+      "meaning": "Steps you follow, with diamond-shaped decisions"
+    },
+    {
+      "id": "223",
+      "pack": "diagram",
+      "slug": "cycle-diagram",
+      "category": "organize",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Cycle diagram",
+      "meaning": "Arrows in a ring that keeps going round"
+    },
+    {
+      "id": "224",
+      "pack": "diagram",
+      "slug": "fishbone-diagram",
+      "category": "organize",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Fishbone diagram",
+      "meaning": "Causes laid out like the bones of a fish"
+    },
+    {
+      "id": "225",
+      "pack": "diagram",
+      "slug": "scatter-plot",
+      "category": "numbers",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Scatter plot",
+      "meaning": "Dots that show how two numbers relate"
+    },
+    {
+      "id": "226",
+      "pack": "diagram",
+      "slug": "bubble-chart",
+      "category": "numbers",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Bubble chart",
+      "meaning": "Circle size shows a third number"
+    },
+    {
+      "id": "227",
+      "pack": "diagram",
+      "slug": "heatmap",
+      "category": "numbers",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Heatmap",
+      "meaning": "Table cells shaded by their value"
+    },
+    {
+      "id": "228",
+      "pack": "diagram",
+      "slug": "radar-chart",
+      "category": "numbers",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Radar chart",
+      "meaning": "A spider web that compares several items"
+    },
+    {
+      "id": "229",
+      "pack": "diagram",
+      "slug": "gauge-chart",
+      "category": "numbers",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Gauge chart",
+      "meaning": "A half-circle dial and needle that show progress"
+    },
+    {
+      "id": "230",
+      "pack": "diagram",
+      "slug": "combo-chart",
+      "category": "numbers",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Combo chart (bar + line)",
+      "meaning": "Bars and a line on one chart, with two scales"
+    },
+    {
+      "id": "231",
+      "pack": "diagram",
+      "slug": "pictogram-chart",
+      "category": "numbers",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Pictogram chart (icon array)",
+      "meaning": "A count of people or icons that shows a share"
+    },
+    {
+      "id": "232",
+      "pack": "diagram",
+      "slug": "100-stacked-bar-chart",
+      "category": "numbers",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "100% stacked bar chart",
+      "meaning": "Bars split by percentage to compare the breakdown"
+    },
+    {
+      "id": "233",
+      "pack": "diagram",
+      "slug": "gantt-chart",
+      "category": "flow-overview",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Gantt chart",
+      "meaning": "Bars on a date scale that show when each task runs"
+    },
+    {
+      "id": "234",
+      "pack": "diagram",
+      "slug": "timeline",
+      "category": "flow-overview",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Timeline",
+      "meaning": "Events in order along one line"
+    },
+    {
+      "id": "235",
+      "pack": "diagram",
+      "slug": "funnel-chart",
+      "category": "flow-overview",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Funnel chart",
+      "meaning": "Numbers narrowing stage by stage"
+    },
+    {
+      "id": "236",
+      "pack": "diagram",
+      "slug": "customer-journey-map",
+      "category": "flow-overview",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Customer journey map",
+      "meaning": "Actions and feelings at each stage"
+    },
+    {
+      "id": "237",
+      "pack": "diagram",
+      "slug": "treemap",
+      "category": "flow-overview",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Treemap",
+      "meaning": "Rectangle sizes show the parts of a whole"
+    },
+    {
+      "id": "238",
+      "pack": "diagram",
+      "slug": "swimlane-diagram",
+      "category": "flow-overview",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Swimlane diagram",
+      "meaning": "Lanes for each person or team split the steps"
+    },
+    {
+      "id": "239",
+      "pack": "diagram",
+      "slug": "chevron-process",
+      "category": "flow-overview",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Chevron process",
+      "meaning": "Arrow-shaped steps in a row"
+    },
+    {
+      "id": "240",
+      "pack": "diagram",
+      "slug": "concentric-circle-diagram",
+      "category": "flow-overview",
+      "width": 539,
+      "height": 208,
+      "cycle": 4.7,
+      "name": "Concentric circle diagram",
+      "meaning": "Nested circles that narrow down a market"
+    },
+    {
+      "id": "241",
+      "pack": "lp3",
+      "slug": "scrollytelling",
+      "category": "scroll-drag",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Scrollytelling",
+      "meaning": "The pinned picture changes as you read on"
+    },
+    {
+      "id": "242",
+      "pack": "lp3",
+      "slug": "image-sequence-on-scroll",
+      "category": "scroll-drag",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Image sequence on scroll",
+      "meaning": "The product turns as you scroll"
+    },
+    {
+      "id": "243",
+      "pack": "lp3",
+      "slug": "velocity-skew",
+      "category": "scroll-drag",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Velocity skew",
+      "meaning": "Images lean while you scroll fast"
+    },
+    {
+      "id": "244",
+      "pack": "lp3",
+      "slug": "multi-scroll",
+      "category": "scroll-drag",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Multi-scroll (split scrolling)",
+      "meaning": "Two columns scroll in opposite directions"
+    },
+    {
+      "id": "245",
+      "pack": "lp3",
+      "slug": "shrinking-header",
+      "category": "scroll-drag",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Shrinking header",
+      "meaning": "On scroll it shrinks into a slim floating pill"
+    },
+    {
+      "id": "246",
+      "pack": "lp3",
+      "slug": "reveal-footer",
+      "category": "scroll-drag",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Reveal footer",
+      "meaning": "The page lifts away to uncover a fixed footer"
+    },
+    {
+      "id": "247",
+      "pack": "lp3",
+      "slug": "cover-flow",
+      "category": "scroll-drag",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Cover Flow",
+      "meaning": "Angled covers swing round into the center"
+    },
+    {
+      "id": "248",
+      "pack": "lp3",
+      "slug": "infinite-canvas",
+      "category": "scroll-drag",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Infinite canvas",
+      "meaning": "Drag in any direction, it never ends"
+    },
+    {
+      "id": "249",
+      "pack": "lp3",
+      "slug": "dock-magnification",
+      "category": "touch",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Dock magnification",
+      "meaning": "Icons grow the closer the cursor gets"
+    },
+    {
+      "id": "250",
+      "pack": "lp3",
+      "slug": "holographic-card",
+      "category": "touch",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Holographic card",
+      "meaning": "Tilt it and a rainbow sheen runs across"
+    },
+    {
+      "id": "251",
+      "pack": "lp3",
+      "slug": "image-trail",
+      "category": "touch",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Image trail",
+      "meaning": "Photos pile up along the cursor's path"
+    },
+    {
+      "id": "252",
+      "pack": "lp3",
+      "slug": "fluid-simulation",
+      "category": "touch",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Fluid simulation",
+      "meaning": "The cursor stirs up swirling colored smoke"
+    },
+    {
+      "id": "253",
+      "pack": "lp3",
+      "slug": "scratch-to-reveal",
+      "category": "touch",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Scratch to reveal",
+      "meaning": "Rub it and what is underneath appears"
+    },
+    {
+      "id": "254",
+      "pack": "lp3",
+      "slug": "swipe-cards",
+      "category": "touch",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Swipe cards",
+      "meaning": "Flick a card left or right to send it away"
+    },
+    {
+      "id": "255",
+      "pack": "lp3",
+      "slug": "split-flap-display",
+      "category": "touch",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Split-flap display",
+      "meaning": "Letters flip over like a departure board"
+    },
+    {
+      "id": "256",
+      "pack": "lp3",
+      "slug": "flip-animation",
+      "category": "touch",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "FLIP animation",
+      "meaning": "Filter, and the cards slide into their new places"
+    },
+    {
+      "id": "257",
+      "pack": "lp3",
+      "slug": "liquid-glass",
+      "category": "texture",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Liquid glass",
+      "meaning": "Bends what is behind it like a lens of water"
+    },
+    {
+      "id": "258",
+      "pack": "lp3",
+      "slug": "fluted-glass",
+      "category": "texture",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Fluted glass",
+      "meaning": "Colors ripple through ribbed glass"
+    },
+    {
+      "id": "259",
+      "pack": "lp3",
+      "slug": "liquid-metal",
+      "category": "texture",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Liquid metal",
+      "meaning": "Reflections flow like molten metal"
+    },
+    {
+      "id": "260",
+      "pack": "lp3",
+      "slug": "caustics",
+      "category": "texture",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Caustics",
+      "meaning": "A shimmering net of light on the bottom of water"
+    },
+    {
+      "id": "261",
+      "pack": "lp3",
+      "slug": "dappled-light",
+      "category": "texture",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Dappled light",
+      "meaning": "Leaf shadows and sunlight sway on a wall"
+    },
+    {
+      "id": "262",
+      "pack": "lp3",
+      "slug": "topographic-contour-lines",
+      "category": "texture",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Topographic contour lines",
+      "meaning": "Contour lines slowly change shape"
+    },
+    {
+      "id": "263",
+      "pack": "lp3",
+      "slug": "halftone",
+      "category": "texture",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "Halftone",
+      "meaning": "The picture is drawn by the size of dots"
+    },
+    {
+      "id": "264",
+      "pack": "lp3",
+      "slug": "crt-effect",
+      "category": "texture",
+      "width": 539,
+      "height": 208,
+      "cycle": 9.4,
+      "name": "CRT effect",
+      "meaning": "Scanlines and glow make it look like an old CRT"
     }
   ]
 }

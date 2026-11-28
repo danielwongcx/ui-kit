@@ -4,12 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Motion prompt · ui-kit</title>
-<meta name="description" content="192 looping canvas effects from Shohei Ohtaki’s Motion Prompt gallery. Filter by pack. MIT License.">
+<meta name="description" content="264 looping canvas effects from Shohei Ohtaki’s Motion Prompt gallery. Filter by pack. MIT License.">
 <!--
   Rank: primary = the effect canvases. Secondary = each effect name. Tertiary = the number, the meaning, and the credit.
   Primary action = the pack filter. All is the resting choice.
   Tokens: space 4–64, type 12–18, ink / muted / page, radius 12, the wave-grid shadow.
   Effects: vendor/motion-prompt/ (MIT, Shohei Ohtaki). #008 is one card in the grid.
+  Copy on each card copies that effect’s official code text from vendor/motion-prompt/codes.json.
 -->
 <script>
   (function () {
@@ -115,12 +116,14 @@
     flex-direction: column;
     gap: var(--space-16);
     margin: var(--space-32) 0;
+    min-width: 0;
   }
 
   .filter {
     display: flex;
     flex-direction: column;
     gap: var(--space-8);
+    min-width: 0;
   }
 
   .filter__label {
@@ -133,13 +136,20 @@
 
   .chips {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: var(--space-8);
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    padding-block: 2px;
+    scrollbar-width: thin;
   }
 
   .chip {
+    flex: 0 0 auto;
     min-height: 44px;
-    max-width: 100%;
     padding: var(--space-8) var(--space-16);
     border: 1px solid var(--line);
     border-radius: 999px;
@@ -147,6 +157,7 @@
     color: var(--ink);
     font: 600 var(--text-14)/1.2 var(--sans);
     text-align: center;
+    white-space: nowrap;
     cursor: pointer;
   }
 
@@ -232,7 +243,16 @@
     padding: var(--space-16);
   }
 
+  .card__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
   .card__name {
+    flex: 1 1 auto;
+    min-width: 0;
     margin: 0;
     font-size: var(--text-16);
     font-weight: 600;
@@ -264,9 +284,49 @@
     color: var(--muted);
   }
 
+  .copy {
+    appearance: none;
+    flex: 0 0 auto;
+    min-height: 2.75rem;
+    margin: 0;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--page);
+    color: var(--ink);
+    font: 600 0.875rem/1.2 var(--sans);
+    text-align: center;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .copy:hover {
+    border-color: rgba(28, 28, 34, 0.28);
+  }
+
+  .copy.is-done,
+  .copy.is-fail {
+    border-color: var(--ink);
+    background: var(--track);
+    color: var(--ink);
+  }
+
+  .copy-live {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
   .lede a:focus-visible,
   .chip:focus-visible,
-  .card__name a:focus-visible {
+  .card__name a:focus-visible,
+  .copy:focus-visible {
     outline: 2px solid var(--ink);
     outline-offset: 2px;
   }
@@ -283,7 +343,7 @@
   <header class="hero">
     <h1 id="page-title">Motion prompt</h1>
     <p class="lede" id="lede">
-      192 looping canvas effects from
+      264 looping canvas effects from
       <a href="https://showheyohtaki.github.io/motion-prompt/" target="_blank" rel="noopener noreferrer">Shohei Ohtaki’s Motion Prompt</a>
       gallery, including
       <a href="#008">kinetic typography</a>.
@@ -304,6 +364,7 @@
     <p class="count" id="count" hidden></p>
   </div>
   <p class="status" id="status" role="status" hidden></p>
+  <p class="copy-live" id="copy-live" role="status"></p>
   <div class="grid" id="grid"></div>
 </main>
 <script src="vendor/motion-prompt/runtime.js" defer></script>
@@ -315,6 +376,9 @@
 <script src="vendor/motion-prompt/pack-motion2.js" defer></script>
 <script src="vendor/motion-prompt/pack-lp2.js" defer></script>
 <script src="vendor/motion-prompt/pack-camera2.js" defer></script>
+<script src="vendor/motion-prompt/pack-artstyle.js" defer></script>
+<script src="vendor/motion-prompt/pack-diagram.js" defer></script>
+<script src="vendor/motion-prompt/pack-lp3.js" defer></script>
 <script src="kinetic-typography.js" defer></script>
 <script src="shared/site-header.js?v=46" defer></script>
 </body>
