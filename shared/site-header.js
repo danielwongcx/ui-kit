@@ -28,6 +28,7 @@
         { id: 'premium-feel', label: 'Premium feel', href: 'premium-feel.html', group: 'Handbooks' },
         { id: 'motion-vocab', label: 'Motion vocab', href: 'motion-vocab.html', group: 'Handbooks' },
         { id: 'four-rules', label: 'Four rules', href: 'four-rules.html', group: 'Handbooks' },
+        { id: 'pill-padding', label: 'Pill padding', href: 'pill-padding.html', group: 'Handbooks' },
         { id: 'one-prompt', label: 'One prompt', href: 'one-prompt.html', group: 'Notes' },
         { id: 'motion-studio', label: 'Motion studio', href: 'motion-studio.html', group: 'Notes' },
         { id: 'fix-life', label: 'Fix your life', href: 'fix-life.html', group: 'Notes' },

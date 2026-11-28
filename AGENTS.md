@@ -13,6 +13,7 @@ Multi-page **static** UI kit published on GitHub Pages from the `main` branch ro
 - Frontend: https://danielwongcx.github.io/ui-kit/frontend.html (`frontend.html`) — Guides. Interactive handbook of the frontend design/spacing/motion engine with live before/after and kinetic demos. `FRONTEND.md` is the source guide and is downloadable from the page.
 - Motion vocab: https://danielwongcx.github.io/ui-kit/motion-vocab.html (`motion-vocab.html`) — Guides. awe0’s motion prompt lexicon: nine casual phrases mapped to Count Up, Marquee, Typewriter, Stagger, Hover Lift, Morph, Easing, Ripple, and Flip Card, each with a live demo. The stock bar copies the English prompt. `prefers-reduced-motion` and `?reduce=1` hold demos at rest. No build step.
 - Four rules: https://danielwongcx.github.io/ui-kit/four-rules.html (`four-rules.html`) — Guides. Live before/after of 齊大分留 (SOROE / OOKIKU / WAKERU / AKERU): align, enlarge, separate, leave space, on one November totals plate. Study after NHK E-TV Design Ah「ならべた」. `prefers-reduced-motion` and `?reduce=1` skip the swap; `?motion=1` plays unless `?reduce=1` is also set. No build step.
+- Pill padding: https://danielwongcx.github.io/ui-kit/pill-padding.html (`pill-padding.html`) — Guides. Live wrong/fixed study of Haz (@diegohaz)’s pill-button optical padding: the icon centers in the cap, and a π strip restores the padding the curve cuts. Copy copies that CSS. `prefers-reduced-motion` and `?reduce=1` snap the plate; `?motion=1` eases the change unless `?reduce=1` is also set. No build step.
 - `DESIGN.md` (repo root) is the agent rulebook for those principles and is downloadable from the Refactor UI page.
 - Learn Piano 101: https://danielwongcx.github.io/ui-kit/learn-piano-101.html (`learn-piano-101.html`) — full-viewport beginner piano film; click starts the visual GSAP timeline. GSAP and the motion runtime live in `vendor/` (no CDN, no soundtrack).
 - ASCII: https://danielwongcx.github.io/ui-kit/ascii-sharks.html (`ascii-sharks.html`) — full-viewport scenes. A corner control switches **Sharks** (stackedlol ocean), **Train** (ASCII Magic viaduct steam train, halftone dots on black), and **HRTD** (original “made with 💕 by HRTD” line). Only the active scene runs. The last scene is stored in `localStorage` (`ascii-scene`); `?scene=sharks`, `?scene=train`, or `?scene=hrtd` overrides it for that visit. `?scene=ferry` and `?scene=mtr` redirect to their own pages. Sharks keep the Light / Dark palette (`ascii-sharks-theme`, `?theme=light`). The theme control hides on Train and HRTD. Engines: `vendor/ascii-sharks/ocean.js` (port of [stackedlol/ascii-sharks](https://github.com/stackedlol/ascii-sharks)), `vendor/ascii-magic/` ([ascii-magic-art](https://github.com/kailashsr38/ascii-magic-art) v1.0.2, MIT; no CDN), and `vendor/ascii-hrtd/made.js`. Optional `?sharks=thresher,hammerhead,mako,nurse`.
@@ -85,6 +86,7 @@ Handbooks:
 - Premium feel → `premium-feel.html`
 - Motion vocab → `motion-vocab.html`
 - Four rules → `four-rules.html`
+- Pill padding → `pill-padding.html`
 
 Notes:
 
