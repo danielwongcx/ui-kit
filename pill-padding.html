@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pill padding · ui-kit</title>
+<meta name="description" content="Equal padding on a pill button puts the icon off the round cap and cuts the optical space. Haz’s CSS puts the icon back and restores the strip the curve removes.">
+<meta name="theme-color" content="#f3f0e8">
+<script>
+(function () {
+  var q = location.search || "";
+  var forceReduce = /(?:^|[?&])reduce=1(?:&|$)/.test(q);
+  var forceMotion = /(?:^|[?&])motion=1(?:&|$)/.test(q);
+  var reduce = false;
+  try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+  if (forceMotion) reduce = false;
+  if (forceReduce) reduce = true;
+  document.documentElement.setAttribute("data-motion", reduce ? "reduce" : "on");
+
+  function pick(re, fallback) {
+    var asked = (q.match(re) || [])[1];
+    return asked || fallback;
+  }
+  document.documentElement.setAttribute("data-view", pick(
+    /(?:^|[?&])view=(wrong|fixed|split)(?:&|$)/, "split"
+  ));
+  document.documentElement.setAttribute("data-content", pick(
+    /(?:^|[?&])content=(left|right|text|icon)(?:&|$)/, "left"
+  ));
+  document.documentElement.setAttribute("data-tune", pick(
+    /(?:^|[?&])tune=(drawn|roomy|radius)(?:&|$)/, "drawn"
+  ));
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="shared/site-header.css?v=9">
+<style>
+  /* Page chrome is off-white. #fff is not a page background.
+     --brand is the mark only. --primary is the control and the focus ring.
+     The specimen rules below are the study: em, lh, cap, and pi stay as written. */
+  :root {
+    --page: #f3f0e8;
+    --ink: #1c1916;
+    --muted: #4a453c;
+    --line: rgba(28, 25, 22, 0.16);
+    --brand: #c4552a;
+    --primary: #1e3a32;
+    --primary-ink: #f3f0e8;
+    --fail: #8c2f2a;
+    --pass: #1e3a32;
+    --plate: #14161c;
+    --plate-ink: #f4f1ea;
+    --guide: #d5e4ff;
+    --hatch: #c9b6ff;
+    --avg: #e4d9ff;
+    --bad: #ffc2b8;
+    --good: #b6f3d4;
+    --code: #241f1c;
+    --sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  *,
+  *::before,
+  *::after { box-sizing: border-box; }
+
+  html { color-scheme: light; }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background: var(--page);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 1rem;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, p, figure { margin: 0; }
+
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  ::selection { background: #e4efe9; color: var(--ink); }
+
+  a { color: var(--primary); text-underline-offset: 0.15em; }
+
+  .sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .shell {
+    width: 100%;
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 4rem;
+    min-width: 0;
+  }
+
+  [id] { scroll-margin-top: 4.5rem; }
+
+  .kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08rem;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .brand-mark {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 2px;
+    background: var(--brand);
+    flex: 0 0 auto;
+  }
+
+  h1 {
+    margin-top: 0.5rem;
+    font-size: 2rem;
+    line-height: 1.15;
+    letter-spacing: -0.03rem;
+    font-weight: 700;
+  }
+
+  @media (min-width: 1024px) {
+    h1 { font-size: 3rem; }
+  }
+
+  .lede {
+    margin-top: 0.75rem;
+    max-width: 40rem;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .credit {
+    margin-top: 0.75rem;
+    max-width: 36rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .support {
+    display: none;
+    margin-top: 1rem;
+    max-width: 40rem;
+    color: var(--fail);
+  }
+
+  html[data-support="no"] .support { display: block; }
+
+  /* One horizontal line. Scrolls at 390px. Never wraps. */
+  .pills {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin-top: 1.5rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-padding-inline: 1rem;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .pills::-webkit-scrollbar { display: none; }
+
+  .pills [role="radiogroup"] {
+    display: flex;
+    flex-wrap: nowrap;
+    flex: 0 0 auto;
+    gap: 0.5rem;
+  }
+
+  .pills [role="radiogroup"] + [role="radiogroup"] {
+    padding-left: 0.75rem;
+    border-left: 1px solid var(--line);
+  }
+
+  .pills button {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    min-height: 2.75rem;
+    margin: 0;
+    padding: 0.5rem 0.75rem;
+    border-radius: 2rem;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: inherit;
+    font: 600 0.75rem/1.3 var(--sans);
+    scroll-margin-inline: 0.5rem;
+    cursor: pointer;
+  }
+
+  html[data-motion="on"] .pills button {
+    transition: background 150ms linear, color 150ms linear, border-color 150ms linear;
+  }
+
+  .pills button:hover { background: rgba(28, 25, 22, 0.05); }
+
+  .pills button[aria-checked="true"] {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--primary-ink);
+  }
+
+  .stage {
+    display: grid;
+    gap: 1.5rem;
+    align-items: stretch;
+    margin-top: 1.5rem;
+    min-width: 0;
+  }
+
+  html[data-view="wrong"] .pane-fixed,
+  html[data-view="fixed"] .pane-wrong { display: none; }
+
+  html[data-view="wrong"] .stage,
+  html[data-view="fixed"] .stage { max-width: 36rem; }
+
+  @media (min-width: 1024px) {
+    html[data-view="split"] .stage { grid-template-columns: 1fr 1fr; }
+  }
+
+  html[data-motion="on"] .stage.is-swap {
+    animation: plate-in 180ms var(--ease);
+  }
+
+  @keyframes plate-in {
+    from { opacity: 0.4; }
+    to { opacity: 1; }
+  }
+
+  .pane {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  figcaption {
+    margin-bottom: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06rem;
+    text-transform: uppercase;
+  }
+
+  .pane-wrong figcaption { color: var(--fail); }
+  .pane-fixed figcaption { color: var(--pass); }
+
+  .plate {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 1rem 1rem 0.75rem;
+    border-radius: 8px;
+    background-color: var(--plate);
+    background-image: radial-gradient(rgba(243, 240, 232, 0.16) 1px, transparent 1px);
+    background-size: 0.75rem 0.75rem;
+    box-shadow: 0 12px 32px -18px rgba(28, 25, 22, 0.45);
+    color: var(--plate-ink);
+  }
+
+  .flags {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    min-width: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .flags::-webkit-scrollbar { display: none; }
+
+  .flag {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    min-height: 2rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.5;
+    white-space: nowrap;
+  }
+
+  .flag.is-bad { background: #3d1e1c; color: #ffd0c8; }
+  .flag.is-good { background: #14362c; color: #d8ffee; }
+
+  .canvas {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-width: 0;
+    margin-top: 0.75rem;
+    padding: 3rem 1.5rem 4rem;
+    overflow: hidden;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  html[data-support="no"] .overlay { display: none; }
+
+  /* Study CSS. em, lh, cap, and pi are the lesson.
+     Do not replace the gap with a fixed length. */
+  .specimen {
+    --py: 0.5em;
+    --px: 1em;
+    --pill: calc(var(--py) + 0.5lh);
+    --r: var(--pill);
+    display: inline-flex;
+    align-items: center;
+    width: max-content;
+    margin: 0;
+    padding: var(--py) var(--px);
+    gap: max(var(--py), var(--px) - (1lh - 1cap) / 2);
+    border: 0;
+    border-radius: var(--r);
+    background: #2c3348;
+    color: #fff;
+    font: 600 1rem/1.5 var(--sans);
+    letter-spacing: 0;
+    white-space: nowrap;
+    cursor: default;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .specimen:focus-visible {
+    outline: 2px solid var(--plate-ink);
+    outline-offset: 3px;
+  }
+
+  .specimen > :first-child { margin-inline-start: var(--edge); }
+  .specimen > :last-child { margin-inline-end: var(--edge); }
+
+  .specimen .icon {
+    width: 1lh;
+    height: 1lh;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: #1f7a6e;
+    --edge: calc(var(--py) - var(--px));
+  }
+
+  .specimen .icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .specimen .label {
+    --edge: calc(var(--r) * (1 - pi / 4) * var(--r) / var(--pill));
+  }
+
+  html[data-tune="roomy"] .specimen { --py: 0.7em; }
+  html[data-tune="radius"] .specimen:not(.is-naive) { --r: 16px; }
+
+  .specimen.is-naive { --r: 999px; }
+  .specimen.is-naive > :first-child { margin-inline-start: 0; }
+  .specimen.is-naive > :last-child { margin-inline-end: 0; }
+
+  html[data-motion="on"] .is-live .specimen,
+  html[data-motion="on"] .is-live .specimen > * {
+    transition:
+      padding 180ms var(--ease),
+      margin 180ms var(--ease),
+      border-radius 180ms var(--ease),
+      gap 180ms var(--ease);
+  }
+
+  .readout {
+    margin-top: 0.75rem;
+    min-height: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .note {
+    margin-top: 0.75rem;
+    max-width: 40rem;
+    color: var(--muted);
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+
+  .lessons code,
+  .note code,
+  .support code {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    background: rgba(28, 25, 22, 0.06);
+    padding: 0.15em 0.35em;
+    border-radius: 4px;
+  }
+
+  .lessons {
+    display: grid;
+    gap: 1.5rem 2rem;
+    margin-top: 3rem;
+  }
+
+  @media (min-width: 1024px) {
+    .lessons { grid-template-columns: 1fr 1fr; }
+  }
+
+  .lesson {
+    padding-top: 0.75rem;
+    box-shadow: inset 0 2px 0 var(--line);
+  }
+
+  .lesson-kicker {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06rem;
+    color: var(--muted);
+  }
+
+  .lesson h2 {
+    margin-top: 0.25rem;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    letter-spacing: -0.03rem;
+    font-weight: 700;
+  }
+
+  .lesson p {
+    margin-top: 0.5rem;
+    max-width: 36rem;
+    line-height: 1.5;
+  }
+
+  .source {
+    margin-top: 3rem;
+    min-width: 0;
+  }
+
+  .code-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .code-bar h2 {
+    font-size: 1.5rem;
+    line-height: 1.2;
+    letter-spacing: -0.03rem;
+    font-weight: 700;
+  }
+
+  .copy {
+    appearance: none;
+    flex: 0 0 auto;
+    min-height: 2.75rem;
+    margin: 0;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid rgba(28, 25, 22, 0.28);
+    border-radius: 2rem;
+    background: var(--page);
+    color: var(--ink);
+    font: 700 0.75rem/1.2 var(--sans);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .copy:hover { border-color: var(--ink); }
+
+  .copy.is-done {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--primary-ink);
+  }
+
+  .copy.is-fail {
+    background: var(--fail);
+    border-color: var(--fail);
+    color: var(--primary-ink);
+  }
+
+  .copy:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+
+  pre.code {
+    margin: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 1rem;
+    border-radius: 8px;
+    background: var(--code);
+    color: #f3efe6;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    line-height: 1.5;
+    tab-size: 2;
+  }
+
+  @media (min-width: 1024px) {
+    pre.code { font-size: 1rem; }
+  }
+
+  .tok-prop { color: #d7c4f8; }
+  .tok-fn,
+  .tok-num { color: #f2d48a; }
+  .tok-unit { color: #f3b4c8; }
+
+  .support-probe {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+    font: 600 1rem/1.5 var(--sans);
+    --py: 0.5em;
+    --px: 1em;
+    --pill: calc(var(--py) + 0.5lh);
+    --r: var(--pill);
+    --gap-check: max(var(--py), var(--px) - (1lh - 1cap) / 2);
+  }
+
+  .support-probe .label {
+    --edge: calc(var(--r) * (1 - pi / 4) * var(--r) / var(--pill));
+    margin-inline-end: var(--edge);
+  }
+</style>
+</head>
+<body data-page="pill-padding">
+<main class="shell">
+  <header class="hero">
+    <p class="kicker"><span class="brand-mark" aria-hidden="true"></span>Buttons</p>
+    <h1>Pill padding</h1>
+    <p class="lede">Equal left and right padding on a full pill misses twice. The icon sits off the round cap, and the curve cuts the end, so 16px of padding reads as optical space of about 12.</p>
+    <p class="credit">CSS from <a href="https://x.com/diegohaz/status/2126399656791822658">Haz (@diegohaz)</a>.</p>
+    <p class="support" role="status">This plate needs CSS <code>lh</code>, <code>cap</code>, and <code>pi</code>. The rules below are still the ones to copy.</p>
+  </header>
+
+  <div class="pills">
+    <div role="radiogroup" aria-label="Plate" data-attr="data-view">
+      <button type="button" role="radio" data-value="wrong" aria-checked="false" tabindex="-1">Wrong</button>
+      <button type="button" role="radio" data-value="fixed" aria-checked="false" tabindex="-1">Fixed</button>
+      <button type="button" role="radio" data-value="split" aria-checked="true" tabindex="0">Split</button>
+    </div>
+    <div role="radiogroup" aria-label="Contents" data-attr="data-content">
+      <button type="button" role="radio" data-value="left" aria-checked="true" tabindex="0">Icon left</button>
+      <button type="button" role="radio" data-value="right" aria-checked="false" tabindex="-1">Icon right</button>
+      <button type="button" role="radio" data-value="text" aria-checked="false" tabindex="-1">Text</button>
+      <button type="button" role="radio" data-value="icon" aria-checked="false" tabindex="-1">Icon</button>
+    </div>
+    <div role="radiogroup" aria-label="Tune" data-attr="data-tune">
+      <button type="button" role="radio" data-value="drawn" aria-checked="true" tabindex="0">Default</button>
+      <button type="button" role="radio" data-value="roomy" aria-checked="false" tabindex="-1">py 0.7em</button>
+      <button type="button" role="radio" data-value="radius" aria-checked="false" tabindex="-1">r 16px</button>
+    </div>
+  </div>
+
+  <div class="stage" id="stage">
+    <figure class="pane pane-wrong">
+      <figcaption>Wrong</figcaption>
+      <div class="plate">
+        <div class="flags" id="flags-wrong" aria-hidden="true"></div>
+        <div class="canvas">
+          <button class="specimen is-naive" id="specimen-wrong" type="button"></button>
+          <svg class="overlay" aria-hidden="true" focusable="false"></svg>
+        </div>
+      </div>
+      <p class="readout" id="readout-wrong"></p>
+    </figure>
+    <figure class="pane pane-fixed">
+      <figcaption>Fixed</figcaption>
+      <div class="plate">
+        <div class="flags" id="flags-fixed" aria-hidden="true"></div>
+        <div class="canvas">
+          <button class="specimen" id="specimen-fixed" type="button"></button>
+          <svg class="overlay" aria-hidden="true" focusable="false"></svg>
+        </div>
+      </div>
+      <p class="readout" id="readout-fixed"></p>
+    </figure>
+  </div>
+  <p class="note">Labels are measured pixels, rounded. The plate is 1rem Inter with line-height 1.5. The copied CSS leaves the font alone.</p>
+  <p class="sr" id="status" role="status"></p>
+
+  <section class="lessons" aria-labelledby="lessons-label">
+    <h2 id="lessons-label" class="sr">How the padding fails, and the fix</h2>
+    <article class="lesson">
+      <p class="lesson-kicker">01</p>
+      <h2>Off center</h2>
+      <p>The round cap is a circle whose center sits half the button height in from the end. An icon of <code>1lh</code> with <code>1em</code> of padding on both sides lands past that center. At <code>--py: 0.5em</code> the miss is 8px. The icon’s edge is <code>--py - --px</code>, which pulls it back until the ring matches the block padding.</p>
+      <p>The gap stays <code>max(--py, --px - (1lh - 1cap) / 2)</code>. At this plate that reads 10, from the space above the cap in the line box.</p>
+    </article>
+    <article class="lesson">
+      <p class="lesson-kicker">02</p>
+      <h2>Cut area</h2>
+      <p>Each rounded corner drops a square minus a quarter circle, <code>r²(1 − π/4)</code>. The two corners on one end, spread across the button height, leave a strip <code>r²(1 − π/4) / --pill</code>. On a full pill that strip is <code>r(1 − π/4)</code>, about 0.2146 of the radius, about 4px here. Padding of 16 reads as optical space of 12. CSS <code>pi</code> is the Values Level 4 constant.</p>
+    </article>
+    <article class="lesson">
+      <p class="lesson-kicker">03</p>
+      <h2>Real radius</h2>
+      <p><code>--pill</code> is <code>--py + 0.5lh</code>, the real half-height. <code>--r</code> has to be <code>--pill</code>, or a smaller radius you actually draw, such as 16px. The label margin multiplies by <code>--r / --pill</code>. With <code>--r</code> left at 999px, that margin is about 10,700px at the default padding.</p>
+    </article>
+    <article class="lesson">
+      <p class="lesson-kicker">04</p>
+      <h2>Same rules</h2>
+      <p>An icon on the right, text at both ends, and an icon alone use the same first-child and last-child margins. Text at both ends reads geometric 20 and optical 16. An icon alone reads 8 all around. <code>--py: 0.7em</code> reads 11 all around, gap 11, end 21. <code>--r: 16px</code> reads end 19. Optical space stays 16.</p>
+    </article>
+  </section>
+
+  <section class="source" id="css" aria-labelledby="css-title">
+    <div class="code-bar">
+      <h2 id="css-title">The CSS</h2>
+      <button type="button" class="copy" id="copy" aria-label="Copy the CSS">Copy</button>
+    </div>
+    <pre class="code"><code id="css-src">button {
+  --py: 0.5em;
+  --px: 1em;
+  --pill: calc(var(--py) + 0.5lh);
+  --r: var(--pill);
+  padding: var(--py) var(--px);
+  gap: max(var(--py), var(--px) - (1lh - 1cap) / 2);
+  border-radius: var(--r);
+}
+button > :first-child { margin-inline-start: var(--edge); }
+button > :last-child { margin-inline-end: var(--edge); }
+.icon {
+  width: 1lh;
+  height: 1lh;
+  --edge: calc(var(--py) - var(--px));
+}
+.label {
+  --edge: calc(var(--r) * (1 - pi / 4) * var(--r) / var(--pill));
+}</code></pre>
+    <p class="note">The wrong plate keeps this padding and this gap, sets <code>--r</code> to 999px, and skips the edge margins.</p>
+    <p class="note" id="boom" data-boom=""></p>
+    <p class="sr" id="copy-status" role="status"></p>
+  </section>
+</main>
+
+<template id="icon-tpl">
+  <span class="icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+      <circle cx="12" cy="12" r="12" fill="#1f7a6e"/>
+      <circle cx="12" cy="12" r="8.2" fill="none" stroke="#fff" stroke-width="1.6"/>
+      <path d="M7.7 12.4 10.7 15.3 16.3 9.2" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </span>
+</template>
+<template id="label-tpl">
+  <span class="label">Approve</span>
+</template>
+<p class="support-probe" aria-hidden="true"><span class="label">x</span></p>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var stage = document.getElementById("stage");
+  var SVGNS = "http://www.w3.org/2000/svg";
+  var drawToken = 0;
+
+  function cssVar(name) {
+    return getComputedStyle(root).getPropertyValue(name).trim();
+  }
+
+  function roundPx(n) {
+    return Math.round(n);
+  }
+
+  function iconNode() {
+    return document.getElementById("icon-tpl").content.firstElementChild.cloneNode(true);
+  }
+
+  function labelNode() {
+    return document.getElementById("label-tpl").content.firstElementChild.cloneNode(true);
+  }
+
+  function fill(button) {
+    var content = root.getAttribute("data-content") || "left";
+    var plate = button.classList.contains("is-naive") ? "Wrong plate" : "Fixed plate";
+    button.replaceChildren();
+    if (content === "right") button.append(labelNode(), iconNode());
+    else if (content === "text") button.append(labelNode());
+    else if (content === "icon") button.append(iconNode());
+    else button.append(iconNode(), labelNode());
+    button.setAttribute("aria-label", "Approve, " + plate);
+    button.setAttribute("aria-describedby", button.id.replace("specimen", "readout"));
+  }
+
+  function fillAll() {
+    document.querySelectorAll(".specimen").forEach(fill);
+  }
+
+  function supported() {
+    var probe = document.querySelector(".support-probe .label");
+    var margin = parseFloat(getComputedStyle(probe).marginInlineEnd);
+    var gap = parseFloat(getComputedStyle(document.getElementById("specimen-fixed")).gap);
+    return margin > 1 && gap > 1;
+  }
+
+  function measure(button) {
+    var rect = button.getBoundingClientRect();
+    if (rect.width < 1 || rect.height < 1) return null;
+    var kids = Array.prototype.slice.call(button.children);
+    if (!kids.length) return null;
+    var first = kids[0];
+    var last = kids[kids.length - 1];
+    var fr = first.getBoundingClientRect();
+    var lr = last.getBoundingClientRect();
+    var start = fr.left - rect.left;
+    var end = rect.right - lr.right;
+    var gap = null;
+    if (kids.length === 2) {
+      var a = kids[0].getBoundingClientRect();
+      var b = kids[1].getBoundingClientRect();
+      gap = b.left - a.right;
+    }
+    var pill = rect.height / 2;
+    var specified = parseFloat(getComputedStyle(button).borderTopLeftRadius) || 0;
+    var usedR = Math.min(specified, rect.width / 2, rect.height / 2);
+    var deficit = (usedR * usedR * (1 - Math.PI / 4)) / pill;
+    var icon = button.querySelector(".icon");
+    var label = button.querySelector(".label");
+    var iconInfo = null;
+    if (icon) {
+      var ir = icon.getBoundingClientRect();
+      var only = kids.length === 1;
+      var onStart = icon === first;
+      var capCx = only ? rect.left + rect.width / 2 : (onStart ? rect.left + pill : rect.right - pill);
+      var capCy = rect.top + pill;
+      var iconCx = ir.left + ir.width / 2;
+      var offset = iconCx - capCx;
+      var circular = Math.abs(rect.width - rect.height) < 1;
+      var concentric = roundPx(Math.abs(offset)) === 0 && (!only || circular);
+      var top = ir.top - rect.top;
+      var bottom = rect.bottom - ir.bottom;
+      var left = ir.left - rect.left;
+      var right = rect.right - ir.right;
+      var ring = only ? [top, bottom, left, right] : [top, bottom, onStart ? left : right];
+      var ringMax = Math.max.apply(null, ring);
+      var ringMin = Math.min.apply(null, ring);
+      var uniform = (ringMax - ringMin) < 0.75;
+      var around = only ? (left + right + top + bottom) / 4 : (onStart ? left : right);
+      iconInfo = {
+        only: only,
+        onStart: onStart,
+        offset: offset,
+        offsetRound: roundPx(Math.abs(offset)),
+        concentric: concentric,
+        uniform: uniform && concentric,
+        aroundRound: roundPx(around),
+        topRound: roundPx(top),
+        sideRound: roundPx(only ? Math.max(left, right) : (onStart ? left : right)),
+        capCx: capCx,
+        capCy: capCy,
+        capR: pill,
+        iconCx: iconCx,
+        iconCy: ir.top + ir.height / 2
+      };
+    }
+    var textEnds = [];
+    if (label) {
+      if (label === first) textEnds.push({ side: "start", geometric: start, optical: start - deficit });
+      if (label === last) textEnds.push({ side: "end", geometric: end, optical: end - deficit });
+    }
+    return {
+      rect: rect,
+      start: start,
+      end: end,
+      gap: gap,
+      pill: pill,
+      usedR: usedR,
+      deficit: deficit,
+      iconInfo: iconInfo,
+      textEnds: textEnds
+    };
+  }
+
+  function sentence(m) {
+    var bits = [];
+    if (m.iconInfo) {
+      if (m.iconInfo.only && !m.iconInfo.uniform) {
+        bits.push("Sides " + m.iconInfo.sideRound + ", top " + m.iconInfo.topRound + ".");
+      } else if (!m.iconInfo.concentric) {
+        bits.push("Off-center by " + m.iconInfo.offsetRound + ".");
+      } else if (m.iconInfo.uniform) {
+        bits.push("Concentric, " + m.iconInfo.aroundRound + " all around.");
+      } else {
+        bits.push("Concentric.");
+      }
+    }
+    var measures = ["Start " + roundPx(m.start)];
+    if (m.gap != null) measures.push("gap " + roundPx(m.gap));
+    measures.push("end " + roundPx(m.end));
+    bits.push(measures.join(", ") + ".");
+    if (m.textEnds.length) {
+      var opt = roundPx(m.textEnds[0].optical);
+      var same = m.textEnds.every(function (t) { return roundPx(t.optical) === opt; });
+      if (same) bits.push("Optical " + opt + ".");
+      else {
+        bits.push(m.textEnds.map(function (t) {
+          return (t.side === "start" ? "Start" : "End") + " optical " + roundPx(t.optical);
+        }).join(", ") + ".");
+      }
+    }
+    return bits.join(" ");
+  }
+
+  function setFlags(node, m) {
+    if (!node) return;
+    node.replaceChildren();
+    function add(text, good) {
+      var chip = document.createElement("span");
+      chip.className = "flag " + (good ? "is-good" : "is-bad");
+      chip.textContent = text;
+      node.appendChild(chip);
+    }
+    if (m.iconInfo) {
+      if (m.iconInfo.only && !m.iconInfo.uniform) add("Sides " + m.iconInfo.sideRound + ", top " + m.iconInfo.topRound, false);
+      else if (m.iconInfo.concentric) add("Concentric", true);
+      else add("Off-center", false);
+    }
+    if (m.textEnds.length) {
+      var opt = roundPx(m.textEnds[0].optical);
+      var same = m.textEnds.every(function (t) { return roundPx(t.optical) === opt; });
+      if (same) add(opt === 16 ? "Optical space 16" : ("Optical space " + opt + ", not 16"), opt === 16);
+    } else if (m.iconInfo && m.iconInfo.uniform) {
+      add(m.iconInfo.aroundRound + " all around", true);
+    }
+  }
+
+  function svgEl(name, attrs) {
+    var node = document.createElementNS(SVGNS, name);
+    if (attrs) {
+      Object.keys(attrs).forEach(function (key) {
+        node.setAttribute(key, attrs[key]);
+      });
+    }
+    return node;
+  }
+
+  function paint(button, m) {
+    var canvas = button.parentNode;
+    var svg = canvas.querySelector(":scope > .overlay");
+    svg.replaceChildren();
+    var cRect = canvas.getBoundingClientRect();
+    var b = m.rect;
+    var ox = b.left - cRect.left;
+    var oy = b.top - cRect.top;
+    var bw = b.width;
+    var bh = b.height;
+    var w = cRect.width;
+    var h = cRect.height;
+    svg.setAttribute("viewBox", "0 0 " + w + " " + h);
+    var guide = cssVar("--guide") || "#d5e4ff";
+    var hatch = cssVar("--hatch") || "#c9b6ff";
+    var avg = cssVar("--avg") || "#e4d9ff";
+    var bad = cssVar("--bad") || "#ffc2b8";
+    var good = cssVar("--good") || "#b6f3d4";
+    var plate = cssVar("--plate") || "#14161c";
+    var typePx = parseFloat(getComputedStyle(root).fontSize) * 0.75;
+    var labels = [];
+    var clipId = "clip-" + button.id;
+
+    function addLabel(x, y, text, fill, priority) {
+      var est = Math.max(typePx, text.length * typePx * 0.62);
+      var cx = Math.max(est / 2 + 2, Math.min(w - est / 2 - 2, x));
+      var cy = Math.max(typePx, Math.min(h - typePx, y));
+      var t = svgEl("text", {
+        x: String(cx),
+        y: String(cy),
+        fill: fill,
+        "text-anchor": "middle",
+        "dominant-baseline": "central",
+        "font-family": "Inter, ui-sans-serif, system-ui, sans-serif",
+        "font-size": String(typePx),
+        "font-weight": "700"
+      });
+      t.textContent = text;
+      svg.appendChild(t);
+      var box;
+      try { box = t.getBBox(); } catch (err) { return; }
+      var padX = 4;
+      var padY = 2;
+      var backing = svgEl("rect", {
+        x: String(box.x - padX),
+        y: String(box.y - padY),
+        width: String(box.width + padX * 2),
+        height: String(box.height + padY * 2),
+        rx: "4",
+        fill: plate
+      });
+      svg.insertBefore(backing, t);
+      labels.push({
+        x: box.x - padX,
+        y: box.y - padY,
+        w: box.width + padX * 2,
+        h: box.height + padY * 2,
+        priority: priority,
+        text: t,
+        rect: backing
+      });
+    }
+
+    var defs = svgEl("defs");
+    var clip = svgEl("clipPath", { id: clipId });
+    clip.appendChild(svgEl("rect", {
+      x: String(ox),
+      y: String(oy),
+      width: String(bw),
+      height: String(bh),
+      rx: String(m.usedR),
+      ry: String(m.usedR)
+    }));
+    defs.appendChild(clip);
+    svg.appendChild(defs);
+
+    var hatchGroup = svgEl("g", { "clip-path": "url(#" + clipId + ")" });
+    m.textEnds.forEach(function (end) {
+      var x0 = end.side === "end" ? ox + bw - m.usedR : ox;
+      var x1 = end.side === "end" ? ox + bw : ox + m.usedR;
+      var x;
+      for (x = x0; x <= x1; x += 3) {
+        hatchGroup.appendChild(svgEl("line", {
+          x1: String(x),
+          y1: String(oy),
+          x2: String(x),
+          y2: String(oy + bh),
+          stroke: hatch,
+          "stroke-width": "1",
+          "stroke-opacity": "0.7"
+        }));
+      }
+      var lx = end.side === "end" ? ox + bw - end.optical : ox + end.optical;
+      hatchGroup.appendChild(svgEl("line", {
+        x1: String(lx),
+        y1: String(oy),
+        x2: String(lx),
+        y2: String(oy + bh),
+        stroke: avg,
+        "stroke-width": "1.5",
+        "stroke-dasharray": "3 3"
+      }));
+    });
+    svg.appendChild(hatchGroup);
+
+    svg.appendChild(svgEl("rect", {
+      x: String(ox),
+      y: String(oy),
+      width: String(bw),
+      height: String(bh),
+      fill: "none",
+      stroke: guide,
+      "stroke-width": "1"
+    }));
+    [[ox, oy], [ox + bw, oy], [ox, oy + bh], [ox + bw, oy + bh]].forEach(function (pt) {
+      svg.appendChild(svgEl("rect", {
+        x: String(pt[0] - 3),
+        y: String(pt[1] - 3),
+        width: "6",
+        height: "6",
+        fill: guide
+      }));
+    });
+
+    var fullPill = m.usedR >= m.pill - 0.75;
+    if (m.iconInfo && fullPill && (!m.iconInfo.only || m.iconInfo.concentric)) {
+      svg.appendChild(svgEl("circle", {
+        cx: String(m.iconInfo.capCx - cRect.left),
+        cy: String(m.iconInfo.capCy - cRect.top),
+        r: String(m.iconInfo.capR),
+        fill: "none",
+        stroke: m.iconInfo.concentric ? good : bad,
+        "stroke-width": "1.5",
+        "stroke-dasharray": "3 3"
+      }));
+    }
+
+    if (m.iconInfo && !m.iconInfo.concentric && !m.iconInfo.only && m.iconInfo.offsetRound >= 1) {
+      var ix = m.iconInfo.iconCx - cRect.left;
+      var iy = m.iconInfo.iconCy - cRect.top;
+      var ccx = m.iconInfo.capCx - cRect.left;
+      var ccy = m.iconInfo.capCy - cRect.top;
+      svg.appendChild(svgEl("line", {
+        x1: String(ccx),
+        y1: String(ccy),
+        x2: String(ix),
+        y2: String(iy),
+        stroke: bad,
+        "stroke-width": "1.5"
+      }));
+      svg.appendChild(svgEl("path", {
+        d: "M" + (ccx - 4) + " " + ccy + "H" + (ccx + 4) + "M" + ccx + " " + (ccy - 4) + "V" + (ccy + 4),
+        stroke: guide,
+        "stroke-width": "1.25",
+        fill: "none"
+      }));
+      addLabel(ix, oy - 18, String(m.iconInfo.offsetRound), bad, 3);
+    }
+
+    var baseY = oy + bh + 16;
+    function bracket(x1, x2, value) {
+      if (x2 - x1 < 1) return;
+      svg.appendChild(svgEl("path", {
+        d: "M" + x1 + " " + (baseY - 5) + "V" + (baseY + 5) + "M" + x2 + " " + (baseY - 5) + "V" + (baseY + 5) + "M" + x1 + " " + baseY + "H" + x2,
+        fill: "none",
+        stroke: guide,
+        "stroke-width": "1"
+      }));
+      addLabel((x1 + x2) / 2, baseY + 16, String(value), guide, 2);
+    }
+    var firstBox = button.children[0].getBoundingClientRect();
+    var lastBox = button.children[button.children.length - 1].getBoundingClientRect();
+    bracket(ox, firstBox.left - cRect.left, roundPx(m.start));
+    if (m.gap != null && button.children.length === 2) {
+      var secondBox = button.children[1].getBoundingClientRect();
+      bracket(firstBox.right - cRect.left, secondBox.left - cRect.left, roundPx(m.gap));
+    }
+    bracket(lastBox.right - cRect.left, ox + bw, roundPx(m.end));
+
+    var word = button.querySelector(".label");
+    var wordLeft = null;
+    var wordRight = null;
+    if (word) {
+      var wordBox = word.getBoundingClientRect();
+      wordLeft = wordBox.left - cRect.left;
+      wordRight = wordBox.right - cRect.left;
+    }
+    function clearOfWord(x, text) {
+      if (wordLeft == null) return x;
+      var half = Math.max(typePx, text.length * typePx * 0.62) / 2;
+      if (x + half <= wordLeft - 6 || x - half >= wordRight + 6) return x;
+      var leftCenter = wordLeft - 6 - half;
+      var rightCenter = wordRight + 6 + half;
+      return Math.abs(x - leftCenter) <= Math.abs(x - rightCenter) ? leftCenter : rightCenter;
+    }
+    m.textEnds.forEach(function (end) {
+      var lx = end.side === "end" ? ox + bw - end.optical : ox + end.optical;
+      var text = "avg " + roundPx(end.optical);
+      addLabel(clearOfWord(lx, text), oy - 18, text, avg, 3);
+    });
+    if (m.iconInfo && m.iconInfo.uniform) {
+      var aroundText = m.iconInfo.aroundRound + " all around";
+      var aroundX = m.iconInfo.capCx - cRect.left;
+      addLabel(clearOfWord(aroundX, aroundText), oy - 18, aroundText, good, 3);
+    }
+
+    var drop = [];
+    var i, j;
+    for (i = 0; i < labels.length; i++) {
+      for (j = i + 1; j < labels.length; j++) {
+        var a = labels[i];
+        var b = labels[j];
+        var hit = a.x < b.x + b.w + 2 && a.x + a.w + 2 > b.x && a.y < b.y + b.h + 2 && a.y + a.h + 2 > b.y;
+        if (!hit) continue;
+        var loser = a.priority === b.priority ? (a.w <= b.w ? a : b) : (a.priority < b.priority ? a : b);
+        if (drop.indexOf(loser) === -1) drop.push(loser);
+      }
+    }
+    drop.forEach(function (item) {
+      if (item.text.parentNode) item.text.parentNode.removeChild(item.text);
+      if (item.rect.parentNode) item.rect.parentNode.removeChild(item.rect);
+    });
+  }
+
+  function applyReadout(button, m) {
+    var readout = document.getElementById(button.id.replace("specimen", "readout"));
+    var flags = document.getElementById(button.id.replace("specimen", "flags"));
+    var text = sentence(m);
+    readout.textContent = text;
+    readout.setAttribute("data-start", String(roundPx(m.start)));
+    readout.setAttribute("data-gap", m.gap == null ? "" : String(roundPx(m.gap)));
+    readout.setAttribute("data-end", String(roundPx(m.end)));
+    var opt = m.textEnds.length ? roundPx(m.textEnds[0].optical) : "";
+    readout.setAttribute("data-optical", opt === "" ? "" : String(opt));
+    readout.setAttribute("data-offset", m.iconInfo && !m.iconInfo.concentric && !m.iconInfo.only ? String(m.iconInfo.offsetRound) : "");
+    readout.setAttribute("data-around", m.iconInfo && m.iconInfo.uniform ? String(m.iconInfo.aroundRound) : "");
+    readout.setAttribute("data-state", m.iconInfo ? (m.iconInfo.only && !m.iconInfo.uniform ? "uneven" : (m.iconInfo.concentric ? "concentric" : "off")) : "text");
+    setFlags(flags, m);
+  }
+
+  function updateBoom() {
+    var el = document.getElementById("specimen-fixed");
+    if (el.offsetHeight < 1) el = document.getElementById("specimen-wrong");
+    var pill = el.offsetHeight / 2;
+    var node = document.getElementById("boom");
+    if (pill < 1) return;
+    var boom = 999 * 999 * (1 - Math.PI / 4) / pill;
+    var n = Math.round(boom);
+    node.textContent = "With --r left at 999px, the label margin is " + n.toLocaleString("en-US") + "px.";
+    node.setAttribute("data-boom", String(n));
+  }
+
+  function draw() {
+    if (root.getAttribute("data-support") !== "yes") return;
+    document.querySelectorAll(".specimen").forEach(function (button) {
+      if (button.offsetWidth < 1) return;
+      var m = measure(button);
+      if (!m) return;
+      applyReadout(button, m);
+      paint(button, m);
+    });
+    updateBoom();
+    var pills = document.querySelector(".pills");
+    root.setAttribute("data-pills-h", String(Math.round(pills.getBoundingClientRect().height)));
+    root.setAttribute("data-overflow", String(document.documentElement.scrollWidth - document.documentElement.clientWidth));
+  }
+
+  function announce() {
+    var parts = [];
+    ["wrong", "fixed"].forEach(function (name) {
+      var pane = document.querySelector(".pane-" + name);
+      if (getComputedStyle(pane).display === "none") return;
+      parts.push((name === "wrong" ? "Wrong" : "Fixed") + ". " + document.getElementById("readout-" + name).textContent);
+    });
+    var status = document.getElementById("status");
+    status.textContent = "";
+    status.textContent = parts.join(" ");
+  }
+
+  function animateDraw(done) {
+    var mine = ++drawToken;
+    var start = performance.now();
+    var motion = root.getAttribute("data-motion") === "on";
+    draw();
+    if (!motion) {
+      if (done) done();
+      return;
+    }
+    function step(now) {
+      if (mine !== drawToken) return;
+      draw();
+      if (now - start < 240) requestAnimationFrame(step);
+      else if (done) done();
+    }
+    requestAnimationFrame(step);
+  }
+
+  function pulse() {
+    if (root.getAttribute("data-motion") !== "on") return;
+    stage.classList.remove("is-swap");
+    void stage.offsetWidth;
+    stage.classList.add("is-swap");
+  }
+
+  function bind(group) {
+    var buttons = Array.prototype.slice.call(group.querySelectorAll("[role='radio']"));
+    var attr = group.getAttribute("data-attr");
+    function select(btn, opts) {
+      buttons.forEach(function (b) {
+        var on = b === btn;
+        b.setAttribute("aria-checked", on ? "true" : "false");
+        b.tabIndex = on ? 0 : -1;
+      });
+      root.setAttribute(attr, btn.getAttribute("data-value"));
+      if (opts && opts.focus) btn.focus();
+      if (opts && opts.init) return;
+      if (attr === "data-content") fillAll();
+      if (attr === "data-view") pulse();
+      animateDraw(announce);
+    }
+    buttons.forEach(function (btn, index) {
+      btn.addEventListener("click", function () { select(btn); });
+      btn.addEventListener("keydown", function (event) {
+        var next = null;
+        if (event.key === "ArrowRight" || event.key === "ArrowDown") next = buttons[(index + 1) % buttons.length];
+        else if (event.key === "ArrowLeft" || event.key === "ArrowUp") next = buttons[(index - 1 + buttons.length) % buttons.length];
+        else if (event.key === "Home") next = buttons[0];
+        else if (event.key === "End") next = buttons[buttons.length - 1];
+        if (!next || next === btn) return;
+        event.preventDefault();
+        select(next, { focus: true });
+      });
+    });
+    var current = root.getAttribute(attr);
+    var match = buttons.filter(function (b) { return b.getAttribute("data-value") === current; })[0] || buttons[0];
+    select(match, { init: true });
+  }
+
+  function escapeHtml(value) {
+    return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function canonicalFrom(el) {
+    var raw = el.textContent.replace(/\r\n/g, "\n").replace(/^\n/, "").replace(/\s+$/, "");
+    var lines = raw.split("\n");
+    var indents = lines.filter(function (line) { return line.trim() !== ""; }).map(function (line) {
+      return line.match(/^ */)[0].length;
+    });
+    var min = indents.length ? Math.min.apply(null, indents) : 0;
+    return lines.map(function (line) { return line.slice(min); }).join("\n");
+  }
+
+  function highlight(src) {
+    var re = /(--[A-Za-z-]+|\b(?:calc|max|var)\b|\b(?:lh|cap|pi|em|px)\b|\d*\.?\d+)/g;
+    var out = "";
+    var i = 0;
+    var match;
+    while ((match = re.exec(src))) {
+      out += escapeHtml(src.slice(i, match.index));
+      var token = match[0];
+      var cls = "tok-num";
+      if (token.charAt(0) === "-") cls = "tok-prop";
+      else if (token === "calc" || token === "max" || token === "var") cls = "tok-fn";
+      else if (token === "lh" || token === "cap" || token === "pi" || token === "em" || token === "px") cls = "tok-unit";
+      out += '<span class="' + cls + '">' + escapeHtml(token) + "</span>";
+      i = match.index + token.length;
+    }
+    out += escapeHtml(src.slice(i));
+    return out;
+  }
+
+  function setupCopy() {
+    var code = document.getElementById("css-src");
+    var canon = canonicalFrom(code);
+    code.innerHTML = highlight(canon);
+    if (code.textContent !== canon) code.textContent = canon;
+    code.setAttribute("data-canon-ok", code.textContent === canon ? "1" : "0");
+    var button = document.getElementById("copy");
+    var status = document.getElementById("copy-status");
+    var timer = 0;
+    function copyText(text) {
+      function legacy() {
+        return new Promise(function (resolve, reject) {
+          var area = document.createElement("textarea");
+          area.value = text;
+          area.setAttribute("readonly", "");
+          area.setAttribute("aria-hidden", "true");
+          area.style.cssText = "position:fixed;top:0;left:0;width:1px;height:1px;padding:0;border:0;outline:none;box-shadow:none;background:transparent;opacity:0;";
+          document.body.appendChild(area);
+          area.focus();
+          area.select();
+          try { area.setSelectionRange(0, area.value.length); } catch (err) {}
+          var ok = false;
+          try { ok = document.execCommand("copy"); } catch (err2) { ok = false; }
+          document.body.removeChild(area);
+          if (ok) resolve();
+          else reject(new Error("copy failed"));
+        });
+      }
+      if (navigator.clipboard && window.isSecureContext && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(text).catch(legacy);
+      }
+      return legacy();
+    }
+    function reset() {
+      button.textContent = "Copy";
+      button.classList.remove("is-done", "is-fail");
+      button.setAttribute("aria-label", "Copy the CSS");
+    }
+    button.addEventListener("click", function () {
+      var text = code.textContent;
+      copyText(text).then(function () {
+        button.textContent = "Copied";
+        button.classList.add("is-done");
+        button.classList.remove("is-fail");
+        button.setAttribute("aria-label", "Copied the CSS");
+        status.textContent = "";
+        status.textContent = "Copied the CSS";
+        window.clearTimeout(timer);
+        timer = window.setTimeout(reset, 1600);
+      }).catch(function () {
+        button.textContent = "Failed";
+        button.classList.add("is-fail");
+        button.classList.remove("is-done");
+        button.setAttribute("aria-label", "Could not copy the CSS");
+        status.textContent = "";
+        status.textContent = "Could not copy the CSS";
+        window.clearTimeout(timer);
+        timer = window.setTimeout(reset, 1600);
+      });
+    });
+  }
+
+  fillAll();
+  root.setAttribute("data-support", supported() ? "yes" : "no");
+  document.querySelectorAll(".pills [role='radiogroup']").forEach(bind);
+  setupCopy();
+  draw();
+  announce();
+  root.setAttribute("data-ready", "1");
+  requestAnimationFrame(function () { stage.classList.add("is-live"); });
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () {
+      draw();
+      announce();
+      root.setAttribute("data-font-ready", "1");
+    });
+  } else {
+    root.setAttribute("data-font-ready", "1");
+  }
+
+  if (window.ResizeObserver) {
+    var observer = new ResizeObserver(function () { draw(); });
+    document.querySelectorAll(".canvas").forEach(function (canvas) { observer.observe(canvas); });
+  }
+  window.addEventListener("resize", draw);
+
+  stage.addEventListener("animationend", function () {
+    stage.classList.remove("is-swap");
+  });
+})();
+</script>
+<script src="shared/site-header.js?v=47" defer></script>
+</body>
+</html>
